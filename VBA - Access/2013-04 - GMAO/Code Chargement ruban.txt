@@ -1,0 +1,16 @@
+ '   strSQL = "SELECT * FROM USysRibbons " _
+         '& " WHERE RibbonId = 4" _
+
+    'Set rs = CurrentDb.OpenRecordset(strSQL, dbOpenForwardOnly)
+
+' Chaque filtre utilisateur enregistré est ajouté à la liste
+    'While Not rs.EOF
+     '           Tmp = rs![ribbonXML]
+                
+     '           rs.MoveNext
+    'Wend
+        
+    'rs.Close
+            
+    'Application.LoadCustomUI "rubanFiltre", Tmp
+        

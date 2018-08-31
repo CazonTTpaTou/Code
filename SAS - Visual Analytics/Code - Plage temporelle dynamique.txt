@@ -1,0 +1,3 @@
+( TreatAs(_Number_, DatePart('Date de fin de sciage'n)) <= ( TreatAs(_Number_, DatePart(Now())) - 'Decalage date'p ) ) 
+AND ( TreatAs(_Number_, DatePart('Date de fin de sciage'n)) >= ( TreatAs(_Number_, DatePart(Now())) - 'Assemblage'p ) ) 
+AND ( 'Ass Sci Equipement'n NotMissing )

@@ -1,0 +1,4 @@
+SELECT R1.idTypeIntervention as Equipement, R1.idIntervention,R1.DebutArret, R1.FinArret, R2.DebutArret, R2.FinArret,R2.idIntervention as Inter2
+FROM Realisation AS R1 INNER JOIN Realisation AS R2 ON R1.idTypeIntervention = R2.idTypeIntervention
+WHERE R1.FinArret >= R2.DebutArret and R1.DebutArret <=R2.FinArret
+and R1.idIntervention <> R2.idIntervention;

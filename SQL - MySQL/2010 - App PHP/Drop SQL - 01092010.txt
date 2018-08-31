@@ -1,0 +1,1103 @@
+-- phpMyAdmin SQL Dump
+-- version 3.2.1
+-- http://www.phpmyadmin.net
+--
+-- Serveur: localhost
+-- Généré le : Mer 01 Septembre 2010 à 10:45
+-- Version du serveur: 5.1.37
+-- Version de PHP: 5.3.0
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+--
+-- Base de données: `ctnum`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `abcd`
+--
+CREATE TABLE IF NOT EXISTS `abcd` (
+`date` date
+,`id_commande` smallint(6)
+,`id_client` smallint(6) unsigned
+,`qualite` varchar(15)
+,`nom` varchar(30)
+,`prenom` varchar(30)
+,`adresse_1` varchar(30)
+,`adresse_2` varchar(30)
+,`code_postal` varchar(5)
+,`ville` varchar(30)
+,`id_livre` smallint(4) unsigned
+,`auteur` varchar(100)
+,`titre` varchar(100)
+,`prix` decimal(6,2)
+,`Port` decimal(6,2)
+,`quant` smallint(5)
+,`nbl` smallint(4)
+);
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `ad_livraison`
+--
+
+CREATE TABLE IF NOT EXISTS `ad_livraison` (
+  `numero_l` smallint(6) DEFAULT NULL,
+  `Qualite` varchar(15) DEFAULT NULL,
+  `Nom` varchar(30) DEFAULT NULL,
+  `Prenom` varchar(30) DEFAULT NULL,
+  `Adresse_1` varchar(30) DEFAULT NULL,
+  `Adresse_2` varchar(30) DEFAULT NULL,
+  `Code_Postal` varchar(5) DEFAULT NULL,
+  `Ville` varchar(30) DEFAULT NULL,
+  `Date_Etat` varchar(30) DEFAULT NULL,
+  `NPAI` varchar(15) DEFAULT NULL,
+  `Nature_Client` varchar(15) DEFAULT NULL,
+  `fichiers` varchar(30) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `ad_livraison`
+--
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `annee`
+--
+
+CREATE TABLE IF NOT EXISTS `annee` (
+  `num` smallint(2) DEFAULT NULL,
+  `titre` varchar(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `annee`
+--
+
+INSERT INTO `annee` (`num`, `titre`) VALUES
+(1, '2000'),
+(2, '2001'),
+(3, '2002'),
+(4, '2003'),
+(5, '2004'),
+(6, '2005'),
+(7, '2006'),
+(8, '2007'),
+(9, '2008'),
+(10, '2009'),
+(11, '2010'),
+(12, '2011'),
+(13, '2012'),
+(14, '2013'),
+(15, '2014'),
+(16, '2015'),
+(17, '2016'),
+(18, '2017'),
+(19, '2018'),
+(20, '2019'),
+(21, '2020'),
+(22, '2021'),
+(23, '2022'),
+(24, '2023'),
+(25, '2024'),
+(26, '2025'),
+(27, '2026'),
+(28, '2027'),
+(29, '2028'),
+(30, '2029'),
+(31, '2030'),
+(32, '2031'),
+(33, '2032'),
+(34, '2033'),
+(35, '2034'),
+(36, '2035'),
+(37, '2036'),
+(38, '2037'),
+(39, '2038'),
+(40, '2039'),
+(41, '2040'),
+(42, '2041'),
+(43, '2042'),
+(44, '2043'),
+(45, '2044'),
+(46, '2045'),
+(47, '2046'),
+(48, '2047'),
+(49, '2048'),
+(50, '2049'),
+(51, '2050');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `auteurs`
+--
+
+CREATE TABLE IF NOT EXISTS `auteurs` (
+  `id_auteur` smallint(6) NOT NULL AUTO_INCREMENT,
+  `prenom` varchar(50) DEFAULT NULL,
+  `nom` varchar(50) DEFAULT NULL,
+  `auteur` varchar(100) DEFAULT NULL,
+  `biographie` text,
+  `naissance` date DEFAULT NULL,
+  `mort` date DEFAULT NULL,
+  `photo` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id_auteur`),
+  FULLTEXT KEY `_ft_mots_cles3` (`biographie`),
+  FULLTEXT KEY `_ft_mots_cles_3` (`biographie`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=76 ;
+
+--
+-- Contenu de la table `auteurs`
+--
+
+INSERT INTO `auteurs` (`id_auteur`, `prenom`, `nom`, `auteur`, `biographie`, `naissance`, `mort`, `photo`) VALUES
+(1, 'Victor ', 'Henry\r', 'Victor  - Henry\r', NULL, NULL, NULL, NULL),
+(2, 'Raphaël', 'Viau \r', 'Raphaël - Viau \r', NULL, NULL, NULL, NULL),
+(3, 'Alphonse', 'Toussenel \r', 'Alphonse - Toussenel \r', NULL, NULL, NULL, NULL),
+(4, 'Thomas ', 'Carlyle\r', 'Thomas  - Carlyle\r', NULL, NULL, NULL, NULL),
+(5, 'Léo', 'Taxil \r', 'Léo - Taxil \r', NULL, NULL, NULL, NULL),
+(6, 'Max', 'Stirner \r', 'Max - Stirner \r', NULL, NULL, NULL, NULL),
+(7, 'Herbert', 'Spencer \r', 'Herbert - Spencer \r', NULL, NULL, NULL, NULL),
+(8, 'Souvestre-Luzel-Du ', 'Laurens De La Barre\r', 'Souvestre-Luzel-Du  - Laurens De La Barre\r', NULL, NULL, NULL, NULL),
+(9, 'Jules', 'Soury \r', 'Jules - Soury \r', NULL, NULL, NULL, NULL),
+(10, 'Sergent', 'Bourgogne\r', 'Sergent - Bourgogne\r', NULL, NULL, NULL, NULL),
+(11, 'Rudolf ', 'Steiner\r', 'Rudolf  - Steiner\r', NULL, NULL, NULL, NULL),
+(13, 'Henri', 'Rochefort \r', 'Henri - Rochefort \r', NULL, NULL, NULL, NULL),
+(14, 'Robert', 'Houdin\r', 'Robert - Houdin\r', NULL, NULL, NULL, NULL),
+(15, 'Robert', 'D''Harcourt \r', 'Robert - D''Harcourt \r', NULL, NULL, NULL, NULL),
+(16, 'Brasillach', 'Robert \r', 'Brasillach - Robert \r', NULL, NULL, NULL, NULL),
+(17, 'René ', 'Quinton\r', 'René  - Quinton\r', NULL, NULL, NULL, NULL),
+(18, 'Piotr', 'Nicolaevitch Wrangel\r', 'Piotr - Nicolaevitch Wrangel\r', NULL, NULL, NULL, NULL),
+(19, 'Maurice ', 'Barres\r', 'Maurice  - Barres\r', NULL, NULL, NULL, NULL),
+(20, 'Marina', 'Grey\r', 'Marina - Grey\r', NULL, NULL, NULL, NULL),
+(21, 'Louis', 'Rougier\r', 'Louis - Rougier\r', NULL, NULL, NULL, NULL),
+(22, 'Gustave', 'Le Bon\r', 'Gustave - Le Bon\r', NULL, NULL, NULL, NULL),
+(23, 'Joseph', 'De Maistre\r', 'Joseph - De Maistre\r', NULL, NULL, NULL, NULL),
+(24, 'Pierre', 'Joly \r', 'Pierre - Joly \r', NULL, NULL, NULL, NULL),
+(25, 'Maurice', 'Joly \r', 'Maurice - Joly \r', NULL, NULL, NULL, NULL),
+(26, 'Jean-Baptiste ', 'Barrès\r', 'Jean-Baptiste  - Barrès\r', NULL, NULL, NULL, NULL),
+(27, 'Jean', 'Des Vallières\r', 'Jean - Des Vallières\r', NULL, NULL, NULL, NULL),
+(28, 'Hubert ', 'Lyautey\r', 'Hubert  - Lyautey\r', NULL, NULL, NULL, NULL),
+(29, 'Hersart ', 'De La Villemarqué\r', 'Hersart  - De La Villemarqué\r', NULL, NULL, NULL, NULL),
+(30, 'Hermann ', 'Läns\r', 'Hermann  - Läns\r', NULL, NULL, NULL, NULL),
+(31, 'Henry ', 'Houssaye\r', 'Henry  - Houssaye\r', NULL, NULL, NULL, NULL),
+(32, 'Henry', 'D''Arbois De Jubainville\r', 'Henry - D''Arbois De Jubainville\r', NULL, NULL, NULL, NULL),
+(35, 'Ludwig', 'Gumplowicz \r', 'Ludwig - Gumplowicz \r', NULL, NULL, NULL, NULL),
+(36, 'Arthur ', 'De Gobineau \r', 'Arthur  - De Gobineau \r', NULL, NULL, NULL, NULL),
+(37, 'Antoine', 'De Gobineau \r', 'Antoine - De Gobineau \r', NULL, NULL, NULL, NULL),
+(38, 'Georges ', 'Vacher De Lapouge\r', 'Georges  - Vacher De Lapouge\r', NULL, NULL, NULL, NULL),
+(39, 'Georges ', 'Sorel\r', 'Georges  - Sorel\r', NULL, NULL, NULL, NULL),
+(40, 'Georges', 'Loustaunau-Lacau\r', 'Georges - Loustaunau-Lacau\r', NULL, NULL, NULL, NULL),
+(41, 'Georges ', 'Lenotre\r', 'Georges  - Lenotre\r', NULL, NULL, NULL, NULL),
+(42, 'Georges ', 'Codino\r', 'Georges  - Codino\r', NULL, NULL, NULL, NULL),
+(43, 'Gaston ', 'Boissier\r', 'Gaston  - Boissier\r', NULL, NULL, NULL, NULL),
+(44, 'Bastiat', 'Frédéric \r', 'Bastiat - Frédéric \r', NULL, NULL, NULL, NULL),
+(46, 'Ernest ', 'Renan\r', 'Ernest  - Renan\r', NULL, NULL, NULL, NULL),
+(47, 'Emil ', 'Marotel\r', 'Emil  - Marotel\r', NULL, NULL, NULL, NULL),
+(48, 'Edouard ', 'Schuré\r', 'Edouard  - Schuré\r', NULL, NULL, NULL, NULL),
+(49, 'Edouard ', 'Drumont\r', 'Edouard  - Drumont\r', NULL, NULL, NULL, NULL),
+(50, 'Edmond ', 'Buat\r', 'Edmond  - Buat\r', NULL, NULL, NULL, NULL),
+(51, 'Christophe', 'Dolbeau', 'Christophe - Dolbeau', 'un bien vilain reptile', '0000-00-00', '0000-00-00', ''),
+(52, 'Pierre', 'D''Harcourt \r', 'Pierre - D''Harcourt \r', NULL, NULL, NULL, NULL),
+(53, 'Anton', 'Denikine \r', 'Anton - Denikine \r', NULL, NULL, NULL, NULL),
+(54, 'Charles', 'Darwin \r', 'Charles - Darwin \r', NULL, NULL, NULL, NULL),
+(56, 'Claude', 'Brzozowski \r', 'Claude - Brzozowski \r', NULL, NULL, NULL, NULL),
+(57, 'Charles ', 'Le Goffic\r', 'Charles  - Le Goffic\r', NULL, NULL, NULL, NULL),
+(58, 'Camille ', 'Jullian\r', 'Camille  - Jullian\r', NULL, NULL, NULL, NULL),
+(59, 'Antoine', 'Blanc De Saint Bonnet \r', 'Antoine - Blanc De Saint Bonnet \r', NULL, NULL, NULL, NULL),
+(60, 'Bernard ', 'Lazare\r', 'Bernard  - Lazare\r', NULL, NULL, NULL, NULL),
+(61, 'Frédéric', 'Bastiat \r', 'Frédéric - Bastiat \r', NULL, NULL, NULL, NULL),
+(62, 'Maurice', 'Barres \r', 'Maurice - Barres \r', 'crocodile', NULL, NULL, NULL),
+(63, 'Jacques', 'Bainville \r', 'Jacques - Bainville \r', NULL, NULL, NULL, NULL),
+(64, 'L''empereur', 'Augutin', 'L''empereur - Augutin', 'bonjour', '0200-01-12', '0300-12-31', ''),
+(65, 'Antoine', 'De Rivarol\r', 'Antoine - De Rivarol\r', NULL, NULL, NULL, NULL),
+(66, 'Andre ', 'Le Breton\r', 'Andre  - Le Breton\r', NULL, NULL, NULL, NULL),
+(68, 'Alfred', 'Leverrier\r', 'Alfred - Leverrier\r', NULL, NULL, NULL, NULL),
+(74, 'Emile', 'Zola', 'Emile - Zola', 'un bien vilain reptile', '1850-01-01', '1900-02-01', ''),
+(73, ' Auteur', ' Supprimer', ' Effacer - Auteur', NULL, NULL, NULL, NULL),
+(75, 'Guy', 'Maupassant', 'Guy - Maupassant', 'lotui', '1859-12-01', '1900-02-01', '');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `catalogue`
+--
+
+CREATE TABLE IF NOT EXISTS `catalogue` (
+  `num_cat` smallint(4) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(50) DEFAULT NULL,
+  `date_debut` date DEFAULT NULL,
+  `date_fin` date DEFAULT NULL,
+  `Nb_envoi` smallint(7) unsigned DEFAULT NULL,
+  `Nb_pages` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`num_cat`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+
+--
+-- Contenu de la table `catalogue`
+--
+
+INSERT INTO `catalogue` (`num_cat`, `nom`, `date_debut`, `date_fin`, `Nb_envoi`, `Nb_pages`) VALUES
+(1, 'Catalogue n° 1 - juillet/2006', '2006-07-01', '2006-08-31', 8000, NULL),
+(2, 'Catalogue n° 2 - septembre/2006', '2006-09-01', '2006-10-31', 2000, NULL),
+(3, 'Catalogue n° 3 - novembre/2006', '2006-11-01', '2006-12-31', 2000, NULL),
+(4, 'Catalogue n° 4 - janvier/2007', '2007-01-01', '2007-02-28', 2000, NULL),
+(5, 'Catalogue n° 5 - mars/2007', '2007-03-01', '2007-04-30', 2000, NULL),
+(6, 'Catalogue n° 6 - mai/2007', '2007-05-01', '2007-06-30', 2000, NULL),
+(7, 'Catalogue n° 7 - juillet/2007', '2007-07-01', '2007-08-31', 2000, NULL),
+(8, 'Catalogue n° 8 - septembre/2007', '2007-09-01', '2007-10-31', 2000, NULL),
+(9, 'Catalogue n° 9 - novembre/2007', '2007-11-01', '2007-12-31', 2000, NULL),
+(10, 'Catalogue n° 10 - janvier/2008', '2008-01-01', '2008-02-29', 2000, NULL),
+(11, 'Catalogue n° 11 - mars/2008', '2008-03-01', '2008-04-30', 2000, NULL),
+(12, 'Catalogue n° 12 - mai/2008', '2008-05-01', '2008-06-30', 2000, NULL),
+(13, 'Octavius', '2010-01-04', '2010-06-15', 2000, 2),
+(14, 'HUIOP', '2000-01-02', '2000-01-09', 2000, 1),
+(15, 'kiop', '2000-01-01', '2000-01-01', 2000, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `catalogue_vente_nb`
+--
+CREATE TABLE IF NOT EXISTS `catalogue_vente_nb` (
+`id_commande` smallint(6)
+,`date` date
+,`quantite` decimal(27,0)
+,`id_client` smallint(6) unsigned
+,`somme` decimal(33,2)
+);
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `chemin_fer`
+--
+
+CREATE TABLE IF NOT EXISTS `chemin_fer` (
+  `num_page` smallint(3) DEFAULT NULL,
+  `num_rub` smallint(6) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `chemin_fer`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `chemin_fer_livre`
+--
+
+CREATE TABLE IF NOT EXISTS `chemin_fer_livre` (
+  `num_page` smallint(6) DEFAULT NULL,
+  `num_rub` smallint(6) DEFAULT NULL,
+  `num_livre` smallint(6) DEFAULT NULL,
+  `num_cat` smallint(6) DEFAULT NULL,
+  `num_com` smallint(6) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `chemin_fer_livre`
+--
+
+INSERT INTO `chemin_fer_livre` (`num_page`, `num_rub`, `num_livre`, `num_cat`, `num_com`) VALUES
+(2, NULL, 9, 15, 21),
+(2, NULL, 10, 15, 22),
+(1, NULL, 10, 15, 21),
+(1, NULL, 9, 15, 23),
+(1, NULL, 10, 15, 22),
+(1, NULL, 9, 15, 24);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `clients`
+--
+
+CREATE TABLE IF NOT EXISTS `clients` (
+  `numero` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `Qualite` varchar(15) DEFAULT NULL,
+  `Nom` varchar(30) DEFAULT NULL,
+  `Prenom` varchar(30) DEFAULT NULL,
+  `Adresse_1` varchar(30) DEFAULT NULL,
+  `Adresse_2` varchar(30) DEFAULT NULL,
+  `Code_Postal` varchar(5) DEFAULT NULL,
+  `Ville` varchar(30) DEFAULT NULL,
+  `Date_Etat` varchar(30) DEFAULT NULL,
+  `NPAI` varchar(15) DEFAULT NULL,
+  `Nature_Client` varchar(15) DEFAULT NULL,
+  `fichiers` varchar(30) DEFAULT NULL,
+  `telephone` varchar(20) DEFAULT NULL,
+  `e_mail` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`numero`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20100 ;
+
+--
+-- Contenu de la table `clients`
+--
+--
+-- Doublure de structure pour la vue `prix_today`
+--
+CREATE TABLE IF NOT EXISTS `prix_today` (
+`id_livre` smallint(6)
+,`prix` decimal(6,2)
+);
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `reas`
+--
+CREATE TABLE IF NOT EXISTS `reas` (
+`numero` smallint(6)
+,`date` date
+,`nom` varchar(30)
+);
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `reassortiment`
+--
+
+CREATE TABLE IF NOT EXISTS `reassortiment` (
+  `numero` smallint(6) NOT NULL AUTO_INCREMENT,
+  `fournisseur` smallint(6) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `livraison` smallint(6) DEFAULT NULL,
+  `etat` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`numero`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=61 ;
+
+--
+-- Contenu de la table `reassortiment`
+--
+
+INSERT INTO `reassortiment` (`numero`, `fournisseur`, `date`, `livraison`, `etat`) VALUES
+(1, 19337, '0000-00-00', 19337, 2),
+(2, 19335, '2010-08-08', 1, 2),
+(3, 19335, '2010-08-08', 1, 1),
+(4, 19335, '2010-08-10', 1, 0),
+(5, 19335, '2010-08-11', 1, 0),
+(6, 19335, '2010-08-11', 1, 2),
+(7, 19335, '2010-08-11', 1, 0),
+(8, 19335, '2010-08-11', 1, 0),
+(9, 19335, '2010-08-11', 1, 0),
+(10, 19335, '2010-08-11', 1, 0),
+(11, 19335, '2010-08-11', 1, 0),
+(12, 19335, '2010-08-11', 1, 0),
+(13, 19335, '2010-08-11', 1, 2),
+(14, 19335, '2010-08-11', 1, 0),
+(15, 19335, '2010-08-11', 1, 2),
+(16, 19335, '2010-08-11', 1, 0),
+(17, 19335, '2010-08-11', 1, 0),
+(18, 19335, '2010-08-11', 1, 0),
+(19, 19335, '2010-08-11', 1, 0),
+(20, 19335, '2010-08-11', 1, 0),
+(21, 19335, '2010-08-11', 1, 0),
+(22, 19335, '2010-08-11', 1, 2),
+(23, 19335, '2010-08-11', 1, 0),
+(24, 19335, '2010-08-11', 1, 2),
+(25, 19335, '2010-08-11', 1, 2),
+(26, 19335, '2010-08-14', 1, 0),
+(27, 19335, '2010-08-13', 1, 0),
+(28, 19335, NULL, 1, 0),
+(29, 19335, NULL, 1, 0),
+(30, 19335, NULL, 1, 0),
+(31, 19335, NULL, 1, 0),
+(32, 19335, NULL, 1, 0),
+(33, 19335, NULL, 1, 0),
+(34, 19335, NULL, 1, 0),
+(35, 19335, NULL, 1, 0),
+(36, 19335, NULL, 1, 0),
+(37, 19335, NULL, 1, 0),
+(38, 19335, NULL, 1, 0),
+(39, 19335, '2010-08-14', 1, 0),
+(40, 19335, '2010-08-14', 1, 0),
+(41, 19335, '2010-08-14', 1, 2),
+(42, 19335, '2010-08-14', 1, 0),
+(43, 19335, '2010-08-14', 1, 0),
+(44, 19335, '2010-08-14', 1, 2),
+(45, 19335, '2010-08-14', 1, 0),
+(46, 19335, '2010-08-14', 1, 2),
+(47, 19335, '2010-08-14', 1, 0),
+(48, 19335, '2010-08-14', 1, 0),
+(49, 19335, '2010-08-14', 1, 2),
+(50, 19335, '2010-08-14', 1, 0),
+(51, 19335, '2010-08-14', 1, 0),
+(52, 19335, '2010-08-14', 1, 2),
+(53, 19335, '2010-08-14', 1, 0),
+(54, 19335, '2010-08-14', 1, 0),
+(55, 19335, '2010-08-14', 1, 2),
+(56, 8713, '0000-00-00', 19335, 0),
+(57, 8713, '2010-08-14', 19335, 0),
+(58, 19335, '2010-08-14', 1, 2),
+(59, 19335, '2010-08-14', 19335, 0),
+(60, 19335, '2010-08-14', 19335, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `rubrique`
+--
+
+CREATE TABLE IF NOT EXISTS `rubrique` (
+  `num` smallint(4) NOT NULL AUTO_INCREMENT,
+  `titre` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`num`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Contenu de la table `rubrique`
+--
+
+INSERT INTO `rubrique` (`num`, `titre`) VALUES
+(1, 'rubrique_1'),
+(2, 'rubrique_2'),
+(3, 'rubrique_3'),
+(4, 'rubrique_4'),
+(5, 'rubrique_5');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `stock_inter`
+--
+
+CREATE TABLE IF NOT EXISTS `stock_inter` (
+  `com` smallint(6) DEFAULT NULL,
+  `prod` smallint(6) DEFAULT NULL,
+  `quant` smallint(6) DEFAULT NULL,
+  `flag` tinyint(4) DEFAULT NULL,
+  KEY `prod` (`prod`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `stock_inter`
+--
+
+INSERT INTO `stock_inter` (`com`, `prod`, `quant`, `flag`) VALUES
+(2935, 14, 14, -1),
+(2935, 8, 14, 0),
+(2936, 131, 14, -1),
+(2937, 13, 5, -1),
+(2937, 14, 14, -1),
+(2938, 73, 13, -1),
+(2950, 6, 15, -1),
+(2950, 15, 14, -1),
+(2950, 8, 3, 0),
+(2951, 7, 13, -1),
+(2951, 15, 12, -1),
+(2954, 9, 14, -1),
+(2954, 3, 4, 0),
+(2957, 6, 11, -1),
+(2957, 7, 13, -1),
+(2958, 14, 28, -1),
+(2958, 3, 12, 0),
+(2959, 1, 1, 0),
+(2960, 167, 1, -1),
+(2960, 168, 3, -1),
+(2960, 10, 5, 0),
+(2960, 6, 12, -1),
+(2960, 7, 1, -1),
+(2960, 7, 1, -1),
+(2970, 7, 13, -1),
+(2971, 13, 14, -1),
+(2984, 9, 13, -1),
+(2993, 8, 11, 0),
+(2995, 8, 12, 0),
+(2995, 8, 7, 0),
+(2996, 7, 14, -1),
+(2996, 87, 2, -1),
+(3009, 9, 1, -1),
+(3009, 7, 12, -1),
+(3009, 21, 2, -1),
+(3010, 6, 4, -1),
+(3011, 5, 3, 0),
+(3012, 109, 1, -1),
+(3014, 2, 3, -1),
+(3015, 15, 3, -1),
+(3015, 4, 1, 0),
+(3016, 5, 3, 0),
+(3017, 6, 2, -1),
+(3020, 4, 1, 0),
+(3023, 1, 1, 0),
+(3023, 1, 1, 0),
+(3023, 1, 1, 0),
+(3024, 9, 12, -1),
+(3024, 3, 2, 0),
+(3024, 7, 13, -1),
+(3025, 14, 12, -1),
+(3025, 41, 13, -1),
+(3025, 84, 1, -1),
+(3025, 87, 5, -1),
+(3038, 2, 4, -1),
+(3040, 7, 13, -1),
+(3040, 4, 2, 0),
+(3044, 5, 9, 0),
+(3045, 1, 12, 0),
+(3046, 13, 10, -1),
+(3046, 2, 30, -1),
+(3047, 5, 54, 0),
+(3048, 1, 50, 0),
+(3048, 2, 150, -1),
+(3048, 14, 60, -1),
+(3048, 3, 150, 0),
+(3048, 3, 150, -1),
+(3048, 3, 150, -1),
+(2935, 14, 14, -1),
+(2935, 8, 14, 0),
+(2936, 131, 14, -1),
+(2937, 13, 5, -1),
+(2937, 14, 14, -1),
+(2938, 73, 13, -1),
+(2950, 6, 15, -1),
+(2950, 15, 14, -1),
+(2950, 8, 3, 0),
+(2951, 7, 13, -1),
+(2951, 15, 12, -1),
+(2954, 9, 14, -1),
+(2954, 3, 4, 0),
+(2957, 6, 11, -1),
+(2957, 7, 13, -1),
+(2958, 14, 28, -1),
+(2958, 3, 12, 0),
+(2959, 1, 1, 0),
+(2960, 167, 1, -1),
+(2960, 168, 3, -1),
+(2960, 10, 5, 0),
+(2960, 6, 12, -1),
+(2960, 7, 1, -1),
+(2960, 7, 1, -1),
+(2970, 7, 13, -1),
+(2971, 13, 14, -1),
+(2984, 9, 13, -1),
+(2993, 8, 11, 0),
+(2995, 8, 12, 0),
+(2995, 8, 7, 0),
+(2996, 7, 14, -1),
+(2996, 87, 2, -1),
+(3009, 9, 1, -1),
+(3009, 7, 12, -1),
+(3009, 21, 2, -1),
+(3010, 6, 4, -1),
+(3011, 5, 3, 0),
+(3012, 109, 1, -1),
+(3014, 2, 3, -1),
+(3015, 15, 3, -1),
+(3015, 4, 1, 0),
+(3016, 5, 3, 0),
+(3017, 6, 2, -1),
+(3020, 4, 1, 0),
+(3023, 1, 1, 0),
+(3023, 1, 1, 0),
+(3023, 1, 1, 0),
+(3024, 9, 12, -1),
+(3024, 3, 2, 0),
+(3024, 7, 13, -1),
+(3025, 14, 12, -1),
+(3025, 41, 13, -1),
+(3025, 84, 1, -1),
+(3025, 87, 5, -1),
+(3038, 2, 4, -1),
+(3040, 7, 13, -1),
+(3040, 4, 2, 0),
+(3044, 5, 9, 0),
+(3045, 1, 12, 0),
+(3046, 13, 10, -1),
+(3046, 2, 30, -1),
+(3047, 5, 54, 0),
+(3048, 1, 50, 0),
+(3048, 2, 150, -1),
+(3048, 14, 60, -1),
+(3048, 3, 150, 0),
+(3048, 3, 150, -1),
+(3048, 3, 150, -1),
+(2935, 14, 14, -1),
+(2935, 8, 14, 0),
+(2936, 131, 14, -1),
+(2937, 13, 5, -1),
+(2937, 14, 14, -1),
+(2938, 73, 13, -1),
+(2950, 6, 15, -1),
+(2950, 15, 14, -1),
+(2950, 8, 3, 0),
+(2951, 7, 13, -1),
+(2951, 15, 12, -1),
+(2954, 9, 14, -1),
+(2954, 3, 4, 0),
+(2957, 6, 11, -1),
+(2957, 7, 13, -1),
+(2958, 14, 28, -1),
+(2958, 3, 12, 0),
+(2959, 1, 1, 0),
+(2960, 167, 1, -1),
+(2960, 168, 3, -1),
+(2960, 10, 5, 0),
+(2960, 6, 12, -1),
+(2960, 7, 1, -1),
+(2960, 7, 1, -1),
+(2970, 7, 13, -1),
+(2971, 13, 14, -1),
+(2984, 9, 13, -1),
+(2993, 8, 11, 0),
+(2995, 8, 12, 0),
+(2995, 8, 7, 0),
+(2996, 7, 14, -1),
+(2996, 87, 2, -1),
+(3009, 9, 1, -1),
+(3009, 7, 12, -1),
+(3009, 21, 2, -1),
+(3010, 6, 4, -1),
+(3011, 5, 3, 0),
+(3012, 109, 1, -1),
+(3014, 2, 3, -1),
+(3015, 15, 3, -1),
+(3015, 4, 1, 0),
+(3016, 5, 3, 0),
+(3017, 6, 2, -1),
+(3020, 4, 1, 0),
+(3023, 1, 1, 0),
+(3023, 1, 1, 0),
+(3023, 1, 1, 0),
+(3024, 9, 12, -1),
+(3024, 3, 2, 0),
+(3024, 7, 13, -1),
+(3025, 14, 12, -1),
+(3025, 41, 13, -1),
+(3025, 84, 1, -1),
+(3025, 87, 5, -1),
+(3038, 2, 4, -1),
+(3040, 7, 13, -1),
+(3040, 4, 2, 0),
+(3044, 5, 9, 0),
+(3045, 1, 12, 0),
+(3046, 13, 10, -1),
+(3046, 2, 30, -1),
+(3047, 5, 54, 0),
+(3048, 1, 50, 0),
+(3048, 2, 150, -1),
+(3048, 14, 60, -1),
+(3048, 3, 150, 0),
+(3048, 3, 150, -1),
+(3048, 3, 150, -1),
+(2935, 14, 14, -1),
+(2935, 8, 14, 0),
+(2936, 131, 14, -1),
+(2937, 13, 5, -1),
+(2937, 14, 14, -1),
+(2938, 73, 13, -1),
+(2950, 6, 15, -1),
+(2950, 15, 14, -1),
+(2950, 8, 3, 0),
+(2951, 7, 13, -1),
+(2951, 15, 12, -1),
+(2954, 9, 14, -1),
+(2954, 3, 4, 0),
+(2957, 6, 11, -1),
+(2957, 7, 13, -1),
+(2958, 14, 28, -1),
+(2958, 3, 12, 0),
+(2959, 1, 1, 0),
+(2960, 167, 1, -1),
+(2960, 168, 3, -1),
+(2960, 10, 5, 0),
+(2960, 6, 12, -1),
+(2960, 7, 1, -1),
+(2960, 7, 1, -1),
+(2970, 7, 13, -1),
+(2971, 13, 14, -1),
+(2984, 9, 13, -1),
+(2993, 8, 11, 0),
+(2995, 8, 12, 0),
+(2995, 8, 7, 0),
+(2996, 7, 14, -1),
+(2996, 87, 2, -1),
+(3009, 9, 1, -1),
+(3009, 7, 12, -1),
+(3009, 21, 2, -1),
+(3010, 6, 4, -1),
+(3011, 5, 3, 0),
+(3012, 109, 1, -1),
+(3014, 2, 3, -1),
+(3015, 15, 3, -1),
+(3015, 4, 1, 0),
+(3016, 5, 3, 0),
+(3017, 6, 2, -1),
+(3020, 4, 1, 0),
+(3023, 1, 1, 0),
+(3023, 1, 1, 0),
+(3023, 1, 1, 0),
+(3024, 9, 12, -1),
+(3024, 3, 2, 0),
+(3024, 7, 13, -1),
+(3025, 14, 12, -1),
+(3025, 41, 13, -1),
+(3025, 84, 1, -1),
+(3025, 87, 5, -1),
+(3038, 2, 4, -1),
+(3040, 7, 13, -1),
+(3040, 4, 2, 0),
+(3044, 5, 9, 0),
+(3045, 1, 12, 0),
+(3046, 13, 10, -1),
+(3046, 2, 30, -1),
+(3047, 5, 54, 0),
+(3048, 1, 50, 0),
+(3048, 2, 150, -1),
+(3048, 14, 60, -1),
+(3048, 3, 150, 0),
+(3048, 3, 150, -1),
+(3048, 3, 150, -1),
+(2935, 14, 14, -1),
+(2935, 8, 14, 0),
+(2936, 131, 14, -1),
+(2937, 13, 5, -1),
+(2937, 14, 14, -1),
+(2938, 73, 13, -1),
+(2950, 6, 15, -1),
+(2950, 15, 14, -1),
+(2950, 8, 3, 0),
+(2951, 7, 13, -1),
+(2951, 15, 12, -1),
+(2954, 9, 14, -1),
+(2954, 3, 4, 0),
+(2957, 6, 11, -1),
+(2957, 7, 13, -1),
+(2958, 14, 28, -1),
+(2958, 3, 12, 0),
+(2959, 1, 1, 0),
+(2960, 167, 1, -1),
+(2960, 168, 3, -1),
+(2960, 10, 5, 0),
+(2960, 6, 12, -1),
+(2960, 7, 1, -1),
+(2960, 7, 1, -1),
+(2970, 7, 13, -1),
+(2971, 13, 14, -1),
+(2984, 9, 13, -1),
+(2993, 8, 11, 0),
+(2995, 8, 12, 0),
+(2995, 8, 7, 0),
+(2996, 7, 14, -1),
+(2996, 87, 2, -1),
+(3009, 9, 1, -1),
+(3009, 7, 12, -1),
+(3009, 21, 2, -1),
+(3010, 6, 4, -1),
+(3011, 5, 3, 0),
+(3012, 109, 1, -1),
+(3014, 2, 3, -1),
+(3015, 15, 3, -1),
+(3015, 4, 1, 0),
+(3016, 5, 3, 0),
+(3017, 6, 2, -1),
+(3020, 4, 1, 0),
+(3023, 1, 1, 0),
+(3023, 1, 1, 0),
+(3023, 1, 1, 0),
+(3024, 9, 12, -1),
+(3024, 3, 2, 0),
+(3024, 7, 13, -1),
+(3025, 14, 12, -1),
+(3025, 41, 13, -1),
+(3025, 84, 1, -1),
+(3025, 87, 5, -1),
+(3038, 2, 4, -1),
+(3040, 7, 13, -1),
+(3040, 4, 2, 0),
+(3044, 5, 9, 0),
+(3045, 1, 12, 0),
+(3046, 13, 10, -1),
+(3046, 2, 30, -1),
+(3047, 5, 54, 0),
+(3048, 1, 50, 0),
+(3048, 2, 150, -1),
+(3048, 14, 60, -1),
+(3048, 3, 150, 0),
+(3048, 3, 150, -1),
+(3048, 3, 150, -1),
+(2935, 14, 14, -1),
+(2935, 8, 14, 0),
+(2936, 131, 14, -1),
+(2937, 13, 5, -1),
+(2937, 14, 14, -1),
+(2938, 73, 13, -1),
+(2950, 6, 15, -1),
+(2950, 15, 14, -1),
+(2950, 8, 3, 0),
+(2951, 7, 13, -1),
+(2951, 15, 12, -1),
+(2954, 9, 14, -1),
+(2954, 3, 4, 0),
+(2957, 6, 11, -1),
+(2957, 7, 13, -1),
+(2958, 14, 28, -1),
+(2958, 3, 12, 0),
+(2959, 1, 1, 0),
+(2960, 167, 1, -1),
+(2960, 168, 3, -1),
+(2960, 10, 5, 0),
+(2960, 6, 12, -1),
+(2960, 7, 1, -1),
+(2960, 7, 1, -1),
+(2970, 7, 13, -1),
+(2971, 13, 14, -1),
+(2984, 9, 13, -1),
+(2993, 8, 11, 0),
+(2995, 8, 12, 0),
+(2995, 8, 7, 0),
+(2996, 7, 14, -1),
+(2996, 87, 2, -1),
+(3009, 9, 1, -1),
+(3009, 7, 12, -1),
+(3009, 21, 2, -1),
+(3010, 6, 4, -1),
+(3011, 5, 3, 0),
+(3012, 109, 1, -1),
+(3014, 2, 3, -1),
+(3015, 15, 3, -1),
+(3015, 4, 1, 0),
+(3016, 5, 3, 0),
+(3017, 6, 2, -1),
+(3020, 4, 1, 0),
+(3023, 1, 1, 0),
+(3023, 1, 1, 0),
+(3023, 1, 1, 0),
+(3024, 9, 12, -1),
+(3024, 3, 2, 0),
+(3024, 7, 13, -1),
+(3025, 14, 12, -1),
+(3025, 41, 13, -1),
+(3025, 84, 1, -1),
+(3025, 87, 5, -1),
+(3038, 2, 4, -1),
+(3040, 7, 13, -1),
+(3040, 4, 2, 0),
+(3044, 5, 9, 0),
+(3045, 1, 12, 0),
+(3046, 13, 10, -1),
+(3046, 2, 30, -1),
+(3047, 5, 54, 0),
+(3048, 1, 50, 0),
+(3048, 2, 150, -1),
+(3048, 14, 60, -1),
+(3048, 3, 150, 0),
+(3048, 3, 150, -1),
+(3048, 3, 150, -1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `stock_manquant`
+--
+
+CREATE TABLE IF NOT EXISTS `stock_manquant` (
+  `com` smallint(6) DEFAULT NULL,
+  `prod` smallint(6) DEFAULT NULL,
+  `quant` smallint(6) DEFAULT NULL,
+  `flag` tinyint(4) DEFAULT NULL,
+  `manq` smallint(6) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `stock_manquant`
+--
+
+INSERT INTO `stock_manquant` (`com`, `prod`, `quant`, `flag`, `manq`) VALUES
+(2935, 14, 14, -1, -14),
+(2935, 8, 14, 0, 841),
+(2936, 131, 14, -1, -14),
+(2937, 13, 5, -1, -5),
+(2937, 14, 14, -1, -14),
+(2938, 73, 13, -1, -13),
+(2950, 6, 15, -1, -15),
+(2950, 15, 14, -1, -14),
+(2950, 8, 3, 0, 838),
+(2951, 7, 13, -1, -13),
+(2951, 15, 12, -1, -12),
+(2954, 9, 14, -1, -14),
+(2954, 3, 4, 0, 275),
+(2957, 6, 11, -1, -11),
+(2957, 7, 13, -1, -13),
+(2958, 14, 28, -1, -28),
+(2958, 3, 12, 0, 263),
+(2959, 1, 1, 0, 1715),
+(2960, 167, 1, -1, -1),
+(2960, 168, 3, -1, -3),
+(2960, 10, 5, 0, 751),
+(2960, 6, 12, -1, -12),
+(2960, 7, 1, -1, -1),
+(2960, 7, 1, -1, -1),
+(2970, 7, 13, -1, -13),
+(2971, 13, 14, -1, -14),
+(2984, 9, 13, -1, -13),
+(2993, 8, 11, 0, 827),
+(2995, 8, 12, 0, 815),
+(2995, 8, 7, 0, 808),
+(2996, 7, 14, -1, -14),
+(2996, 87, 2, -1, -2),
+(3009, 9, 1, -1, -1),
+(3009, 7, 12, -1, -12),
+(3009, 21, 2, -1, -2),
+(3010, 6, 4, -1, -4),
+(3011, 5, 3, 0, 185),
+(3012, 109, 1, -1, -1),
+(3014, 2, 3, -1, -3),
+(3015, 15, 3, -1, -3),
+(3015, 4, 1, 0, 5774),
+(3016, 5, 3, 0, 182),
+(3017, 6, 2, -1, -2),
+(3020, 4, 1, 0, 5773),
+(3023, 1, 1, 0, 1714),
+(3023, 1, 1, 0, 1713),
+(3023, 1, 1, 0, 1712),
+(3024, 9, 12, -1, -12),
+(3024, 3, 2, 0, 261),
+(3024, 7, 13, -1, -13),
+(3025, 14, 12, -1, -12),
+(3025, 41, 13, -1, -13),
+(3025, 84, 1, -1, -1),
+(3025, 87, 5, -1, -5),
+(3038, 2, 4, -1, -4),
+(3040, 7, 13, -1, -13),
+(3040, 4, 2, 0, 5771),
+(3044, 5, 9, 0, 173),
+(3045, 1, 12, 0, 1700),
+(3046, 13, 10, -1, -10),
+(3046, 2, 30, -1, -30),
+(3047, 5, 54, 0, 119),
+(3048, 1, 50, 0, 1650),
+(3048, 2, 150, -1, -150),
+(3048, 14, 60, -1, -60),
+(3048, 3, 150, 0, 111),
+(3048, 3, 150, -1, -39),
+(3048, 3, 150, -1, -150);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `sujet`
+--
+
+CREATE TABLE IF NOT EXISTS `sujet` (
+  `num` smallint(4) NOT NULL AUTO_INCREMENT,
+  `titre` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`num`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Contenu de la table `sujet`
+--
+
+INSERT INTO `sujet` (`num`, `titre`) VALUES
+(1, 'sujet_5'),
+(2, 'sujet_4'),
+(3, 'sujet_3'),
+(4, 'sujet_2'),
+(5, 'sujet_1');
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `vente_livres`
+--
+CREATE TABLE IF NOT EXISTS `vente_livres` (
+`numero` smallint(4)
+,`vente` bigint(21)
+);
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `v_liv`
+--
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ctnum`.`v_liv` AS select `c`.`numero_com` AS `numero_com`,`li`.`numero` AS `numero`,`li`.`Qualite` AS `Qualite`,`li`.`Nom` AS `nom`,`li`.`Prenom` AS `prenom`,`li`.`Adresse_1` AS `adresse_1`,`li`.`Adresse_2` AS `adresse_2`,`li`.`Code_Postal` AS `code_postal`,`li`.`Ville` AS `ville` from (`ctnum`.`ad_livraison` `li` join `ctnum`.`commande` `c` on((`li`.`numero` = `c`.`livraison`)));
+
+--
+-- Contenu de la table `v_liv`
+--
+
+-- utilisé (#1356 - View 'ctnum.v_liv' references invalid table(s) or column(s) or function(s) or definer/invoker of view lack rights to use them)
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `abcd`
+--
+DROP TABLE IF EXISTS `abcd`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `abcd` AS select `c`.`date` AS `date`,`c`.`numero_com` AS `id_commande`,`cl`.`numero` AS `id_client`,`cl`.`Qualite` AS `qualite`,`cl`.`Nom` AS `nom`,`cl`.`Prenom` AS `prenom`,`cl`.`Adresse_1` AS `adresse_1`,`cl`.`Adresse_2` AS `adresse_2`,`cl`.`Code_Postal` AS `code_postal`,`cl`.`Ville` AS `ville`,`li`.`numero` AS `id_livre`,`auteurs`.`auteur` AS `auteur`,`li`.`Titre` AS `titre`,`prix`.`prix` AS `prix`,`c`.`port` AS `Port`,`lig`.`quantite` AS `quant`,`li`.`nb_livre` AS `nbl` from ((((((`commande` `c` join `clients` `cl` on((`cl`.`numero` = `c`.`Numero_Client`))) join `ligne_commande` `lig` on((`lig`.`Numero_com` = `c`.`numero_com`))) join `livres` `li` on((`li`.`numero` = `lig`.`numero_livre`))) join `prix` on(((`li`.`numero` = `prix`.`id_livre`) and (`c`.`date` >= `prix`.`d_begin`) and (`c`.`date` <= `prix`.`d_end`)))) join `liv_aut` on((`liv_aut`.`id_livre` = `li`.`numero`))) join `auteurs` on((`liv_aut`.`id_auteur` = `auteurs`.`id_auteur`)));
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `catalogue_vente_nb`
+--
+DROP TABLE IF EXISTS `catalogue_vente_nb`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `catalogue_vente_nb` AS select `com`.`id_commande` AS `id_commande`,`com`.`date` AS `date`,sum(`com`.`quant`) AS `quantite`,`com`.`id_client` AS `id_client`,sum((`com`.`quant` * `com`.`prix`)) AS `somme` from `com` group by `com`.`id_commande` order by sum(`com`.`quant`) desc;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `client_vente_nb`
+--
+DROP TABLE IF EXISTS `client_vente_nb`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `client_vente_nb` AS select `com`.`id_client` AS `id_client`,`com`.`nom` AS `nom`,`com`.`prenom` AS `prenom`,sum(`com`.`quant`) AS `quantite`,sum((`com`.`quant` * `com`.`prix`)) AS `somme` from `com` group by `com`.`id_client` order by sum(`com`.`quant`) desc;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `com`
+--
+DROP TABLE IF EXISTS `com`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `com` AS select `c`.`date` AS `date`,`c`.`numero_com` AS `id_commande`,`cl`.`numero` AS `id_client`,`cl`.`Qualite` AS `qualite`,`cl`.`Nom` AS `nom`,`cl`.`Prenom` AS `prenom`,`cl`.`Adresse_1` AS `adresse_1`,`cl`.`Adresse_2` AS `adresse_2`,`cl`.`Code_Postal` AS `code_postal`,`cl`.`Ville` AS `ville`,`li`.`numero` AS `id_livre`,`auteurs`.`auteur` AS `auteur`,`li`.`Titre` AS `titre`,`prix`.`prix` AS `prix`,`c`.`port` AS `Port`,`lig`.`quantite` AS `quant`,`li`.`nb_livre` AS `nbl` from ((((((`commande` `c` join `clients` `cl` on((`cl`.`numero` = `c`.`Numero_Client`))) join `ligne_commande` `lig` on((`lig`.`Numero_com` = `c`.`numero_com`))) join `livres` `li` on((`li`.`numero` = `lig`.`numero_livre`))) join `prix` on(((`li`.`numero` = `prix`.`id_livre`) and (`c`.`date` >= `prix`.`d_begin`) and (`c`.`date` <= `prix`.`d_end`)))) join `liv_aut` on((`liv_aut`.`id_livre` = `li`.`numero`))) join `auteurs` on((`liv_aut`.`id_auteur` = `auteurs`.`id_auteur`)));
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `comi`
+--
+DROP TABLE IF EXISTS `comi`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `comi` AS select `com`.`id_commande` AS `id_commande`,`com`.`id_client` AS `id_client`,`com`.`date` AS `date`,`com`.`nom` AS `nom`,`com`.`prenom` AS `prenom`,`com`.`code_postal` AS `code_postal`,`com`.`ville` AS `ville`,(sum((`com`.`quant` * `com`.`prix`)) + `com`.`Port`) AS `montant`,count(`com`.`quant`) AS `nb_livre` from `com` group by `com`.`id_commande`;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `fournisseurs`
+--
+DROP TABLE IF EXISTS `fournisseurs`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `fournisseurs` AS select `clients`.`numero` AS `numero`,`clients`.`Qualite` AS `Qualite`,`clients`.`Nom` AS `Nom`,`clients`.`Prenom` AS `Prenom`,`clients`.`Adresse_1` AS `Adresse_1`,`clients`.`Adresse_2` AS `Adresse_2`,`clients`.`Code_Postal` AS `Code_Postal`,`clients`.`Ville` AS `Ville`,`clients`.`Date_Etat` AS `Date_Etat`,`clients`.`NPAI` AS `NPAI`,`clients`.`Nature_Client` AS `Nature_Client`,`clients`.`fichiers` AS `fichiers`,`clients`.`telephone` AS `telephone`,`clients`.`e_mail` AS `e_mail` from `clients` where (`clients`.`fichiers` like 'Fournisseur%');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `prix_today`
+--
+DROP TABLE IF EXISTS `prix_today`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `prix_today` AS select `prix`.`id_livre` AS `id_livre`,`prix`.`prix` AS `prix` from `prix` where (curdate() between `prix`.`d_begin` and `prix`.`d_end`);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `reas`
+--
+DROP TABLE IF EXISTS `reas`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `reas` AS select `r`.`numero` AS `numero`,`r`.`date` AS `date`,`c`.`Nom` AS `nom` from (`reassortiment` `r` join `clients` `c`) where ((`c`.`numero` = `r`.`fournisseur`) and (`r`.`etat` < 2));
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `vente_livres`
+--
+DROP TABLE IF EXISTS `vente_livres`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vente_livres` AS select `ligne_commande`.`numero_livre` AS `numero`,count(0) AS `vente` from `ligne_commande` group by `ligne_commande`.`numero_livre` order by count(0) desc;

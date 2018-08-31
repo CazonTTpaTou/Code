@@ -1,0 +1,42 @@
+DATA Work.MOP_Versionhistory2 (keep=Item_Id Auteur Version DateVersion Version_Principale VersionRattachee Title);
+Format
+	DateVersion DATETIME23.
+    ;
+
+SET Work.MOP_Versionhistory;
+
+Auteur = Created_at;
+DateVersion = Created_By;
+VersionRattachee = ceil(Version);
+
+IF index(Version,'.')>0 THEN Version_Principale = 'Non';
+ELSE Version_Principale = 'Oui';
+
+RUN;
+
+PROC SORT
+DATA= Work.MOP_Versionhistory2
+OUT= Work.MOP_Versionhistory_Tri;;
+BY ITEM_ID DateVersion;
+RUN;
+
+DATA SHAREPT.SP_QUALITE_HISTORY_MOP (drop=Tampon);
+Format
+	DateVersionPrecedente DATETIME23.
+	DateVersionInitiale DATETIME23.
+    ;
+SET Work.MOP_Versionhistory_Tri;
+BY ITEM_ID;
+
+Retain Tampon;
+
+IF first.ITEM_ID OR NOT(VersionRattachee = LAG(VersionRattachee)) THEN Tampon = DateVersion;
+
+DateVersionInitiale = Tampon;
+
+IF NOT(first.ITEM_ID) THEN DateVersionPrecedente = LAG(DateVersion);
+
+RUN;
+ 
+
+

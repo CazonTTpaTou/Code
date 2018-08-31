@@ -1,0 +1,103 @@
+CREATE TRIGGER [dbo].[Action_Update]  ON  [dbo].[Action]   AFTER Update AS BEGIN update Action set Sysutm=SESSION_USER, Sysdhm=getDate() from Action as Z join inserted as i on Z.idAction=i.idAction END
+GO
+CREATE TRIGGER [dbo].[ActionIntervenant_Update]  ON  [dbo].[ActionIntervenant]   AFTER Update AS BEGIN update ActionIntervenant set Sysutm=SESSION_USER, Sysdhm=getDate() from ActionIntervenant as Z join inserted as i on Z.idActionIntervenant=i.idActionIntervenant END
+GO
+CREATE TRIGGER [dbo].[Activite_Update]  ON  [dbo].[Activite]   AFTER Update AS BEGIN update Activite set Sysutm=SESSION_USER, Sysdhm=getDate() from Activite as Z join inserted as i on Z.idActivite=i.idActivite END
+GO
+CREATE TRIGGER [dbo].[ActiviteIntervenant_Update]  ON  [dbo].[ActiviteIntervenant]   AFTER Update AS BEGIN update ActiviteIntervenant set Sysutm=SESSION_USER, Sysdhm=getDate() from ActiviteIntervenant as Z join inserted as i on Z.idActiviteIntervenant=i.idActiviteIntervenant END
+GO
+CREATE TRIGGER [dbo].[CategorieEquip_Update]  ON  [dbo].[CategorieEquip]   AFTER Update AS BEGIN update CategorieEquip set Sysutm=SESSION_USER, Sysdhm=getDate() from CategorieEquip as Z join inserted as i on Z.idCatEquip=i.idCatEquip END
+GO
+CREATE TRIGGER [dbo].[Compteur_Update]  ON  [dbo].[Compteur]   AFTER Update AS BEGIN update Compteur set Sysutm=SESSION_USER, Sysdhm=getDate() from Compteur as Z join inserted as i on Z.idCompteur=i.idCompteur END
+GO
+CREATE TRIGGER [dbo].[ContactFourn_Update]  ON  [dbo].[ContactFourn]   AFTER Update AS BEGIN update ContactFourn set Sysutm=SESSION_USER, Sysdhm=getDate() from ContactFourn as Z join inserted as i on Z.idContactFourn=i.idContactFourn END
+GO
+CREATE TRIGGER [dbo].[CouleurPolice_Update]  ON  [dbo].[CouleurPolice]   AFTER Update AS BEGIN update CouleurPolice set Sysutm=SESSION_USER, Sysdhm=getDate() from CouleurPolice as Z join inserted as i on Z.idCouleur=i.idCouleur END
+GO
+CREATE TRIGGER [dbo].[DegreUrgence_Update]  ON  [dbo].[DegreUrgence]   AFTER Update AS BEGIN update DegreUrgence set Sysutm=SESSION_USER, Sysdhm=getDate() from DegreUrgence as Z join inserted as i on Z.idUrgence=i.idUrgence END
+GO
+CREATE TRIGGER [dbo].[Demande_Update]  ON  [dbo].[Demande]   AFTER Update AS BEGIN update Demande set Sysutm=SESSION_USER, Sysdhm=getDate() from Demande as Z join inserted as i on Z.idDemande=i.idDemande END
+GO
+CREATE TRIGGER [dbo].[DependanceEquipSSEnsem_Update]  ON  [dbo].[DependanceEquipSSEnsem]   AFTER Update AS BEGIN update DependanceEquipSSEnsem set Sysutm=SESSION_USER, Sysdhm=getDate() from DependanceEquipSSEnsem as Z join inserted as i on Z.idDependanceEquipSSEnsem=i.idDependanceEquipSSEnsem END
+GO
+CREATE TRIGGER [dbo].[Domaine_Update]  ON  [dbo].[Domaine]   AFTER Update AS BEGIN update Domaine set Sysutm=SESSION_USER, Sysdhm=getDate() from Domaine as Z join inserted as i on Z.idDomaine=i.idDomaine END
+GO
+CREATE TRIGGER [dbo].[Equipement_Update]  ON  [dbo].[Equipement]   AFTER Update AS BEGIN update Equipement set Sysutm=SESSION_USER, Sysdhm=getDate() from Equipement as Z join inserted as i on Z.idEquipement=i.idEquipement END
+GO
+CREATE TRIGGER [dbo].[EtatIntervention_Update]  ON  [dbo].[EtatIntervention]   AFTER Update AS BEGIN update EtatIntervention set Sysutm=SESSION_USER, Sysdhm=getDate() from EtatIntervention as Z join inserted as i on Z.idEtat=i.idEtat END
+GO
+CREATE TRIGGER [dbo].[FichePreventive_Update]  ON  [dbo].[FichePreventive]   AFTER Update AS BEGIN update FichePreventive set Sysutm=SESSION_USER, Sysdhm=getDate() from FichePreventive as Z join inserted as i on Z.idFichePreventive=i.idFichePreventive END
+GO
+CREATE TRIGGER [dbo].[FiltreFichePrev_Update]  ON  [dbo].[FiltreFichePrev]   AFTER Update AS BEGIN update FiltreFichePrev set Sysutm=SESSION_USER, Sysdhm=getDate() from FiltreFichePrev as Z join inserted as i on Z.idFiltrePrev=i.idFiltrePrev END
+GO
+CREATE TRIGGER [dbo].[FiltreIntervention_Update]  ON  [dbo].[FiltreIntervention]   AFTER Update AS BEGIN update FiltreIntervention set Sysutm=SESSION_USER, Sysdhm=getDate() from FiltreIntervention as Z join inserted as i on Z.idFiltreInter=i.idFiltreInter END
+GO
+CREATE TRIGGER [dbo].[Fournisseur_Update]  ON  [dbo].[Fournisseur]   AFTER Update AS BEGIN update Fournisseur set Sysutm=SESSION_USER, Sysdhm=getDate() from Fournisseur as Z join inserted as i on Z.idFournisseur=i.idFournisseur END
+GO
+CREATE TRIGGER [dbo].[GD_droit_Update]  ON  [dbo].[GD_droit]   AFTER Update AS BEGIN update GD_droit set Sysutm=SESSION_USER, Sysdhm=getDate() from GD_droit as Z join inserted as i on Z.idDroit=i.idDroit END
+GO
+CREATE TRIGGER [dbo].[GD_droit_groupe_Update]  ON  [dbo].[GD_droit_groupe]   AFTER Update AS BEGIN update GD_droit_groupe set Sysutm=SESSION_USER, Sysdhm=getDate() from GD_droit_groupe as Z join inserted as i on Z.idGD_droit_groupe=i.idGD_droit_groupe END
+GO
+CREATE TRIGGER [dbo].[GD_droit_utilisateur_Update]  ON  [dbo].[GD_droit_utilisateur]   AFTER Update AS BEGIN update GD_droit_utilisateur set Sysutm=SESSION_USER, Sysdhm=getDate() from GD_droit_utilisateur as Z join inserted as i on Z.idGD_droit_utilisateur=i.idGD_droit_utilisateur END
+GO
+CREATE TRIGGER [dbo].[GD_groupe_Update]  ON  [dbo].[GD_groupe]   AFTER Update AS BEGIN update GD_groupe set Sysutm=SESSION_USER, Sysdhm=getDate() from GD_groupe as Z join inserted as i on Z.idGroupe=i.idGroupe END
+GO
+CREATE TRIGGER [dbo].[GD_utilisateur_Update]  ON  [dbo].[GD_utilisateur]   AFTER Update AS BEGIN update GD_utilisateur set Sysutm=SESSION_USER, Sysdhm=getDate() from GD_utilisateur as Z join inserted as i on Z.idUtilisateur=i.idUtilisateur END
+GO
+CREATE TRIGGER [dbo].[GD_utilisateur_groupe_Update]  ON  [dbo].[GD_utilisateur_groupe]   AFTER Update AS BEGIN update GD_utilisateur_groupe set Sysutm=SESSION_USER, Sysdhm=getDate() from GD_utilisateur_groupe as Z join inserted as i on Z.idGD_utilisateur_groupe=i.idGD_utilisateur_groupe END
+GO
+CREATE TRIGGER [dbo].[Intervenant_Update]  ON  [dbo].[Intervenant]   AFTER Update AS BEGIN update Intervenant set Sysutm=SESSION_USER, Sysdhm=getDate() from Intervenant as Z join inserted as i on Z.idIntervenant=i.idIntervenant END
+GO
+CREATE TRIGGER [dbo].[Intervention_Update]  ON  [dbo].[Intervention]   AFTER Update AS BEGIN update Intervention set Sysutm=SESSION_USER, Sysdhm=getDate() from Intervention as Z join inserted as i on Z.idIntervention=i.idIntervention END
+GO
+CREATE TRIGGER [dbo].[ModeleEquip_Update]  ON  [dbo].[ModeleEquip]   AFTER Update AS BEGIN update ModeleEquip set Sysutm=SESSION_USER, Sysdhm=getDate() from ModeleEquip as Z join inserted as i on Z.idModeleEquipe=i.idModeleEquipe END
+GO
+CREATE TRIGGER [dbo].[ParamGeneraux_Update]  ON  [dbo].[ParamGeneraux]   AFTER Update AS BEGIN update ParamGeneraux set Sysutm=SESSION_USER, Sysdhm=getDate() from ParamGeneraux as Z join inserted as i on Z.idParametre=i.idParametre END
+GO
+CREATE TRIGGER [dbo].[Piece_Update]  ON  [dbo].[Piece]   AFTER Update AS BEGIN update Piece set Sysutm=SESSION_USER, Sysdhm=getDate() from Piece as Z join inserted as i on Z.idPiece=i.idPiece END
+GO
+CREATE TRIGGER [dbo].[PieceJointe_Update]  ON  [dbo].[PieceJointe]   AFTER Update AS BEGIN update PieceJointe set Sysutm=SESSION_USER, Sysdhm=getDate() from PieceJointe as Z join inserted as i on Z.idPJ=i.idPJ END
+GO
+CREATE TRIGGER [dbo].[Priorite_Update]  ON  [dbo].[Priorite]   AFTER Update AS BEGIN update Priorite set Sysutm=SESSION_USER, Sysdhm=getDate() from Priorite as Z join inserted as i on Z.idPriorite=i.idPriorite END
+GO
+CREATE TRIGGER [dbo].[PriseEnCompte_Update]  ON  [dbo].[PriseEnCompte]   AFTER Update AS BEGIN update PriseEnCompte set Sysutm=SESSION_USER, Sysdhm=getDate() from PriseEnCompte as Z join inserted as i on Z.idPEC=i.idPEC END
+GO
+CREATE TRIGGER [dbo].[Realisation_Update]  ON  [dbo].[Realisation]   AFTER Update AS BEGIN update Realisation set Sysutm=SESSION_USER, Sysdhm=getDate() from Realisation as Z join inserted as i on Z.idRealisation=i.idRealisation END
+GO
+CREATE TRIGGER [dbo].[Secteur_Update]  ON  [dbo].[Secteur]   AFTER Update AS BEGIN update Secteur set Sysutm=SESSION_USER, Sysdhm=getDate() from Secteur as Z join inserted as i on Z.idSecteur=i.idSecteur END
+GO
+CREATE TRIGGER [dbo].[Service_Update]  ON  [dbo].[Service]   AFTER Update AS BEGIN update Service set Sysutm=SESSION_USER, Sysdhm=getDate() from Service as Z join inserted as i on Z.idService=i.idService END
+GO
+CREATE TRIGGER [dbo].[SousEnsemble_Update]  ON  [dbo].[SousEnsemble]   AFTER Update AS BEGIN update SousEnsemble set Sysutm=SESSION_USER, Sysdhm=getDate() from SousEnsemble as Z join inserted as i on Z.idSousEnsemble=i.idSousEnsemble END
+GO
+CREATE TRIGGER [dbo].[TypeDemande_Update]  ON  [dbo].[TypeDemande]   AFTER Update AS BEGIN update TypeDemande set Sysutm=SESSION_USER, Sysdhm=getDate() from TypeDemande as Z join inserted as i on Z.idTypeDemande=i.idTypeDemande END
+GO
+CREATE TRIGGER [dbo].[TypeIntervention_Update]  ON  [dbo].[TypeIntervention]   AFTER Update AS BEGIN update TypeIntervention set Sysutm=SESSION_USER, Sysdhm=getDate() from TypeIntervention as Z join inserted as i on Z.idTypeIntervention=i.idTypeIntervention END
+GO
+CREATE TRIGGER [dbo].[TypePJ_Update]  ON  [dbo].[TypePJ]   AFTER Update AS BEGIN update TypePJ set Sysutm=SESSION_USER, Sysdhm=getDate() from TypePJ as Z join inserted as i on Z.idTypePJ=i.idTypePJ END
+GO
+CREATE TRIGGER [dbo].[TypePlanification_Update]  ON  [dbo].[TypePlanification]   AFTER Update AS BEGIN update TypePlanification set Sysutm=SESSION_USER, Sysdhm=getDate() from TypePlanification as Z join inserted as i on Z.idPlanification=i.idPlanification END
+GO
+CREATE TRIGGER [dbo].[UAP_Update]  ON  [dbo].[UAP]   AFTER Update AS BEGIN update UAP set Sysutm=SESSION_USER, Sysdhm=getDate() from UAP as Z join inserted as i on Z.idUAP=i.idUAP END
+GO
+
+CREATE TRIGGER [dbo].[Planification_Update]  
+ON  [dbo].[Planification]   
+AFTER Update AS BEGIN update Planification 
+set Sysutm=SESSION_USER, Sysdhm=getDate() 
+from Planification as Z 
+join inserted as i on Z.idPlanification=i.idPlanification 
+END
+GO
+
+CREATE TRIGGER [dbo].[ActionMaster_Update]  
+ON  [dbo].[ActionMaster]   
+AFTER Update AS BEGIN update ActionMaster 
+set Sysutm=SESSION_USER, Sysdhm=getDate() 
+from ActionMaster as Z 
+join inserted as i on Z.idActionMaster=i.idActionMaster
+END
+GO
+
+
+

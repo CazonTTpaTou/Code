@@ -1,0 +1,27 @@
+SELECT
+        DATA_HENNECKE.Ass_Sci_Equipement length=50 format=$50. label='Ass Sci Equipement' AS Ass_Sci_Equipement,
+        DATA_HENNECKE.Assemblage_Num length=8 format=F11. label='Assemblage Num' AS Assemblage_Num,
+        MAX(DATA_HENNECKE.Date_Actualisation) length=8 format=$16. AS Date_Actualisation,
+        MAX(DATA_HENNECKE.Ass_Sci_Date_Poste_Fin) length=8 format=DATETIME22.3 label='Ass Sci Date Poste Fin' AS Ass_Sci_Date_Poste_Fin,
+        AVG(DATA_HENNECKE.Thickn) length=8 format=F11. AS Thickn_AVG,
+        AVG(DATA_HENNECKE.TTV) length=8 format=F11. AS TTV_AVG,
+        AVG(DATA_HENNECKE.SawGroove) length=8 format=F11. AS SawGroove_AVG,
+        AVG(DATA_HENNECKE.SawStep) length=8 format=F11. AS SawStep_AVG,
+        AVG(DATA_HENNECKE.SawEdge) length=8 format=F11. AS SawEdge_AVG,
+        STD(DATA_HENNECKE.Thickn) length=8 format=F11. AS Thickn_STD,
+        STD(DATA_HENNECKE.TTV) length=8 format=F11. AS TTV_STD,
+        STD(DATA_HENNECKE.SawGroove) length=8 format=F11. AS SawGroove_STD,
+        STD(DATA_HENNECKE.SawStep) length=8 format=F11. AS SawStep_STD,
+        STD(DATA_HENNECKE.SawEdge) length=8 format=F11. AS SawEdge_STD 
+    FROM
+        STATS.DATA_HENNECKE DATA_HENNECKE 
+    
+WHERE   
+    datepart(DATA_HENNECKE.Ass_Sci_Date_Poste_Fin) >= INTNX('day',date(),-10)
+
+    GROUP BY
+        DATA_HENNECKE.Ass_Sci_Equipement,
+        DATA_HENNECKE.Ass_Sci_Date_Poste_Fin,
+        DATA_HENNECKE.Assemblage_Num;
+quit;
+

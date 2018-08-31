@@ -1,0 +1,13 @@
+Proc Sort Data=TRAINING.application_stockee;
+ By N_Import;
+RUN;
+
+Proc Print Data=Training.Application_Stockee (obs=10);
+VAR bow latf n_assemblage n_import;
+Run;
+
+Proc Boxplot Data=Training.Application_stockee (obs=10000);
+plot bow*n_import;
+title "Représentation BoxPlot";
+Run;
+

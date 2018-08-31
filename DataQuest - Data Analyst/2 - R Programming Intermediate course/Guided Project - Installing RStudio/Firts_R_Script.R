@@ -1,0 +1,8 @@
+
+goodbye <- c("Goodbye !!")
+hellos <- c("Hello")
+words <- paste("Goodbye !!","Hello",sep=' - ')
+
+print(words)
+
+

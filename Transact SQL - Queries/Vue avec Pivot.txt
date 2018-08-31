@@ -1,0 +1,77 @@
+USE [SAS_Cartographie]
+GO
+
+/****** Object:  View [dbo].[Vue_Liste_Champ_Table_Transp]    Script Date: 07/18/2014 15:45:44 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE VIEW [dbo].[Vue_Liste_Champ_Table_Transp]
+AS
+WITH Pivot_Table
+AS (
+		SELECT 
+		Nom_Champ,
+		[1] as Table_1,[2] AS Table_2,[3] AS Table_3,[4] AS Table_4,[5] AS Table_5
+		FROM
+		(Select Nom_Champ,Nom_Table,Numero FROM
+												dbo.Vue_Liste_Champ_Table) UP
+		      
+		Pivot (Sum(Numero) for Numero in ([1],[2],[3],[4],[5])) as pvt),
+Grille_Table 
+AS (		
+SELECT 
+	    Nom_Champ,
+		MAX(Table_1) AS T1,
+		MAX(Table_2) AS T2,
+		MAX(Table_3) AS T3,
+		MAX(Table_4) AS T4,
+		MAX(Table_5) AS T5
+
+FROM
+
+	Pivot_Table
+	
+GROUP BY Nom_Champ)
+
+SELECT 
+	
+		GT1.Nom_Champ,
+		VLCT1.Nom_Table AS [Table_1],
+		VLCT2.Nom_Table AS [Table_2],
+		VLCT3.Nom_Table AS [Table_3],
+		VLCT4.Nom_Table AS [Table_4],
+		VLCT5.Nom_Table AS [Table_5]
+
+FROM
+
+		Grille_Table AS GT1
+		LEFT OUTER JOIN dbo.Vue_Liste_Champ_Table AS VLCT1
+		ON VLCT1.Nom_Champ = GT1.Nom_Champ
+		AND VLCT1.Numero = GT1.T1
+
+		LEFT OUTER JOIN dbo.Vue_Liste_Champ_Table AS VLCT2
+		ON VLCT2.Nom_Champ = GT1.Nom_Champ
+		AND VLCT2.Numero = GT1.T2
+
+		LEFT OUTER JOIN dbo.Vue_Liste_Champ_Table AS VLCT3
+		ON VLCT3.Nom_Champ = GT1.Nom_Champ
+		AND VLCT3.Numero = GT1.T3
+
+		LEFT OUTER JOIN dbo.Vue_Liste_Champ_Table AS VLCT4
+		ON VLCT4.Nom_Champ = GT1.Nom_Champ
+		AND VLCT4.Numero = GT1.T4
+
+		LEFT OUTER JOIN dbo.Vue_Liste_Champ_Table AS VLCT5
+		ON VLCT5.Nom_Champ = GT1.Nom_Champ
+		AND VLCT5.Numero = GT1.T5
+
+
+
+
+
+GO
+
+

@@ -1,0 +1,214 @@
+################################### Importer données #############################
+
+$MONGO/bin/mongoimport --db new_york --collection restaurants $RESTAURANT/restaurants.json
+
+cd C:\Program Files\MongoDB\Server\3.6\bin
+
+E:\Data\RawData\restaurants_json
+
+mongoimport --db new_york --collection restaurants E:\Data\RawData\restaurants_json\restaurants.json
+
+################################## Parcourir données ##############################
+
+db.getCollection('restaurants').find({})
+
+db.restaurants.findOne()
+
+db.restaurants.find( { "borough" : "Brooklyn" } )
+
+db.restaurants.find( { "borough" : "Brooklyn" } ).count()
+
+db.restaurants.find(
+    { "borough" : "Brooklyn",
+      "cuisine" : "Italian",
+      "address.street" : "5 Avenue",
+      "name" : /pizza/i }
+)
+
+################################## Projection ##############################
+
+db.getCollection('restaurants').find(
+    {"borough":"Brooklyn",
+     "cuisine":"Italian",
+     "name":/pizza/i,
+     "address.street" : "5 Avenue"},
+    {"name":1}
+)
+
+db.getCollection('restaurants').find(
+    {"borough":"Brooklyn",
+     "cuisine":"Italian",
+     "name":/pizza/i,
+     "address.street" : "5 Avenue"},
+    {"name":1,
+     "_id":0}
+)
+
+db.getCollection('restaurants').find(
+    {"borough":"Brooklyn",
+     "cuisine":"Italian",
+     "name":/pizza/i,
+     "address.street" : "5 Avenue"},
+    {"name" : 1,
+     "grades.score" : 1}
+)
+
+################################## Opérateurs de comparaison ##############################
+
+######### Au moins un score inférieur à 10
+db.getCollection('restaurants').find(
+    {"borough":"Brooklyn",
+     "cuisine":"Italian",
+     "grades.score" : {"$lt" : 10}}
+)
+
+######### Tous les scores inférieurs à 10
+db.getCollection('restaurants').find(
+    {"borough":"Brooklyn",
+     "cuisine":"Italian",
+     "grades.score" : {"$lt" : 10,
+			$not:{$gte:10}}}
+)
+
+######### Tous les scores dans la liste avec un élément inférieur à 10 et un élément égal à grade C
+db.restaurants.find({
+    "grades.grade" : "C",
+    "grades.score" : {$lt : 30}
+   },
+   {"Grades.grade":1, "grades.score":1}
+);
+
+######### Tous les scores dans la liste avec tous les éléments inférieurs à 10 et avec un grade C
+db.restaurants.find({
+    "grades" : {
+           $elemMatch : {
+               "grade" : "C",
+               "score" : {$lt :40}
+           }
+    }
+  },
+  {"grades.grade" : 1,"grades.score" : 1}
+);
+
+######### Tous les restaurants dont la dernière visite a obtenu un grade C
+db.restaurants.find({
+    "grades.0.grade":"C"
+  },
+  {"name":1, "borough":1, "_id":0}
+);
+
+######### Les différents quartiers de la ville de New York
+db.restaurants.distinct("borough")
+
+######### Les différents grades donnés par les inspecteurs
+db.restaurants.distinct("grades.grade");
+
+################################## Les opérateurs complexes ##############################
+
+######### Les opérations d'agrégation
+db.restaurants.aggregate( [
+    { $match : {
+        "grades.0.grade":"C"
+    }},
+    { $project : {
+        "name":1, "borough":1, "_id":0
+    }}
+] )
+
+######### Les opérations d'agrégation
+varMatch = { $match : { "grades.0.grade":"C"} };
+varProject = { $project : {"name":1, "borough":1, "_id":0}};
+
+db.restaurants.aggregate( [ varMatch, varProject ] );
+
+######### Les opérations de tri
+varSort = { $sort : {"name":1} };
+
+db.restaurants.aggregate( [ varMatch, varProject, varSort ] );
+
+######### Compter le nombre de restaurant avec dernière visite en grade C
+varGroup = { $group : {"_id" : null, "total" : {$sum : 1} } };
+
+db.restaurants.aggregate( [ varMatch, varGroup ] );
+
+######### Compter par quartier le nombre de restaurant avec dernière visite en grade C
+varGroup3 = { $group : {"_id" : "$borough", "total" : {$sum : 1} } };
+
+db.restaurants.aggregate( [ varMatch, varGroup3 ] );
+
+######### Tri décroissant sur la moyenne des notes par quartier
+varUnwind = {$unwind : "$grades"}
+varGroup4 = { $group : {"_id" : "$borough", "moyenne" : {$avg : "$grades.score"} } };
+varSort2 = { $sort : { "moyenne" : -1 } }
+
+db.restaurants.aggregate( [ varUnwind, varGroup4, varSort2 ] );
+
+################################## Les opérations de mise à jour ##############################
+
+######### Ajouter un commentaire
+
+db.restaurants.update (
+   {"_id" : ObjectId("5afc723f1ee6104238586fce")},
+   {$set : {"comment" : "My new comment"}}
+);
+
+db.restaurants.find(
+   {"_id" : ObjectId("5afc723f1ee6104238586fce")}
+);
+
+######### Supprimer un commentaire
+
+db.restaurants.update (
+   {"_id" : ObjectId("5afc723f1ee6104238586fce")},
+   {$unset : {"comment" : 1}}
+);
+
+db.restaurants.find(
+   {"_id" : ObjectId("5afc723f1ee6104238586fce")}
+);
+
+######### Ajouter un commentaire pour tous les restaurants n'ayant pas eu de notes C
+
+db.restaurants.update (
+   {"grades.grade" : {$not : {$eq : "C"}}},
+   {$set : {"comment" : "acceptable"}},
+   {"multi" : true}
+);
+
+######### Calculer une note pour chaque restaurant 
+db.restaurants.find( {"grades.grade" : {$not : {$eq : "C"}}} ).forEach( 
+    function(restaurant){
+        total = 0;
+        for(i=0 ; i<restaurant.grades.length ; i++){
+            if(restaurant.grades[i].grade == "A")         total += 3;
+            else if(restaurant.grades[i].grade == "B")    total += 1;
+            else                                          total -= 1;
+        }
+        restaurant.note = total;
+
+        db.restaurants.save(restaurant);
+    }
+);
+
+######### Trier les restaurants par leur note
+
+db.restaurants.find({}, {"name":1,"_id":0,"note":1,"borough":1}).sort({"note":-1});
+
+######### Supprimer tous les restaurants ayant eu une note de 0
+
+db.restaurants.remove(
+   {"note":0},
+   {"multi" : true}
+);
+
+######### Insérer un élément
+
+db.restaurants.save({"test" : 1});
+
+db.restaurants.save({"_id" : 1, "test" : 1});
+
+######### Dénombrer le nombre d'entrées par ville
+db.getCollection('resto_paris').aggregate([{$group:{"_id":"$location.city", "total":{$sum:1}}}])
+
+
+

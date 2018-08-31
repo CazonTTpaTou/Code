@@ -1,0 +1,2 @@
+SELECT V_PALETTE."Palette Num", V_PALETTE.Format, V_PALETTE."Classe Cellule", V_PALETTE."Code BAAN", V_PALETTE."Embp Qte", V_PALETTE."Embp Date Heure", V_PALETTE."Exe Date Heure"
+FROM SQC_DB.dbo.V_PALETTE V_PALETTE

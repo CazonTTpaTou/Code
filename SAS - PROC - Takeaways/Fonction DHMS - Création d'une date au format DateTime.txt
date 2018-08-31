@@ -1,0 +1,1 @@
+dhms(t1.Date,hour(t1.Heure),minute(t1.heure),second(t1.heure))

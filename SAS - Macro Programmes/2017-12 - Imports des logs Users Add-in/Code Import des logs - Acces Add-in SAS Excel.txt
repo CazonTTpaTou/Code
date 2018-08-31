@@ -1,0 +1,76 @@
+%let RLigne_chemin=%bquote(")F:\MetadataServer\Logs\*%bquote(");
+%let i=0;
+
+filename liste pipe "dir &RLigne_chemin /b /s";                                                                   /* commande listant les fichiers du répertoire */
+
+data Name_File;
+
+       infile liste truncover end=last;                                                                                  /*liste tous les fichiers : on precise la fin avec end */
+       input NOMCHEMIN $250.;                                                                                                                /* la variable nom contient le chemin des fichiers 250 caractères */
+
+       call symputx(cats('chemin',_n_),NOMCHEMIN);                                                                          /*on définit la variable contenant le chemin complet des fichiers */
+
+       if last then call symputx('nobs',_n_);              /* macro variable qui s'enclenche à chaque debut de DATA, utile pour définir la drniere observatoin*/
+ 
+run;
+
+data Work.RLigne;
+
+LENGTH     
+	User                     $50.
+    TimeStampJ               8.
+	TimeStampH               8.;
+
+/* il faut aussi préciser le format */
+       FORMAT                                                     
+
+	   User                     $50.
+       TimeStampJ               DATETIME23.
+	   TimeStampH               DATETIME23.;
+          
+run; 
+
+%macro import;
+
+             %do i=1 %to &nobs;       				
+
+                proc import datafile="&&chemin&i" 
+                                  out=WORK.Tampon
+                                  dbms= dlm replace;
+                RUN;
+                
+				DATA WORK.Nombre_Occurence (keep=User TimeStampJ TimeStampH);
+
+					set WORK.Tampon;
+
+					User = substr(Release_,index(Release_,':')+1,length(Release_)-index(Release_,':'));
+
+					Annee=substr(Host_,1,4);
+					Mois=substr(Host_,6,2);
+					Jour=substr(Host_,9,2);
+					Heure=substr(Host_,12,2);
+					Minute=substr(Host_,15,2);
+					Seconde=substr(Host_,18,2);
+
+					TimeStampH = dhms(mdy(Mois,Jour,Annee),heure,0,0);
+					TimeStampJ = dhms(mdy(Mois,Jour,Annee),0,0,0);
+
+				RUN;
+				
+				proc append base=work.RLigne 
+				     data=work.Nombre_Occurence force;      
+				run;
+                
+%end;
+%mend import;
+
+%import
+
+PROC SQL;
+   CREATE TABLE RE_PROC.LOGS_ACCES_USERS_SAS_ADDIN AS 
+   SELECT t1.*
+      FROM WORK.RLIGNE t1
+      WHERE t1.User NOT IS MISSING;
+QUIT;
+
+

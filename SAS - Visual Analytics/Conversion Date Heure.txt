@@ -1,0 +1,5 @@
+DateTimeFromTimeMDY(
+TimeFromHMS(Hour(TimePart('Time'n)), 0, 0), 
+Month(DatePart('Time'n)), 
+DayOfMonth(DatePart('Time'n)), 
+Year(DatePart('Time'n)))

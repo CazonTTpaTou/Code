@@ -1,0 +1,78 @@
+%Macro Classe(NumLot);
+%do i = 1 %to &Nb_Classe;
+	%let UNC = %sysfunc(cat(%bquote(')&&Nom_Champ&i%bquote('),n));
+    %let Name = %sysfunc(cat(&NumLot,_,&i));
+	%let flag = 0;
+	/*%put --> UNC : &UNC;
+	%put --> Classe n° &i - &&Nom_classe&i - a pour nom de champ : &UNC - et pour UNC : &&Nom_Champ_N&i;*/
+    
+	DATA WORK.Tampon (keep=Lot Classe Quantite);
+		SET  WORK.V_LOTS_SYNTHESE1;	
+		Classe = "&&Nom_classe&i";
+		Quantite = &UNC;
+        IF Lot = "&NumLot" Then output;
+		/*IF Lot = "&NumLot" and Quantite > 0 Then 
+                                                Begin 
+ 														&flag = 1;
+														Output;
+												 End*/														
+	RUN;	
+    
+	%put --> Flag : &flag;
+     
+	/*%if &flag = 1 Then 
+	PROC APPEND BASE=WORK.LISTE_LOT_CLASSE FORCE
+			    DATA = Work.Tampon;
+	RUN;*/
+
+%end;
+%mend Classe;
+
+/*%if %length(&&nom&i)> 32      %then 
+                                                      %let Nom_T = %substr(&&nom&i,1,32);
+                                              %else 
+                                               		  %let Nom_T = &&nom&i;*/
+
+%macro Liste_Lots();
+%do a = 1 %to 2/*&Nbre_Lot;*/
+	%Classe(&&Num_Lot&a.);
+	%put --> NumLot : &&Num_Lot&a;
+%end;
+%mend Liste_Lots;
+
+/*
+proc printto log="C:\Users\pwsasdev\Desktop\123.txt" new;
+run;
+*/
+DATA WORK.Liste_Lot_Classe;
+Length
+	Lot	$50
+	Classe  $16
+	Quantite 8;
+Format
+	Lot	$50.
+	Classe  $16.
+	Quantite 11.;
+RUN;
+
+DATA _NULL_;
+SET RE_CEL.LISTE_DES_CLASSES end=EOF;
+Call symputx(cats('Nom_classe',_N_),Classe);
+Call symputx(cats('Nom_Champ_N',_N_),Nom_N);
+Call symputx(cats('Nom_Champ',_N_),Nom);
+IF EOF THEN call symputx('Nb_Classe',_N_);
+RUN;
+
+DATA _NULL_;
+SET WORK.V_LOTS_SYNTHESE1 END=EOF;
+Call symputx(cat('Num_Lot',_N_),Lot);
+IF EOF THEN Call Symput('Nbre_Lot',_N_);
+RUN;
+%classe(H16502452);
+
+/*%Liste_Lots();*/
+
+
+
+
+

@@ -1,0 +1,72 @@
+Public Sub Agregate()
+
+Dim Workb As Worksheet
+Dim ligne As Integer
+
+ligne = 1
+
+Worksheets(5).Select
+ActiveSheet.Range("A1:G26").Copy
+
+Worksheets(1).Select
+
+Selection.PasteSpecial Paste:=xlPasteColumnWidths, Operation:=xlNone, _
+            SkipBlanks:=False, Transpose:=False
+
+    For Each Workb In Worksheets
+    
+        If ligne > 2 Then
+        
+            Workb.Select
+    
+            ActiveSheet.Range("A1:G26").Copy
+                            
+            Worksheets(1).Select
+            
+            Cells(26 * (ligne - 3) + 1, 1).Select
+            
+            ActiveCell.PasteSpecial
+            
+            'ActiveWindow.SelectedSheets.HPageBreaks.Add Before:=ActiveCell
+            'ActiveWindow.SelectedSheets.VPageBreaks.Add Before:=ActiveCell
+         
+         End If
+
+        ligne = ligne + 1
+
+    Next Workb
+
+End Sub
+
+
+Sub CopieWordExcel()
+
+'Déclaration des variables
+Dim DocWord As Word.Document
+Dim AppWord As Word.Application
+Dim Workb As Worksheet
+
+    Set AppWord = New Word.Application
+    
+    'Ouvre le document Word
+    
+    Set AppWord = New Word.Application
+    Set DocWord = AppWord.Documents.Open("C:\Users\FMONNERY\Desktop\Scenario Test A.docx", ReadOnly:=False)
+ 
+    Worksheets(1).Select
+ 
+    ActiveSheet.Range("B1:F1781").Copy
+    
+     DocWord.Range.PasteSpecial
+     Application.CutCopyMode = False
+      
+    'Sauvegarde du document Word
+     DocWord.Application.ActiveDocument.Save
+     AppWord.Application.Quit
+   
+End Sub
+
+
+
+
+

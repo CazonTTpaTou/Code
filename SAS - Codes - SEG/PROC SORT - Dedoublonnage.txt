@@ -1,0 +1,23 @@
+PROC SORT DATA=DS_DWH.DWH_SQC_VUE_CHGT_ECRANS_SERIG FORCE nodupkey Out=Work.Tri2 dupout=Work.doublons1;
+BY Chg_Ecran_Date_Heure_Montage Societe;
+RUN;
+
+PROC SORT DATA=DS_DWH.DWH_SQC_VUE_CHGT_ENCRE_SERIG FORCE nodupkey Out=Work.Tri2 dupout=Work.doublons2;
+BY Chg_Encre_Date_Heure_D_but Soci_t_;
+RUN;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

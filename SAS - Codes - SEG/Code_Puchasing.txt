@@ -1,0 +1,106 @@
+DATA Work.User_Export (keep= GUID Acheteur_ Gestionnaire_ Demandeur_ TempsApprobationDir_ TempsApprobationResp_ TempsAchat_ TempsCommande_ TempsTraitement_ Titre Cree Cree_par  Devise Etat FournNom Imputation_analytique Modifie Nature_depense Numero_Compte Numero_demande RespDirectionService_ RespServiceAffectation_ Service Service_PWT sTotal Total DateCommande DateLivraison TempsLivraison);
+
+SET RE_GMAO.EXPORTPURCHASING;
+
+Acheteur_ = substr(Acheteur,index(Acheteur,'#')+1,length(Acheteur)-index(Acheteur,'#'));
+Gestionnaire_ = substr(Gestionnaire,index(Gestionnaire,'#')+1,length(Gestionnaire)-index(Gestionnaire,'#'));
+Demandeur_ = substr(Demandeur,index(Demandeur,'#')+1,length(Demandeur)-index(Demandeur,'#'));
+
+RespDirectionService_ = substr(RespDirectionService,index(RespDirectionService,'#')+1,length(RespDirectionService)-index(RespDirectionService,'#'));
+RespServiceAffectation_ = substr(RespServiceAffectation,index(RespServiceAffectation,'#')+1,length(RespServiceAffectation)-index(RespServiceAffectation,'#'));
+
+IF substr(TempsApprobationDir,1,1) = 's' THEN TempsApprobationDir_ = .;
+	 ELSE TempsApprobationDir_ = substr(TempsApprobationDir,index(TempsApprobationDir,'#')+1,length(TempsApprobationDir)-index(TempsApprobationDir,'#'));
+
+TempsApprobationResp_ = input(substr(TempsApprobationResp,index(TempsApprobationResp,'#')+1,length(TempsApprobationResp)-index(TempsApprobationResp,'#')),13.6);
+TempsAchat_ = input(substr(TempsAchat,index(TempsAchat,'#')+1,length(TempsAchat)-index(TempsAchat,'#')),13.6);
+TempsComptable_ = input(substr(TempsComptable,index(TempsComptable,'#')+1,length(TempsComptable)-index(TempsComptable,'#')),13.6);
+TempsCommande_ = abs(input(substr(TempsCommande,index(TempsCommande,'#')+1,length(TempsCommande)-index(TempsCommande,'#')),13.6));
+
+TempsTraitement_ = TempsApprobationResp_ + TempsApprobationDir_ + TempsComptable_ + TempsAchat_ + TempsCommande_;
+
+IF coalesce(DateLivraison,0) > 0 THEN TempsLivraison = (DateLivraison - DateCommande)/(60*60*24);
+
+RUN;
+
+
+/*
+DATA Work.user_data_da_purchase;
+SET Work.USER_EXPORT;
+RUN;
+
+PROC CONTENTS Data=RE_GMAO.EXPORTPURCHASING;
+RUN;
+
+PROC SQL;
+SELECT name FROM SASHELP.VCOLUMN
+WHERE memname = 'EXPORTPURCHASING';
+RUN;
+*/
+
+PROC SQL;
+   CREATE TABLE WORK.RFM AS 
+   SELECT t1.Demandeur_, 
+          /* RFM_Nbre_Commande */
+            (COUNT(t1.GUID)) LABEL="RFM_Nbre_Commande" AS RFM_Nbre_Commande, 
+          /* RFM_Montant_Cumul */
+            (SUM(t1.Total)) FORMAT=BEST8. LABEL="RFM_Montant_Cumul" AS RFM_Montant_Cumul, 
+          /* RFM_Montant_EC */
+            (STD(t1.Total)) LABEL="RFM_Montant_EC" AS RFM_Montant_EC, 
+          /* RFM_First_Command */
+            (MIN(t1.Cree)) FORMAT=DATETIME18. LABEL="RFM_First_Command" AS RFM_First_Command, 
+          /* RFM_Last_Command */
+            (MAX(t1.Cree)) FORMAT=DATETIME18. LABEL="RFM_Last_Command" AS RFM_Last_Command, 
+          /* RFM_LifeTime */
+            (((MAX(t1.Cree)) - (MIN(t1.Cree)))/(24*60*60)) LABEL="RFM_LifeTime" AS RFM_LifeTime, 
+          /* RFM_Recence */
+            ((Max(datetime()) - (MAX(t1.Cree)))/(24*60*60)) LABEL="RFM_Recence" AS RFM_Recence, 
+          /* RFM_Frequence */
+            ((((MAX(t1.Cree)) - (MIN(t1.Cree)))/(24*60*60))
+            /
+            (COUNT(t1.GUID))
+            
+            ) LABEL="RFM_Frequence" AS RFM_Frequence
+      FROM WORK.USER_EXPORT t1
+      GROUP BY t1.Demandeur_;
+QUIT;
+
+PROC SQL;
+	CREATE TABLE WORK.USER_EXPORT_RFM
+		AS
+		SELECT A.*,B.*
+		FROM
+			Work.User_Export AS A
+			INNER JOIN Work.RFM AS B
+			ON A.Demandeur_ = B.Demandeur_;
+QUIT;
+
+
+
+DATA RE_GMAO.user_data_da_purchase (keep= Acheteur Gestionnaire Demandeur TempsApprobationDir TempsApprobationResp TempsAchat TempsCommande TempsComptable TempsTraitement Titre Cree Cree_par  Devise Etat FournNom Imputation_analytique Modifie Nature_depense Numero_Compte Numero_demande RespDirectionService RespServiceAffectation Service Service_PWT sTotal Total DateCommande DateLivraison TempsLivraison GUID RFM_Nbre_Commande RFM_Montant_Cumul RFM_Montant_EC RFM_First_Command RFM_Last_Command RFM_LifeTime RFM_Recence RFM_Frequence);
+
+SET Work.USER_EXPORT_RFM;
+
+	Acheteur = Acheteur_;
+	Gestionnaire = Gestionnaire_;
+	Demandeur = Demandeur_;
+	RespDirectionService = RespDirectionService_;
+	RespServiceAffectation = RespServiceAffectation_;
+
+	TempsApprobationDir = TempsApprobationDir_;
+	TempsApprobationResp = TempsApprobationResp_;
+	TempsAchat = TempsAchat_;
+	TempsComptable = TempsComptable_;
+	TempsCommande = TempsCommande_;
+	TempsTraitement = TempsTraitement_;
+
+RUN;
+
+
+
+
+
+
+
+
+

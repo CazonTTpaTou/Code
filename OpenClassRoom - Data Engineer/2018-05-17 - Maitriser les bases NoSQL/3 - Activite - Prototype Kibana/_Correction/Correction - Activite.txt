@@ -1,0 +1,15 @@
+Bonjour, l'histogramme a bien été mis en place mais en revanche la visualisation est fausse. 
+
+En effet, c'est une statistique de percentile par rang qui a été implémentée comme opérateur d'agrégation et non un dénombrement. 
+
+Du coup, le graphique ne veut rien dire car il se contente d'afficher le rang de chaque classe sur toute l'échelle de note possible. 
+
+Par exemple, sur la décennie 1920, on a un percentile de 45% sur la classe de note supérieur à 9.5 alors que sur cette décennie aucune note n'a été supérieure à 9... 
+
+En fait, il fallait choisir "Count" comme métrique d'agrégation puis sélectionner le mode "Pourcentage" comme règle d'affichage de l'axe des ordonnées. 
+
+Cela permettait ensuite d'obtenir la distribution des classes de notes par ratio par décennie... 
+
+La notation étant étriquée, je te mets quand même le point car tu as fait une partie du travail et tu ne mériterais pas de ne pas avoir la moyenne. 
+
+Bonne continuation !! 

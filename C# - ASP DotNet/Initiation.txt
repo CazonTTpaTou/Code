@@ -1,0 +1,134 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm1.aspx.cs" Inherits="WebApplication1.WebForm1" %>
+<%@ Register Src="~/Castor.ascx" TagName="simple" TagPrefix="ucc" %>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Hiérarchie</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
+        <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+        <asp:ListBox ID="ListBox1" runat="server"></asp:ListBox>
+        <input type="text" name="prenom" runat="server" />
+        <input type="submit" name="bouton1" value="Envoyer" />
+        <asp:Calendar ID="Calendar1" runat="server"
+            onSelectionChanged="Calendar1_SelectionChanged">
+        </asp:Calendar>
+        <br />
+        <asp:HyperLink ID="HyperLink1" runat="server">HyperLink</asp:HyperLink>
+        <br />
+        <ucc:simple ID="castor1" runat="server" />
+    </div>
+    <div>
+        <h2>
+            Effectuer un virement
+        </h2>
+        
+        Compte émetteur
+        <asp:DropDownList ID="DropDownList1" runat="server">
+            <asp:ListItem>Choisir</asp:ListItem>
+            <asp:ListItem value="P">Compte personnel</asp:ListItem>
+            <asp:ListItem value="L">Livret</asp:ListItem>
+        </asp:DropDownList>
+    </div>
+
+    </form>
+
+    <%string p = Request["prenom"];
+      string b = Request["bouton1"];
+      if (b != null && b != "")
+          Response.Write("Le prénom est " + p);
+                                                 %>
+
+    
+
+</body>
+</html>
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace WebApplication1
+{
+    public partial class WebForm1 : System.Web.UI.Page
+    {
+        private Button b;
+        string nom_produit = "Livres";
+        int id_produit = 34;
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            Calendar1.DayRender += new DayRenderEventHandler(Calendar1_DayRender);
+        }
+
+        void Calendar1_DayRender(object sender, DayRenderEventArgs e)
+        {
+            //b.Text = "caiman";
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+            if(! IsPostBack)
+            {
+                ListBox1.Items.Add("Nimes");
+                ListBox1.Items.Add("Hyères");
+                ListBox1.Items.Add("Porquerolles");
+            }
+
+            // Création dynamique du bouton
+            b = new Button();
+            b.Text = "Cliquez ici";
+            b.ID = "bouton";
+
+            // Le bouton doit être un descendant du formulaire
+            form1.Controls.Add(b);
+
+            // inscription d'un gestionnaire d'évènements
+            b.Click += new EventHandler(b_click);
+
+            // Définition du lien hyper texte
+            HyperLink1.Text = "Produit" + nom_produit;
+            HyperLink1.NavigateUrl = string.Format("WebForm1.aspx?id_produit={0}",id_produit);
+
+        }
+
+        protected void Calendar1_SelectionChanged(object sender,EventArgs e)
+        {
+            b.Text = "Felin";
+        }
+        void b_click(object sender,EventArgs e)
+        {
+            Label1.Text = "Vous avez déjà cliqué !!";
+            Response.Redirect("Default.aspx");
+        }
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Castor.ascx.cs" Inherits="WebApplication1.Castor" %>
+<asp:RadioButton ID="RadioButton1" runat="server" />
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+

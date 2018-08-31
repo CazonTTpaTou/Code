@@ -1,0 +1,47 @@
+%let table=DTM_PRO_TRAC_CEL_TRIEES;
+%let biblio=DTM_PRO;
+
+proc contents data=&biblio..&table. out=struc (keep=memname name);
+run;
+
+proc sql;
+select count(*) into: nb_col from struc
+;
+quit;
+%macro aa();
+%do i=1 %to &nb_col;
+	data _null_;
+	set struc;
+	if _N_=&i then 	call symput("col",name);
+	run;
+
+
+	proc sql;
+	select count(distinct &col),count(*) into: nb_mod, :nb_ligne 
+	from &biblio..&table;
+	quit;
+
+	%if &i=1 %then %do;
+		data resu;
+		length col $32 densite 4 selectivite 4;
+			col="&col";
+			densite=&nb_ligne/&nb_mod;
+			selectivite=&nb_mod/&nb_ligne;
+		run;
+	%end;
+	%else %do;
+		data resu;
+		set resu end=eof;
+		output;
+		if eof then do;
+			col="&col";
+			densite=&nb_ligne/&nb_mod;
+			selectivite=&nb_mod/&nb_ligne;
+			output;
+		end;
+		run;
+	%end;
+%end;
+
+%mend;
+%aa();

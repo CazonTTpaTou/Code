@@ -1,0 +1,80 @@
+LIBNAME CDSN ODBC  DATASRC=CDSN  SCHEMA=CDSN_app  USER=SASSQL  PASSWORD="{SAS002}3625302A43996237206B48FF5188832F3A71A582" ;
+
+/*
+PROC SQL;
+CREATE TABLE STATS.HENNECKE_LOGS_HISTORIQUE AS 
+   SELECT t1.'N°Assemblage'n LABEL="Num_Assemblage" AS Num_Assemblage, 
+          t1.Struct LABEL="Taux_Mono" AS Taux_Mono,
+          t1.time Format=DateTime23. LABEL="Date_Heure_Import" AS Date_Heure_Import         
+      FROM CDSN.TL_Hennecke t1;
+QUIT;
+*/
+/*
+PROC SQL;
+SELECT MAX(T1.Date_Heure_Import) INTO : Last_Date_Import
+	FROM STATS.HENNECKE_LOGS_HISTORIQUE AS T1;
+  
+RUN;
+*/
+
+PROC SQL; 
+CREATE TABLE WORK.TL_HENNECKE_DELTA AS 
+SELECT
+          t1.'N°Assemblage'n LABEL="Num_Assemblage" AS Num_Assemblage, 
+          t1.Struct LABEL="Taux_Mono" AS Taux_Mono,
+		  t1.Time Format=DateTime23. LABEL="Date_Heure_Import" AS Date_Heure_Import 
+		  FROM CDSN.TL_Hennecke t1
+          Where Time >= (Select Max(T1.Date_Heure_Import) FROM STATS.HENNECKE_LOGS_HISTORIQUE AS T1);
+RUN;
+
+PROC APPEND
+BASE = STATS.HENNECKE_LOGS_HISTORIQUE DATA = WORK.TL_HENNECKE_DELTA;
+RUN;
+
+PROC SQL;
+   CREATE TABLE WORK.Taux_Mono_Assemblage AS 
+   SELECT t1.'Num_Assemblage'n LABEL="Num_Assemblage" AS Num_Assemblage, 
+          /* Taux_Mono */
+            (AVG(t1.Taux_Mono / 100)) LABEL="Taux_Mono_Assemblage" AS Taux_Mono_Assemblage, 
+          /* Num_Lingot */
+            (int( t1.'Num_Assemblage'n /100)) LABEL="Num_Lingot" AS Num_Lingot
+      FROM STATS.HENNECKE_LOGS_HISTORIQUE t1
+      GROUP BY t1.'Num_Assemblage'n;
+QUIT;
+
+PROC SQL;
+   CREATE TABLE WORK.Taux_Mono_Lingot AS 
+   SELECT /* Num_Lingot */
+            (int(t1.'Num_Assemblage'n/100) ) LABEL="Num_Lingot" AS Num_Lingot, 
+          /* Taux_Mono_Lingot */
+            (MEAN(t1.Taux_Mono / 100)) LABEL="Taux_Mono_Lingot" AS Taux_Mono_Lingot
+      FROM STATS.HENNECKE_LOGS_HISTORIQUE t1
+      GROUP BY (CALCULATED Num_Lingot);
+QUIT;
+
+PROC SQL;
+	CREATE TABLE Work.DTM_Hennecke_Taux_Mono AS
+	SELECT
+		T1.Num_Assemblage,
+		T1.Taux_Mono_Assemblage,
+		T2.Taux_Mono_Lingot
+		FROM 
+			WORK.Taux_Mono_Assemblage AS T1
+			LEFT OUTER JOIN WORK.Taux_Mono_Lingot AS T2
+			ON T1.Num_lingot = T2.Num_Lingot;
+RUN;
+
+PROC APPEND 
+	Base=Work.dtm_hennecke_taux_mono
+	Data=DTM_PRO.dtm_hennecke_taux_mono_histo;
+RUN;
+
+PROC SORT
+	Data = Work.dtm_hennecke_taux_mono
+	Out  = DTM_PRO.dtm_hennecke_taux_mono
+	dupout=Work.DTM_hennecke_Doublons
+NODUPKEY;
+BY Num_Assemblage;
+RUN;
+
+

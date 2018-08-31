@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="Scripts/jquery-2.1.1.js"></script>      
+    <title></title>
+</head>
+<body>
+    <p style="display:none">Paragraphe de démonstration</p>
+    <p>Paragraphe 2</p>
+    <div class="Essai" style="display:none">
+        Bonjour
+    </div>
+    <div id="Tog1" style="display:none">Toogle 1</div>
+    <div id="Tog2">Toogle 2</div>
+    <div id="Fade" style="display:none">Disparait</div>
+    <div id="Enchainement">Enchainement</div>
+<script>
+    $("p").slideToggle(1000);
+    $(".Essai").slideDown(2000);
+    $('#Tog1').slideDown(3000);
+    $('#Tog2').slideUp(3000);
+    $('#Fade').fadeIn(4000);
+    $('#Enchainement').fadeOut(2000).fadeIn(2000).slideUp(2000);
+</script>  
+</body>
+</html>

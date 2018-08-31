@@ -1,0 +1,43 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Sur_Chargement_Inter">
+    <ribbon startFromScratch="true">
+<tabs>
+<tab id="SaisieDI" label="Intervention">
+<group id="Intervention1" label="Imprimer">
+        <button id="IntImprimer" imageMso="FilePrint" size="large" getEnabled="Aut_IntImprimer"  getLabel="Get_IntImprimer" onAction="Action_IntImprimer"/>
+</group>
+
+<group id="Intervention3" label="Navigation formulaire">
+<gallery id="galSection" label="Atteindre la section..." columns="2" rows="4" imageMso="ControlTitle" size ="large" getItemImage="getImageNavigation" onAction="Action_galSection" >
+    <item id="at01" label="1 - Intervention" />
+    <item id="at02" label="2 - Demande"/>
+    <item id="at03" label="3 - Affectation" />
+    <item id="at04" label="4 - Prise en compte" />
+    <item id="at05" label="5 - Réalisation" />
+    <item id="at06" label="6 - Action" />
+    <item id="at07" label="7 - Activité" />
+</gallery>
+</group>
+
+<group id="Intervention2" label="Clôturer">
+        <button id="IntCloturer" imageMso="AdpPrimaryKey" size="large" getEnabled="Aut_IntCloturer"  getLabel="Get_IntCloturer" onAction="Action_IntCloturer"/>
+</group>
+
+</tab>
+</tabs>
+</ribbon>
+<backstage>
+         <button idMso="FileSave" visible="false"/>
+         <button idMso="SaveObjectAs" visible="false"/>
+         <button idMso="FileSaveAsCurrentFileFormat" visible="false"/>
+         <button idMso="FileOpen" visible="false"/>
+         <button idMso="FileCloseDatabase" visible="false"/>
+         <tab idMso="TabInfo" visible="false"/>
+         <tab idMso="TabRecent" visible="false"/>
+         <tab idMso="TabNew" visible="false"/>
+         <tab idMso="TabPrint" visible="false"/>
+         <tab idMso="TabShare" visible="false"/>
+         <tab idMso="TabHelp" visible="false"/>
+         <button idMso="ApplicationOptionsDialog" visible="false"/>
+         <button idMso="FileExit" visible="false"/>
+    </backstage>
+</customUI>

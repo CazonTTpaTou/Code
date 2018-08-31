@@ -1,0 +1,4 @@
+Hour(TimePart(T1.Time))*10000
++Minute(TimePart(T1.Time))*100
++Second(TimePart(T1.Time))*1
+

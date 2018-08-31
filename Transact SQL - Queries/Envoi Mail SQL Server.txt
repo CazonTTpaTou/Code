@@ -1,0 +1,15 @@
+sp_configure 'show advanced options', 1;
+GO
+RECONFIGURE;
+GO
+sp_configure 'Database Mail XPs', 1;
+GO
+RECONFIGURE;
+GO
+
+EXEC msdb.dbo.sp_send_dbmail
+    @profile_name = NULL,
+    @recipients = 'd.bellut@photowatt.com',
+    @body = 'Ajout dans la table dbo.X',
+    @subject = 'Ajout de données' ;
+

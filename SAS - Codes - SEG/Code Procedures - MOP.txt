@@ -1,0 +1,72 @@
+DATA SHAREPT.SP_QUALITE_CONTENT_PROC (Keep=Date_Actualisation ID TypeDocument Cree Titre Version Nom Date_publication EtatDocument Etat_approbation Type_document Bandeau_commercial Fonction_document Modifie Mot_cle Notes Reference Responsable Auteur Audience Audience2 Procedures Modificateur Support Archivage LienExpress ProcessusSource );
+Format 
+	Date_Actualisation DATETIME23.
+	EtatDocument $40.;
+
+SET Work.PROC_CONTENTLIBRARY;
+
+Date_Actualisation = datetime();
+
+Auteur = substr(Cree_par,index(Cree_par,'#')+1,length(Cree_par)-index(Cree_par,'#'));
+Audience = substr(Cible,index(Cible,'#')+1,length(Cible)-index(Cible,'#'));
+Audience2 = substr(Cible_2,index(Cible_2,'#')+1,length(Cible_2)-index(Cible_2,'#'));
+
+Procedures = substr(Procedure,1,index(Procedure,'|')-1);
+
+Modificateur = substr(Modifie_par,index(Modifie_par,'#')+1,length(Modifie_par)-index(Modifie_par,'#'));
+Support = substr(Nature_Support,index(Nature_Support,'#')+1,length(Nature_Support)-index(Nature_Support,'#'));
+Archivage = substr(Responsable_Archivage,index(Responsable_Archivage,'#')+1,length(Responsable_Archivage)-index(Responsable_Archivage,'#'));
+
+IF Lien_Express = 'False' THEN LienExpress = 'Non';
+ELSE LienExpress = 'Oui';
+
+If Etat_approbation = 0 THEN EtatDocument = 'Approuvé';
+If Etat_approbation = 1 THEN EtatDocument = 'Rejeté';
+If Etat_approbation = 2 THEN EtatDocument = "En cours d'approbation";
+If Etat_approbation = 3 THEN EtatDocument = 'En brouillon';
+If Etat_approbation = 4 THEN EtatDocument = 'Planifié';
+
+ProcessusSource = substr(Processus,index(Processus,'#')+1,length(Processus)-index(Processus,'#'));
+
+TypeDocument = substr(Nom,find(Nom,trim('.'),1-200)+1,length(Nom)-find(Nom,trim('.'),1-200));
+
+RUN;
+
+
+DATA SHAREPT.SP_QUALITE_CONTENT_MOP (Keep=Date_Actualisation ID TypeDocument Cree Titre Version Nom Date_publication EtatDocument Etat_approbation Type_document Bandeau_commercial Fonction_document Modifie Mot_cle_1 Notes Reference Responsable Auteur Audience Audience2 ModeOperatoire Modificateur Support Archivage LienExpress  );
+Format 
+	Date_Actualisation DATETIME23.
+	EtatDocument $40.;
+
+SET Work.MOP_CONTENTLIBRARY;
+
+Date_Actualisation = datetime();
+
+Auteur = substr(Cree_par,index(Cree_par,'#')+1,length(Cree_par)-index(Cree_par,'#'));
+Audience = substr(Cible,index(Cible,'#')+1,length(Cible)-index(Cible,'#'));
+Audience2 = substr(Cible_2,index(Cible_2,'#')+1,length(Cible_2)-index(Cible_2,'#'));
+
+ModeOperatoire = substr(Mode_Operatoire,1,index(Mode_Operatoire,'|')-1);
+
+Modificateur = substr(Modifie_par,index(Modifie_par,'#')+1,length(Modifie_par)-index(Modifie_par,'#'));
+Support = substr(Nature_Support,index(Nature_Support,'#')+1,length(Nature_Support)-index(Nature_Support,'#'));
+Archivage = substr(Responsable_Archivage,index(Responsable_Archivage,'#')+1,length(Responsable_Archivage)-index(Responsable_Archivage,'#'));
+
+IF Lien_Express = 'False' THEN LienExpress = 'Non';
+ELSE LienExpress = 'Oui';
+
+If Etat_approbation = 0 THEN EtatDocument = 'Approuvé';
+If Etat_approbation = 1 THEN EtatDocument = 'Rejeté';
+If Etat_approbation = 2 THEN EtatDocument = "En cours d'approbation";
+If Etat_approbation = 3 THEN EtatDocument = 'En brouillon';
+If Etat_approbation = 4 THEN EtatDocument = 'Planifié';
+
+TypeDocument = substr(Nom,find(Nom,trim('.'),1-200)+1,length(Nom)-find(Nom,trim('.'),1-200));
+
+RUN;
+
+
+
+
+
+

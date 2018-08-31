@@ -1,0 +1,88 @@
+ods graphics on;
+proc npar1way edf plots=edfplot data=WORK.FILTER_FOR_DATA_HENNECKE_2__0002;
+   class Ass_Sci_Equipement;
+   var TTV;
+run;
+
+proc npar1way edf plots=edfplot data=WORK.FILTER_FOR_DATA_HENNECKE_2__0002;
+   class Type_Assemblage;
+   var TTV;
+run;
+ods graphics off;
+
+ods graphics on;
+proc npar1way edf plots=edfplot data=WORK.FILTER_FOR_DATA_HENNECKE_2__0002;
+   class Ass_Sci_Equipement;
+   var Thickn;
+run;
+
+proc npar1way edf plots=edfplot data=WORK.FILTER_FOR_DATA_HENNECKE_2__0002;
+   class Type_Assemblage;
+   var Thickn;
+run;
+ods graphics off;
+
+
+ods graphics on;
+proc npar1way edf plots=edfplot data=WORK.FILTER_FOR_DATA_HENNECKE_2__0002;
+   class Ass_Sci_Equipement;
+   var ThPt;
+run;
+
+proc npar1way edf plots=edfplot data=WORK.FILTER_FOR_DATA_HENNECKE_2__0002;
+   class Type_Assemblage;
+   var ThPt;
+run;
+ods graphics off;
+
+
+ods graphics on;
+proc npar1way edf plots=edfplot data=WORK.FILTER_FOR_DATA_HENNECKE_2__0002;
+   class Ass_Sci_Equipement;
+   var bow;
+run;
+
+proc npar1way edf plots=edfplot data=WORK.FILTER_FOR_DATA_HENNECKE_2__0002;
+   class Type_Assemblage;
+   var bow;
+run;
+ods graphics off;
+
+ods graphics on;
+proc npar1way edf plots=edfplot data=WORK.FILTER_FOR_DATA_HENNECKE_2__0002;
+   class Ass_Sci_Equipement;
+   var SawStep;
+run;
+
+proc npar1way edf plots=edfplot data=WORK.FILTER_FOR_DATA_HENNECKE_2__0002;
+   class Type_Assemblage;
+   var SawStep;
+run;
+ods graphics off;
+
+
+ods graphics on;
+proc npar1way edf plots=edfplot data=WORK.FILTER_FOR_DATA_HENNECKE_2__0002;
+   class Ass_Sci_Equipement;
+   var SawGroove;
+run;
+
+proc npar1way edf plots=edfplot data=WORK.FILTER_FOR_DATA_HENNECKE_2__0002;
+   class Type_Assemblage;
+   var SawGroove;
+run;
+ods graphics off;
+
+ods graphics on;
+proc npar1way edf plots=edfplot data=WORK.FILTER_FOR_DATA_HENNECKE_2__0002;
+   class Ass_Sci_Equipement;
+   var SawEdge;
+run;
+
+proc npar1way edf plots=edfplot data=WORK.FILTER_FOR_DATA_HENNECKE_2__0002;
+   class Type_Assemblage;
+   var SawEdge;
+run;
+ods graphics off;
+
+

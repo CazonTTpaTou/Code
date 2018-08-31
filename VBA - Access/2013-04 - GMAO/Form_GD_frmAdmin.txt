@@ -1,0 +1,276 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "Form_GD_frmAdmin"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Explicit
+Option Compare Database
+
+Private Sub btEnregistrerGroupe_Click()
+    If checkGroupeSelectionne Then
+        CurrentDb.Execute "update GD_Groupe set libelle = """ & txtGroupeNom & """ ,description = """ & txtGroupeDescription & """ where idGroupe = " & lstGroupe.Value, dbSeeChanges
+        lstGroupe.Requery
+        refreshPage
+    End If
+End Sub
+
+Private Sub btNouveauGroupe_Click()
+    CurrentDb.Execute "Insert into GD_Groupe (libelle,description) values (""Nouveau groupe"",""Nouveau Groupe"")", dbSeeChanges
+    lstGroupe.Requery
+    refreshPage
+End Sub
+
+Private Sub btSupprimerGroupe_Click()
+    If checkGroupeSelectionne() Then
+        If MsgBox("Vous êtes sur le point de supprimer le groupe sélectionné." _
+            & vbCrLf & vbCrLf & "Etes vous sur de vouloir continuer ?", vbYesNo + vbQuestion) = vbYes Then
+        
+            CurrentDb.Execute "Delete from GD_utilisateur_groupe where idGroupe = " & lstGroupe.Value, dbSeeChanges
+            CurrentDb.Execute "Delete from GD_droit_groupe where idGroupe = " & lstGroupe.Value, dbSeeChanges
+            CurrentDb.Execute "Delete from GD_Groupe where idGroupe = " & lstGroupe.Value, dbSeeChanges
+            lstGroupe.Requery
+            refreshPage
+        End If
+    Else
+        MsgBox "Vous devez sélectionner un groupe."
+    End If
+End Sub
+
+
+Private Sub btSupprimerUtilisateur_Click()
+    
+    If checkUtilisateurSelectionne() Then
+        If MsgBox("Vous êtes sur le point de supprimer l'utilisateur sélectionné." _
+            & vbCrLf & "Etes vous sur de vouloir continuer ?", vbYesNo) = vbYes Then
+            
+            CurrentDb.Execute "Delete from GD_utilisateur_groupe where idUtilisateur = " & lstUtilisateur.Value, dbSeeChanges
+            CurrentDb.Execute "Delete from GD_droit_utilisateur where idUtilisateur = " & lstUtilisateur.Value, dbSeeChanges
+            CurrentDb.Execute "Delete from GD_Utilisateur where idUtilisateur = " & lstUtilisateur.Value, dbSeeChanges
+            lstUtilisateur.Requery
+            refreshPage
+            
+            
+        End If
+    End If
+End Sub
+
+Private Sub Form_Load()
+    If Not GD_estAutorise("GD_ADMIN") Then
+        MsgBox "Vous n'êtes pas autorisé à utiliser ce formulaire."
+
+        DoCmd.Close acForm, Me.Name
+    Else
+        GD_Droits.GD_InitialiseListeUtilisateurAutorises
+        lstUtilisateur.Requery
+        refreshPage
+    End If
+End Sub
+Private Function checkUtilisateurSelectionne() As Boolean
+
+    If lstUtilisateur.Value > 0 Then
+        checkUtilisateurSelectionne = True
+    Else
+        MsgBox "veuillez sélectionner un utilisateur"
+        checkUtilisateurSelectionne = False
+    End If
+
+End Function
+Private Function checkGroupeSelectionne() As Boolean
+    If lstGroupe.Value > 0 Then
+        checkGroupeSelectionne = True
+    Else
+        MsgBox "veuillez sélectionner un groupe"
+        checkGroupeSelectionne = False
+    End If
+End Function
+
+
+
+Private Sub lstDroitGroupe_DblClick(Cancel As Integer)
+    If checkGroupeSelectionne() Then
+        If lstDroitGroupe.Value > 0 Then
+            CurrentDb.Execute "delete from GD_droit_groupe " _
+             & " where idGroupe = " & lstGroupe.Value _
+             & " and idDroit = " & lstDroitGroupe.Value, dbSeeChanges
+        End If
+        
+        If Not CheckNouveauDroits() Then
+            CurrentDb.Execute "insert into GD_droit_groupe (idGroupe,idDroit ) " _
+             & " values (" & lstGroupe.Value & "," & lstDroitGroupe.Value & ")", dbSeeChanges
+        End If
+        
+        
+        
+        refreshPage
+    End If
+
+End Sub
+
+Private Sub lstDroitGroupeRestant_DblClick(Cancel As Integer)
+    If checkGroupeSelectionne() Then
+        If lstDroitGroupeRestant.Value > 0 Then
+            CurrentDb.Execute "insert into GD_droit_groupe (idGroupe,idDroit ) " _
+             & " values (" & lstGroupe.Value & "," & lstDroitGroupeRestant.Value & ")", dbSeeChanges
+        End If
+        
+        If Not CheckNouveauDroits() Then
+            CurrentDb.Execute "delete from GD_droit_groupe " _
+             & " where idGroupe = " & lstGroupe.Value _
+             & " and idDroit = " & lstDroitGroupeRestant.Value, dbSeeChanges
+        End If
+        
+        
+        
+        refreshPage
+    End If
+
+End Sub
+
+Private Sub lstDroitsUtilisateursRestant_DblClick(Cancel As Integer)
+    If checkUtilisateurSelectionne() Then
+        If lstDroitsUtilisateursRestant.Value > 0 Then
+            CurrentDb.Execute "insert into GD_droit_utilisateur (idUtilisateur,idDroit ) " _
+                & " values (" & lstUtilisateur.Value & "," & lstDroitsUtilisateursRestant.Value & ")", dbSeeChanges
+        End If
+        If Not CheckNouveauDroits() Then
+             CurrentDb.Execute "delete from GD_droit_utilisateur " _
+             & " where idUtilisateur = " & lstUtilisateur.Value _
+             & " and idDroit = " & lstDroitsUtilisateursRestant.Value, dbSeeChanges
+         End If
+        
+        refreshPage
+    End If
+End Sub
+
+Private Sub lstDroitUtilisateur_DblClick(Cancel As Integer)
+    If checkUtilisateurSelectionne() Then
+        If lstDroitUtilisateur.Value > 0 Then
+            CurrentDb.Execute "delete from GD_droit_utilisateur " _
+             & " where idUtilisateur = " & lstUtilisateur.Value _
+             & " and idDroit = " & lstDroitUtilisateur.Value, dbSeeChanges
+        End If
+         If Not CheckNouveauDroits() Then
+              CurrentDb.Execute "insert into GD_droit_utilisateur (idUtilisateur,idDroit ) " _
+                & " values (" & lstUtilisateur.Value & "," & lstDroitUtilisateur.Value & ")", dbSeeChanges
+        End If
+        refreshPage
+    End If
+End Sub
+
+Private Sub lstGroupe_Click()
+    txtGroupeNom = Nz(DLookup("libelle", "GD_Groupe", "idGroupe = " & lstGroupe.Value), "")
+    txtGroupeDescription = Nz(DLookup("description", "GD_Groupe", "idGroupe = " & lstGroupe.Value), "")
+        
+    refreshPage
+End Sub
+
+Private Sub lstGroupeUtilisateur_DblClick(Cancel As Integer)
+    If checkUtilisateurSelectionne() Then
+        If lstGroupeUtilisateur.Value > 0 Then
+            CurrentDb.Execute "delete from GD_utilisateur_groupe " _
+             & " where idUtilisateur = " & lstUtilisateur.Value _
+             & " and idGroupe = " & lstGroupeUtilisateur.Value, dbSeeChanges
+        End If
+       ' If Not CheckNouveauDroits() Then
+       '     CurrentDb.Execute "insert into GD_utilisateur_groupe (idUtilisateur,idGroupe ) " _
+       '      & " values (" & lstUtilisateur.Value & "," & lstGroupeUtilisateur.Value & ")", dbSeeChanges
+       ' End If
+        refreshPage
+    End If
+
+End Sub
+
+
+Private Sub lstGroupeUtilisateurRestant_DblClick(Cancel As Integer)
+    If checkUtilisateurSelectionne() Then
+        If lstGroupeUtilisateurRestant.Value > 0 Then
+            CurrentDb.Execute "insert into GD_utilisateur_groupe (idUtilisateur,idGroupe ) " _
+             & " values (" & lstUtilisateur.Value & "," & lstGroupeUtilisateurRestant.Value & ")", dbSeeChanges
+        End If
+        If Not CheckNouveauDroits() Then
+            CurrentDb.Execute "delete from GD_utilisateur_groupe " _
+             & " where idUtilisateur = " & lstUtilisateur.Value _
+             & " and idGroupe = " & lstGroupeUtilisateurRestant.Value, dbSeeChanges
+         End If
+        refreshPage
+    End If
+
+
+End Sub
+
+Private Sub lstUtilisateur_Click()
+    refreshPage
+End Sub
+
+Private Sub refreshPage()
+    lstDroitUtilisateur.Requery
+    lstGroupeUtilisateur.Requery
+    lstDroitsUtilisateursRestant.Requery
+    lstGroupeUtilisateurRestant.Requery
+    lstDroitsCompiles.Requery
+    
+    lstDroitGroupe.Requery
+    lstDroitGroupeRestant.Requery
+    lstUtilisateursGroupe.Requery
+    lstUtilisateursRestant.Requery
+End Sub
+
+
+Private Sub lstUtilisateursGroupe_DblClick(Cancel As Integer)
+    If checkGroupeSelectionne() Then
+        If lstUtilisateursGroupe.Value > 0 Then
+            CurrentDb.Execute "delete from GD_utilisateur_groupe " _
+             & " where idUtilisateur = " & lstUtilisateursGroupe.Value _
+             & " and idGroupe = " & lstGroupe.Value, dbSeeChanges
+        End If
+         If Not CheckNouveauDroits() Then
+            CurrentDb.Execute "insert into GD_utilisateur_groupe (idUtilisateur,idGroupe ) " _
+             & " values (" & lstUtilisateursGroupe.Value & "," & lstGroupe.Value & ")", dbSeeChanges
+        End If
+        refreshPage
+    End If
+
+End Sub
+
+
+Private Sub lstUtilisateursRestant_DblClick(Cancel As Integer)
+    If checkGroupeSelectionne() Then
+        If lstUtilisateursRestant.Value > 0 Then
+            CurrentDb.Execute "insert into GD_utilisateur_groupe (idUtilisateur,idGroupe ) " _
+             & " values (" & lstUtilisateursRestant.Value & "," & lstGroupe.Value & ")", dbSeeChanges
+        End If
+         If Not CheckNouveauDroits() Then
+            CurrentDb.Execute "delete from GD_utilisateur_groupe " _
+             & " where idUtilisateur = " & lstUtilisateursRestant.Value _
+             & " and idGroupe = " & lstGroupe.Value, dbSeeChanges
+         End If
+        refreshPage
+    End If
+End Sub
+
+'''
+'
+' methode de vérification des nouveaux droit...
+'
+' vérifier selon une série de regles métiers la nouvelle organisation des droits et renvoie un booleen s'ils sont ok
+'
+'''
+Private Function CheckNouveauDroits() As Boolean
+    CheckNouveauDroits = True
+     'Regle GMAO : pas plus de 4 secteurs...
+    
+    Dim i As Long
+    i = 0 ' Nz(DLookup("max(SommeDeCompeDeCode1)", "GD_reqControleNombreSecteur", ""), 0)
+    If i > 4 Then
+        MsgBox "Cette Action n'est pas permise elle fait dépasser la limite de 4 secteurs de saisie pour au moins un utilisateur!", vbCritical
+        CheckNouveauDroits = False
+    End If
+    
+    
+
+End Function
+

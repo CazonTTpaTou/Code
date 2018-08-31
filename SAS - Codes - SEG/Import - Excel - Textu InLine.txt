@@ -1,0 +1,54 @@
+%let Path=\\office\users\Bases_de_donnees\Reporting\recup srv-wincc\;
+
+data Work.Name_File (keep=Nom_Fichier);
+
+			length Nom_Fichier $200;
+			fich = filename ('Liste',"&Path");
+
+			fichier = dopen('Liste');
+			nbfile = dnum(fichier);
+
+			do i=1 to nbfile by 1;
+			     Nom_Fichier = dread(fichier,i);
+                 if input(substr(Nom_Fichier,1,1),BEST1.) = 2 Then output;	  
+			end;
+
+			rc=dclose(did);			
+run;
+
+DATA _NULL_;
+SET Work.Name_File END=Last;
+	call symputx(cats('path',_N_),Nom_Fichier);
+	call symputx(cats('dsn',_N_),cats("&Path",Nom_fichier)); 
+	IF Last Then call symputx('nobs',_N_);			      
+RUN;
+
+%macro ImportExcel();
+%do i=1 %to &nobs;
+
+libname  xlsxfile "&&dsn&i";
+
+data WORK.DataStage (keep=F1 F2 F3 F4);
+set xlsxfile."Feuil1$"n(dbSASType=(F1=datetime));
+run;
+
+	data Work.Wrangling;
+	Set Work.DataStage; 
+	rename F1=Date_Heure F2='Valeur_Reflectivite'n F3='Conductivite_HF_HCL'n F4='Concentration_Effective_M02'n;
+	IF not missing(F1) Then Output;
+	RUN;
+
+proc append base=WORK.LOGS_TEXTU data=Work.Wrangling force;
+run;
+
+%end;
+%mend;
+
+%ImportExcel;
+
+data RE_PROC.logs_textu_inline;
+SET WORK.LOGS_TEXTU;
+RUN;
+
+
+

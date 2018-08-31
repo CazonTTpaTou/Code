@@ -1,0 +1,22 @@
+DATA RE_GMAO.SP_GLOBAL_EXPORT_USAGE (keep=DateOuverture DateEnregistrement DureeModification ObjectType NomFichier TypeFichier Site);
+FORMAT 
+	DateOuverture DATETIME23.
+	DateEnregistrement DATETIME23.;
+
+SET DS_SP.ExportUsage;
+
+NomFichier = Substr(URL,find(URL,trim('/'),'i',1-100)+1,length(URL)-find(URL,trim('/'),'i',1-100));
+TypeFichier = Substr(URL,find(URL,trim('.'),'i',1-100)+1,length(URL)-find(URL,trim('.'),'i',1-100));
+Site = Substr(URL,1,find(URL,trim('/'),'i',2));
+
+User = substr(UserLogin,index(UserLogin,trim('\'))+1,length(UserLogin)-index(UserLogin,trim('\')));
+DureeModification = (RowCreatedTime - LogTime) / (60*60);
+
+DateOuverture = dhms(Datepart(LogTime),hour(timepart(LogTime))+2,minute(timepart(LogTime)),Second(timepart(LogTime)));
+DateEnregistrement = dhms(Datepart(RowCreatedTime),hour(timepart(RowCreatedTime))+2,minute(timepart(RowCreatedTime)),Second(timepart(RowCreatedTime)));
+
+RUN;
+
+
+
+

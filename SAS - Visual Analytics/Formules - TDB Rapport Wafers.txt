@@ -1,0 +1,21 @@
+Ojectif
+
+IF ( 'TNQ'n < 'Objectif MEP'p )
+RETURN 0
+ELSE ( 
+  IF ( 'TNQ'n < ( 1.15 * 'Objectif MEP'p ) )
+  RETURN 1
+  ELSE 2 )
+
+TNQ
+
+1 - ( Sum [_ByGroup_] ('Volume'n) / Sum [_ByGroup_] ('Mep Qte Entr'n) )
+
+TNQ MEP 
+
+1 - ( Sum [_ByGroup_] ('Mep Qte Sort'n) / Sum [_ByGroup_] ('Mep Qte Entr'n) )
+
+TQ
+
+Sum [_ByGroup_] ('Volume'n) / Sum [_ByGroup_] ('Mep Qte Entr'n)
+

@@ -1,0 +1,60 @@
+-------------------------------------------------------------------------------------------------------------------
+DO Sous équipement
+-------------------------------------------------------------------------------------------------------------------
+Formule MTBF
+=(sum(Vue_Indicateur_DO[Tps_Bon_fonctionnement]))/(sum(Vue_Indicateur_DO[Nb_Arret])+1)
+
+Formule MTTR
+=if(sum(Vue_Indicateur_DO[Nb_Arret])>0,sum(Vue_Indicateur_DO[Tps_Arret_h])/sum(Vue_Indicateur_DO[Nb_Arret]),0)
+
+Formule DO
+=(sum(Vue_Indicateur_DO[Tps_Ouverture])-sum(Vue_Indicateur_DO[Tps_Arret_h]))/sum(Vue_Indicateur_DO[Tps_Ouverture])
+
+Formule Tps_Arret_h
+sum(Vue_Indicateur_DO[Tps_Arret_h])
+
+Formule Nombre_Arret
+sum(Vue_Indicateur_DO[Nb_Arret])
+
+-------------------------------------------------------------------------------------------------------------------
+DO Equipement
+-------------------------------------------------------------------------------------------------------------------
+
+Formule %_des_pannes
+if(sum(Vue_DO_Equipement[Nb_Arret])>0,(sum(Vue_DO_Equipement[Nb_Arret])
+/CALCULATE(sum(Vue_DO_Equipement[Nb_Arret]),ALL(Vue_DO_Equipement))),0)
+
+Formule Total des pannes
+CALCULATE(sum(Vue_DO_Equipement[Nb_Arret]),ALL(Vue_DO_Equipement))
+
+-------------------------------------------------------------------------------------------------------------------
+Couverture plan de maintenance
+-------------------------------------------------------------------------------------------------------------------
+
+Formule Nb_FP
+count(Vue_Reporting_Couverture_Maintenance[Numero_FP])
+
+Formule %_Plan_Maintenance
+count(Vue_Reporting_Couverture_Maintenance[Numero_FP])
+/CALCULATE(count(Vue_Reporting_Couverture_Maintenance[Numero_FP]),all(Vue_Reporting_Couverture_Maintenance))
+
+-------------------------------------------------------------------------------------------------------------------
+Efficacité maintenance préventive
+-------------------------------------------------------------------------------------------------------------------
+
+Temps_Maintenance
+sum(Vue_Reporting_Efficacite_Preventif[Duree_Maintenance])
+
+%_Temps_Maintenance
+sum(Vue_Reporting_Efficacite_Preventif[Duree_Maintenance])
+/CALCULATE(sum(Vue_Reporting_Efficacite_Preventif[Duree_Maintenance]),All(Vue_Reporting_Efficacite_Preventif))
+
+Ecart_Prevision
+sum(Vue_Reporting_Efficacite_Preventif[Ecart_Previsionnel])
+
+%_Ecart_Prevision
+sum(Vue_Reporting_Efficacite_Preventif[Ecart_Previsionnel])
+/CALCULATE(sum(Vue_Reporting_Efficacite_Preventif[Ecart_Previsionnel]),all(Vue_Reporting_Efficacite_Preventif))
+
+-------------------------------------------------------------------------------------------------------------------
+

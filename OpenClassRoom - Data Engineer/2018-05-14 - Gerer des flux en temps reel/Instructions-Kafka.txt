@@ -1,0 +1,9 @@
+1-démarrer zookeeper sur le port 2182
+2-démarrer 3 instances de kafka sur les ports 9092,9093,9094
+3-créer le topic empty-stations via la commande suivante:
+kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 10 --topic empty-stations
+4-démarrer le producer via la commande suivante:
+python3 get-stations.py
+5-démarrer le consumer via la commande suivante:
+python3 monitor-empty-stations.py 
+

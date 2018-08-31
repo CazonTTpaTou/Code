@@ -1,0 +1,408 @@
+Option Compare Database
+Option Explicit
+
+Private Const CST_FORMULAIRE = "M_TREEVIEW"
+
+Public Const CST_TVW_FORMAT_CLE = "000"
+Public Const CST_TVW_ID_CLE = "K"
+
+Private sIdPremierNoeud As String
+
+Public Function getPremierNoeud(ByRef P_Arbre As Object) As Node
+
+' ===============================================================================
+' Fonction      : getPremierNoeud
+' Entrée        : P_Arbre       : Controle TREEVIEW sur lequel effecteur le controle
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/03/2016                             Par     : BAO
+' Objet         : Creation                               Version : V2.12.0
+' Description   : On recupere l'identifiant du premier noeud
+' ===============================================================================
+
+Dim objNoeud As Node
+
+    ' On cree une instance du noeud
+    Set objNoeud = P_Arbre.Nodes(1)
+    ' On renvoie la cle du premier noeud
+    Set getPremierNoeud = objNoeud
+
+End Function
+
+Private Function ExistenceNoeud(ByRef P_Arbre As Object, ByVal P_Cle As String) As Boolean
+
+' ===============================================================================
+' Fonction      : ExistenceNoeud
+' Entrée        : P_Arbre       : Controle TREEVIEW sur lequel effecteur le controle
+'                 P_Cle         : Clé utilisée pour verifier l'existence du noeud
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 18/11/2014                             Par     : BAO
+' Objet         : Creation                               Version : V2.9.0
+' Description   : Verifie l'existence d'un noeud à partir de sa clé
+' ===============================================================================
+
+On Error Resume Next
+
+    ' Si le noeud n'existe pas on renvoie VRAI
+    ExistenceNoeud = Not (P_Arbre.Nodes(P_Cle) Is Nothing)
+    
+End Function
+
+Private Function DefinirCleImage(ByVal P_Colonne As Integer) As String
+
+' ===============================================================================
+' Fonction      : DefinirCleImage
+' Entrée        : P_Colonne     : N° de la colonne correspondant a l'indentation
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 18/11/2014                             Par     : BAO
+' Objet         : Creation                               Version : V2.9.0
+' Description   : Définition de la clé de l'image associée au noeud
+' ===============================================================================
+
+On Error GoTo Gestion_Erreur
+
+    ' On constitue la clé
+    DefinirCleImage = CST_TVW_ID_CLE & Format(P_Colonne / 2, CST_TVW_FORMAT_CLE)
+    Exit Function
+    
+Gestion_Erreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".DefinirCleImage", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On renvoie KO
+    DefinirCleImage = ""
+
+End Function
+
+Private Function DefinirCleNoeud(ByVal P_Identifiant As Integer) As String
+
+' ===============================================================================
+' Fonction      : DefinirCleNoeud
+' Entrée        : P_Identifiant : Identifiant de la donnée à afficher
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 18/11/2014                             Par     : BAO
+' Objet         : Creation                               Version : V2.9.0
+' Description   : Définition de la clé du noeud à créer
+' ===============================================================================
+
+On Error GoTo Gestion_Erreur
+
+    ' On constitue la clé
+    DefinirCleNoeud = CST_TVW_ID_CLE & Format(P_Identifiant, CST_TVW_FORMAT_CLE)
+    Exit Function
+    
+Gestion_Erreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".DefinirCleNoeud", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On renvoie KO
+    DefinirCleNoeud = ""
+
+End Function
+
+Public Function LireIdentifiantDonnee(ByVal P_Cle As String) As String
+
+' ===============================================================================
+' Fonction      : DefinirCleNoeud
+' Entrée        : P_Cle         : Clé du noeud sélectionné
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 18/11/2014                             Par     : BAO
+' Objet         : Creation                               Version : V2.9.0
+' Description   : A partir de la clé du noeud on en déduit l'identifiant de la données
+' ===============================================================================
+
+Dim sChemin() As String
+
+On Error GoTo Gestion_Erreur
+
+    ' On decompose le chemin
+    sChemin = Split(P_Cle, CST_TVW_ID_CLE)
+    
+    ' On retourne la derniere valeur du tableau
+    LireIdentifiantDonnee = sChemin(UBound(sChemin))
+    Exit Function
+    
+Gestion_Erreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".LireIdentifiantDonnee", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On renvoie KO
+    LireIdentifiantDonnee = CST_KO
+
+End Function
+
+Public Function LireNiveauArborescence(ByVal P_Cle As String) As Integer
+
+' ===============================================================================
+' Fonction      : LireNiveauArborescence
+' Entrée        : P_Cle         : Clé du noeud sélectionné
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 18/11/2014                             Par     : BAO
+' Objet         : Creation                               Version : V2.9.0
+' Description   : A partir de la clé du noeud on en déduit le niveau du noeud sélectionne
+'                 dans l'arborecence.
+' ===============================================================================
+
+Dim sChemin() As String
+
+On Error GoTo Gestion_Erreur
+
+    ' On decompose le chemin
+    sChemin = Split(P_Cle, CST_TVW_ID_CLE)
+    
+    ' On retourne la derniere valeur du tableau
+    LireNiveauArborescence = UBound(sChemin)
+    Exit Function
+    
+Gestion_Erreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".LireNiveauArborescence", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On renvoie KO
+    LireNiveauArborescence = CST_KO
+
+End Function
+
+Public Function ForcerNiveauArborescence(ByRef P_Arbre As Object, ByVal P_Niveau As Integer) As Boolean
+
+' ===============================================================================
+' Fonction      : ForcerNiveauArborescence
+' Entrée        : P_Arbre          : Controle TREEVIEW à initialiser
+'                 P_Niveau         : Niveau sur lequel se positionner
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 18/11/2014                             Par     : BAO
+' Objet         : Creation                               Version : V2.9.0
+' Description   : On se positionne sur un niveau.
+' ===============================================================================
+
+Dim Noeud As Node
+Dim bTrouve As Boolean
+Dim sCleSelection As String
+
+On Error GoTo Gestion_Erreur
+
+    ' Par defaut on prend le premier noeud au niveau souhaite
+    bTrouve = True
+    ' Un noeud est selectionne
+    If Not (P_Arbre.SelectedItem Is Nothing) Then
+        ' On prend à partir de la selection
+        bTrouve = False
+        ' On stocke la cle de la selection
+        sCleSelection = P_Arbre.SelectedItem.Key
+    End If
+    ' On parcours les noeuds du controle
+    For Each Noeud In P_Arbre.Nodes
+        ' On se trouve sur le noeud selectionne, on indique qu'on prend le prochain
+        If Noeud.Key = sCleSelection Then bTrouve = True
+        ' On a passe le noeud selectionne
+        If bTrouve Then
+            ' Le niveau du noeud courant correspond à celui recherché
+            If bTrouve And LireNiveauArborescence(Noeud.Key) = P_Niveau Then
+                ' On selectionne le noeud
+                Noeud.Selected = True
+                ' On sort de la boucle
+                Exit For
+            End If
+        End If
+    Next Noeud
+    
+    ' On sort sans erreur
+    ForcerNiveauArborescence = CST_OK
+    Exit Function
+    
+Gestion_Erreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".ForcerNiveauArborescence", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On renvoie KO
+    ForcerNiveauArborescence = CST_KO
+
+End Function
+
+Public Function DefinirAspect(ByRef P_Arbre As Object, ByRef P_ListeImages As Object) As Boolean
+
+' ===============================================================================
+' Fonction      : DefinirAspect
+' Entrée        : P_Arbre       : Controle TREEVIEW à initialiser
+'                 P_ListeImages : Controle LISTIMAGES à utiliser
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 18/11/2014                             Par     : BAO
+' Objet         : Creation                               Version : V2.9.0
+' Description   : Definit l'aspect de l'arborescence
+' ===============================================================================
+
+Dim sSelection As String
+
+On Error GoTo Gestion_Erreur
+
+    ' On initialise le TreeView
+    With P_Arbre
+        .HideSelection = False
+        .Appearance = cc3D
+        .FullRowSelect = True
+        .Nodes.Clear
+        .LineStyle = tvwRootLines
+        .Indentation = 50
+        .LabelEdit = tvwManual
+        .ImageList = P_ListeImages
+    End With
+    
+    ' On sort
+    DefinirAspect = CST_OK
+    Exit Function
+    
+Gestion_Erreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".DefinirAspect", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On renvoie KO
+    DefinirAspect = CST_KO
+
+End Function
+
+Private Function NoeudCourant(ByRef P_Arbre As Object) As String
+
+' ===============================================================================
+' Fonction      : RemplirArbre
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 18/11/2014                             Par     : BAO
+' Objet         : Creation                               Version : V2.9.0
+' Description   : Initialisation de l'arborescence
+' ===============================================================================
+
+Dim sSelection As String
+
+On Error GoTo Gestion_Erreur
+
+    ' On initialise la variable
+    sSelection = ""
+    ' Une sélection est en cours, on recupere l'identifiant du noeud
+    If Not (P_Arbre.SelectedItem Is Nothing) Then sSelection = P_Arbre.SelectedItem.Key
+    
+    ' On sort
+    NoeudCourant = sSelection
+    Exit Function
+    
+Gestion_Erreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".NoeudCourant", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On renvoie KO
+    NoeudCourant = ""
+
+End Function
+
+Public Function RemplirArbre(ByRef P_Arbre As Object, ByRef P_ListeImages As Object, ByVal P_Requete As String, ByVal P_NoeudFerme As Integer) As Integer
+
+' ===============================================================================
+' Fonction      : RemplirArbre
+' Entrée        : P_Arbre       : Controle TREEVIEW à initialiser
+'                 P_ListeImages : Controle LISTIMAGES à utiliser
+'                 P_Requete     : Requete à utiliser pour initialiser le controle
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 18/11/2014                             Par     : BAO
+' Objet         : Creation                               Version : V2.9.0
+' Description   : Initialisation de l'arborescence
+' ===============================================================================
+
+Dim iRetour As Integer
+Dim sSelection As String
+Dim oNoeud As Node
+Dim rstListe As DAO.RecordSet
+Dim iNbrCol As Integer
+Dim iCol As Integer
+Dim sLigCour() As String
+Dim iPosition As Integer
+Dim sIdPere As String
+Dim sIdNoeud As String
+Dim sLibelleNoeud As String
+Dim sIdImage As String
+Dim sIdRacine As String
+
+On Error GoTo Gestion_Erreur
+    
+    ' On definit la position dans le recordset
+    iPosition = 0
+    ' On recupere la cle du noeud selectionne
+    sSelection = NoeudCourant(P_Arbre)
+    ' On definit l'aspect de l'arborescence
+    iRetour = DefinirAspect(P_Arbre, P_ListeImages)
+    
+    ' On execute la requete
+    Set rstListe = CurrentDb.OpenRecordset(P_Requete)
+    ' On recupere le nombre de colonnes dans la requete
+    iNbrCol = rstListe.Fields.Count
+    ' On cree les tableaux recuperan les données
+    ReDim sLigCour(iNbrCol - 1)
+    
+    ' On parcours les enregistrements
+    While Not rstListe.EOF
+        ' On incremente la position dans le recordset
+        iPosition = iPosition + 1
+        ' On parcours toutes les colonnes
+        For iCol = 0 To iNbrCol - 1
+            ' On stocke la colonne dans le tableau de la ligne courante
+            sLigCour(iCol) = rstListe.Fields(iCol)
+        Next iCol
+        sIdNoeud = ""
+        ' On parcours toutes les 2 colonnes
+        For iCol = 0 To iNbrCol - 1 Step 2
+            ' Le noeud devient le pere du champ suivant
+            sIdPere = sIdNoeud
+            ' On calcule l'identifiant du noeud à creer
+            sIdNoeud = sIdNoeud & DefinirCleNoeud(sLigCour(iCol))
+            Debug.Print sIdNoeud
+            ' On recupere le libelle à afficher
+            sLibelleNoeud = sLigCour(iCol + 1)
+            ' On definit la clé de l'image associée
+            sIdImage = DefinirCleImage(iCol)
+            ' La clé associée à la donnée n'existe pas
+            If Not ExistenceNoeud(P_Arbre, sIdNoeud) Then
+                ' On se trouve sur la premiere colonne
+                If iCol = 0 Then
+                    ' On cree la racine
+                    Set oNoeud = P_Arbre.Nodes.Add(, , sIdNoeud, sLibelleNoeud, sIdImage)
+                    ' On stocke le noeud racine si pas de selection
+                    sIdRacine = sIdNoeud
+                Else
+                    ' On cree le noeud
+                    Set oNoeud = P_Arbre.Nodes.Add(sIdPere, tvwChild, sIdNoeud, sLibelleNoeud, sIdImage)
+                End If
+                ' On déploie le noeud
+                oNoeud.Expanded = IIf(iCol > P_NoeudFerme * 2, False, True)
+            End If
+        Next iCol
+        ' On passe au tuple suivant
+        rstListe.MoveNext
+    Wend
+    ' On ferme le recordset
+    If Not (rstListe Is Nothing) Then rstListe.Close
+    ' Le noeud precedemment selectionne n'existe plus ou il n'y avait pas de selection, on se positionne sur la racine
+    If Not ExistenceNoeud(P_Arbre, sSelection) Then sSelection = sIdRacine
+    ' On cree une instance du noeud selectionne
+    Set oNoeud = P_Arbre.Nodes(sSelection)
+    ' On se positionne sur le noeud precedemment selectionne
+    oNoeud.Selected = True
+    ' On libere la memoire
+    Set rstListe = Nothing
+    Set oNoeud = Nothing
+    
+    ' On sort
+    RemplirArbre = CST_OK
+    Exit Function
+    
+Gestion_Erreur:
+    ' On ferme le recordset
+    If Not (rstListe Is Nothing) Then rstListe.Close
+    ' On libere la memoire
+    Set rstListe = Nothing
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".RemplirArbre", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On sort
+    RemplirArbre = CST_KO
+    
+End Function
+

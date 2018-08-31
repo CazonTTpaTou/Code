@@ -1,0 +1,26 @@
+Public Sub SuppressionTableau()
+
+Dim i As Integer
+
+    On Error Resume Next
+     
+    For i = 1 To ActiveDocument.Tables.Count
+    
+        ActiveDocument.Tables(i).Select
+        
+        If Err <> 0 Then
+        
+            MsgBox "Aucun tableau trouvé"
+            Exit For
+            
+        Else
+        
+            ActiveDocument.Tables(i).Delete
+            
+        End If
+
+    Next i
+    
+
+End Sub
+

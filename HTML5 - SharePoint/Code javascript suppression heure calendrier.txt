@@ -1,0 +1,20 @@
+<style type="text/css">
+
+div.ms-acal-sdiv > div.ms-acal-time {
+            display:none;
+}
+
+.ms-acal-sdiv,
+.ms-acal-mdiv {
+            text-indent:-9999em;
+}
+
+.ms-acal-sdiv a, .ms-acal-mdiv a, .ms-acal-ddiv a {
+            text-indent:0;
+            top:0;
+            display:block;
+            position:absolute;
+}
+
+</style>
+

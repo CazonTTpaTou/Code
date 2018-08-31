@@ -1,0 +1,44 @@
+%let Table=GMAO.Secteur;
+
+proc contents data=&Table out=Liste_Champs (keep=name type);
+run;
+
+proc sql;
+select name, type, count(*) into: listvar separated by "-" 
+, :listtype separated by "," 
+, :nb
+from Liste_Champs
+;
+quit;
+
+%put ----> &listvar;
+
+data _null_ ;
+call symput("nb",count(&listvar,"-")+1);
+run;
+
+%put ----> nb : &nb;
+
+%do i=1 %to &nb;
+	%let var=%scan(&listvar,&i,"-");
+	%put ----> var : &var;
+
+	proc sql;
+	create table desc_&var as
+	select &var, count(*) as nb
+	from &table
+	group by &var
+	order by &var
+	;
+	quit;
+
+	PROC EXPORT DATA = work.desc_&var
+	OUTFILE = "C:\Users\pwsasdev\Desktop\Fichier.xls"
+	DBMS = EXCEL
+	REPLACE ;
+	SHEET = "&var" ;
+	RUN ; 
+%end;
+
+
+

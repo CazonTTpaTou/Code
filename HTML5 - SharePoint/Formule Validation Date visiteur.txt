@@ -1,0 +1,9 @@
+=([Jour de début de la prestation (inclus)]>=DATE(ANNEE(Créé);MOIS(Créé);JOUR(Créé)))*([Jour de fin de la prestation (inclus)]>=[Jour de début de la prestation (inclus)])
+
+=([Jour de début de la visite (inclus)]>=DATE(ANNEE(Créé);MOIS(Créé);JOUR(Créé)))*([Jour de fin de la visite (inclus)]>=[Jour de début de la visite (inclus)])
+
+
+
+La date de visite ne doit pas être dépassée !!
+
+

@@ -1,0 +1,1424 @@
+<?xml version="1.0" encoding="utf-8"?><!--SPG:
+
+Ce fichier HTML a été associé à une page maître SharePoint (fichier .master) portant le même nom. Tant que les fichiers restent associés, vous ne pouvez pas modifier le fichier .master et les opérations de changement de nom, de déplacement ou de suppression sont retournées.
+
+Pour créer la page maître directement à partir de ce fichier HTML, modifiez la page normalement.  Utilisez le générateur d'extraits de code à l'adresse http://intranet.photowatt.local/_layouts/15/ComponentHome.aspx?Url=http%3A%2F%2Fintranet%2Ephotowatt%2Elocal%2F%5Fcatalogs%2Fmasterpage%2FZQualite%2Emaster pour créer et personnaliser les entités SharePoint utiles, puis copiez et collez-les en tant qu'extraits de code HTML dans votre code HTML. Toutes les mises à jour de ce fichier sont synchronisées automatiquement avec la page maître associée.
+
+-->
+<!-- _lcid="1036" _version="15.0.4675" _dal="1" -->
+<!-- _LocalBinding -->
+<!--SPM:<%@Master language="C#"%>-->
+<!--SPM:<%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>-->
+<!--SPM:<%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>-->
+<!--SPM:<%@ Import Namespace="Microsoft.SharePoint" %>-->
+<!--SPM:<%@ Assembly Name="Microsoft.Web.CommandUI, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>-->
+<!--SPM:<%@ Import Namespace="Microsoft.SharePoint.ApplicationPages" %>-->
+<!--SPM:<%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>-->
+<!--SPM:<%@ Register TagPrefix="wssuc" TagName="Welcome" src="~/_controltemplates/15/Welcome.ascx" %>-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"[]>
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+    <!--SID:00 -->
+    <head runat="server">
+        <meta http-equiv="X-UA-Compatible" content="IE=10" />
+        <meta name="GENERATOR" content="Microsoft SharePoint" />
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Expires" content="0" />
+        <!--SPM:<SharePoint:SPPinnedSiteTile runat="server" TileUrl="/_layouts/15/images/SharePointMetroAppTile.png" TileColor="#0072C6"/>-->
+        <!--SPM:<SharePoint:RobotsMetaTag runat="server"/>-->
+        <!--SPM:<SharePoint:PageTitle runat="server">-->
+        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderPageTitle" runat="server"/>-->
+        <!--SPM:</SharePoint:PageTitle>-->
+        <!--SPM:<SharePoint:StartScript runat="server"/>-->
+        <!--SPM:<SharePoint:CssLink runat="server" Version="15"/>-->
+        <!--PS: Début de l’APERÇU EN MODE LECTURE SEULE (ne pas modifier) --><link href="http://intranet/_layouts/15/1036/styles/corev15.css" type="text/css" rel="stylesheet" /><link href="http://intranet/_layouts/15/1036/styles/searchv15.css" type="text/css" rel="stylesheet" /><!--PE: Fin de l’APERÇU EN MODE LECTURE SEULE -->
+        <!--SPM:<SharePoint:CacheManifestLink runat="server"/>-->
+        <!--SPM:<SharePoint:ScriptLink language="javascript" name="core.js" OnDemand="true" runat="server" Localizable="false"/>-->
+        <!--SPM:<SharePoint:ScriptLink language="javascript" name="menu.js" OnDemand="true" runat="server" Localizable="false"/>-->
+        <!--SPM:<SharePoint:ScriptLink language="javascript" name="callout.js" OnDemand="true" runat="server" Localizable="false"/>-->
+        <!--SPM:<SharePoint:ScriptLink language="javascript" name="sharing.js" OnDemand="true" runat="server" Localizable="false"/>-->
+        <!--SPM:<SharePoint:ScriptLink language="javascript" name="suitelinks.js" OnDemand="true" runat="server" Localizable="false"/>-->
+        <!--SPM:<SharePoint:CustomJSUrl runat="server"/>-->
+        <!--SPM:<SharePoint:SoapDiscoveryLink runat="server"/>-->
+        <!--SPM:<SharePoint:AjaxDelta id="DeltaPlaceHolderAdditionalPageHead" Container="false" runat="server">-->
+        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderAdditionalPageHead" runat="server"/>-->
+        <!--SPM:<SharePoint:DelegateControl runat="server" ControlId="AdditionalPageHead" AllowMultipleControls="true"/>-->
+        <!--SPM:</SharePoint:AjaxDelta>-->
+        <!--SPM:<SharePoint:SPShortcutIcon runat="server" IconUrl="/_layouts/15/images/favicon.ico?rev=23"/>-->
+<![CDATA[ [if IE 9] ]]>        <style type="text/css">//<![CDATA[
+         .ms-core-animation-transparent {
+            opacity: 0;
+        }
+
+        .ms-isBot .ms-core-animation-transparent {
+            opacity: 1;
+        }
+
+        //]] >
+    //]]>
+        </style>
+<![CDATA[ [endif] ]]>        <!--[if lte IE 8]>
+    <style type="text/css">//<![CDATA[
+    .ms-core-animation-transparent,
+    .ms-core-animation-transparent img
+    {
+       -ms-filter:"alpha(opacity=0)";
+    }
+    .ms-isBot .ms-core-animation-transparent,
+    .ms-isBot .ms-core-animation-transparent img
+    {
+       -ms-filter:"";
+    }
+    //]]></style>
+    <![endif]-->
+        <script type="text/javascript">//<![CDATA[
+
+
+
+
+        var g_pageLoadAnimationParams = { elementSlideIn: "sideNavBox", elementSlideInPhase2: "contentBox" };
+        
+    //]]>
+        </script>
+        <script src="/_catalogs/masterpage/jquery-1.11.2.min.js">//<![CDATA[
+        
+
+
+
+
+        
+    //]]>
+        </script>
+        <link href="/_catalogs/masterpage/Intranet_MP.css" rel="stylesheet" />
+        <script type="text/javascript">//<![CDATA[
+
+
+        $(document).ready(function () {
+
+            $("ul.subnav").parent().append("<span></span>"); //Only shows drop down trigger when js is enabled (Adds empty span tag after ul.subnav*)
+
+            $("ul.topnav li span").hover(function () { //When trigger is clicked...
+                $(this).parent().find("ul.subnav").slideDown('fast').show(); //Drop down the subnav on click
+
+                $(this).parent().hover(function () {
+                }, function () {
+                    $(this).parent().find("ul.subnav").slideUp('slow'); //When the mouse hovers out of the subnav, move it back up
+                });
+
+                //Following events are applied to the trigger (Hover events for the trigger)
+            }).hover(function () {
+                $(this).addClass("subhover"); //On hover over, add class "subhover"
+            }, function () {
+                $(this).removeClass("subhover"); //On hover out, remove class "subhover"
+            });
+            //$('#suiteBar').hide();
+
+        });
+
+
+
+
+
+        
+    //]]>
+        </script>
+        <!--SPM:<SharePoint:CssRegistration Name="Themable/corev15.css" runat="server"/>-->
+        <!--[if gte mso 9]><xml>
+    <mso:CustomDocumentProperties>
+    <mso:ContentType msdt:dt="string">Page maître HTML</mso:ContentType>
+
+    <mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+    <mso:HtmlDesignFromMaster msdt:dt="string"></mso:HtmlDesignFromMaster>
+    <mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+    <mso:HtmlDesignStatusAndPreview msdt:dt="string">http://intranet.photowatt.local/_catalogs/masterpage/Qualite.html, La conversion a réussi.</mso:HtmlDesignStatusAndPreview>
+    <mso:DefaultCssFile msdt:dt="string"></mso:DefaultCssFile>
+<mso:PublishingPreviewImage msdt:dt="string"></mso:PublishingPreviewImage>
+<mso:HtmlDesignPreviewUrl msdt:dt="string"></mso:HtmlDesignPreviewUrl>
+<mso:MasterPageDescription msdt:dt="string"></mso:MasterPageDescription>
+<mso:UIVersion msdt:dt="string"></mso:UIVersion>
+<mso:PublishingHidden msdt:dt="string">0</mso:PublishingHidden>
+</mso:CustomDocumentProperties>
+    </xml><![endif]-->
+    </head>
+    <body>
+        <!--SPM:<SharePoint:ImageLink runat="server"/>-->
+        <!--SPM:<SharePoint:SPNoScript runat="server"/>-->
+        <!--SPM:<SharePoint:SPClientIDGenerator runat="server" ServerControlID="DeltaPlaceHolderMain;DeltaPlaceHolderPageTitleInTitleArea;DeltaPlaceHolderUtilityContent"/>-->
+        <script type="text/javascript">//<![CDATA[
+         var submitHook = function () { return false; }; theForm._spOldSubmit = theForm.submit; theForm.submit = function () { if (!submitHook()) { this._spOldSubmit(); } }; 
+    //]]>
+        </script>
+        <!--SPM:<WebPartPages:SPWebPartManager runat="Server"/>-->
+        <!--SPM:<asp:ScriptManager id="ScriptManager" runat="server" EnablePageMethods="false" EnablePartialRendering="true" EnableScriptGlobalization="false" EnableScriptLocalization="true"/>-->
+        <!--SPM:<SharePoint:AjaxDelta id="DeltaDelegateControls" runat="server">-->
+        <!--SPM:<SharePoint:DelegateControl runat="server" ControlId="GlobalNavigation"/>-->
+        <!--SPM:<SharePoint:DelegateControl ControlId="GlobalSiteLink3" Scope="Farm" runat="server" Visible="false"/>-->
+        <!--SPM:</SharePoint:AjaxDelta>-->
+        <div id="TurnOnAccessibility" style="display:none" class="s4-notdlg noindex">
+            <a id="linkTurnOnAcc" href="#" class="ms-TurnOnAcc" onclick="SetIsAccessibilityFeatureEnabled(true);UpdateAccessibilityUI();document.getElementById('linkTurnOffAcc').focus();return false;">
+                <!--SPM:<SharePoint:EncodedLiteral runat="server" text="&#60;%$Resources:wss,master_turnonaccessibility%&#62;" EncodeMethod="HtmlEncode"/>-->
+            </a>
+        </div>
+        <div id="TurnOffAccessibility" style="display:none" class="s4-notdlg noindex">
+            <a id="linkTurnOffAcc" href="#" class="ms-TurnOffAcc" onclick="SetIsAccessibilityFeatureEnabled(false);UpdateAccessibilityUI();document.getElementById('linkTurnOnAcc').focus();return false;">
+                <!--SPM:<SharePoint:EncodedLiteral runat="server" text="&#60;%$Resources:wss,master_turnoffaccessibility%&#62;" EncodeMethod="HtmlEncode"/>-->
+            </a>
+        </div>
+        <div class="s4-notdlg s4-skipribbonshortcut noindex">
+            <a href="javascript:;" onclick="document.getElementById('startNavigation').focus();" class="ms-SkiptoNavigation" accesskey="&lt;%$Resources:wss,skipribbon_accesskey%&gt;" runat="server">
+                <!--SPM:<SharePoint:EncodedLiteral runat="server" text="&#60;%$Resources:wss,skipRibbonCommandsLink%&#62;" EncodeMethod="HtmlEncode"/>-->
+            </a>
+        </div>
+        <div class="s4-notdlg noindex">
+            <a href="javascript:;" onclick="document.getElementById('mainContent').focus();" class="ms-SkiptoMainContent" accesskey="&lt;%$Resources:wss,maincontent_accesskey%&gt;" runat="server">
+                <!--SPM:<SharePoint:EncodedLiteral runat="server" text="&#60;%$Resources:wss,mainContentLink%&#62;" EncodeMethod="HtmlEncode"/>-->
+            </a>
+        </div>
+        <div id="TurnOffAnimation" style="display:none;" class="s4-notdlg noindex">
+            <a id="linkTurnOffAnimation" href="#" class="ms-accessible ms-acc-button" onclick="ToggleAnimationStatus();return false;">
+                <!--SPM:<SharePoint:EncodedLiteral runat="server" text="&#60;%$Resources:wss,master_disableanimation%&#62;" EncodeMethod="HtmlEncode"/>-->
+            </a>
+        </div>
+        <div id="TurnOnAnimation" style="display:none;" class="s4-notdlg noindex">
+            <a id="linkTurnOnAnimation" href="#" class="ms-accessible ms-acc-button" onclick="ToggleAnimationStatus();return false;">
+                <!--SPM:<SharePoint:EncodedLiteral runat="server" text="&#60;%$Resources:wss,master_enableanimation%&#62;" EncodeMethod="HtmlEncode"/>-->
+            </a>
+        </div>
+        <a id="HiddenAnchor" href="javascript:;" style="display:none;">
+        </a>
+        <div id="ms-hcTest">
+        </div>
+        <div id="ms-designer-ribbon">
+            <!--SID:02 {Ribbon}-->
+            <!--PS: Début de l’APERÇU EN MODE LECTURE SEULE (ne pas modifier) --><div class="DefaultContentBlock" style="background:rgb(0, 114, 198); color:white; width:100%; padding:8px; height:64px; overflow:hidden;">Dans les véritables prévisualisations de votre site, le ruban SharePoint sera situé ici.</div><!--PE: Fin de l’APERÇU EN MODE LECTURE SEULE -->
+        </div>
+        <!--MS:<SharePoint:SPSecurityTrimmedControl runat="server" AuthenticationRestrictions="AnonymousUsersOnly">-->
+            <!--SPM:<wssucw:Welcome runat="server" EnableViewState="false"/>-->
+        <!--ME:</SharePoint:SPSecurityTrimmedControl>-->
+        <div id="s4-workspace" class="ms-core-overlay">
+            <div id="s4-bodyContainer">
+                <!-- DEBUT HEADER -->
+                <div id="header" xmlns="http://www.w3.org/1999/xhtml">
+                    <p>
+                        <a href="/">
+                            <img class="logo" src="/SiteCollectionImages/LogoPWT.png" alt="logo" />
+                        </a>
+                    </p>
+                </div>
+                <!-- FIN HEADER -->
+                <!-- DEBUT MENU -->
+                <div class="Conteneur ms-dialogHidden" xmlns="http://www.w3.org/1999/xhtml">
+                    <div class="Menu">
+                        <ul class="topnav">
+                            <li>
+                                <a href="/IG/SitePages/Accueil.aspx">
+                                Informations générales
+
+
+
+
+
+
+
+
+
+
+
+                            
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/IG/SitePages/Organigramme.aspx">
+                                        1. Organigramme
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/IG/SitePages/Liste_Telephonique.aspx">
+                                        2. Liste téléphonique
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/IG/Documents%20partages/Plan_EDF_ENR_PWT_FR.pdf">
+                                        3. Plan d'accès
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/IG/SitePages/Calendrier_Astreintes.aspx">
+                                        4. Calendrier astreintes
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/IG/SitePages/Numero_Urgence.aspx">
+                                        5. Numéros d'urgence
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/IG/SitePages/Informatique.aspx">
+                                        6. Informatique
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <!-- <li>
+                                <a href="/SitePages/Demande%20badge.aspx">
+                        6. Demande de badges prestataires
+
+
+
+
+
+
+
+                                </a>
+                            </li> -->
+                                </ul>
+                            </li>
+                            <!-- <li>
+                    <a href="/Achats/SitePages/Accueil.aspx">Achats
+
+                    </a>
+                    <ul class="subnav">
+                        <li>
+                            <a href="/Achats/SitePages/1_Creation_DA.aspx">1. Création DA
+
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Achats/SitePages/2_DA_En_Cours.aspx">2. DA en cours
+
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Achats/SitePages/3_DA_Cloturees.aspx">3. DA soldées
+
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Achats/SitePages/4_DA_Refusees.aspx">4. DA refusées
+
+                            </a>
+                        </li>
+                    </ul>
+                </li> -->
+                            <li>
+                                <a href="/Communication/SitePages/Accueil.aspx">
+                                Communication
+
+
+
+
+
+
+
+
+
+
+
+                            
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/Communication/EDF/_layouts/15/start.aspx#/SitePages/Accueil.aspx">
+                                        1. EDF communication
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Communication/SitePages/Notes_Service.aspx">
+                                        2. Notes de service
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Communication/SitePages/Notes_Information.aspx">
+                                        3. Notes d'information
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Communication/SitePages/CR_Production.aspx">
+                                        4. CR Production
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Communication/SitePages/Presse.aspx">
+                                        5. Presse
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Communication/SitePages/Espace_Managers.aspx">
+                                        6. Espace Managers
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/HSE/SitePages/Accueil.aspx">
+                                HSE
+
+
+
+
+
+
+
+
+
+
+
+                            
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/HSE/SitePages/Badges%20visiteurs.aspx">
+                                        1. Déchets
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/HSE/SitePages/Documents_Uniques.aspx">
+                                        2. Documents uniques - Ergonomie
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/HSE/SitePages/Formations_Habilitations.aspx">
+                                        3. Equipements de protection individuels (EPI)- Equipements de sécurité
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/HSE/SitePages/Informations_HSE.aspx">
+                                        4. Informations HSE
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/HSE/SitePages/Produits_Chimiques.aspx">
+                                        5. Produits chimiques
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/HSE/SitePages/QRQC_HSE.aspx">
+                                        6. QRQC - Fiches de signalement à risques
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/HSE/SitePages/Soins_AT.aspx">
+                                        7. Santé au travail
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/HSE/SitePages/Transport%20matières%20dangereuses.aspx">
+                                        8. Gestion des entreprises extérieures - Transport matières dangereuses
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/HSE/SitePages/Analyse_Environnementale.aspx">
+                                        9. Analyse Environnementale – ISO 14001
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- <li>
+                 <li>
+                    <a href="/Informatique/SitePages/Accueil.aspx">Informatique
+
+                    </a>
+                    <ul class="subnav">
+                        <li>
+                            <a href="/Informatique/SitePages/Demande_Acces.aspx">1. Demande accès
+
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Informatique/SitePages/Procedures.aspx">2. Procédures
+
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/Qualite/SitePages/Accueil.aspx">Qualité
+
+                    </a>
+                    <ul class="subnav">
+                        <li>
+                            <a href="/Qualite/SitePages/Liste_Procedures.aspx">1. Liste des procédures
+
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Qualite/SitePages/Modes_Operatoires.aspx">2. Modes opératoires
+
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Qualite/SitePages/Processus.aspx">3. Processus
+
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Qualite/SitePages/Securite.aspx">4. Sécurité
+
+                            </a>
+                        </li>
+                    </ul>
+                </li> -->
+                            <li>
+                                <a href="/RH/SitePages/Accueil.aspx">
+                                Ressources Humaines
+
+
+
+
+
+
+
+
+
+
+
+                            
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/RH/SitePages/Formulaires_RH.aspx">
+                                        1. Formulaires RH
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/RH/SitePages/Accords_collectifs.aspx">
+                                        2. Accords collectifs et réglements
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/RH/SitePages/Espace_Mobilite.aspx">
+                                        3. Espace mobilité
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/RH/SitePages/Delegue_Personnel.aspx">
+                                        4. Délégués personnel
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/RH/SitePages/Formation.aspx">
+                                        5. Formation
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/RH/SitePages/BDD_Eco_Sociale.aspx">
+                                        6. BDD eco. sociale
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Communication/SitePages/Notes_Service.aspx">
+                                        7. Notes de service
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Communication/SitePages/Notes_Information.aspx">
+                                        8. Notes d'information
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/RH/SitePages/ZOOM%20RH.aspx">
+                                        9. Zoom RH
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <!--<li>
+                                <a href="/RH/SitePages/Boite%20%C3%A0%20id%C3%A9e.aspx">
+                        9. Boîte à idées
+
+
+
+
+
+
+
+                                </a>
+                            </li> -->
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="http://intranet.photowatt.local/CE/SitePages/Accueil.aspx">
+                                Comité d'entreprise
+
+
+
+
+
+
+
+
+
+
+
+                            
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/CE/SitePages/AS_PhotoWatt.aspx">
+                                        1. Association sportive
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/Avis.aspx">
+                                        2. Avis
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/Billeterie.aspx">
+                                        3. Billeterie
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/Cheques_Vacances.aspx">
+                                        4. Chèques vacances
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/Course_A_Pied.aspx">
+                                        5. Course à pied
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/Flash_Info.aspx">
+                                        6. Flash-Info
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/Prestations_CE.aspx">
+                                        7. Prestations du CE
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/PV_CE.aspx">
+                                        8. PV du CE
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/Tombola_Noel.aspx">
+                                        9. Tombola de Noël
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/CHSCT/SitePages/Accueil.aspx">
+                                CHSCT
+
+
+
+
+
+                            
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/CHSCT/SitePages/Reunion_pleniere.aspx">
+                                        1. Réunions plénières
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CHSCT/SitePages/Reunion_extraordinaire.aspx">
+                                        2. Réunions extraordinaires
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CHSCT/SitePages/Reception_Machine.aspx">
+                                        3. Réception machine
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CHSCT/SitePages/Visite.aspx">
+                                        4. Visites
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CHSCT/SitePages/Informations%20pratiques.aspx">
+                                        5. Informations pratiques
+
+
+
+
+
+
+                                    
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- FIN MENU -->
+                <div id="s4-titlerow" class="ms-dialogHidden s4-titlerowhidetitle">
+                    <div id="titleAreaBox" class="ms-noList ms-table ms-core-tableNoSpace">
+                        <div id="titleAreaRow" class="ms-tableRow">
+                            <div id="siteIcon" style="display:none" class="ms-tableCell ms-verticalAlignTop">
+                                <!--CS: Démarrer l’extrait de code Logo du site-->
+                                <!--MS:<SharePoint:AjaxDelta id="DeltaSiteLogo" BlockElement="true" runat="server">-->
+                                    <!--MS:<SharePoint:SPSimpleSiteLink CssClass="ms-siteicon-a" runat="server" id="onetidProjectPropertyTitleGraphic">-->
+                                        <!--MS:<SharePoint:SiteLogoImage CssClass="ms-siteicon-img" name="onetidHeadbnnr0" id="onetidHeadbnnr2" LogoImageUrl="/_layouts/15/images/siteIcon.png?rev=23" runat="server">-->
+                                            <!--PS: Début de l’APERÇU EN MODE LECTURE SEULE (ne pas modifier)--><img id="ctl00_onetidHeadbnnr2" class="ms-siteicon-img" name="onetidHeadbnnr0" src="http://intranet/_layouts/15/images/siteIcon.png?rev=23" alt="Content site" /><!--PE: Fin de l’APERÇU EN MODE LECTURE SEULE-->
+                                        <!--ME:</SharePoint:SiteLogoImage>-->
+                                    <!--ME:</SharePoint:SPSimpleSiteLink>-->
+                                <!--ME:</SharePoint:AjaxDelta>-->
+                                <!--CE:Terminer l’extrait de code Logo du site-->
+                            </div>
+                            <div style="display:none" class="ms-breadcrumb-box ms-tableCell ms-verticalAlignTop">
+                                <div class="ms-breadcrumb-top">
+                                    <div class="ms-breadcrumb-dropdownBox" style="display:none;">
+                                        <!--SPM:<SharePoint:AjaxDelta id="DeltaBreadcrumbDropdown" runat="server">-->
+                                        <!--SPM:<SharePoint:PopoutMenu
+                                    Visible="false"
+                                    runat="server"
+                                    ID="GlobalBreadCrumbNavPopout"
+                                    IconUrl="/_layouts/15/images/spcommon.png?rev=23"
+                                    IconAlt="&#60;%$Resources:wss,master_breadcrumbIconAlt%&#62;"
+                                    ThemeKey="v15breadcrumb"
+                                    IconOffsetX="215"
+                                    IconOffsetY="120"
+                                    IconWidth="16"
+                                    IconHeight="16"
+                                    AnchorCss="ms-breadcrumb-anchor"
+                                    AnchorOpenCss="ms-breadcrumb-anchor-open"
+                                    MenuCss="ms-breadcrumb-menu ms-noList">-->
+                                        <div class="ms-breadcrumb-top">
+                                            <!--SPM:<asp:Label runat="server" CssClass="ms-breadcrumb-header" Text="&#60;%$Resources:wss,master_breadcrumbHeader%&#62;"/>-->
+                                        </div>
+                                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderTitleBreadcrumb" runat="server">-->
+                                        <!--SPM:<SharePoint:ListSiteMapPath
+                                    runat="server"
+                                    SiteMapProviders="SPSiteMapProvider,SPContentMapProvider"
+                                    RenderCurrentNodeAsLink="false"
+                                    PathSeparator=""
+                                    CssClass="ms-breadcrumb"
+                                    NodeStyle-CssClass="ms-breadcrumbNode"
+                                    CurrentNodeStyle-CssClass="ms-breadcrumbCurrentNode"
+                                    RootNodeStyle-CssClass="ms-breadcrumbRootNode"
+                                    NodeImageOffsetX="0"
+                                    NodeImageOffsetY="289"
+                                    NodeImageWidth="16"
+                                    NodeImageHeight="16"
+                                    NodeImageUrl="/_layouts/15/images/fgimg.png?rev=23"
+                                    RTLNodeImageOffsetX="0"
+                                    RTLNodeImageOffsetY="312"
+                                    RTLNodeImageWidth="16"
+                                    RTLNodeImageHeight="16"
+                                    RTLNodeImageUrl="/_layouts/15/images/fgimg.png?rev=23"
+                                    HideInteriorRootNodes="true"
+                                    SkipLinkText=""/>-->
+                                        <!--SPM:</asp:ContentPlaceHolder>-->
+                                        <!--SPM:</SharePoint:PopoutMenu>-->
+                                        <!--SPM:</SharePoint:AjaxDelta>-->
+                                    </div>
+                                    <!--SPM:<SharePoint:AjaxDelta id="DeltaTopNavigation" BlockElement="true" CssClass="ms-displayInline" runat="server">-->
+                                    <!--SPM:<SharePoint:DelegateControl runat="server" ControlId="TopNavigationDataSource" Id="topNavigationDelegate">-->
+                                    <!--SPM:<Template_Controls>-->
+                                    <!--SPM:<asp:SiteMapDataSource
+                                ShowStartingNode="False"
+                                SiteMapProvider="SPNavigationProvider"
+                                id="topSiteMap"
+                                runat="server"
+                                StartingNodeUrl="sid:1002"/>-->
+                                    <!--SPM:</Template_Controls>-->
+                                    <!--SPM:</SharePoint:DelegateControl>-->
+                                    <a name="startNavigation">
+                                    </a>
+                                    <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderTopNavBar" runat="server">-->
+                                    <!--SPM:<SharePoint:AspMenu
+                                ID="TopNavigationMenu"
+                                Runat="server"
+                                EnableViewState="false"
+                                DataSourceID="topSiteMap"
+                                AccessKey="&#60;%$Resources:wss,navigation_accesskey%&#62;"
+                                UseSimpleRendering="true"
+                                UseSeparateCss="false"
+                                Orientation="Horizontal"
+                                StaticDisplayLevels="2"
+                                AdjustForShowStartingNode="true"
+                                MaximumDynamicDisplayLevels="2"
+                                SkipLinkText=""/>-->
+                                    <!--PS: Début de l’APERÇU EN MODE LECTURE SEULE (ne pas modifier)--><link rel="stylesheet" type="text/css" href="http://intranet/_layouts/15/1036/styles/menu-21.css" /><div id="zz7_TopNavigationMenu" class=" noindex ms-core-listMenu-horizontalBox"><ul id="zz9_RootAspMenu" class="root ms-core-listMenu-root static"><li class="static"><a class="static menu-item ms-core-listMenu-item ms-displayInline ms-navedit-linkNode" tabindex="0" title="Site de publication par défaut" href="#" accesskey="1"><span class="additional-background ms-navedit-flyoutArrow"><span class="menu-item-text">Site de publication par défaut</span></span></a></li></ul></div><!--PE: Fin de l’APERÇU EN MODE LECTURE SEULE-->
+                                    <!--SPM:</asp:ContentPlaceHolder>-->
+                                    <!--SPM:</SharePoint:AjaxDelta>-->
+                                </div>
+                                <h1 id="pageTitle" class="ms-core-pageTitle">
+                                    <!--SPM:<SharePoint:AjaxDelta id="DeltaPlaceHolderPageTitleInTitleArea" runat="server">-->
+                                    <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderPageTitleInTitleArea" runat="server">-->
+                                    <!--SPM:<SharePoint:SPTitleBreadcrumb
+                                    runat="server"
+                                    RenderCurrentNodeAsLink="true"
+                                    SiteMapProvider="SPContentMapProvider"
+                                CentralAdminSiteMapProvider="SPXmlAdminContentMapProvider">-->
+                                    <!--PS: Début de l’APERÇU EN MODE LECTURE SEULE (ne pas modifier)--><span id="ctl00_DeltaPlaceHolderPageTitleInTitleArea">Accueil</span><!--PE: Fin de l’APERÇU EN MODE LECTURE SEULE-->
+                                    <!--SPM:<PATHSEPARATORTEMPLATE>-->
+                                    <!--SPM:<SharePoint:ClusteredDirectionalSeparatorArrow runat="server"/>-->
+                                    <!--SPM:</PATHSEPARATORTEMPLATE>-->
+                                    <!--SPM:</SharePoint:SPTitleBreadcrumb>-->
+                                    <!--SPM:</asp:ContentPlaceHolder>-->
+                                    <!--SPM:</SharePoint:AjaxDelta>-->
+                                    <!--SPM:<SharePoint:AjaxDelta BlockElement="true" id="DeltaPlaceHolderPageDescription" CssClass="ms-displayInlineBlock ms-normalWrap" runat="server">-->
+                                    <a href="javascript:;" id="ms-pageDescriptionDiv" style="display:none">
+                                        <span id="ms-pageDescriptionImage">
+                                        </span>
+                                    </a>
+                                    <span class="ms-accessible" id="ms-pageDescription">
+                                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderPageDescription" runat="server"/>-->
+                                    </span>
+                                    <!--SPM:<SharePoint:ScriptBlock runat="server">-->
+                                    <!--SPM:_spBodyOnLoadFunctionNames.push("setupPageDescriptionCallout");-->
+                                    <!--SPM:</SharePoint:ScriptBlock>-->
+                                    <!--SPM:</SharePoint:AjaxDelta>-->
+                                </h1>
+                            </div>
+                            <div class="ms-tableCell ms-verticalAlignTop">
+                                <!--SPM:<SharePoint:AjaxDelta id="DeltaPlaceHolderSearchArea" BlockElement="true" CssClass="ms-mpSearchBox ms-floatRight" runat="server">-->
+                                <!--PS: Début de l’APERÇU EN MODE LECTURE SEULE (ne pas modifier)--><div class="ms-mpSearchBox ms-floatRight" id="ctl00_DeltaPlaceHolderSearchArea"><!--PE: Fin de l’APERÇU EN MODE LECTURE SEULE-->
+                                <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderSearchArea" runat="server">-->
+                                <div id="searchInputBox" style="display:none">
+                                    <!--SPM:<SharePoint:DelegateControl runat="server" ControlId="SmallSearchInputBox"/>-->
+                                    <!--PS: Début de l’APERÇU EN MODE LECTURE SEULE (ne pas modifier)--><div class="ms-webpart-chrome "><div webpartid="00000000-0000-0000-0000-000000000000" haspers="true" id="WebPart" width="100%" class="ms-WPBody noindex " onlyformepart="true" allowdelete="false" style=""><div componentid="ctl00_SmallSearchInputBox1_csr" id="ctl00_SmallSearchInputBox1_csr"><div id="SearchBox" name="Control"><div class="ms-srch-sb ms-srch-sb-border" id="ctl00_SmallSearchInputBox1_csr_sboxdiv"><input type="text" value="Rechercher sur ce site..." maxlength="2048" accesskey="S" title="Rechercher sur ce site..." id="ctl00_SmallSearchInputBox1_csr_sbox" autocomplete="off" autocorrect="off" class="ms-srch-sb-prompt ms-helperText" /><a title="Rechercher" class="ms-srch-sb-searchLink" id="ctl00_SmallSearchInputBox1_csr_SearchLink" href="javascript: {}"><img src="http://intranet/_layouts/15/images/searchresultui.png" class="ms-srch-sb-searchImg" id="searchImg" alt="Search" /></a><div class="ms-qSuggest-container ms-shadow" id="AutoCompContainer"><div id="ctl00_SmallSearchInputBox1_csr_AutoCompList"></div></div></div></div></div><div componentid="ctl00_SmallSearchInputBox1_csr" id="ctl00_SmallSearchInputBox1_csr"></div><div id="ctl00_SmallSearchInputBox1"></div><div class="ms-clear"></div></div></div><!--PE: Fin de l’APERÇU EN MODE LECTURE SEULE-->
+                                </div>
+                                <!--SPM:</asp:ContentPlaceHolder>-->
+                                <!--PS: Début de l’APERÇU EN MODE LECTURE SEULE (ne pas modifier)--></div><!--PE: Fin de l’APERÇU EN MODE LECTURE SEULE-->
+                                <!--SPM:</SharePoint:AjaxDelta>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="contentRow">
+                    <div id="sideNavBox" class="ms-dialogHidden ms-forceWrap ms-noList">
+                        <!--SPM:<SharePoint:AjaxDelta id="DeltaPlaceHolderLeftNavBar" BlockElement="true" CssClass="ms-core-navigation" role="navigation" runat="server">-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderLeftNavBar" runat="server">-->
+                        <a id="startNavigation" name="startNavigation" tabindex="-1">
+                        </a>
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderLeftNavBarTop" runat="server"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderQuickLaunchTop" runat="server"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderLeftNavBarDataSource" runat="server"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderCalendarNavigator" runat="server"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderLeftActions" runat="server"/>-->
+                        <div class="ms-core-sideNavBox-removeLeftMargin">
+                            <!--SPM:<SharePoint:SPNavigationManager
+                                            id="QuickLaunchNavigationManager"
+                                            runat="server"
+                                            QuickLaunchControlId="V4QuickLaunchMenu"
+                                            ContainedControl="QuickLaunch"
+                                            EnableViewState="false"
+>-->
+                            <!--SPM:<SharePoint:DelegateControl runat="server"
+                        ControlId="QuickLaunchDataSource">-->
+                            <!--SPM:<Template_Controls>-->
+                            <!--SPM:<asp:SiteMapDataSource
+                                                        SiteMapProvider="SPNavigationProvider"
+                                                        ShowStartingNode="False"
+                                                        id="QuickLaunchSiteMap"
+                                                        StartingNodeUrl="sid:1025"
+                                                        runat="server"
+/>-->
+                            <!--SPM:</Template_Controls>-->
+                            <!--SPM:</SharePoint:DelegateControl>-->
+                            <!--SPM:<SharePoint:AspMenu
+                                                id="V4QuickLaunchMenu"
+                                                runat="server"
+                                                EnableViewState="false"
+                                                DataSourceId="QuickLaunchSiteMap"
+                                                UseSimpleRendering="true"
+                                                Orientation="Vertical"
+                                                StaticDisplayLevels="3"
+                                                AdjustForShowStartingNode="true"
+                                                MaximumDynamicDisplayLevels="0"
+                                                SkipLinkText=""
+/>-->
+                            <!--SPM:</SharePoint:SPNavigationManager>-->
+                            <!--SPM:<SharePoint:SPNavigationManager
+                                                id="TreeViewNavigationManagerV4"
+                                                runat="server"
+                                                ContainedControl="TreeView"
+                                                CssClass="ms-tv-box"
+>-->
+                            <!--SPM:<SharePoint:SPLinkButton runat="server" NavigateUrl="~site/_layouts/15/viewlsts.aspx" id="idNavLinkSiteHierarchyV4" Text="&#60;%$Resources:wss,treeview_header%&#62;" accesskey="&#60;%$Resources:wss,quiklnch_allcontent_AK%&#62;"
+                        CssClass="ms-tv-header"/>-->
+                            <!--SPM:<SharePoint:DelegateControl runat="server" ControlId="TreeViewAndDataSource">-->
+                            <!--SPM:<Template_Controls>-->
+                            <!--SPM:<SharePoint:SPHierarchyDataSourceControl
+                                                            runat="server"
+                                                            id="TreeViewDataSourceV4"
+                                                            RootContextObject="Web"
+                                                            IncludeDiscussionFolders="true"
+/>-->
+                            <!--SPM:<SharePoint:SPRememberScroll runat="server" id="TreeViewRememberScrollV4" onscroll="javascript:_spRecordScrollPositions(this);"
+                                style="overflow: auto;">-->
+                            <!--SPM:<SharePoint:SPTreeView
+                                                            id="WebTreeViewV4"
+                                                            runat="server"
+                                                            ShowLines="false"
+                                                            DataSourceId="TreeViewDataSourceV4"
+                                                            ExpandDepth="0"
+                                                            SelectedNodeStyle-CssClass="ms-tv-selected"
+                                                            NodeStyle-CssClass="ms-tv-item"
+                                                            SkipLinkText=""
+                                                            NodeIndent="12"
+                                                            ExpandImageUrl="/_layouts/15/images/tvclosed.png?rev=23"
+                                                            ExpandImageUrlRtl="/_layouts/15/images/tvclosedrtl.png?rev=23"
+                                                            CollapseImageUrl="/_layouts/15/images/tvopen.png?rev=23"
+                                                            CollapseImageUrlRtl="/_layouts/15/images/tvopenrtl.png?rev=23"
+                                                            NoExpandImageUrl="/_layouts/15/images/tvblank.gif?rev=23"
+>-->
+                            <!--SPM:</SharePoint:SPTreeView>-->
+                            <!--SPM:</SharePoint:SPRememberScroll>-->
+                            <!--SPM:</Template_Controls>-->
+                            <!--SPM:</SharePoint:DelegateControl>-->
+                            <!--SPM:</SharePoint:SPNavigationManager>-->
+                            <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderQuickLaunchBottom" runat="server">-->
+                            <div class="ms-core-listMenu-verticalBox">
+                                <!--SPM:<SharePoint:ClusteredSPLinkButton
+                            runat="server"
+                            id="idNavLinkViewAll"
+                            PermissionsString="ViewFormPages"
+                            NavigateUrl="~site/_layouts/15/viewlsts.aspx"
+                            Text="&#60;%$Resources:wss,AllSiteContentMore%&#62;"
+                            accesskey="&#60;%$Resources:wss,quiklnch_allcontent_AK%&#62;"
+                            CssClass="ms-core-listMenu-item ms-core-listMenu-heading"/>-->
+                                <!--PS: Début de l’APERÇU EN MODE LECTURE SEULE (ne pas modifier)--><a id="ctl00_idNavLinkViewAll" accesskey="3" class="ms-core-listMenu-item ms-core-listMenu-heading" href="#"><span class="ms-splinkbutton-text">Tout le contenu du site</span></a><!--PE: Fin de l’APERÇU EN MODE LECTURE SEULE-->
+                            </div>
+                            <!--SPM:</asp:ContentPlaceHolder>-->
+                        </div>
+                        <!--SPM:</asp:ContentPlaceHolder>-->
+                        <!--SPM:</SharePoint:AjaxDelta>-->
+                    </div>
+                    <div id="contentBox" aria-live="polite" aria-relevant="all">
+                        <div id="notificationArea" class="ms-notif-box">
+                        </div>
+                        <!--SPM:<SharePoint:AjaxDelta id="DeltaPlaceHolderMain" BlockElement="true" IsMainContent="true" runat="server">-->
+                        <a id="mainContent" name="mainContent" tabindex="-1">
+                        </a>
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderMain" runat="server">-->
+                        <div class="DefaultContentBlock" style="border:medium black solid; background:yellow; color:black;">
+                        Cette zone sera renseignée par le contenu que vous créez dans vos mises en page.
+
+                    
+                        </div>
+                        <!--SPM:</asp:ContentPlaceHolder>-->
+                        <!--SPM:</SharePoint:AjaxDelta>-->
+                    </div>
+                    <!--SPM:<SharePoint:AjaxDelta id="DeltaFormDigest" BlockElement="true" runat="server">-->
+                    <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderFormDigest" runat="server">-->
+                    <!--SPM:<SharePoint:FormDigest runat="server"/>-->
+                    <!--SPM:</asp:ContentPlaceHolder>-->
+                    <!--SPM:</SharePoint:AjaxDelta>-->
+                    <div class="ms-hide">
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderSiteName" runat="server" Visible="false"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderHorizontalNav" runat="server" Visible="false"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderPageImage" runat="server" Visible="false"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderTitleLeftBorder" runat="server" Visible="false"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderMiniConsole" runat="server" Visible="false"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderTitleRightMargin" runat="server" Visible="false"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderTitleAreaSeparator" runat="server" Visible="false"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderNavSpacer" runat="server" Visible="false"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderLeftNavBarBorder" runat="server" Visible="false"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderBodyLeftBorder" runat="server" Visible="false"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderBodyRightMargin" runat="server" Visible="false"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderBodyAreaClass" runat="server" Visible="true"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderTitleAreaClass" runat="server" Visible="false"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderGlobalNavigation" runat="server" Visible="false"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="PlaceHolderGlobalNavigationSiteMap" runat="server" Visible="false"/>-->
+                        <!--SPM:<asp:ContentPlaceHolder id="WSSDesignConsole" runat="server" Visible="false"/>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--SPM:<SharePoint:ScriptBlock runat="server">-->
+        <!--SPM:var g_Workspace = "s4-workspace";-->
+        <!--SPM:</SharePoint:ScriptBlock>-->
+    </body>
+</html>

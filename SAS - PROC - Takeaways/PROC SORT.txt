@@ -1,0 +1,4 @@
+Proc sort Data=training.box_plot out=work.demo;
+By Num_Semaine;
+Run;
+

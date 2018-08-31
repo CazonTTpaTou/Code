@@ -1,0 +1,8 @@
+DATA Work.Stats2;
+SET Work.stats;
+BY Domaine;
+	IF first.domaine Then index=-1;
+	IF last.domaine Then index =-2;
+IF index=-1 then output;
+If index=-2 then output;
+RUN;

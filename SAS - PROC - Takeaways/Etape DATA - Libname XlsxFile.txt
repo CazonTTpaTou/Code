@@ -1,0 +1,7 @@
+libname  xlsxfile "\\office\users\Bases_de_donnees\Wafer\PROD-DEBITAGE\Suivi  Eclats  scies BEA 2015.xlsm";
+
+data WORK.Suivi__Eclats__scies_BEA_2015;
+
+set xlsxfile."Données$"n(dbSASType=('nb Lingot'n=numeric 'Nb Cpe Theo'n = numeric));
+/*)*/
+run;

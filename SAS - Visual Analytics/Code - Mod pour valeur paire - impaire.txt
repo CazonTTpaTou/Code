@@ -1,0 +1,3 @@
+IF ( ( 2 Mod 'Minute'n ) = 0 )
+RETURN 'Pair'
+ELSE 'Impair'

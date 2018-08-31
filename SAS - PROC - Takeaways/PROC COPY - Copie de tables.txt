@@ -1,0 +1,30 @@
+proc metaoperate
+        server="srv-sasdev"
+        port=8561
+        userid="PWSASDEV"
+        password="PWs@sDEV"
+        protocol=bridge
+        action=pause
+        noautopause;
+run;
+
+LIBNAME DTM_PRO BASE "E:\Donnees_SAS\DTM_PRO";
+LIBNAME DTM_TECH BASE "E:\Donnees_SAS\DTM_TECH";
+
+proc copy in=DTM_tech out=DTM_PRO force ;
+select DTM_PRO_TBO_PVA;
+run;
+
+LIBNAME DTM_PRO ;
+LIBNAME DTM_TECH ;
+
+
+proc metaoperate
+        server="srv-sasdev"
+        port=8561
+        userid="PWSASDEV"
+        password="PWs@sDEV"
+        protocol=bridge
+        action=resume
+        noautopause;
+run;

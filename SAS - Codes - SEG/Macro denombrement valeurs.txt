@@ -1,0 +1,58 @@
+%macro test();
+
+%let bib=DTM_PRO;
+%let tab=DTM_PRO_TRAC_CEL_TRIEES;
+
+proc contents data=&bib..&tab. out=temp (keep=name type);
+run;
+
+proc sql;
+select name, type, count(*) into: listvar separated by "," 
+, :listtype separated by "," 
+, :nb
+from temp
+;
+quit;
+
+proc sql;
+select count(*) into: lignes 
+from &bib..&tab.
+;
+quit;
+
+%do i=1 %to &nb.;
+	%let var=%scan("&listvar",&i.,",");
+	%let type=%scan("&listtype",&i.,",");
+
+	%if &type.=1 %then %do;
+		%let choix=&var. = .;
+		proc sql;
+			create table bb as
+			select "&var." as var length=32, count(*) as obs, &lignes. as ligne_tot as nb
+			from &bib..&tab.
+			where &var.=0
+		;
+		quit;
+
+		proc append base=zero data=bb force;
+		run;
+	%end;
+	%else %let choix=compress(&var.)="";
+
+	proc sql;
+	create table aa as
+		select "&var." as var length=32, count(*) as obs, &lignes. as ligne_tot as nb
+		from &bib..&tab.
+		where &choix.
+	;
+	quit;
+
+	proc append base=nul data=aa force;
+	run;
+
+
+%end;
+
+
+%mend;
+%test();

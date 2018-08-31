@@ -1,0 +1,79 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Chargement_Ruban" >
+	<ribbon startFromScratch="true">
+<tabs>
+<tab id="Administration" label="Administration">
+	<group id="AdministrationG" label="Administration">
+		<button id="AdministrationG1" label="Droits utilisateurs" imageMso="FilePermissionView" size="large" getEnabled="Aut_AdministrationG1"  onAction="Action_AdministrationG1"/>
+		<button id="AdministrationG2" label="Versions déployées" imageMso="AccessTableAssets" size="large" getEnabled="Aut_AdministrationG2"  onAction="Action_AdministrationG2"/>
+	</group>
+	<group id="ParametreAdmin" label="Paramètres">
+		<button id="ParametreAdmin1" label="Paramètres généraux" imageMso="AdvertisePublishAs" size="large" getEnabled="Aut_ParametreAdmin1"  onAction="Action_ParametreAdmin1"/>
+	</group>
+	<group id="Fichiers" label="Utilisateur">
+	<button id="Fichier1" label="Changer d'utilisateur" imageMso="AddOrRemoveAttendees" size="large" onAction="Action_Fichier1" getEnabled="Aut_Fichier1"  />
+	<button id="Fichier2" label="Changer d'environnement" imageMso="ClipArtInsert" size="large" getEnabled="Aut_Fichier2"  onAction="Action_Fichier2"/>
+	</group>
+</tab>
+<tab id="Parametres" label="Paramètres">
+	<group id="DonneesGen" label="Données Générales">
+		<button id="DonneesGen1" label="Unités de production" imageMso="FileCompactAndRepairDatabase" getEnabled="Aut_DonneesGen1"  onAction="Action_DonneesGen1"/>
+		<button id="DonneesGen2" label="Secteurs" imageMso="ReviewCompareMajorVersion" getEnabled="Aut_DonneesGen2"  onAction="Action_DonneesGen2"/>
+		<button id="DonneesGen3" label="Arrêts Techniques" imageMso="ViewAppointmentInCalendar" getEnabled="Aut_DonneesGen3" onAction="Action_DonneesGen3"/>
+	</group>
+	<group id="Fournisseurs" label="Fournisseurs">
+		<button id="Fournisseurs1" label="Contacts" imageMso="AutoDial" getEnabled="Aut_Fournisseurs1"  onAction="Action_Fournisseurs1"/>
+		<button id="Fournisseurs2" label="Fournisseurs" imageMso="FileCreateDocumentWorkspace" getEnabled="Aut_Fournisseurs2"  onAction="Action_Fournisseurs2"/>
+	</group>
+	<group id="Equipements" label="Equipements">
+		<button id="Equipements1" label="Catégories" imageMso="AdpDiagramArrangeTables" getEnabled="Aut_Equipements1"  onAction="Action_Equipements1"/>
+		<button id="Equipements2" label="Modèles" imageMso="ObjectsGroup" getEnabled="Aut_Equipements2"  onAction="Action_Equipements2"/>
+		<button id="Equipements3" label="Procédés" imageMso="SmartArtAddShapeAbove" getEnabled="Aut_Equipements3"  onAction="Action_Action_Equipements3"/>
+		<button id="Equipements5" label="Equipements" imageMso="SmartArtOrganizationChartRightHanging" getEnabled="Aut_Equipements5"  onAction="Action_Equipements5"/>
+		<button id="Equipements4" label="Sous-équipements" imageMso="SmartArtOrganizationChartLeftHanging" getEnabled="Aut_Equipements4"  onAction="Action_Equipements4"/>
+		<button id="Equipements6" label="Dépendances" imageMso="SmartArtOrganizationChartMenu" getEnabled="Aut_Equipements6"  onAction="Action_Equipements6"/>
+	</group>
+	<group id="ParamInterventions" label="Interventions">
+		<button id="ParamInterventions1" label="Etats" imageMso="BarcodeInsert" getEnabled="Aut_ParamInterventions1"  onAction="Action_ParamInterventions1"/>
+		<button id="ParamInterventions2" label="Domaines" imageMso="CreateClassModule" getEnabled="Aut_ParamInterventions2"  onAction="Action_ParamInterventions2"/>
+		<button id="ParamInterventions3" label="Types" imageMso="NameManager" getEnabled="Aut_ParamInterventions3"  onAction="Action_ParamInterventions3"/>
+		<button id="ParamInterventions4" label="Priorités" imageMso="HighImportance" getEnabled="Aut_ParamInterventions4"  onAction="Action_ParamInterventions4"/>
+		<button id="ParamInterventions5" label="Urgences" imageMso="FileMarkAsFinal" getEnabled="Aut_ParamInterventions5"  onAction="Action_ParamInterventions5"/>
+	</group>
+	<group id="Autre" label="Intervenants">
+		<button id="Autre1" label="Services" imageMso="CreateModule" getEnabled="Aut_Autre1"  onAction="Action_Autre1"/>
+		<button id="Autre2" label="Intervenants" imageMso="DistributionListAddNewMember" getEnabled="Aut_Autre2"  onAction="Action_Autre2"/>
+	</group>
+</tab>
+<tab id="Interventions" label="Interventions">
+	<group id="InterventionsG" label="Gestion des interventions">
+		<button id="InterventionsG1" label="Liste des interventions" imageMso="ViewDraftView" size="large" getEnabled="Aut_InterventionsG1"  onAction="Action_InterventionsG1"/>
+		<button id="InterventionsG2" label="Demande d'intervention" imageMso="SharingOpenNotesFolder" size="large" getEnabled="Aut_InterventionsG2"  onAction="Action_InterventionsG2"/>
+	</group>
+</tab>
+<tab id="MaintenanceP" label="Maintenance préventive">
+	<group id="FichePrev" label="Fiches préventives">
+		<button id="FichePrev1" label="Liste des fiches préventives" imageMso="CreateLabels" size="large" getEnabled="Aut_FichePrev1"  onAction="Action_FichePrev1"/>
+		<button id="FichePrev2" label="Nouvelle fiche préventive" imageMso="CitationMark" size="large" getEnabled="Aut_FichePrev2"  onAction="Action_FichePrev2"/>
+	</group>
+	<group id="Compteurs" label="Compteurs">
+		<button id="Compteurs1" label="Gestion des compteurs" imageMso="FileStartWorkflow" size="large" getEnabled="Aut_Compteurs1"  onAction="Action_Compteurs1"/>
+	</group>
+</tab>
+</tabs>
+</ribbon>
+<backstage>
+         <button idMso="FileSave" visible="false"/>
+         <button idMso="SaveObjectAs" visible="false"/>
+         <button idMso="FileSaveAsCurrentFileFormat" visible="false"/>
+         <button idMso="FileOpen" visible="false"/>
+         <button idMso="FileCloseDatabase" visible="false"/>
+         <tab idMso="TabInfo" visible="false"/>
+         <tab idMso="TabRecent" visible="false"/>
+         <tab idMso="TabNew" visible="false"/>
+         <tab idMso="TabPrint" visible="true"/>
+         <tab idMso="TabShare" visible="false"/>
+         <tab idMso="TabHelp" visible="false"/>
+         <button idMso="ApplicationOptionsDialog" visible="false"/>
+         <button idMso="FileExit" visible="true"/>
+</backstage>
+</customUI>

@@ -1,0 +1,217 @@
+* { font-size:12px; font-family:times-new-roman; } 
+
+/*Définition de la position du formulaire, de sa taille, de son encadré et de sa couleur d'arrière plan */
+
+.title  {color:#AAC;
+	 font-weight:bold;
+	 font-size:35px;
+	 position: absolute;
+	 top:1px; left:272px;}
+
+.title_pop {position: absolute;
+	 top:1px; left:152px;}
+
+.subtitle {position: absolute;
+	   top:10px; left:30px;
+	   font-size:20px;
+	   color:#AAC;}
+
+.menus1 {position: absolute; 
+	 top:80px; left:30px;
+	 width:350px;  
+	 padding:10px; 
+	 border:#AAC solid 6px; 
+	 list-style-type:none; 
+         background:#DDF; }
+
+div span.label {
+ 	float:left;
+ 	text-align: left;
+	font-weight:bold;}
+
+div span.formw {
+	float:right;
+	text-align: right;}
+
+div span.button {}
+
+.erreur {position: fixed; 
+	 top:293px; left:82px;
+	 width:350px;
+	 border:#000000 solid 4px; 
+	 border-width:1px;
+	 padding:3px;
+	 
+	 text-decoration:blink;
+	 font-weight:bold;
+	 background-color:#F0E68C;
+	 color:#FF0000;}
+
+.image {position: absolute; 
+	  top:17px; left:17px;
+	  width:132px; height:137px}
+
+.mention {position: absolute; 
+	  top:1px; left:190px;
+	  font-size:20px;
+          width:550px;height:150px;
+	  border:#00A050 solid 4px; 
+	  border-width:5px;
+          margin:5px;}
+
+.mention1 {position: absolute; 
+	  top:1px; left:770px;
+          width:200px;height:140px;
+	  border:#00A050 solid 4px; 
+	  border-width:5px;
+          margin:5px;
+	  padding-left:15px;
+          padding-top:10px;}
+
+.societe {position: absolute; 
+	  top:1px; left:177px;
+	  font-size:50px;
+	  font-weight:bold;
+	  font-color:000000;
+	  color:#00A050;}
+
+.sous-societe {position: absolute; 
+	  top:63px; left:187px;
+	  font-size:20px;
+	  font-color:000000;
+	  font-weight:normal;
+	  scrolldelay=150;}
+
+.adresse {position: absolute; 
+	  top:92px; left:222px;
+	  font-size:15px;
+	  font-color:000000;
+	  font-weight:normal;}
+
+.barre {position: absolute; 
+        top:17px; left:537px;
+	color:000000;
+	background-color:000000;}
+
+.profil-title {font-size:20px;
+	       font-weight:bold;
+               color:#00A050;
+		text-align : center;}
+
+.profil-answer {font-size:15px;
+	       font-weight:normal;
+		position:absolute:
+                left:15px;}
+
+.dex {font-weight:bold;
+      font-size:23px;
+      color:#0050FF;
+     text-align:center;}
+
+.choix {position: absolute; 
+	  top:1px; left:10px;
+          width:150px;height:50px;
+	  border:#00A050 solid 4px; 
+          font-weight:bold;
+          font-size:50px;
+	  border-width:5px;
+          margin:5px;
+	  text-align:center;
+	  vertical-align:middle;
+	  color:#00A050;;
+          }
+
+.choix1 {position: absolute; 
+	  top:75px; left:10px;
+          width:150px;height:325px;
+	  border:#00A050 solid 4px; 
+          font-weight:bold;
+          font-size:25px;
+	  border-width:5px;
+          margin:5px;
+	  color:#00A050;}
+
+.menu {text-align:center;
+       vertical-align:middle;
+        font-weight:bold;
+        font-size:40px;}
+
+.menub {font-size:15px;
+        text-decoration:underline;}
+
+
+.image2 {position:absolute;
+         top:160px; left:195px;
+         border:#00A050 solid 4px; }
+
+.formu {position:absolute;
+         top:175px; left:195px;
+         width:798px;
+	 height:228px;
+         border:#00A050 solid 4px;
+         border-width:5px;
+         background:url('teo-croco.jpg') top left no-repeat;}
+
+.remarque {position: absolute;
+	   top:50px;
+           left:320px;            
+            text-decoration:blink;
+             font-size:25px;
+             font-weight:bold;
+	     color:#00A050;
+	     text-align:center;
+	     padding-right:10px;}
+
+.formi {position:absolute;
+         top:15px; left:305px;
+         width:468px;
+	 height:208px;
+         border:#00A050 solid 1px;
+         border-width:0px;
+	 overflow:scroll;
+	 margin-right:20px;}
+
+.libelle { font-size:30px;
+           font-weight:bold;
+	   color:#00A050;
+	   float:left;
+ 	   text-align: left;
+           text-decoration:underline;
+	   text-transform:CAPITALIZE;}
+	   
+.champs {float:right;
+ 	text-align: right;
+	font-size:20px;
+        margin-right:10px;
+	   }
+           
+.entete {font-weight:bold;
+	text-align: center;
+           text-decoration:underline;
+	   text-transform:CAPITALIZE;
+	background-color:#00A050;
+	color:#FFFFFF;}
+
+.image-accueil {position: absolute; 
+	 	 top:10px; left:507px;
+	         border:#AAC solid 3px; }
+
+.fond1 {
+	background-color:#98FB98;
+	color:#000000;}
+
+.fond2 {
+	background-color:#FFFFFF;
+	color:#000000;}
+          	   
+.encadrons {position: absolute; 
+	    top:80px; left:40px;
+	    width:930px;
+	    height:300px;
+	    border:#AAC solid 3px;
+            border-width:3px;}
+
+
+.filet {position: absolute; 
+	top:1px; left:40px;
+	color:#AAC;}

@@ -1,0 +1,65 @@
+PROC SQL;
+connect to odbc(readbuff=32767 datasrc=SQC user=SASSQL password="{SAS002}3625302A43996237206B48FF5188832F3A71A582");
+
+CREATE VIEW RE_CEL.Vue_Coquille_Carton_Lot
+AS
+select * from connection to odbc
+(
+SELECT 
+	V_Coquille.[Coquille Num],
+	V_Coquille.[Carton Num],
+	V_Coquille.[Lot Derniere Cellule],
+	/*V_Carton.[Carton Num],*/
+	V_LOT.[Lot],
+	V_Coquille.[Atelier Num],
+	V_Coquille.[Classe Cellule],
+	V_Coquille.[Code BAAN],
+	V_Coquille.[Code Logistique],
+	V_Coquille.[Materiau],
+	V_Coquille.[Tri Annee Poste],
+	V_Coquille.[Tri Date Heure],
+	V_Coquille.[Tri Date Poste],
+	V_Coquille.[Tri Equipe],
+	V_Coquille.[Tri Equipement],
+	V_Coquille.[Tri Matricule],
+	V_Coquille.[Tri Mois Poste],
+	V_Coquille.[Tri Poste],
+	V_Coquille.[Tri Qte],
+	V_Coquille.[Tri Semaine Poste],
+	/*V_Carton.[Atelier Num],*/
+
+	/*V_Carton.[Classe Cellule],
+	V_Carton.[Code BAAN],
+	V_Carton.[Code Logistique],*/
+	V_Carton.[Embc Annee Poste],
+	V_Carton.[Embc Date Heure],
+	V_Carton.[Embc Date Poste],
+	V_Carton.[Embc Equipe],
+	V_Carton.[Embc Matricule],
+	V_Carton.[Embc Mois Poste],
+	V_Carton.[Embc Poste],
+	V_Carton.[Embc Qte],
+	V_Carton.[Embc Semaine Poste],
+	/*V_Carton.[Materiau],*/
+	V_Carton.[Palette Num],
+	/*V_Carton.[Tri Equipement],*/
+	V_LOT.[Societe],
+
+	V_LOT.[Fournisseur],
+	/*V_LOT.[Materiau],*/
+	V_LOT.[Assemblage 1],
+	V_LOT.[Assemblage 2+],
+	V_LOT.[Lingot 1],
+	V_LOT.[Lingot 2+]
+
+	FROM [dbo].[V_CARTON]
+		INNER JOIN [dbo].[V_COQUILLE]
+		ON [dbo].[V_CARTON].[Carton Num] = [dbo].[V_COQUILLE].[Carton Num]
+		INNER JOIN [dbo].V_LOTS AS V_LOT
+		ON [dbo].[V_COQUILLE].[Lot Derniere Cellule] = V_LOT.Lot
+	);
+	disconnect from odbc;
+
+QUIT;
+
+

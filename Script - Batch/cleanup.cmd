@@ -1,0 +1,12 @@
+forfiles /p "D:\SAS\Config\Lev1\Web\SASEnvironmentManager\server-5.8.0-EE\logs" /s /m *.* /c "cmd /c del @Path" /d -30
+forfiles /p "D:\SAS\Config\Lev1\Web\SASEnvironmentManager\agent-5.8.0-EE\log" /s /m *.* /c "cmd /c del @Path" /d -30
+forfiles /p "D:\SAS\Config\Lev1\Web\WebAppServer\SASServer1_1\logs" /s /m *.* /c "cmd /c del @Path" /d -30
+forfiles /p "D:\SAS\Config\Lev1\Web\WebAppServer\SASServer2_1\logs" /s /m *.* /c "cmd /c del @Path" /d -30
+forfiles /p "D:\SAS\Config\Lev1\Web\WebAppServer\SASServer12_1\logs" /s /m *.* /c "cmd /c del @Path" /d -30
+forfiles /p "D:\SAS\Config\Lev1\Web\WebServer\logs" /s /m *.* /c "cmd /c del @Path" /d -30
+forfiles /p "D:\SAS\Config\Lev1\Applications\SASVisualAnalytics\VisualAnalyticsAdministrator\Logs" /s /m *.* /c "cmd /c del @Path" /d -30
+forfiles /p "D:\SAS\Config\Lev1\Applications\SASVisualAnalytics\VisualAnalyticsAdministrator\VALIBLA\Logs" /s /m *.* /c "cmd /c del @Path" /d -30
+forfiles /p "D:\SAS\Config\Lev1\Applications\SASVisualAnalytics\VisualAnalyticsAdministrator\EVDMLA\Logs" /s /m *.* /c "cmd /c del @Path" /d -30
+forfiles /p "F:\SAS\Config\Lev1\Logs" /s /m *.* /c "cmd /c del @Path" /d -5
+forfiles /p "D:\SAS\Backups\REPORT\backups" /s /m *.* /c "cmd /c del @Path" /d -30
+forfiles /p "D:\SAS\SigFiles" /s /m *.* /c "cmd /c del @Path" /d -30

@@ -1,0 +1,41 @@
+--------------------------------------------------------------------------------------------------------
+Ratio Répartition des interventions par domaine
+--------------------------------------------------------------------------------------------------------
+ [Measures].[Dimension_domaineN] 
+/  
+([Measures].[Dimension_domaineN],[Domaines].[Domaines].CurrentMember.Parent), 
+FORMAT_STRING="PERCENT6."
+
+--------------------------------------------------------------------------------------------------------
+Ratio de mono-domaine
+--------------------------------------------------------------------------------------------------------
+
+[Measures].[Effectif Interventions]/[Measures].[Dimension_domaineN], FORMAT_STRING="PERCENT6."
+
+[Measures].[Effectif Interventions]/[Measures].[_Code_InterventionN], FORMAT_STRING="PERCENT6."
+
+--------------------------------------------------------------------------------------------------------
+Nombre de code d'intervention distincts
+--------------------------------------------------------------------------------------------------------
+
+DistinctCount([Intervention].[_Code_Intervention].MEMBERS), FORMAT_STRING="BEST15."
+
+--------------------------------------------------------------------------------------------------------
+Ratio Répartition des interventions par domaine
+--------------------------------------------------------------------------------------------------------
+
+ [Measures].[Nombre Domaine] 
+/  
+([Measures].[Nombre Domaine],[Domaines].[Domaines].CurrentMember.Parent), 
+FORMAT_STRING="PERCENT6."
+
+--------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+

@@ -1,0 +1,14 @@
+
+%let Date_J = %sysfunc(date(),worddate.);
+%let DateJ = %sysfunc(translate(&Date_J,'-',','));
+
+%let Heure_J = %sysfunc(time(),time5.);
+%let HeureJ = %sysfunc(translate(&Heure_J,'-',':'));
+
+%let Prefixe = C:\Users\pwsasdev\Desktop\Logs_;
+%let Suffixe = .txt;
+%let Separateur = _;
+
+%let FichierLog = &Prefixe.&DateJ.&Separateur.&HeureJ.&Suffixe;
+
+

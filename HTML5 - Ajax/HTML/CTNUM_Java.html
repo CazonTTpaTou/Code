@@ -1,0 +1,92 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<link rel="stylesheet" type="text/css" href="./Presentation.css"></link>
+<script src="fonctions_JS.js" type="text/javascript"></script>
+<title>CTNUM - Java</title>
+</head>
+
+<body class="Rouge" >
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+<p class="Paragraphe1"><a class="PDF" href="../PHP/CTNUM2.php">Version en PDF</a></p>
+<H1><div><span class="Titre2">▼ RÉALISATION APPLICATIF DE SIMULATION ▼ </br> DES STOCKS </span></div></H1>
+<p class="TexteI"><img src="../Pictures/Click_Fam_3.JPG"/></p>
+</br>
+
+<table class="sommaire">
+  <tr><td>
+  <center><span class="titre_sommaire">► Sommaire ◄</span><center>
+<ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Presentation" title="Se rendre à cette section...">Présentation de la mission.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Presentation2" title="Se rendre à cette section...">Explication de la mission.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section2" title="Se rendre à cette section...">Les différentes IHM de l'application</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section3" title="Se rendre à cette section...">Les diagrammes UML de l'application</li></a></li>
+<ol start="31">
+             <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section31" title="Se rendre à cette sous section...">Diagramme des activités.</li></a>
+	     <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section32" title="Se rendre à cette sous section...">Diagramme de classes.</li></a>
+             <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section33" title="Se rendre à cette sous section...">Design Pattern.</li></a>
+	     <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section34" title="Se rendre à cette sous section...">Diagramme de séquence.</a>
+</ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section4" title="Se rendre à cette section...">Environnement de développement</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Conclusion" title="Se rendre à cette section...">Conclusion</li></a>
+</ol>
+</td></tr></table></br>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Presentation"></a>
+<p class="Texte">CTNUM est une entreprise spécialisée dans l'édition numérique et plus spécialement dans l'impression numérique à la demande de documents en petite quantité. Elle travaille principalement sur des marchés de niche (micro-édition, marketing one to one) et compte comme client des entreprises auquelles elle fournit des prestations sur mesure.</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_Logo.JPG" /></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Presentation2"></a>
+<p class="Texte">Pour répondre à la demande de ses clients, cette société devait régulièrement s'approvisionner en matières premières (films, papier, colle, encre), ce qui lui posait des problèmes de gestion de stock. Le petit applicatif programmé en Java durant ce stage permettait donc d'optimiser la gestion des stocks de l'entreprise, selon une problématique de recherche opérationnelle.</p>
+<p class="Texte">L'entreprise gérant ses stocks en flux tendus, elle devait pouvoir anticiper les quantités optimales de matière première à commander auprès des fournisseurs, en fonction de la période, des contraintes de délai, de stockage et de coût (des stocks importants engendrent des avances de fonds donc des coûts financiers conséquents).</p>
+<p style="font-size:14pt;text-align:center;text-decoration:underline;">L'applicatif se devait donc d'estimer la fluctuation future des stocks en simulant les différents aléas:</p>
+<div style="margin-left:10em;">
+<ul style="font-size:14pt;text-align:center" type="square" >
+<li style="font-size:14pt;text-align:left">le nombre de commandes selon une loi de probabilité de type Weibull,</li>
+<li style="font-size:14pt;text-align:left">la quantité de chaque commande selon une loi normale Gaussienne,</li>
+<li style="font-size:14pt;text-align:left">les délais de livraison selon une loi de type uniforme,</li>
+<li style="font-size:14pt;text-align:left">les rebuts de production selon une loi gamma.</li>
+</ul>
+</div>
+<p class="TexteI"><img src="../Pictures/CTNUM_Java_Weibull.JPG"/></p>
+<p class="Texte">Le but de l'application était de déterminer les quantités optimales de matières premières que CTNUM devait commander à ses fournisseurs, qui minimiseraient les coûts de production ainsi que le nombre potentiel de jours de pénurie de stock.</p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+<a name="Section2"></a>
+<p class="Texte">Voici un aperçu de l'IHM utilisateur de saisie des paramètres de la simulation :
+<p class="TexteI"><img src="../Pictures/CTNUM_Java_IHM_1.JPG"/></p>
+<p class="Texte">Et voici un aperçu de l'interface graphique de type Java.Swing de la simulation de stock générée après la saisie des différents paramètres par l'utilisateur :</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_Java_IHM_2.JPG"/></p>
+<p class="Texte">Les lignes apparaissant en grisé représentaient les jours où potentiellement une rupture des stocks de matière première pouvait survenir dans l'entrepôt. </p>
+<p class="TexteI"><img src="../Pictures/CTNUM_Java_statistiques.JPG"/></p>
+<p class="Texte">L'applicatif présentait également un récapitulatif des différentes statistiques de distribution détaillées, concernant le nombre de jours potentiels de rupture de stock ainsi que les différents ratios de rotation des stocks.</p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+<a name="Section3"></a>
+<a name="Section31"></a>
+<p class="Texte">L'architecture de l'application était construite selon le diagramme d'activités suivant :</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_Java_Activites.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+<a name="Section32"></a>
+<p class="Texte">Par ailleurs, le diagramme de classes UML de l'application était le suivant :</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_35.bmp"/></p>
+<a name="Section33"></a>
+<p class="Texte">Au sein de cette architecture, plusieurs design pattern Java ont ainsi été utilisés, dont le schéma singleton permettant l'instanciation unique d'une classe d'objet particulière :</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_Java_Pattern Singleton.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+<a name="Section34"></a>
+<p class="Texte">L'algorithme de gestion du stock était construit sur un modèle de type file d'attente, qui était ordonnancé selon le diagramme de séquences dont voici un aperçu détaillé ci-après :</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_Java_Sequence.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+<a name="Section4"></a>
+<p class="Texte">L'application a été développée par le biais de l'IDE (environnement de développement intégré) Eclipse Helios :</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_34.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+<a name="Conclusion"></a>
+<p class="Texte">Au final, l'applicatif a permis d'accentuer la rationalisation du processus de gestion des stocks de l'entreprise CTNUM, les différentes simulations générées constituant des indicateurs précis et concrets d'aide à la décision logistique.</p>
+</br>
+<p class="Paragraphe1"><a class="PDF" href="../PHP/CTNUM2.php">Version en PDF</a></p>
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+</br>
+</body>
+</html>

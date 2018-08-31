@@ -1,0 +1,33 @@
+Data _NULL_;
+Set TRAINING.FABIEN_RESULTATS_MEANS_Final;
+if _N_ = 1 then call symput('s1',compress(Num_Semaine));
+if _N_ = 2 then call symput('s2',compress(Num_Semaine));
+if _N_ <= 2 then output;
+RUN;
+
+Data TRaining.Fabien_Pre_boxPlot;
+SET Training.Box_Plot;
+Where Num_Semaine = &s1 
+   or Num_Semaine = &s2;
+RUN;
+TITLE "Numéro de semaine &s1 et &s2";
+Proc BoxPlot data=TRaining.Fabien_Pre_boxPlot;
+PLOT (SawStep Thickn TTV) * Num_Semaine;
+Inset 
+      mean='Moyenne'
+	  stddev='Ecart-type'/
+	  format=6.2 
+	  cshadow=black 
+	  position=n
+	  cfill=antiquewhite;
+Insetgroup
+	  mean='Moyenne'
+	  N='Effectif'
+	  Q1='1er quartile'
+	  Q3='3ème quartile'/
+	  format=6.2 
+	  position=bottom
+	  ctext=bib;
+RUN;
+
+

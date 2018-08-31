@@ -1,0 +1,146 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+        // Remplissage de la liste
+        List<Personne> personnes = new List<Personne>();
+
+            personnes.Add(new Personne(1,"Jean","Mopdf",45));
+            personnes.Add(new Personne(2,"Francois","Mopdf",12));
+            personnes.Add(new Personne(3,"Rene","Mopdf",17));
+            personnes.Add(new Personne(4,"Mathilde","Mopdf",18));
+            personnes.Add(new Personne(5,"Allassane","Mopdf",25));
+            personnes.Add(new Personne(6, "Coline", "Serop",50));
+
+        // Déclarer une liste de personnes
+            var toutes = from p in personnes 
+                         where p.prenom.StartsWith("M")
+                         select p;
+
+        // Afficher le résultat
+            foreach (Personne p in toutes)
+                Console.WriteLine(p.id + " " + p.nom + " " + p.prenom);
+
+       // Déclarer une liste de personnes
+            var certains = from p in personnes
+                         group p by p.nom;
+
+      // Afficher le résultat
+            foreach(var g in certains)
+            {
+                Console.WriteLine(g.Key);
+                foreach (var s in g)
+                    Console.WriteLine(s.id + " " + s.nom + " " + s.prenom);
+             }
+
+      // Faire des regroupements
+            var lpa =
+                    from z in personnes
+                    let ta = z.TrancheAge
+                    group z by ta into g
+                    orderby g.Key
+                    select g;
+
+      // Afficher le résultat
+            foreach (var e in lpa)
+            {
+                Console.WriteLine(e.Key);
+                foreach (var f in e)
+                    Console.WriteLine("\t" + f.id + " " + f.nom + " " + f.prenom + " " + f.age + " " + f.TrancheAge);
+            }
+
+    // Age Moyen
+            var lam = personnes.Average(p => p.age);
+            Console.WriteLine("Age moyen : {0} ans.", (int)lam);
+    
+    // Faire des dénombrements
+            var spa =
+                    from z in personnes
+                    let ta = z.TrancheAge
+                    group z by ta into g
+                    orderby g.Key
+                    select new{tranche = g.Key,nombre = g.Count()};
+
+      // Afficher le résultat
+            foreach (var ab in spa)
+                Console.WriteLine("Tranche: {0} - Nombre : {1} ",ab.tranche,ab.nombre);
+
+    // Requete LINQ to SQL
+            DataGMAODataContext dc = new DataGMAODataContext();
+
+            var equipement = from c in dc.Secteur
+                             select c;
+
+            foreach (var c in equipement)
+                Console.WriteLine("Libellé du secteur : {0}", c.Libelle);
+
+            var secteur = from s in dc.Secteur
+                          let libSec = s.Libelle
+                          join u in dc.UAP on s.idUAP equals u.idUAP
+                          orderby u.Libelle
+                          select new { u.Libelle, libSec };
+
+            foreach (var d in secteur)
+                Console.WriteLine("Libellé UAP : {0} - Secteur : {1}", d.Libelle,d.libSec);
+        }
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication2
+{
+    public class Personne
+    {
+            public enum Tranches
+            {
+                Enfant,
+                Adulte
+            }
+
+            public int id {get;set;}
+            public string nom {get;set;}
+            public string prenom {get;set;}
+            public int age { get; set; }
+
+            public Tranches TrancheAge
+
+                { get { return age < 18 ? Tranches.Enfant : Tranches.Adulte; } }
+
+        public Personne()
+        {
+            id=age=0;
+            prenom = nom ="";
+        }
+
+        public Personne(int id,string prenom,string nom,int age)
+        {
+            this.id=id;
+            this.nom = nom;
+            this.prenom = prenom;
+            this.age = age;
+        }
+
+        
+
+    }
+}
+

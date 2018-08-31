@@ -1,0 +1,73 @@
+DATA SHAREPT.SP_GLOBAL_IMPORT_USAGE (keep=DateOuverture DateEnregistrement DureeModification ObjectType NomFichier TypeFichier Site);
+FORMAT 
+	DateOuverture DATETIME23.
+	DateEnregistrement DATETIME23.;
+
+SET DS_SP.ImportUsage;
+
+NomFichier = Substr(URL,find(URL,trim('/'),'i',1-100)+1,length(URL)-find(URL,trim('/'),'i',1-100));
+TypeFichier = Substr(URL,find(URL,trim('.'),'i',1-100)+1,length(URL)-find(URL,trim('.'),'i',1-100));
+
+IF find(URL,trim('/'),'i',2) > 0 THEN Site = Substr(URL,1,find(URL,trim('/'),'i',2));
+ELSE Site = Url;
+
+User = substr(UserLogin,index(UserLogin,trim('\'))+1,length(UserLogin)-index(UserLogin,trim('\')));
+DureeModification = (RowCreatedTime - LogTime) / (60*60);
+
+DateOuverture = dhms(Datepart(LogTime),hour(timepart(LogTime))+2,minute(timepart(LogTime)),Second(timepart(LogTime)));
+DateEnregistrement = dhms(Datepart(RowCreatedTime),hour(timepart(RowCreatedTime))+2,minute(timepart(RowCreatedTime)),Second(timepart(RowCreatedTime)));
+
+RUN;
+
+----------------------------------------------------------------------------------------------------------------------
+
+DATA SHAREPT.SP_GLOBAL_REQUEST_USAGE (keep= LogTime DateOuverture User Site Document TypeFichier);
+FORMAT 
+	DateOuverture DATETIME23.;
+
+SET DS_SP.RequestUsage;
+
+IF find(DocumentPath,trim('/'),'i',2) > 0 THEN Site = Substr(DocumentPath,2,find(DocumentPath,trim('/'),'i',2)-2);
+ELSE Site = DocumentPath;
+
+Document = Substr(DocumentPath,find(DocumentPath,trim('/'),'i',1-100)+1,length(DocumentPath)-find(DocumentPath,trim('/'),'i',1-100));
+TypeFichier = Substr(DocumentPath,find(DocumentPath,trim('.'),'i',1-100)+1,length(DocumentPath)-find(DocumentPath,trim('.'),'i',1-100));
+
+User = substr(UserLogin,index(UserLogin,trim('\'))+1,length(UserLogin)-index(UserLogin,trim('\')));
+
+DateOuverture = dhms(Datepart(LogTime),hour(timepart(LogTime))+2,minute(timepart(LogTime)),Second(timepart(LogTime)));
+
+RUN;
+
+----------------------------------------------------------------------------------------------------------------------
+
+DATA SHAREPT.SP_GLOBAL_QUERY_COUNT (keep=Site Termes LastProcessingTime LastProcessingHitsCount TotalHitsCount);
+Format
+	Site $250.;
+SET DS_SP_2.SearchReportsData; 
+
+Site = 'General';
+IF substr(Itemuri,1,77) = 'path:"http://intranet.photowatt.local/SupplyChain/DA/Lists/Demande%20Achats/"' THEN Site = 'Demande Achats';
+IF substr(Itemuri,1,48) = 'path:"http://intranet.photowatt.local/juridique"' THEN Site = 'Juridique';
+IF substr(Itemuri,1,46) = 'path:"http://intranet.photowatt.local/qualite"' THEN Site = 'Qualite';
+
+Termes = ItemUri;
+IF Site = 'Qualite' THEN Termes = Substr(ItemUri,250,length(ItemUri)-249);
+IF Site = 'Juridique' THEN Termes = Substr(ItemUri,252,length(ItemUri)-251);
+IF Site = 'Demande Achats' THEN Termes = Substr(ItemUri,79,length(ItemUri)-78);
+
+IF NOT(index(Itemuri,'contentclass:spspeople') > 0 OR substr(Itemuri,1,7)='siteid:') THEN OUTPUT;
+		
+RUN;
+
+
+
+
+
+
+
+
+
+
+
+

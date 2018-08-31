@@ -1,0 +1,14 @@
+Application de recherche :
+
+Source de contenu :
+
+http://srv-sp:5555/_admin/search/listcontentsources.aspx?appid={3536fbee-4289-4033-bde2-92a46b5a6689}
+
+Schéma de recherche :
+
+http://srv-sp:5555/_admin/search/listmanagedproperties.aspx?appid=3536fbee%2D4289%2D4033%2Dbde2%2D92a46b5a6689
+
+
+
+
+

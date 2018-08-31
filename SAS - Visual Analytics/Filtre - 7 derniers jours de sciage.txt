@@ -1,0 +1,4 @@
+TreatAs(_Number_,datepart('Ass Sci Date Heure Fin'n))
+>=
+TreatAs(_Number_, 
+DateFromMDY(Month(datepart(now())), DayOfMonth(datepart(now()))-7, Year(datepart(now()))))  

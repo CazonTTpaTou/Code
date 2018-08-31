@@ -1,0 +1,10 @@
+IF ( DayOfWeek(DatePart('Date Tri'n)) = 1 )
+RETURN ( WeekNumber(DatePart('Date Tri'n)) - 1 )
+ELSE WeekNumber(DatePart('Date Tri'n))
+
+Concatenate(Format(Year(datepart('Date Tri'n)), 'Z4.0'), Concatenate(' - ', Concatenate('Semaine n° ', Format('Numero_Semaine'n, 'Z2.0'))))
+
+Concatenate(' - ', Concatenate('Semaine n° ', Format('Numero_Semaine'n, 'Z2.0')))
+
+
+

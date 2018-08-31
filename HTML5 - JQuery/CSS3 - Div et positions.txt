@@ -1,0 +1,122 @@
+body {
+}
+#First {font-style:italic;
+}
+
+#Second {font-style:normal;}
+
+.Empile {
+    display:block;
+}
+
+.Aligne {
+    display:inline;
+}
+
+#Conteneur{
+     display:inline;
+}
+
+#Boite {
+    width:10%;
+    max-width:10%;
+    height:200px;
+    overflow:auto;
+    display:block;
+    float:left;
+    margin: 1em 2em 1em 2em;
+    padding: 10px;
+    border-top: 2px double #0026ff; 
+    border-bottom: 2px double #0026ff; 
+    border-left: 2px double #0026ff; 
+    border-radius : 10px;  
+    transform:rotate(12deg);
+}
+#Boite1 {
+    width:15%;
+    max-width:15%;
+    height:200px;
+    overflow:scroll;
+    display:block;
+    transform:rotate(-12deg);
+  
+}
+#Position1{
+    position:static;
+    left:50px;
+    box-shadow: 5px 5px 10px #808080;
+}
+#Position2{
+    position:relative;
+    left:50px;   
+    filter: alpha(opacity=0.75);
+    opacity: .5; 
+}
+#Position3{
+    position:absolute;
+    left:250px;
+    clip : rect(50px 200px 200px 50 px);
+}
+#Position4{
+    position:fixed;
+    left:50px;
+}
+
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="StyleSheet3.css" rel="stylesheet" />
+    <title></title>
+</head>
+<body>
+    <form>
+        <div id="First">
+            <label class="Aligne">Nom</label>
+            <input type="text" class="Aligne" />
+
+            <label class="Aligne">Age</label>
+            <input type="number" class="Aligne" />
+        </div>
+        <div id="Second" >
+            <label class="Empile">Prénom</label>
+            <input type="text" class="Empile" />
+
+            <label class="Empile">Numéro</label>
+            <input type="number" class="Empile" />
+        </div>
+        <div id="Conteneur">           
+            <div id="Boite">
+                <p>
+                When Billy accuses Eric of leaking the Medellin trailer on YouTube, their already strained relationship goes from bad to worse. Meanwhile, Ari lines up Vince's next dream project, and Drama will go to any lengths to buy a hat.
+                When Billy accuses Eric of leaking the Medellin trailer on YouTube, their already strained relationship goes from bad to worse. Meanwhile, Ari lines up Vince's next dream project, and Drama will go to any lengths to buy a hat.
+                When Billy accuses Eric of leaking the Medellin trailer on YouTube, their already strained relationship goes from bad to worse. Meanwhile, Ari lines up Vince's next dream project, and Drama will go to any lengths to buy a hat.
+                </p>
+            </div>
+            <div id="Boite1">
+                <p>
+                    Eric of leaking the Medellin trailer on YouTube, their already strained relationship goes from bad to worse.
+                </p> 
+            </div>
+        </div>
+        <br />
+        <div id="Position1">
+            Ari must convince Lloyd to come back to work after Lloyd has a nasty breakup with Tom, Turtle's shady cousin makes them an offer they cant refuse. 
+        </div>
+        <div id="Position2">
+            Eric gets into a car accident with Anna Faris. After she gave him his number so he could call her for her insurance, he tries to contact her, but finds out she gave him a wrong number. So, he decides to go to her house to talk to her. 
+        </div>
+        <div id="Position3">
+            Eric actually drives Anna to a meeting for a movie. Meanwhile, Turtle is desperate because the boys
+        </div>
+        <div id="Position4">
+            Turtle, accompanied by some girls, gets stopped by the police. Ari has an argument with Mrs. Ari, because she wants to return to her old TV-show
+        </div>
+    </form>
+</body>
+</html>

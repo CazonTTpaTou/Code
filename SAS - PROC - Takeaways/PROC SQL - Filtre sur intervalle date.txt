@@ -1,0 +1,16 @@
+PROC SQL;
+ CREATE TABLE STATS.DATA_HENNECKE_2_MOIS AS 
+   SELECT t1.WaferId, 
+          t1.BOW, 
+          t1.SawEdge, 
+          t1.SawGroove, 
+          t1.SawStep, 
+          t1.TTV, 
+          t1.Thickn, 
+          t1.ThPt, 
+          t1.Type_assemblage, 
+          t1.Ass_Sci_Date_Heure_Fin, 
+          t1.Ass_Sci_Equipement
+      FROM STATS.DATA_HENNECKE t1
+	where datepart(t1.Ass_Sci_Date_Heure_Fin) BETWEEN '01Nov2017'd and '31Dec2017'd;
+QUIT;

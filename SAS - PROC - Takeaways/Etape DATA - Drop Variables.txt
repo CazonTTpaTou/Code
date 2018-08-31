@@ -1,0 +1,7 @@
+DATA STATS.DATA_LOG_TRI_WAVELABS (drop=journee jour EstSur10jours EstSurUnMois EstSurTroisMois);
+SET SPDEWAV.TL_WAVESLABS;
+IF EstSurUnMois=1 THEN OUTPUT;
+RUN;
+
+
+

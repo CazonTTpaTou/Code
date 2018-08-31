@@ -1,0 +1,32 @@
+DATA RE_GMAO.SP_QUALITE_FILE_USAGE (keep=DateOuverture DateEnregistrement DureeModification User NomFichier TypeFichier);
+FORMAT 
+	DateOuverture DATETIME23.
+	DateEnregistrement DATETIME23.;
+
+SET DS_SP.FileUsage;
+
+User = substr(UserLogin,index(UserLogin,trim('\'))+1,length(UserLogin)-index(UserLogin,trim('\')));
+DureeModification = (RowCreatedTime - LogTime) / (60*60);
+
+DateOuverture = dhms(Datepart(LogTime),hour(timepart(LogTime))+2,minute(timepart(LogTime)),Second(timepart(LogTime)));
+DateEnregistrement = dhms(Datepart(RowCreatedTime),hour(timepart(RowCreatedTime))+2,minute(timepart(RowCreatedTime)),Second(timepart(RowCreatedTime)));
+
+IF Substr(URL,1,16) = 'Modes opratoires' THEN 
+	DO;
+	    NomFichier = Substr(URL,18,length(URL)-17);
+		TypeFichier = 'Mode opératoire';
+		OUTPUT;
+	END;
+
+IF Substr(URL,1,22) = 'Processus et procdures' THEN 
+	DO;
+	    NomFichier = Substr(URL,24,length(URL)-23);
+		TypeFichier = 'Procédure';
+		OUTPUT;
+	END;
+
+RUN;
+
+
+
+

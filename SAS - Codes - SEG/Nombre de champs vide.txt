@@ -1,0 +1,11 @@
+PROC SQL;
+SELECT Nombre_Vide.N1 Label "Nombre de valeurs vides",
+       Nombre_Total.N2 Label "Nombre total d'enregistrements",
+       (Nombre_Vide.N1/Nombre_Total.N2)*1.000000 Label "Ratio" Format percent10.4
+FROM
+(SELECT COUNT(*) AS N1 FROM DTM_PUR.DTM_PUR_ARTICLE_SEGMENTATION_300 WHERE Nom_Commerce is missing) AS Nombre_Vide,
+(SELECT COUNT(*) AS N2 FROM DTM_PUR.DTM_PUR_ARTICLE_SEGMENTATION_300) AS Nombre_Total;
+RUN;
+
+
+

@@ -1,0 +1,42 @@
+%macro ImportsFile(Adresse,Rep);
+
+	%let Path = %sysfunc(cat(&Adresse, &Rep));
+	%put --> Adresse : &Path;
+
+			data Name_File (keep=Nom_Fichier);
+
+			length Nom_Fichier $200;
+
+			fich = filename ('Liste',"&Path");
+
+			fichier = dopen('Liste');
+			nbfile = dnum(fichier);
+
+			do i=1 to nbfile by 1;
+			     Nom_Fichier = dread(fichier,i);	 
+			     output;	  
+			end;
+
+			rc=dclose(did);
+
+			run;
+
+%mend;
+%ImportsFile(\\office\donnees_machines\Cellules\ILOT1\Lytox\,Aurora\);
+
+data _null_;
+
+	length Nom_Fichier $200;
+	SET Name_File;
+
+	call symputx('chemin',Nom_Fichier);
+	%put --> Chemin : &chemin;
+
+RUN;
+
+%ImportsFile(\\office\donnees_machines\Cellules\ILOT1\Lytox\Aurora\,&chemin);
+
+
+
+
+

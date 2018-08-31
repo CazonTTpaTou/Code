@@ -1,0 +1,24 @@
+IF ( 'Jour - 0'n = 1 )
+RETURN '1 - Jour courant'
+ELSE ( 
+  IF ( 'Jour - 1'n = 1 )
+  RETURN '2 - Hier'
+  ELSE ( 
+    IF ( 'Semaine - 0'n = 1 )
+    RETURN '3 - Semaine courante'
+    ELSE ( 
+      IF ( 'Semaine - 1'n = 1 )
+      RETURN '4 - Semaine dernière'
+      ELSE ( 
+        IF ( 'Mois - 0'n = 1 )
+        RETURN '5 - Mois en cours'
+        ELSE ( 
+          IF ( 'Mois - 1'n = 1 )
+          RETURN '6 - Mois dernier'
+          ELSE ( 
+            IF ( 'Trimestre - 0'n = 1 )
+            RETURN '7 - Trimestre en cours'
+            ELSE ( 
+              IF ( 'Trimestre - 1'n = 1 )
+              RETURN '8 - Trimestre dernier'
+              ELSE '' ) ) ) ) ) ) )

@@ -1,0 +1,148 @@
+Public Aff_Menu_Fiche As Boolean
+Public Aff_Creation_Fiche As Boolean
+Public Aff_Suppression_Fiche As Boolean
+Public Aff_Ajouter_Fiche As Boolean
+Public Choix_supprimer_Fiches As Boolean
+
+Public Type_fiche As Integer
+Public N_fiche As Integer
+Public Fiche_Selection As Integer
+Public Intitule_fiche(1 To 4) As String
+Public Liste_Fiche(1 To 200) As Variant
+
+' ---------------------------------- Onglet Fiche ---------------------------------------
+'Callback for F0 getVisible
+Sub Menu_Fiche(control As IRibbonControl, ByRef returnedVal)
+returnedVal = Aff_Menu_Fiche
+End Sub
+
+'Callback for F01 onAction
+Sub Fiche_Creation(control As IRibbonControl)
+Aff_Menu_Fiche = False
+Aff_Creation_Fiche = True
+Aff_Suppression_Fiche = False
+Choix_supprimer_Fiches = False
+MonRuban.Invalidate
+Call Desactiver
+End Sub
+
+'Callback for F11 onAction
+Sub Fiche_Supprimer_AU(control As IRibbonControl)
+Call Action_Supprimer(1)
+End Sub
+
+'Callback for F12 onAction
+Sub Fiche_Supprimer_EC(control As IRibbonControl)
+Call Action_Supprimer(2)
+End Sub
+
+'Callback for F13 onAction
+Sub Fiche_Supprimer_FT(control As IRibbonControl)
+Call Action_Supprimer(3)
+End Sub
+
+'Callback for F14 onAction
+Sub Fiche_Supprimer_MS(control As IRibbonControl)
+Call Action_Supprimer(4)
+End Sub
+
+'Callback for F2 getVisible
+Sub Menu_Ajouter_Fiche(control As IRibbonControl, ByRef returnedVal)
+returnedVal = Aff_Creation_Fiche
+End Sub
+
+'Callback for F21 onAction
+Sub Fiche_Ajouter_AU(control As IRibbonControl)
+Call Action_Ajouter_fiche(1)
+End Sub
+
+'Callback for F22 onAction
+Sub Fiche_Ajouter_EC(control As IRibbonControl)
+Call Action_Ajouter_fiche(2)
+End Sub
+
+'Callback for F23 onAction
+Sub Fiche_Ajouter_FT(control As IRibbonControl)
+Call Action_Ajouter_fiche(3)
+End Sub
+
+'Callback for F24 onAction
+Sub Fiche_Ajouter_MS(control As IRibbonControl)
+Call Action_Ajouter_fiche(4)
+End Sub
+
+'Callback for F25 onAction
+Sub Suppr_Annule_Operation(control As IRibbonControl)
+    Aff_Menu_Fiche = True
+    Aff_Suppression_Fiche = False
+    Aff_Creation_Fiche = False
+    Choix_supprimer_Fiches = False
+    Aff_Reintegration = False
+    MonRuban.Invalidate
+    Call Activer
+End Sub
+
+'Callback for F3 getLabel
+Sub Supprimer_Numero(control As IRibbonControl, ByRef returnedVal)
+    returnedVal = "Suppression d'une Fiche pour l'anomalie n° " & Cells(ActiveCell.Row, 2)
+End Sub
+
+'Callback for F3 getVisible
+Sub Menu_Supprimer_Fiche(control As IRibbonControl, ByRef returnedVal)
+    returnedVal = Aff_Suppression_Fiche
+End Sub
+
+'Callback for F30 getLabel
+Sub Supprimer_Type_Fiche(control As IRibbonControl, ByRef returnedVal)
+    returnedVal = "Sélectionner une " & Intitule_fiche(Type_fiche)
+End Sub
+
+'Callback for F31 onAction
+Sub Selection_Fiche(control As IRibbonControl, id As String, index As Integer)
+    Num_Salarie_Selec = index
+End Sub
+
+'Callback for F31 getItemCount
+Sub N_Item_Fiche(control As IRibbonControl, ByRef returnedVal)
+    returnedVal = N_fiche
+End Sub
+
+'Callback for F31 getItemLabel
+Sub Label_Fiche(control As IRibbonControl, index As Integer, ByRef returnedVal)
+    returnedVal = Liste_Fiche(index + 1)
+End Sub
+
+'Callback for F31 getSelectedItemIndex
+Sub Default_Item_Fiche(control As IRibbonControl, ByRef returnedVal)
+     returnedVal = 0
+End Sub
+
+'Callback for F32 onAction
+Sub Supprimer_Fiche_Selectionnee(control As IRibbonControl)
+    Call Suppression_fiche(Type_fiche, Fiche_Selection)
+End Sub
+
+'Callback for F1 getLabel
+Sub Label_Supprimer_une_Fiche(control As IRibbonControl, ByRef returnedVal)
+returnedVal = "Supprimer une fiche pour l'anomalie n ° " & Cells(ActiveCell.Row, 2)
+End Sub
+
+'Callback for F2 getLabel
+Sub Label_Ajouter_une_Fiche(control As IRibbonControl, ByRef returnedVal)
+returnedVal = "Ajouter une fiche pour l'anomalie n ° " & Cells(ActiveCell.Row, 2)
+End Sub
+
+'Callback for F1 getVisible
+Sub Choix_Supprimer_Fiche(control As IRibbonControl, ByRef returnedVal)
+    returnedVal = Choix_supprimer_Fiches
+End Sub
+
+'Callback for F02 onAction
+Sub Fiche_Suppression(control As IRibbonControl)
+    Aff_Menu_Fiche = False
+    Aff_Suppression_Fiche = False
+    Aff_Creation_Fiche = False
+    Choix_supprimer_Fiches = True
+    MonRuban.Invalidate
+    Call Desactiver
+End Sub

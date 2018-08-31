@@ -1,0 +1,144 @@
+Option Compare Database
+
+Public Function Vide(ByVal frm As String, _
+                     ByVal ctl As String) _
+                     As Boolean
+'--------------------------------------------------------------------
+' On vérifie que l'utilisateur a bien saisi une valeur dans le champ
+
+Dim Valeur_Saisie As Variant
+Dim Choix As Integer
+Dim Formulaire As Form
+Dim Controle As Control
+
+Set Formulaire = Forms(frm)
+Set Controle = Formulaire.Controls(ctl)
+
+Valeur_Saisie = Controle.Text
+
+Vide = False
+
+' ---------------------------------------------------------------------
+' Si la valeur est nulle, on affiche un message d'erreur
+
+If IsNull(Valeur_Saisie) _
+   Or (Valeur_Saisie = "") Then
+      
+      Choix = MsgBox(Message_valeur_vide _
+                      & Message_valeur_vide2, vbYesNo)
+      If Choix = vbNo Then
+        Vide = False
+        Formulaire.Undo
+        DoCmd.GoToRecord , , acPrevious
+      Else
+        Vide = True
+      End If
+      
+End If
+
+Set Formulaire = Nothing
+Set Controle = Nothing
+
+End Function
+
+
+Public Function Doublon(ByVal Table As String, ByVal Champ As String, ByVal frm As String, _
+                        ByVal ctl As String, ByVal id As String) _
+                        As Boolean
+
+Dim Valeur_Saisie, Valeur_id As Variant
+Dim ChampQuote, idQuote, CritereCh, CritereId As String
+Dim Formulaire As Form
+Dim Controle, ControleId As Control
+
+Set Formulaire = Forms(frm)
+Set Controle = Formulaire.Controls(ctl)
+Set ControleId = Formulaire.Controls(id)
+
+Valeur_Saisie = Controle.Text
+Valeur_id = ControleId.value
+
+ChampQuote = "[" & Champ & "]"
+idQuote = "[" & id & "]"
+CritereCh = ChampQuote & "='" & Nz(Valeur_Saisie, "") & "'"
+CritereId = idQuote & "=" & Nz(Valeur_id, "")
+
+Doublon = False
+
+'-----------------------------------------------------------------------
+' Si la valeur est nulle, il ne peut y avoir de doublon de cette valeur
+
+If IsNull(Valeur_Saisie) _
+   Or (Valeur_Saisie = "") Then
+    
+      Set Formulaire = Nothing
+      Set Controle = Nothing
+      Exit Function
+      
+End If
+
+'-----------------------------------------------------------------------
+' Si la valeur existe déjà dans le champ, on affiche un message d'erreur
+'-----------------------------------------------------------------------
+' Si l'id est nulle c'est qu'il s'agit d'une création de ligne
+
+If IsNull(Valeur_id) Then
+    
+    If Not IsNull(DLookup( _
+                    ChampQuote, _
+                    Table, _
+                    CritereCh)) Then
+        
+                    MsgBox Valeur_Saisie _
+                            & Message_doublon_BDD_part1 _
+                            & Message_doublon_BDD_part2
+                            
+                    Doublon = True
+    End If
+    
+' ---------------------------------------------------------------------
+' Si l'id est non nulle c'est qu'il s'agit d'une modification de ligne
+    Else
+        
+        If (Valeur_Saisie <> Nz(DLookup( _
+                    ChampQuote, _
+                    Table, _
+                    CritereId), "")) _
+        And Not IsNull(DLookup( _
+                    ChampQuote, _
+                    Table, _
+                    CritereChamp)) Then
+                    
+                    MsgBox Valeur_Saisie _
+                        & Message_doublon_BDD_part1 _
+                        & Message_doublon_BDD_part2
+
+                    Doublon = True
+        End If
+    End If
+
+Set Formulaire = Nothing
+Set Controle = Nothing
+
+End Function
+
+
+'---------------------------------------------------------------------
+' Fonction pour faire des recherches dans le tableau de structure des tables
+Public Function LookId(ByVal NomTable As String) As String
+    Dim lig As Integer
+    
+LookId = "N\A"
+
+Call InitStructureTable
+
+    For lig = LBound(StructureTable, 1) To UBound(StructureTable, 1)
+        If StructureTable(lig, 1) = NomTable Then
+            LookId = StructureTable(lig, 2)
+            Exit For
+        End If
+    Next lig
+    
+End Function
+
+

@@ -1,0 +1,12 @@
+{
+	"type": "record",
+	"namespace": "lefabuleuxmandarindor",
+	"name": "Plat",
+	"fields": [
+		{"name": "nom", "type": "string"},
+		{"name": "ingredients", "type": {"type": "array", "items": "string"}, "default": []},
+		{"name": "origine", "type": "string", "default": "null"},
+		{"name": "prix", "type": "float"},
+		{"name": "type", "type": {"type": "enum", "name": "Type", "symbols": ["plat", "accompagnement"]}}
+	]
+}

@@ -1,0 +1,2 @@
+
+logparser -i:IISW3C -o:CSV "SELECT TOP 100000 * INTO C:\downloads\UsageReport.csv FROM C:\downloads\logFiles\*.log  WHERE ((cs-uri-stem LIKE '%.aspx') OR (cs-uri-stem LIKE '%.docx') OR (cs-uri-stem LIKE '%.doc') OR (cs-uri-stem LIKE '%.xlsx') OR (cs-uri-stem LIKE '%.xls') OR (cs-uri-stem LIKE '%.pptx') OR (cs-uri-stem LIKE '%.ppt') OR (cs-uri-stem LIKE '%.pdf'))"

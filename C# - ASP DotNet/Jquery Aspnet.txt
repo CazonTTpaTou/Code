@@ -1,0 +1,66 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm5.aspx.cs" Inherits="WebApplication1.WebForm5" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="Scripts/jquery-1.8.2.js"></script>
+    <script src="Scripts/jquery.cookies.2.2.0.js"></script>
+    <script src="Scripts/jquery.treeview.js"></script>
+    <script>
+        $(document).ready(
+                            function () {
+                                alert("Document chargé");
+                            });
+        $(document).ready(
+                            function () {
+                                var para = "";
+                                $('p').each(
+                                            function () {
+                                                var s = $(this).text() + " - ";
+                                                para += s;
+                                            });
+                                $("#sortie").text(para);
+                            });
+        $(document).ready(function () {
+            $("#livres").treeview({
+                animated: "fast",
+                collapsed: true,
+                unique: true,
+                persist: "cookie"
+            })
+        });
+    </script>
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <p>Albi</p>
+        <p>Cahors</p>
+        <p>Rodez</p>
+        <p>Toulouse</p>
+        <p>Caen</p>
+    </div>
+        <div >
+            Sortie :
+            <span id="sortie"></span>
+        </div>
+    <div>
+        <ul id="livres">
+            <li>Informatique</li>
+            <ul>
+                <li>Développement Web</li>
+                <li>Développement Windows</li>
+            </ul>
+            <li>Systèmes et réseaux</li>
+            <ul>
+                <li>Systèmes</li>
+                <li>Réseaux</li>
+            </ul>
+        </ul>
+    </div>
+    </form>
+</body>
+</html>

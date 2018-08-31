@@ -1,0 +1,265 @@
+LIBNAME CDSN ODBC  DATASRC=CDSN  SCHEMA=CDSN_app  USER=SASSQL  PASSWORD="{SAS002}3625302A43996237206B48FF5188832F3A71A582" ;
+
+
+PROC SQL ;
+CREATE TABLE STATS.DATA_Hennecke
+AS
+
+SELECT
+
+PUT(Datetime(),datetime.) AS Date_Actualisation,
+t1.Assemblage_Num,
+t1.Ass_Col_Date_Poste,
+t1.Ass_Liv_Date_Poste,
+t1.Ass_Sci_Annee_Poste_Fin,
+t1.Ass_Sci_Cause_Casse_Fil_1,
+t1.Ass_Sci_Cause_Casse_Fil_2,
+t1.Ass_Sci_Cause_Incident_1,
+t1.Ass_Sci_Cause_Incident_2,
+t1.Ass_Sci_Date_Poste_Fin,
+t1.Ass_Sci_Equipe_Debut,
+t1.Ass_Sci_Equipement,
+t1.Ass_Sci_Date_Heure_Fin,
+t1.Ass_Sci_Fil_Diametre,
+t1.Ass_Sci_Km_apres_Tension,
+t1.Ass_Sci_Lg_Sortie_mm,
+t1.Ass_Sci_Mois_Poste_Fin,
+t1.Ass_Sci_Nb_Assemblages,
+t1.Ass_Sci_Nb_CasseFil_E,
+t1.Ass_Sci_Nb_CasseFil_EMS,
+t1.Ass_Sci_Nb_CasseFil_M,
+t1.Ass_Sci_Nb_CasseFil_S,
+t1.Ass_Sci_Nb_Double,
+t1.Ass_Sci_Num_Decoupe,
+/*t1.Ass_Sci_Num_Test,*/
+t1.Ass_Sci_Operateur_Debut,
+t1.Ass_Sci_Pas_microns,
+t1.Ass_Sci_Position,
+T1.Ass_Sci_Qte_Sortie_Theo,
+t1.Ass_Sci_Sem_Poste_Fin,
+t1.Ass_Sci_Slurry_Densite,
+t1.Ass_Sci_Slurry_Nb_Util,
+t1.Ass_Sci_Type_Fil,
+t1.Ass_Sci_Vitesse_Fil_m_par_s,
+t1.Ass_Sci_Vitesse_Table_microns_pa,
+/*t1.Assemblage_Compte,
+t1.Assemblage_Format,
+t1.Briq_Ass_Lg_mm,
+t1.Briq_Ass_Pds_kg,
+t1.Date_Heure_SAS,*/
+t1.Lingot_Num,
+/*t1.Lingot_Num_Test,*/
+t1.Lingot_Type,
+t1.Type_assemblage,
+t1.Waf_Ctrl_Annee_Poste,
+t1.Waf_Ctrl_Date_Poste,
+/*t1.Waf_Ctrl_Epais_moy,*/
+t1.Waf_Ctrl_Equipe,
+/*t1.Waf_Ctrl_Equipement,*/
+t1.Waf_Ctrl_Mois_Poste,
+/*t1.Waf_Ctrl_Ondul_Moy,*/
+t1.Waf_Ctrl_Qte_Rejet,
+t1.Waf_Ctrl_Qte_Sortie,
+t1.Waf_Ctrl_Rej_Dim,
+t1.Waf_Ctrl_Rej_Ebrech,
+t1.Waf_Ctrl_Rej_Epais,
+t1.Waf_Ctrl_Rej_Ondul,
+t1.Waf_Ctrl_Rej_Strie,
+t1.Waf_Ctrl_Rej_TTV,
+t1.Waf_Ctrl_Sem_Poste,
+/*t1.Waf_Ctrl_Strie_Moy,
+t1.Waf_Ctrl_TTV_moy,
+t1.Waf_Net_Annee_Poste,
+t1.Waf_Net_Date_Poste,
+t1.Waf_Net_Equipe,
+t1.Waf_Net_Mois_Poste,
+t1.Waf_Net_Num_Test,
+t1.Waf_Net_Sem_Poste,*/
+t1.Waf_Net_Qte_Entree,
+t1.Ling_Dec_Equipement,
+t1.Ling_Fus_Equipement,
+
+t2.'N°Assemblage'n as N_Assemblage,
+t2.WaferId,
+t2.Schnitt,
+t2.Time,
+t2.Qual,
+t2.Thickn,
+t2.TTV,
+t2.LATF,
+t2.SawGroove,
+t2.SawStep,
+t2.SawEdge,
+t2.BOW,
+t2.Struct,
+t2.SizeX,
+t2.SizeY,
+t2.Thpt
+
+/*T3.Date AS Date_T1A,
+T3.x_C__T1A,
+T3.x_Fe__T1A,
+T3.x_H2O__T1A,
+T3.x_SiC__T1A,
+T3.x_SiO2__T1A,
+T3.x_Si__T1A,
+
+T4.Date AS Date_T4A,
+T4.x_C__T4A,
+T4.x_Fe__T4A,
+T4.x_H2O__T4A,
+T4.x_SiC__T4A,
+T4.x_SiO2__T4A,
+T4.x_Si__T4A,
+
+T5.Date AS Date_Diam,
+T5.T1A_diam_,
+T5.T1A_fines,
+T5.T4A_diam,
+T5.T4A_fines,
+
+T6.Date_prelev,
+T6.Origine,
+T6.T4A_diam AS T4A_diam_PW,
+T6.T4A_fines AS T4A_fines_PW,
+T6.XRF_CH2,
+T6.XRF_Fe,
+T6.XRF_Si,
+T6.XRF_SiC*/
+
+FROM
+
+		CDSN.TL_HENNECKE AS T2 
+
+		LEFT OUTER JOIN  DTM_PRO.DTM_PRO_TRAC_WAFERS AS T1 
+		 ON t2.'N°Assemblage'n =  T1.Assemblage_Num;
+
+		
+RUN;
+
+
+options compress=yes;
+proc sql noprint;
+	create table WORK.PERF_LOG as 
+    SELECT
+        DATA_HENNECKE.Ass_Sci_Equipement,
+		DATA_HENNECKE.Ass_Sci_Position,
+		DATA_HENNECKE.Ass_Sci_Date_Heure_Fin,
+        DATA_HENNECKE.Assemblage_Num,
+        DATA_HENNECKE.Date_Actualisation,
+        DATA_HENNECKE.Time,
+        /*DATA_HENNECKE.Thickn,
+        DATA_HENNECKE.TTV,
+        DATA_HENNECKE.SawGroove,
+        DATA_HENNECKE.SawStep,
+        DATA_HENNECKE.SawEdge,*/
+        LOG10(DATA_HENNECKE.TTV) length=8 format=BESTD12.8 AS TTV_Log,
+        LOG10(DATA_HENNECKE.Thickn) length=8 format=BESTD12.8 AS Thickn_Log,
+        LOG10(DATA_HENNECKE.SawGroove) length=8 format=BESTD12.8 AS SawGroove_Log,
+        LOG10(DATA_HENNECKE.SawStep) length=8 format=BESTD12.8 AS SawStep_Log,
+        LOG10(DATA_HENNECKE.SawEdge) length=8 format=BESTD12.8 AS SawEdge_Log
+    FROM
+        STATS.DATA_HENNECKE as DATA_HENNECKE
+   where Ass_Sci_Date_Poste_Fin >= dhms(INTNX('day',date(),-60),0,0,0);
+quit;
+
+proc sql noprint;
+	create table WORK.SPC_CC_SCIAGE_LOG as 
+    SELECT
+        DATA_HENNECKES.Ass_Sci_Equipement length=50 format=$50. label='Ass Sci Equipement' AS Ass_Sci_Equipement,
+		DATA_HENNECKES.Ass_Sci_Position,
+		DATA_HENNECKES.Assemblage_Num length=8 format=F11. label='Assemblage Num' AS Assemblage_Num,
+        MAX(DATA_HENNECKES.Date_Actualisation) length=8 format=$16. AS Date_Actualisation,
+        MAX(DATA_HENNECKES.Ass_Sci_Date_Heure_Fin) length=8 format=DATETIME22.3 label='Ass_Sci_Date_Heure_Fin' AS Ass_Sci_Date_Heure_Fin,
+
+		/*AVG(DATA_HENNECKES.Thickn) length=8 format=F11. AS Thickn_AVG,
+        AVG(DATA_HENNECKES.TTV) length=8 format=F11. AS TTV_AVG,
+        AVG(DATA_HENNECKES.SawGroove) length=8 format=F11. AS SawGroove_AVG,
+        AVG(DATA_HENNECKES.SawStep) length=8 format=F11. AS SawStep_AVG,
+        AVG(DATA_HENNECKES.SawEdge) length=8 format=F11. AS SawEdge_AVG,
+        STD(DATA_HENNECKES.Thickn) length=8 format=F11. AS Thickn_STD,
+        STD(DATA_HENNECKES.TTV) length=8 format=F11. AS TTV_STD,
+        STD(DATA_HENNECKES.SawGroove) length=8 format=F11. AS SawGroove_STD,
+        STD(DATA_HENNECKES.SawStep) length=8 format=F11. AS SawStep_STD,
+        STD(DATA_HENNECKES.SawEdge) length=8 format=F11. AS SawEdge_STD,*/
+         
+        AVG(DATA_HENNECKES.Thickn_Log) length=8 format=BESTD12.8 AS Thickn_AVG_Log,
+        AVG(DATA_HENNECKES.TTV_Log) length=8 format=BESTD12.8 AS TTV_AVG_Log,
+        AVG(DATA_HENNECKES.SawGroove_Log) length=8 format=BESTD12.8 AS SawGroove_AVG_Log,
+        AVG(DATA_HENNECKES.SawStep_Log) length=8 format=BESTD12.8 AS SawStep_AVG_Log,
+        AVG(DATA_HENNECKES.SawEdge_Log) length=8 format=BESTD12.8 AS SawEdge_AVG_Log,
+        STD(DATA_HENNECKES.Thickn_Log) length=8 format=BESTD12.8 AS Thickn_STD_Log,
+        STD(DATA_HENNECKES.TTV_Log) length=8 format=BESTD12.8 AS TTV_STD_Log,
+        STD(DATA_HENNECKES.SawGroove_Log) length=8 format=BESTD12.8 AS SawGroove_STD_Log,
+        STD(DATA_HENNECKES.SawStep_Log) length=8 format=BESTD12.8 AS SawStep_STD_Log,
+        STD(DATA_HENNECKES.SawEdge_Log) length=8 format=BESTD12.8 AS SawEdge_STD_Log
+    FROM
+        WORK.PERF_LOG as DATA_HENNECKES     
+    GROUP BY
+        DATA_HENNECKES.Ass_Sci_Equipement,
+		DATA_HENNECKES.Ass_Sci_Position,
+        DATA_HENNECKES.Assemblage_Num
+	
+		;
+quit;
+
+
+
+
+PROC SQL;
+   CREATE TABLE STATS.SPC_CC_SCIAGE_LOG AS 
+   SELECT 
+          t1.Ass_Sci_Equipement, 
+          t1.Ass_Sci_Position, 
+          t1.Assemblage_Num, 
+          t1.Ass_Sci_Date_Heure_Fin, 
+          t1.Date_Actualisation, 
+
+          10**(t1.Thickn_AVG_Log) length=8 format=BESTD12.8 AS Thickn_AVG,
+	   	  10**(t1.TTV_AVG_Log) length=8 format=BESTD12.8 AS TTV_AVG,
+		  10**(t1.SawGroove_AVG_Log) length=8 format=BESTD12.8 AS SawGroove_AVG,
+		  10**(t1.SawStep_AVG_Log) length=8 format=BESTD12.8 AS SawStep_AVG,
+		  10**(t1.SawEdge_AVG_Log) length=8 format=BESTD12.8 AS SawEdge_AVG,
+		  10**(t1.Thickn_STD_Log) length=8 format=BESTD12.8 AS Thickn_STD,
+		  10**(t1.TTV_STD_Log) length=8 format=BESTD12.8 AS TTV_STD,
+		  10**(t1.SawGroove_STD_Log) length=8 format=BESTD12.8 AS SawGroove_STD,
+		  10**(t1.SawStep_STD_Log) length=8 format=BESTD12.8 AS SawStep_STD,
+		  10**(t1.SawEdge_STD_Log) length=8 format=BESTD12.8 AS SawEdge_STD,
+
+          t1.Thickn_AVG_Log length=8 format=BESTD12.8, 
+          t1.TTV_AVG_Log length=8 format=BESTD12.8, 
+          t1.SawGroove_AVG_Log length=8 format=BESTD12.8, 
+          t1.SawStep_AVG_Log length=8 format=BESTD12.8, 
+          t1.SawEdge_AVG_Log length=8 format=BESTD12.8, 
+          t1.Thickn_STD_Log length=8 format=BESTD12.8, 
+          t1.TTV_STD_Log length=8 format=BESTD12.8,
+ 
+          t1.SawGroove_STD_Log, 
+          t1.SawStep_STD_Log, 
+          t1.SawEdge_STD_Log, 
+          t2.SawStep_Moy, 
+          t2.SawStep_EC, 
+          t2.SawStep_LCS_Moy, 
+          t2.SawStep_LSS_Moy, 
+          t2.SawStep_LCS_EC, 
+          t2.SawStep_LSS_EC, 
+          t2.Thickn_Moy, 
+          t2.Thickn_EC, 
+          t2.Thickn_LCI_Moy, 
+          t2.Thickn_LCS_Moy, 
+          t2.Thickn_LSI_Moy, 
+          t2.Thickn_LSS_Moy, 
+          t2.Thickn_LSS_EC, 
+          t2.Thickn_LCS_EC, 
+          t2.TTV_Moy, 
+          t2.TTV_EC, 
+          t2.TTV_LSS_Moy, 
+          t2.TTV_LCS_Moy, 
+          t2.TTV_LSS_EC, 
+          t2.TTV_LCS_EC
+
+      		FROM WORK.SPC_CC_SCIAGE_LOG t1
+            LEFT JOIN STATS.LIMITES_CARTES_CONTROLE_SCIAGE t2 
+			ON (t1.Ass_Sci_Equipement = t2.Scie);
+QUIT;
+

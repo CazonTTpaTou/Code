@@ -1,0 +1,36 @@
+%let textu_chemin=%bquote(")\\office\users\Bases_de_donnees\Reporting\recup srv-wincc\*.xlsx%bquote(");
+filename liste pipe "dir &textu_chemin /b /s";  
+
+data Name_File;
+infile liste truncover end=last;
+input Name $200.;
+call symputx(cats('path',_n_),Name);
+call symputx(cats('dsn',_n_),compress(cats('F_',scan(scan(Name,6,'\'),1,'.'))));
+if last then call symputx('nobs',_n_);
+%put ---> Path : &path1;
+%put ---> Dsn : &dsn1;
+run;
+
+%put _user_;
+%macro import;
+%do i=1 %to &nobs;
+%put ---> Path : &&path&i;
+%put ---> Path : "&&path&i";
+%put ---> Dsn : &&dsn&i;
+proc import datafile="&&path&i"
+out=Work.&&dsn&i
+dbms=excel replace;
+sheet='Feuil1';
+getnames=yes;
+mixed=yes;
+run;
+proc append base=WORK.LOGS_TEXTU data=Work.&&dsn&i force;
+run;
+%end;
+%mend import;
+
+%import
+
+   
+
+

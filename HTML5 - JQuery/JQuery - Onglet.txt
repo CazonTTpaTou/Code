@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="Scripts/jquery.js"></script>
+    <script src="Scripts/Custom/jquery-ui.js"></script>
+    <script src="Scripts/Custom/jquery-ui.min.js"></script>
+    <link href="Scripts/Custom/jquery-ui.css" rel="stylesheet" />
+    <link href="Scripts/Custom/jquery-ui.min.css" rel="stylesheet" />    
+    <title></title>
+</head>
+<body>
+    <div id="tabs">
+        <ul>
+            <li><a href="#tab1">Tab1</a></li>
+            <li><a href="#tab2">Tab2</a></li>
+            <li><a href="#tab3">Tab3</a></li>
+        </ul>
+        <div id="tab1">Contenu du premier onglet</div>
+        <div id="tab2">Contenu du second onglet</div>
+        <div id="tab3">Contenu du troisième onglet</div>
+    </div>
+    <script>
+        $("#tabs").tabs();
+    </script>
+</body>
+</html>

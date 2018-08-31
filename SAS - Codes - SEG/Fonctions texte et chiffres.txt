@@ -1,0 +1,5 @@
+int(TL_Hennecke.N_Assemblage /100)
+round(AVG(TL_Hennecke.Struct /100),.01)
+substr(Compress(put(TL_Hennecke.N_Assemblage ,11.)),1,8)
+
+

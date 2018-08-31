@@ -1,0 +1,3 @@
+IF hour(TimePart('Ass Sci Date Heure Fin'n )) <5 
+RETURN DateFromMDY(month(datepart('Ass Sci Date Heure Fin'n)), DayOfMonth(datepart('Ass Sci Date Heure Fin'n))-1, year(datepart('Ass Sci Date Heure Fin'n)))
+ELSE DateFromMDY(month(datepart('Ass Sci Date Heure Fin'n)), DayOfMonth(datepart('Ass Sci Date Heure Fin'n)), year(datepart('Ass Sci Date Heure Fin'n)))

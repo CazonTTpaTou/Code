@@ -1,0 +1,49 @@
+Public Function ajoute(Date_D As Date, Num_E As Variant, Zone As String)
+    ajoute = True
+End Function
+
+Public Function modifie(Date_D As Date, Num_E As Variant, Zone As String)
+    modifie = True
+End Function
+
+Public Function supprime()
+    supprime = True
+End Function
+
+Public Function cloture()
+    cloture = True
+End Function
+
+Public Function decloture()
+    decloture = True
+End Function
+
+Public Function Affiche_Cloture()
+    Affiche_Cloture = True
+End Function
+
+Public Function Affiche_DeCloture()
+    Affiche_DeCloture = True
+End Function
+
+Public Function Affiche_Verrouille()
+    Affiche_Verrouille = True
+End Function
+
+Public Function Affiche_DeVerrouille()
+    Affiche_DeVerrouille = True
+End Function
+
+Public Function Affiche_Tout()
+    Affiche_Tout = True
+End Function
+
+Public Function Verrouille()
+    Verrouille = True
+End Function
+
+Public Function DeVerrouille()
+    DeVerrouille = True
+End Function
+
+

@@ -1,0 +1,5 @@
+PROC SGPLOT DATA=IN_LINE.ICOS_FSPI_N1;
+HISTOGRAM Front_Print_Screen_translation_X;
+DENSITY Front_Print_Screen_translation_X / TYPE=NORMAL;
+RUN;
+

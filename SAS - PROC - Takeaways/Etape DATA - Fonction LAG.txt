@@ -1,0 +1,22 @@
+DATA WORK.Stats3;
+SET Work.Stats (keep=idIntervention FinInter DebutInter);
+IF missing(FinInter) Then FinInter=datetime();
+IF not missing(DebutInter) Then Output;
+RUN;
+ 
+PROC SORT data=WORK.STATS3;
+BY DebutInter;
+RUN;
+
+DATA WORK.Stats4;
+Format Avant Datetime23.
+       Apres Datetime23.;       
+SET Work.STATS3;
+Avant0=Lag(DebutInter);
+Avant2 = intck('Day',datepart(Lag(DebutInter)),datepart(FinInter));
+avant = Max(Lag(FinInter),DebutInter);
+apres = Max(Avant,FinInter);
+if avant ^= debutInter Then Intersection = 1;
+RUN;
+
+

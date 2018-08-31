@@ -1,0 +1,42 @@
+DATA Work.Hennecke (keep=BOW Ass_Sci_Equipement Time Ling_Fus_Equipement);
+SET Stats.Data_Hennecke;
+IF (Ass_Sci_Equipement = 'MB 01' OR Ass_Sci_Equipement = 'MB 02')
+   AND (datepart(Time)) >= mdy(6,13,2017) 
+	THEN OUTPUT;
+RUN;
+
+PROC SORT 
+	Data=Work.Hennecke
+	Out=Work.Hennecke_Sorted;
+	BY Ass_Sci_Equipement Time;
+RUN;
+
+Data Work.Hennecke_Cumul;
+Format
+	DateSciage DATE9.
+	DateHeureSciage DATETIME23.;
+SET Work.Hennecke_Sorted;
+BY Ass_Sci_Equipement;
+IF First.Ass_Sci_Equipement THEN CumulWafers=0;
+CumulWafers + 1;
+DateSciage = datepart(Time);
+DateHeureSciage = dhms(DateSciage,hour(timepart(time)),0,0);
+RUN;
+
+PROC SQL;
+CREATE TABLE STATS.DATA_HENNECKE_GUIDE_FIL
+AS
+SELECT 
+
+	T1.*,
+	T2.Date AS Date_Chgt_GuideFil,
+	T2.Scie
+
+FROM Work.Hennecke_cumul AS T1
+LEFT OUTER JOIN STATS.DATA_GUIDE_FIL AS T2
+	ON T1.DateSciage = T2.Date 
+	AND T1.Ass_Sci_Equipement = T2.Scie
+;
+RUN;
+
+

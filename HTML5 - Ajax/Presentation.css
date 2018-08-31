@@ -1,0 +1,197 @@
+
+.Titre {font-family:times-new-roman;
+	font-size:18pt;
+	text-align:center;
+        color:black;
+        font-weight:bold;
+        text-decoration:underline;}
+
+.Titre2 {font-family:times-new-roman;
+	 font-size:34pt;
+	 text-align:center;
+         background:black;
+         color:#FFFFFF;
+         font-weight:bold;
+         text-decoration:none;}
+
+
+.Texte {font-family:times-new-roman;
+	font-size:14pt;
+	text-align:center;}
+
+.TexteS {font-family:times-new-roman;
+	font-size:14pt;
+	text-align:center;
+	font-weight:bold;
+	text-decoration:underline;}
+
+.Bleu {background-color:transparent; 
+         background-image:url(../Pictures/QS_bleu_background.jpg);
+         text-align:center;}
+
+.Rouge {background-color:transparent; 
+         background-image:url(../Pictures/QS_rouge_background.jpg);
+         text-align:center;}
+
+.Orange {background-color:transparent; 
+         background-image:url(../Pictures/QS_orange_background.jpg);
+         text-align:center;} 
+
+.Violet {background-color:transparent; 
+         background-image:url(../Pictures/QS_violet_background.jpg);
+         text-align:center;}
+
+.Jaune  {background-color:transparent; 
+         background-image:url(/Pictures/QS_jaune_background.jpg);
+         text-align:center;}
+
+.Vert   {background-color:transparent; 
+         background-image:url(../Pictures/QS_vert_background.jpg);
+         text-align:center;}
+
+.Liste {background-color:transparent; 
+        background-image:url(./Pictures/Couleur/Vert_ter.JPG);
+        margin-left:5em;}
+
+.Liste_B {background-color:transparent; 
+        background-image:url(./Pictures/Couleur/Ocre_Ter.JPG);
+        margin-left:5em;}
+
+.Paragraphe {margin-left:10em;}
+
+.ParagrapheInfo {margin-left:25em;
+                 text-align:left;}
+
+.Paragraphe2Stats {
+	      font-size:14pt;
+	      text-align:center;
+	      background:black;
+              color:#FFFFFF;
+              font-weight:bold;
+              text-decoration:none;}
+
+.EnTeteCV    {
+	      font-size:14pt;
+	      background:black;
+              color:#FFFFFF;
+              font-weight:bold;
+              text-decoration:none;}
+
+.EnTeteCV_I    {
+	      font-size:14pt;
+	      background:black;
+              color:#FFFFFF;
+              font-style:italic;
+              text-decoration:none;}
+
+.EnTeteCV_C    {
+	      font-size:14pt;
+	      background:black;
+              color:#FFFFFF;
+              font-weight:bold;
+              text-decoration:blink;}
+
+.Paragraphe1 {font-size:14pt;
+	      text-align:center;}
+
+.Paragraphe2 {font-size:14pt;
+	      text-align:left;
+	      text-decoration:none;
+	      font-weight:normal;
+              }
+
+.Paragraphe2B {
+	      font-size:14pt;
+	      text-align:left;
+	      font-weight:bold;
+	      text-decoration:underline;}
+
+.Paragraphe2S {
+	      font-size:14pt;
+	      text-align:left;
+	      font-weight:normal;
+	      text-decoration:underline;}
+             
+.Evidence {background:black;
+         color:#FFFFFF;
+         font-weight:bold;
+         text-decoration:none;
+       	 text-align:center;}
+
+.Retour {background:black;
+         color:#FFFFFF;
+         font-weight:bold;
+         text-decoration:none;
+       	 text-align:center;}
+
+.PDF {font-weight:bold;
+      text-align:center;}
+
+.PDF2 {font-weight:bold;
+      text-align:center;
+      font-size:14pt;}
+
+.PDF3  {color:#0000FF;
+	font-weight:bold;
+	text-decoration:underline;}
+
+.PDF4        {font-size:14pt;
+	      text-align:left;
+	      text-decoration:blink;
+	      font-weight:normal;}
+
+.Menu {height:180px;
+	  width:90%;
+	  margin-left : 15%;
+     
+	  padding-left:5px;
+      padding-right:5px;
+	  background-color:transparent;
+	   
+	  }
+	   
+.Menu_Picture {float:left;
+		      position: relative;
+			  left:1.5%;
+			  margin-top:1.5%;
+			  margin-bottom:1.5%;
+			  height:90%;
+			  width:30%;
+			  background-color:transparent; 
+			  background-image:url(./Pictures/Clickers.JPG); 
+			  background-repeat: no-repeat;
+        }
+		
+.Menu_Picture a:hover {float:left;
+		      position: relative;
+			  height:100%;
+			  width:100%;
+			  background-color:transparent; 
+			  background-image:url(./Pictures/Clickers_I.JPG);
+        }
+
+.Menu_Liste {float:right;
+			text-align:left;
+			margin-top:1.5%;
+		      position: relative;
+			  height:90%;
+			  width:65%;
+			  background-color:transparent; 
+			  }
+	          
+.lien {font-weight:bold;
+	  font-size:14pt;
+	  background-color:transparent;
+	  text-decoration:none;
+	  color:#0000FF;}
+
+.lien:hover {font-weight:bold;
+	  font-size:18pt;
+	  background-color:transparent;
+	  color:#FF0000;}
+	  
+.fake {color:transparent;
+	   background-color:transparent;
+	   }
+
+   

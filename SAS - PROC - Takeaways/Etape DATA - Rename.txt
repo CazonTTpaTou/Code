@@ -1,0 +1,15 @@
+libname  xlsxfile "\\office\users\Bases_de_donnees\Wafer\PROD-DEBITAGE\Suivi des casses boucles BEA 2016.xlsx";
+
+data WORK.SUIVI_DES_CASSES_BOUCLES_BEA_201;
+
+set xlsxfile."Feuil1$"n();
+/*(dbSASType=('nb Lingot'n=numeric 'Nb Cpe Theo'n = numeric));*/
+run;
+
+Data STATS.USER_SUIVI_CASSES_FILS;
+SET WORK.SUIVI_DES_CASSES_BOUCLES_BEA_201;
+rename F1=Date_changement_fil F2=N_BEA 'SUIVI DES  BOUCLES BEA'n=Code_MURG_ANCIEN_WELL F4=code_THERMO F5=Fil F6=Nb_cycles F7=Casse_O_N;
+IF _N_ > 4 Then Output;
+RUN;
+
+

@@ -1,0 +1,1165 @@
+EXTRAIT DU WSDL DU WEB SERVICE INFO_PAYS
+
+En tête du fichier WSDL :
+
+<wsdl:definitions targetNamespace="http://modele">
+<wsdl:documentation>
+		Please Type your service description here
+	</wsdl:documentation>
+-
+Section où sont déterminés le type des paramètres d'entrée et de sortie de la méthode invoquée à distance getPays :
+
+<xs:element name="getPays">
+-
+<xs:complexType>
+-
+<xs:sequence>
+<xs:element minOccurs="0" name="land" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+-
+
+Section où sont décrites les adresses des classes (de type classeHttpSoapEndpoint) assurant la communication selon le protocole HTTP SOAP entre le client et le service distant :
+
+<wsdl:service name="ServicePays">
+-
+<wsdl:port name="ServicePaysHttpSoap11Endpoint" binding="ns:ServicePaysSoap11Binding">
+<soap:address location="http://localhost:8080/Info_Pays/services/ServicePays.ServicePaysHttpSoap11Endpoint/"/>
+</wsdl:port>
+-
+<wsdl:port name="ServicePaysHttpSoap12Endpoint" binding="ns:ServicePaysSoap12Binding">
+<soap12:address location="http://localhost:8080/Info_Pays/services/ServicePays.ServicePaysHttpSoap12Endpoint/"/>
+</wsdl:port>
+-
+<wsdl:port name="ServicePaysHttpEndpoint" binding="ns:ServicePaysHttpBinding">
+<http:address location="http://localhost:8080/Info_Pays/services/ServicePays.ServicePaysHttpEndpoint/"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>
+
+
+
+Page JSP index.jsp
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<jsp:useBean id= "unefabrication" scope="page" class="controle.Liste_Factory">
+</jsp:useBean>
+<html>
+<head>
+<title>D314 - TP n°1</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body>
+
+<h1>Choix d'un pays</h1>
+<form method="post" action="resultat.jsp">
+
+<p>Quel pays choisissez-vous ?
+<br/>
+
+<%= unefabrication.Build() %>
+
+</p>
+<br/>
+<p><input type="submit" value="Valider">
+</form>
+</body>
+</html>
+
+
+Page JSP resultat.jsp
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<jsp:useBean id= "unedestination" scope="page" class="controle.Liste_Factory">
+
+<jsp:setProperty name="unedestination" property="nompays"/>
+</jsp:useBean>
+<html>
+<head>
+<title>Informations sur le pays</title>
+</head>
+<body>
+<h1>Résultat de votre choix </h1>
+
+<p>Votre destination préférée est :
+<jsp:getProperty name="unedestination" property="nompays"/>.</p>
+<% unedestination.getDetail();%>
+</b></p> <BR>
+<p>La capitale de ce pays est :
+<jsp:getProperty name="unedestination" property="nomcapitale"/>.</p>
+</b></p>
+<p>Le nombre d'habitants de ce pays est :
+<jsp:getProperty name="unedestination" property="nbhabitant"/>.</p>
+</p> <BR>
+
+<TABLE BORDER="1">
+  <CAPTION> RESULTAT </CAPTION>
+  <TR>
+ <TH> Pays </TH>
+ <TH>      </TH>
+ <TH> Capitale </TH>
+ <TH> Nombre Habitants </TH>
+ 
+  </TR>
+  <TR>
+ <TD> <jsp:getProperty name="unedestination" property="nompays"/> </TD>
+ <TD> </TD>
+ <TD> <jsp:getProperty name="unedestination" property="nomcapitale"/> </TD>
+ <TD> <jsp:getProperty name="unedestination" property="nbhabitant"/> </TD>
+  </TR>
+</TABLE>
+<br/><br/><br/>
+<A href ="index.jsp"> Retour à la liste des pays</A>
+</body>
+</html>
+
+
+SERVLET Liste_Factory
+
+package controle;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class Liste_Factory extends HttpServlet {
+	
+	// Numéro de sérialisation de la classe
+	private static final long serialVersionUID = 1L;
+	
+	//Déclaration des variables de classe de la Servlet
+	private String nompays;
+	private String nomcapitale;
+	private int nbhabitant;
+	
+    //Constructeur de la servlet
+    public Liste_Factory() {
+        super();
+    }
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+	
+	//Méthode pour déterminer le nom de la capitale
+	public void setNomcapitale(String nom) {
+		this.nomcapitale = nom;
+		}
+	//Méthode pour récupérer le nom de la capitale
+	public String getNomcapitale() {
+		return nomcapitale;
+		}
+	
+	//Méthode pour déterminer le nombre d'habitant
+	public void setNbhabitant(int nb) {
+		this.nbhabitant = nb;
+		}
+		
+	//Méthode pour récupérer le nombre d'habitants
+	public int getNbhabitant() {
+		return nbhabitant;
+		}
+	
+	//Méthode pour déterminer le nom du pays
+	public void setNompays(String pays) {
+		this.nompays =pays;}
+		
+	//Méthode pour récupérer le nom du pays
+	public String getNompays() {
+		return nompays;
+		}
+		
+	//Méthode pour va renvoyer la capitale et le nombre d'habitants à partir du pays
+	public void getDetail()
+		{
+		  // On initilise les variables locales
+		  String[] detail = new String[2];
+		  String land;
+		  
+		  // On crée une instance de la classe SentMessageSOAP qui permet d'utiliser le
+		  //  Web Service Info_Pays
+		  // Le Web Service Info_Pays par le biais de l'invocation à distance de la
+                          //   méthode getPays() va
+		  // renvoyer une capitale et un nombre d'habitant à partir d'un nom de pays
+                          // passé en paramètre
+		  SendMessageSOAP unAppel  = new SendMessageSOAP();	
+				
+		  // On initialise la variable land avec le nom du pays entré par l'utilisateur
+		  land=getNompays();
+				
+		  // adresse du Web Service Capitale à partir de laquelle on va avoir accès au
+                         // service
+		  String destination =
+				"http://localhost:8080/Info_Pays/services/ServicePays";
+
+		  // nom de la méthode que nous voulons invoquer à distance par le biais du Web
+                         // Service
+		  String operation = "getPays";
+
+				try
+				{
+					// On crée une connection pour accéder au Web Service
+					unAppel.connexion();
+					
+					// On crée un message au format SOAP avec en paramètre
+                                                           // la méthode à invoquer à
+					//distance contenue dans operation et la variable land à
+                                                           // passer en paramètre
+					// de la méthode qui sera invoquée par le biais du web
+                                                           // service
+					unAppel.creationMessage(operation,land);
+					
+					
+                                                           // On envoie le message créé au format SOAP à l'adresse du
+                                                           // web service
+					// contenue dans la variable destination
+					// On récupère la réponse au message qui est renvoyé sous
+                                                           // format SOAP
+					// La méthode invoquée à distance renvoie un résultat sous
+                                                           // forme
+					// d'un tableau chaîne de caractère que l'on stocke dans la
+                                                           // variable detail
+					detail=unAppel.EmmissionReception(destination,land);
+				
+				// On attribue les valeurs du résultat retourné aux variables classe
+                                               // de la servlet
+				// par le biais de leurs assesseurs
+				setNomcapitale(detail[0]);
+				setNbhabitant(Integer.parseInt(detail[1]));
+				}
+				
+				// On affiche la nature de l'exception en cas d'erreur
+				catch (Exception e)
+				{System.out.println(e.getMessage());}
+				
+				}
+		
+	// La méthode Build construit le code HTML de la liste déroulante des pays du monde
+            // entier
+	// Celle-ci est construite à partir de la liste des pays contenue dans la BDD pays du
+            // serveur de données
+	// Cette liste est obtenue par le biais du Web Service Liste qui envoie une requête à la
+            // BDD
+	// et retourne le résultat de cette requête (si tout va bien une liste de 192 pays)
+	public StringBuffer Build() {
+		
+		 // On crée une instance de la classe SendMessageSOAP qui permet d'utiliser le
+                         // Web Service Liste
+		 // Le Web Service Liste renvoie de tous les pays enregistrés dans la table Pays
+		SendMessageSOAP unAppel  = new SendMessageSOAP();
+		
+		// On crée une instance d'ArrayList tampon pour stocker le résultat retourné
+                       // par le Web Service
+		ArrayList<String> tampon = new ArrayList<String>();
+		
+		// nom de la méthode que nous voulons invoquer à distance par le biais du Web
+                       //  Service Liste
+		String operation = "getListe";
+		
+		// adresse du Web Service Liste à partir de laquelle on va avoir accès au service
+		String destination =
+		"http://localhost:8080/Info_Pays/services/ServicePays";
+
+		try
+		{
+			// On crée une connection pour accéder au Web Service
+			unAppel.connexion();
+			
+			// On crée un message au format SOAP avec en paramètre le nom de la
+                                   // méthode à invoquer à
+			//distance contenue dans la variable operation
+			unAppel.creationMessage(operation);
+			
+			// On envoie le message créé au format SOAP à l'adresse du web service
+			// contenue dans la variable destination
+			// On récupère la réponse au message qui est renvoyé sous format SOAP
+			// La méthode invoquée à distance renvoie un résultat  que l'on a stocké
+                                   //  sous forme
+			// de liste ArrayList de chaîne de caractère que l'on stocke dans la
+                                   //  variable tampon
+			tampon = unAppel.EmmissionReception(destination);
+		}
+		
+		// On affiche la nature de l'exception en cas d'erreur
+		catch (Exception e)
+		{System.out.println(e.getMessage());}
+
+		// On débute la construction du code HTML de la liste déroulante
+		String ch = "<select name='nompays'>";
+		
+		// On crée une instance de classe StringBuffer dans laquelle on va stocker les 194
+                       //  lignes
+		// du code HTML de la liste déroulante des pays existants
+		StringBuffer liste = new StringBuffer(ch);
+		
+		// On parcourt l'intégralité de l'Array List dans laquelle on a stocké la liste des
+                        //  pays
+		// A chaque occurence on construite une ligne de code HTML à partir de la
+                       // balise <option>
+		for(String a:tampon) {
+			liste.append("<option value='");
+		            liste.append(a);
+		    	liste.append("'>");
+		    	liste.append(a);
+		             }
+		
+		// On ajoute une dernière ligne de code HTML qui ferme la balise de la liste
+                       // déroulante
+		liste.append("</select>");   
+		
+		
+
+
+
+
+
+
+		// La méthode renvoie un StringBuffer contenant le code HTML de la liste des
+                        // pays à choisis
+		// Il suffira alors d'invoquer la méthode Build() dans une JSP qui renverra un
+                        // Buffer contentant
+		// le code HTML adéquat pour afficher la liste déroulante voulue
+		return liste;
+			}}
+
+
+CLASSE SendMessageSOAP
+
+package controle;
+
+import javax.xml.soap.SOAPConnectionFactory;
+import javax.xml.soap.SOAPConnection;
+import javax.xml.soap.MessageFactory;
+import javax.xml.soap.SOAPMessage;
+import javax.xml.soap.SOAPPart;
+import javax.xml.soap.SOAPEnvelope;
+import javax.xml.soap.SOAPBody;
+import javax.xml.soap.SOAPElement;
+import javax.xml.transform.*;
+import javax.xml.transform.stream.*;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.namespace.QName;
+
+public class SendMessageSOAP {
+	
+private SOAPConnection connection;
+private SOAPConnectionFactory soapConnFactory;
+private MessageFactory messageFactory;
+private SOAPMessage message;
+private SOAPPart soapPart;
+private SOAPEnvelope envelope;
+private SOAPBody body;
+private SOAPElement bodyElement;
+private TransformerFactory transformerFactory;
+private Transformer transformer;
+private Source sourceContent;
+
+// fonction connexion - on construit une connexion
+public void connexion()
+{
+	try {
+			// On crée une instance du pattern Factory de la connexion de type SOAP
+			soapConnFactory =SOAPConnectionFactory.newInstance();
+			
+			// A partir du pattern Factory, on invoque la méthode createConnection()
+                                   // qui
+			// crée une instance SOAPConnection référencée par la variable
+                                   // connection
+			connection = soapConnFactory.createConnection();
+	}
+	// On intercepte les exceptions éventuelles
+	catch (Exception e)
+		{System.out.println(e.getMessage());}
+}
+
+// Cette méthode permet la création de l’objet message SOAP
+public void creationMessage(String operation) {
+	try {
+		messageFactory = MessageFactory.newInstance();
+		message = messageFactory.createMessage();
+		
+		//On construit les différentes parties du message SOAP
+		soapPart = message.getSOAPPart();
+		envelope = soapPart.getEnvelope();
+		body = envelope.getBody();
+
+		//On crée l’enveloppe du message et on lui adjoint un nom
+		QName bodyName = new QName("http://ServicePays",operation, "m");
+		bodyElement = body.addBodyElement(bodyName);
+
+		//On sauvegarde le message et les modifications apportées
+		message.saveChanges();
+	}
+
+	catch (Exception e)
+	{ System.out.println(e.getMessage());}
+}
+
+// Cette méthode permet l'envoi du message SOAP créé
+//Dans ce cas précis, il s'agit d’un message synchrone,
+// Donc, l’envoi et la réception s’effectuent en une seule étape, donc dans la même méthode
+// Le résultat à retourner est une liste de pays, c'est pourquoi la méthode est de type ArrayList
+public ArrayList<String> EmmissionReception(String destination) {
+{
+	// On initialise une ArrayList tampon pour stocker le résultat retourné par le message
+            // SOAP en retour
+	ArrayList<String> tampon = new ArrayList<String>();
+	try {
+		// On contrôle l'entrée
+		System.out.println("\nENVOI:\n");
+		message.writeTo(System.out);
+		System.out.println();
+		
+		//On envoie le message et on attend la réponse
+		//On définit la destination (l'adresse du web service contenu dans la variable
+                        // destination)
+		//On envoie le message
+		SOAPMessage reply = connection.call(message, destination);
+		
+		// traitement de la réponse
+		// On contrôle la sortie
+		System.out.println("\nREQUEST:\n");
+		soapPart = reply.getSOAPPart();
+		envelope = soapPart.getEnvelope();
+		body = envelope.getBody();
+		
+		// on examine les éléments renvoyés dans une liste
+		Iterator iter = body.getChildElements();
+		
+		// On stocke tous les éléments renvoyés dans une Node List car le message
+                       // retourné
+		// est au format XML, donc les champs se trouvent dans des noeuds
+		NodeList resultOuter = (NodeList) ((Node) iter.next()).getChildNodes();
+
+		// On va parcourir cette Node List pour transférer les éléments retournés dans
+                        // une ArrayList
+		// On détermine la longueur de la liste de noeuds
+		int i=resultOuter.getLength();
+
+		// On construit une boucle pour transférer chaque noeud fils de la Node List
+                        // dans l'ArrayList tampon
+		for(int a=0;a<i;a++) {
+			Node it = resultOuter.item(a);
+			Node result = it.getFirstChild();
+			tampon.add(result.getNodeValue());
+		}
+
+		//on ferme la connexion ouverte précédemment
+		connection.close();
+	}
+
+	// On intercepte les éventuelles exceptions
+	catch (Exception e)
+		{System.out.println(e.getMessage());}
+	
+	// La méthode renvoie une arrayList contenant tous les éléments retournés sous forme
+            // de message SOAP
+	// par la méthode invoquée (dont le nom est passé en paramètre dans le message SOAP
+            // envoyé)
+	// à distance par le biais du web service dont l'adresse est également passée en
+            // paramètre
+	return tampon;
+}
+
+}
+
+//Cette méthode permet la création de l’objet message SOAP
+public void creationMessage(String operation, String pays) {
+	try {
+		messageFactory = MessageFactory.newInstance();
+		message = messageFactory.createMessage();
+		
+		//On construit les différentes parties du message SOAP
+		soapPart = message.getSOAPPart();
+		envelope = soapPart.getEnvelope();
+		body = envelope.getBody();
+
+		//On crée l’enveloppe
+		QName bodyName = new QName("http://modele",operation, "m");
+		bodyElement = body.addBodyElement(bodyName);
+		
+		//On passe les paramêtres (à savoir pays qui sera le nom du pays dont on veut
+                        // obtenir
+		// en retour la capitale et le nombre d'habitant par le biais du message au format
+                        // SOAP
+		QName qn1 = new QName("pays");
+
+		// On insère le noeud contenant le nom du pays à "requêter" dans
+                       // l'arborescence XML
+		bodyElement.addChildElement(qn1).addTextNode(pays);
+
+		//On sauvegarde le message SOAP ainsi créé
+		message.saveChanges();
+	}
+	
+	// On intercepte les exceptions éventuellement lancées
+	catch (Exception e)
+	{ System.out.println(e.getMessage());
+}
+}
+
+// Cette méthode permet l'envoi du message SOAP créé
+//Dans ce cas précis, il s'agit d’un message synchrone,
+// Donc, l’envoi et la réception s’effectuent en une seule étape, donc dans la même méthode
+// Le résultat à retourner est un nom et un chiffre, c'est pourquoi la méthode est de type
+// tableau
+public String[] EmmissionReception(String destination,String pays) {
+
+	// On initialise un tableau tampon pour stocker le résultat retourné par le message
+            // SOAP en retour
+	String[] detail_pays = new String[2];	
+	
+	try {
+		// On contrôle l'entrée
+		System.out.println("\nENVOI:\n");
+		message.writeTo(System.out);
+		System.out.println();
+		
+		//On envoie le message et on attend la réponse
+		//On définit la destination
+		//On envoie le message
+		SOAPMessage reply = connection.call(message, destination);
+		
+		// traitement de la réponse
+		// On contrôle la sortie
+		System.out.println("\nREQUEST:\n");
+		soapPart = reply.getSOAPPart();
+		envelope = soapPart.getEnvelope();
+		body = envelope.getBody();
+		
+		// on examine les éléments renvoyés dans une liste
+		Iterator iter = body.getChildElements();
+		
+		// On stocke tous les éléments renvoyés dans une Node List car le message
+                       // retourné
+		// est au format XML, donc les champs se trouvent dans des noeuds
+		NodeList resultOuter = (NodeList) ((Node) iter.next()).getChildNodes();
+		
+		// On va parcourir cette Node List pour transférer les éléments retournés dans
+                        // un tableau
+		// On récupère le premier noeud qui correspond au nom de la capitale
+		Node it = resultOuter.item(0);
+		Node result = it.getFirstChild();
+
+		// On récupère le second noeud qui correspond au nombre d'habitants
+		Node its = resultOuter.item(1);
+		Node results = its.getFirstChild();
+		
+		// On transfère le contenu de chaque noeud dans le tableau tampon detail_pays[]
+		detail_pays[0]=result.getNodeValue();
+		detail_pays[1]=results.getNodeValue();
+		
+		//on ferme la connexion SOAP
+		connection.close();
+	}
+	
+	// On intercepte les éventuelles exceptions lancées
+	catch (Exception e)
+	{System.out.println(e.getMessage());}
+
+	// La méthode renvoie un tableau contenant tous les éléments retournés sous forme de
+            // message SOAP
+	// par la méthode getPays invoquée (son nom est passé en paramètre dans le message
+            // SOAP envoyé)
+	// à distance par le biais du web service nommé Info_Pays et dont l'adresse
+	// est également passée en paramètre (variable destination) lors de la création du
+            // message SOAP
+	return detail_pays;
+}
+
+}
+
+
+Classe ControleConnexion
+
+
+package controle;
+
+import entite.Parametres;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
+// Il s'agit d'une classe abstraite qui ne pourra donc pas être instanciée
+// car on ne veut pas multiplier les connexions pour chaque utilisateur
+// Un Utilisateur = Une connexion paramétrée statiquement
+// L'accès aux membres de la classe est réalisé selon la syntaxe classe.accesseur et s'effectue
+// directement sans recherche dynamique
+public abstract class ControleConnexion {
+	
+	// On initialise les variables statiques de la classe
+	// En déclarant les attributs d'une classe comme statique, les instances potentielles de la
+	// classe ne possèdent pas les attributs. L'accès peut être réalisé selon la syntaxe
+            // object.accesseur, l'accès
+	// aux attributs se faisant alors de manière dynamique.
+	// Les propriétés statiques appartiennent à la classe et non aux objets de la classe...
+	static Parametres lesParametres;  	
+	static boolean etatConnexion;
+	static Connection laConnectionStatique;
+	
+	// On utilise un initialisateur statique pour construire la classe ControleConnexion
+	// Cela remplace le constructeur et permet de s'assurer que la classe ne sera pas
+            // instanciée
+	// et cela nous évite d'invoquer dans le code une instruction de construction de la classe.
+	// L'initialisation s'effectue immédiatement après la déclaration auprès du compilateur.
+	// L'intérêt d'une connexion statique est de disposer d'une connexion unique et
+            // utilisable
+	// durant toute une session.
+	static {
+		// On crée une variable booléenne qui nous servira de flag renseignant le succès
+                       // du chargement
+		// du pilote JDBC de la BDD
+		boolean ok = true;
+		// On instancie la classe Parametres qui contient tous les paramètres de la
+                        // connexion
+		// Idéalement les attributs de la classe Paramètres devrait être renseignés
+                        // dynamiquement
+		// par l'utilisateur
+		lesParametres = new Parametres();
+		try {
+			// On effectue l'enregistrement du pilote de l'accès à la BDD MySQL
+			// Class correspond à la classe du pilote. Avec sa méthode statique
+                                   //  forName(), elle crée une instance
+			// d'elle même - qui est donc chargée en mémoire - et l'enregistre auprès
+                                   // de la classe DriverManager
+			Class.forName(lesParametres.getDriverSGBD());
+			etatConnexion = true;	
+		}
+		catch(ClassNotFoundException e){  
+			// En cas d'échec du chargement de la classe, on affiche un message
+                                    // d'erreur
+			JOptionPane.showMessageDialog(null, "Classes non trouvées"
+					 + " pour le chargement du pilote JDBC MySQL",
+					 "ALERTE", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+			ok = false;
+			 etatConnexion = false;
+		}  
+		
+		// Si l'initialisation statique de la classe se déroule correctement le flag OK est à
+                       // true
+		if (ok == true){
+			try {
+				// A partir desaccesseurs de la classe Paramètres, on récupère les
+                                               //  paramètres de connexion
+				String urlBD = lesParametres.getServeurBD();
+				String nomUtilisateur = lesParametres.getNomUtilisateur();
+				String MDP = lesParametres.getMotDePasse();
+				
+				// On crée une connection par le biais de la méthode
+                                               // getConnection de la classe
+				// DriverManager qui est paramétré selon les variables fournis par
+                                               // les accesseurs de la
+				// classe paramètre. La classe DriverManager étant une instance
+                                               // du pilote JDBC MySQL
+				// crée plus haut par l'instruction Class.forName() et qui
+                                               // communique directement avec
+				// la BDD MySQL dont on aura fourni l'adresse sous forme
+                                               // d'URL.
+				// On référence la connection obtenue par le biais de la variable
+                                               //  laConnectionStatique
+				laConnectionStatique = DriverManager.getConnection(urlBD, nomUtilisateur,
+	                                               MDP);
+				etatConnexion = true;	
+			}
+			// En cas d'exceptions générées par la création de la connection à la BDD
+                                   //  MySQL, on intercepte
+			// le message et on affiche une fenêtre d'erreur.
+			catch (Exception e) {
+			    JOptionPane.showMessageDialog(null, "Impossible de se connecter" +
+			    		" à la base de données",
+						"ALERTE", JOptionPane.ERROR_MESSAGE);
+			    // Etant donné que la tentative de création de connection a échoué on
+                                        // déclare
+			    // le flag d'état de la connection à False par le biais de la variable
+                                       // etatConnexion
+			    etatConnexion = false;				
+			}
+		}         
+	}
+
+	// Etant donné que l'on a recours à un initialisateur statique, le constructeur de la
+            // classe est vide
+	public ControleConnexion(){
+	}	
+	
+	// La méthode getParametres nous permet de récupérer les paramètres de connection à
+            // la BDD MySQL
+	// stockés dans le Bean Paramètres dans le package entite
+	public static Parametres getParametres(){
+		return lesParametres;
+	}
+	
+	// Cette méthode retourne l'état de connection. Si la création s'est déroulée
+            // correctement, la valeur
+	// retournée sera True. Sinon, le flag retourné sera à False.
+	public static boolean getControleConnexion(){
+		return etatConnexion;
+	}
+	
+	// Cette méthode renvoie une référence à laConnectionStatique qui est la variable qui
+            // référence
+	// la connection crée lors de l'initialisation statique de la classe ControleConnexion().
+	// Cette classe est crée une seule fois, lorsque l'utilisateur invoque la première fois une
+            // des méthodes
+	// de la classe. De ce fait, chaque fois que la méthode getConnexion() est invoquée, la
+            // référence
+	// renvoyée par le biais de la variable laConnectionStatique pointe toujours vers la
+            // même référence
+	// de connection créée lors de l'initialisation de la classe. Ainsi, on est assurée, que
+            // chaque
+	// utilisateur utilisera toujours la même connection à la BDD MySql au sein de la
+            // session qu'il
+	// aura créée, par le biais de l'utilisation de la JSP affichée par son navigateur.
+	public static Connection getConnexion(){
+		return laConnectionStatique;
+	}
+	
+	// Cette méthode ne sert pas dans le présent TP, puisque les paramètres sont rentrés en
+            // dur dans
+	// le Bean Paramètres. Cependant, l'utilisateur doit au moins rentrer un mot de passe
+            // généralement,
+	// pour pouvoir se connecter à une BDD. C'est pourquoi, nous avons créé une méthode
+            // qui vérifie que
+	// les paramètres de connection rentré par l'utilisateur sont corrects. De ce fait, cela
+            // rend cette
+	// classe ControleConnexion() réutilisable dans un autre contexte que ce lui ce ce TP, ce
+            // qui
+	// est l'objectif premier d'un langage objet comme Java.
+	public static boolean controle(String Nom, String MotDePasse){
+		boolean verificationSaisie;
+		if (Nom.equals(lesParametres.getNomUtilisateur())
+		    && MotDePasse.equals(lesParametres.getMotDePasse())){
+			verificationSaisie = true;
+		}
+		else {
+	            JOptionPane.showMessageDialog(null, "Vérifier votre saisie.",
+	            "ERREUR", JOptionPane.ERROR_MESSAGE);
+	            verificationSaisie = false;
+			}
+			return verificationSaisie;
+	}
+	
+	// Cette méthode permet de fermer la connection à la BDD MySQL, indépendamment
+            // du garbage collector de
+	// la JVM, ce qui permet un meilleur contrôle des ressources du serveur (notamment en
+            // cas de montée en
+	// charge avec de nombreux utilisateurs simultanés).
+	public static void fermetureSession(){
+		try {
+			laConnectionStatique.close();
+		}
+		catch (SQLException e) {
+	            JOptionPane.showMessageDialog(null, "Problème rencontré" +
+	            	"à la fermeture de la connexion",
+	    	            "ERREUR", JOptionPane.ERROR_MESSAGE);
+		}
+	}		
+}
+
+
+Classe Parametres
+
+
+package entite;
+
+// La classe Parametres est une classe de stockage des paramètres utilisateur de la connection
+// à la BDD MySQL. Cette classe fait office de Bean Java même si ce n'en est pas réellement
+// un.
+// En effet, dans le cadre de ce TP, les paramètres sont rentrés en dur dans le constructeur de
+// la classe.
+// Mais en production, il est certain, que ces paramètres seraient rentrés par l'utilisateur pour
+// vérifier
+// qu'il possède bien les droits lui autorisant la connection à cette base de données. Ces
+// paramètres
+// seraient donc dynamiques et seraient enregistrés à chaque création de session utilisateur,
+// par le
+// biais d'une JSP proposant un formulaire de connection à l'utilisateur avec des champs à
+// remplir...
+public class Parametres {
+
+	// On déclare les 4 variables paramètres nécessaires à la création d'une connection à
+            // une BDD
+	// Afin de respecter le principe d'encapsulation, les attributs sont déclarés private et ne
+            // sont
+	// accessibles que par les accesseurs qui eux sont déclarés public.
+	//On n'utilise pas de mutateur (méthodes setXXX) dans cette classe, car nous utilisons
+            // des
+	// paramètres par défaut. Toutefois, si le contexte du TP s'y prêtait, il faudrait en
+           // ajouter
+	// afin de permettre une gestion plus fine des utilisateurs...
+	private String nomUtilisateur;
+	private String motDePasse;
+	private String serveurBD;
+	private String driverSGBD;
+
+	// Les paramètres sont rentrés par défaut au sein du constructeur de la
+      // classe
+	public Parametres (){
+	  // Nom d'utilisateur qui doit correspondre à un à un compte utilisateur
+        // valide créé dans MySQL
+      nomUtilisateur = "root";
+      // Mot de passe correspondant - ici nous n'en avons pas mis ce qu'il ne
+      // faut surtout pas faire
+      // dans un contexte de production...
+	  motDePasse = "";		
+	  // Type du driver utilisé pour communiquer avec la base de donnée (ici
+        // un driver JDBC fourni par MySQL)
+	  driverSGBD ="com.mysql.jdbc.Driver";
+	  // Adresse de type URL de la Base de donnée à laquelle on désire se
+        // connecter
+	  // Ici, on passe par un middleware de type JDBC qui permet une
+        // connection à une BDD MySQL jdbc:mysql
+	  // Le serveur est en local, donc le nom de domaine correspond à
+        // localhost (soit 127.0.0.1)
+	  // le port par défaut utilisé par le démon mysqld du serveur de BDD
+        // Apache est le port 3306
+	  // Le nom de la BDD à laquelle nous voulons nous connecter est la
+        // suivante: mm_d314_tp1
+	  serveurBD = "jdbc:mysql://localhost:3306/mmn_d314_tp1";
+	}
+	// Méthode accesseur qui renvoie le type de Driver de la base de donnée à
+      // utiliser pour se connecter
+	public String getDriverSGBD() {
+		return driverSGBD;
+	}
+	// Méthode accesseur renvoyant le mot de passe de l'utilisateur
+	public String getMotDePasse() {
+		return motDePasse;
+	}
+	// Méthode accesseur renvoyant le nom du compte utilisateur que l'on va
+      // utiliser pour se connecter
+	public String getNomUtilisateur() {
+		return nomUtilisateur;
+	}
+	// Méthode acceseur renvoyant l'adresse de la BDD à laquelle on veut se
+      // connecter sous forme d'URL
+	public String getServeurBD() {
+		return serveurBD;
+	}
+}
+
+
+
+CLASSE ServicePays
+
+package modele;
+
+public class ServicePays {
+
+	// Méthode qui va retourner la liste des pays contenus dans la BDD	
+	// A noter qu'il n'y a pas de paramètre puisque l'on veut juste l'intégralité des noms de
+            // pays
+	// contenus dans la table Pays. Il n'y a donc aucune spécification nécessaire dans la
+            // construction
+	// de la requête correspondante (un SELECT * suffit donc).
+	public String[] getListe()
+	{
+		// Initialisation d'un tableau de chaîne de caractères
+		String[] liste_pays ;
+
+		// On crée une instance de la classe Search qui est la classe qui va exécuter
+		// la requête de recherche des différents noms de pays présents dans la table
+                       // Pays
+		// Il s'agit en fait de la liste des clés primaires de cette table...
+		Search deroul = new Search();
+		
+		// La méthode getListe() de la classe Search exécute une requête de recherche
+                       // dans la BDD
+		// et retourne la liste des noms de pays de la Pays sous forme d'un tableau de
+                       // caractères
+		liste_pays = deroul.getListe();
+
+		// La méthode retourne un tableau de chaîne de caractère qui contient les
+                       // informations demandées
+		// C'est ce tableau qui sera envoyé sous forme XML par l'intermédiaire du
+                       // message SOAP de retour
+		// après l'invocation à distance de la méthode getPays() par le biais d'un Web
+                       // Service
+		// (en l'occurence le Web Service Liste dans le cas de la génération de la liste
+                        // déroulante
+		// dans la page JSP index.jsp par le biais de la servlet de contrôle ListeFactory).
+		return liste_pays;
+	}
+
+	// Méthode qui va retourner les informations demandées sur le pays rentré en
+            // paramètre	
+	// La variable land est ce paramètre envoyé par le biais de la requête SOAP
+	public String[] getPays( String land)
+	{
+		
+		// Initialisation d'un tableau de chaîne de caractères à deux dimensions
+		String[] info_pays = new String[2];
+
+		// On crée une instance de la classe Search qui est la classe qui va chercher
+                       // exécuter
+		// la requête de recherche des informations sur le pays passé en paramètre
+		Search tamp = new Search();
+		
+		// La méthode find de la classe Search exécute une requête de recherche dans la
+                        // BDD
+		// et retourne les informations Capitale et Nb Habitant sous forme de tableau
+		info_pays = tamp.find(land);
+
+		// La méthode retourne un tableau de chaîne de caractère qui contient les
+                        // informations demandées
+		// C'est ce tableau qui sera envoyé sous forme XML par l'intermédiaire du
+                        // message SOAP de retour
+		// après l'invocation à distance de la méthode getPays par le biais d'un Web
+                       // Service
+		return info_pays;
+	}
+
+	
+}
+CLASSE Search
+
+package modele;
+
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+
+import java.util.ArrayList;
+import controle.ControleConnexion;
+
+public class Search{
+	
+	// On crée une variable statique de type Connection qui va référencer la connexion à la
+           // BDD Pays
+	// Cette variable statique ne sera pas instanciée car la connexion à la BDD doit être
+            // unique
+	// Pour un utilisateur donné on veut une et une seule connexion et un seul accès à la
+            // BDD
+	// Si autant de connexions étaient créées que de fois où l'utilisateur se connecte à la
+            // BDD
+	// par le biais des méthodes de recherche, les ressources mémoires s'épuiseraient très
+            // vite
+	// et les performances deviendraient très vite médiocres
+	static Connection laConnexion ;
+	
+	// On instancie une classe ArrayList qui servira de variable tampon pour stocker les
+            // résultats
+	// de la requête de recherche sur tous les noms de pays présent dans la table Pays
+	ArrayList <String> list = new ArrayList<String>();
+	
+	// La méthode String va opérer la requête de recherche des informations sur le pays
+	// et les retournera sous forme de tableau de chaîne de caractères
+	public String[] find(String land) {
+	
+		// On instancie un tableau de caractère qui servira de variable tampon pour
+                       // stocker les résultats
+		// de la requête de recherche sur le pays
+		String[] info_pays = new String[2];
+	
+		  try {
+			    // La méthode getConnexion() de la classe statique ControleConnexion
+                                       // retourne
+			    // la référence de la connexion initialisée selon les paramètres
+                                       // utilisateur stocké dans
+			    // le bean LesParamètres lors du chargement de la classe à la
+                                        // compilation
+			    // On référence cette connexion avec notre variable statique de classe
+                                       //  laConnexion
+				laConnexion= (Connection) ControleConnexion.getConnexion();
+				
+				// On intercepte les éventuelles exceptions lancées par le
+                                               // référencement de la connexion
+				} catch (Exception e) {
+					e.printStackTrace();}
+				
+				// Par facilité on entoure le paramètre de recherche des caractères
+                                               // Joker %
+				String leCode = "%" + land + "%";		
+		    		String requete = null;
+		        
+		        try {
+		        	// On crée le code SQL de la requête de recherche des informations sur le
+                                   // pays contenus
+			// dans la table pays de la BDD
+		         	requete = "SELECT nom_capitale,nb_habitants FROM pays WHERE nom_pays LIKE '"+leCode+"'"
+		         	+ " ORDER BY nom_pays";
+		        
+		         	// On crée un objet Statement à partir duquel on va lancer la requête
+                                   // SQL
+		         	Statement state =  (Statement) laConnexion.createStatement();        	
+		         	// On exécute la requête et onrécupère le résultat dans un objet de type
+                                   // Resultset
+		            ResultSet jeuEnregistrements = state.executeQuery(requete);            
+		           
+		            // On parcourt les résultats de la requête par le biais des méthodes de
+                                   // l'objet Resultset
+		            // Ici, on n'a qu'une ligne de résultat car chaque nom de pays est unique
+                                   // (clé UNIQUE sur
+		            // le champ nom_pays de la table Pays de la BDD
+		            // De ce fait, on n'a pas besoin de créer une boucler de parcours des lignes
+		            if (jeuEnregistrements.next()) {
+		            	// Le nom de la capitale se trouve dans la 1ère colonne (champs
+                                               // nom_capitale)
+		            	info_pays[0] = jeuEnregistrements.getString(1);
+		            	// Le nombre d'habitants se trouve dans la seconde colonne
+                                               //  (champs nb_habitants)
+		            	info_pays[1] = jeuEnregistrements.getString(2);
+		            }
+		              // On referme les objets Statement et Resultset utilisés car on en aura
+                                      // plus besoin
+		              // Il est préférable de le faire soi même plutôt que d'attendre que le
+                                      // "ramasse miette"
+		              // de la JVM s'en charge, au risque d'occuper inutilement la mémoire
+                                             // système
+			          jeuEnregistrements.close();  
+			          state.close();
+		        }         	        
+		        
+		        // On intercepte les éventuelles exceptions SQL généré par l'exécution de la
+                               //  requête
+		        catch (SQLException e){
+		        	
+		        	// On affiche un message indiquant la nature du problème par le biais
+                                   // d'une fenêtre
+		            JOptionPane.showMessageDialog(null, "Problème lors de la recherche.","",
+		            		JOptionPane.ERROR_MESSAGE);
+		            // On imprime les traces éventuelle de l'exception lancée
+		            e.printStackTrace();
+		        }
+		        // La méthode retourne un tableau de chaîne de caractère à deux
+                               // dimensions
+		        // La première entrée contient le nom de la capitale du pays
+		        // La seconde entrée contient le nombre d'habitants du pays
+		        // C'est ce tableau qui sera renvoyé au format XML par le biais d'un
+                                // message SOAP
+		        // au client ayant invoqué la méthode getPays() à distance par le biais du
+                                // Web Service Info_Pays
+		        return info_pays;
+			}
+	// La méthode String va opérer la requête de recherche des noms pays présents dans la
+            // table de la BDD
+	// et les retournera sous forme de tableau de chaîne de caractères (en effet une
+            // ArrayList aurait
+	// été plus commode d'autant qu'on ne connaît pas à l'avance le nombre d'entrées
+            // retournées, mais
+	// le type ArrayList ne passe pas dans le formatage XML des messages de type SOAP,
+            // c'est pourquoi
+	// on utilisera un état intermédiaire de tableau de chaînes de caractères de type
+           // String[]).
+		public String[] getListe()
+		{
+	
+		  try {
+			    // La méthode getConnexion() de la classe statique ControleConnexion
+                                       // retourne
+			    // la référence de la connexion initialisée selon les paramètres
+                                       // utilisateur stocké dans
+			    // le bean LesParamètres lors du chargement de la classe à la
+                                       // compilation
+			    // On référence cette connexion avec notre variable statique de classe
+                                       // laConnexion
+				laConnexion= (Connection) ControleConnexion.getConnexion();
+				}
+		// On intercepte les éventuelles exceptions lancées par le référencement de la
+                       // connexion
+		  catch (Exception e) {
+					e.printStackTrace();}
+				
+		        String requete = null;   
+		        int i=0;
+		        try {
+		        	// On crée le code SQL de la requête de recherche de la liste de tous les
+                                   // noms de pays  
+		        	// contenus dans la table pays de la BDD
+		         	requete = "SELECT nom_pays FROM pays ORDER BY nom_pays";
+		         	
+		         	// On crée un objet Statement à partir duquel on va lancer la requête
+                                   // SQL
+		         	Statement state =  (Statement) laConnexion.createStatement();
+		            // On exécute la requête et onrécupère le résultat dans un objet de type
+                                   // Resultset
+		            ResultSet jeuEnregistrements = state.executeQuery(requete);            
+		            
+		            // On parcourt les résultats de la requête par le biais des méthodes de
+                                    // l'objet Resultset
+		            // Ici, on a plusieurs lignes de résultat car de nombreux noms de pays  
+		            // On utilise donc une boucle While pour parcourir chaque ligne du
+                                    // Resultset
+		            // A chaque ligne du Resultset, on ajoute la valeur présente dans la
+                                    // colonne intitulée
+		            // "nom_pays" dans la variable tampon de type ArrayList
+		       		while(jeuEnregistrements.next()) {
+		            	String a = jeuEnregistrements.getString("nom_pays");
+		            	list.add(a);
+		            	 i++;}
+			        
+		              // On referme les objets Statement et Resultset utilisés car on en aura
+                                      // plus besoin
+		              // Il est préférable de le faire soi même plutôt que d'attendre que le
+                                      // "ramasse miette"
+		              // de la JVM s'en charge, au risque d'occuper inutilement la mémoire
+                                      // système
+		              jeuEnregistrements.close();  
+			          state.close();
+		        }         	     
+		     // On intercepte les éventuelles exceptions SQL généré par l'exécution de la
+                            //  requête
+		        catch (Exception e){
+		        	// On affiche un message indiquant la nature du problème par le biais
+                                   // d'une fenêtre
+		            JOptionPane.showMessageDialog(null, "Problème lors de la recherche : "+ i,"",
+		            		JOptionPane.ERROR_MESSAGE);
+		            // On imprime les traces éventuelle de l'exception lancée
+		            e.printStackTrace();
+		        }
+		        //On initialise une variable taille qui permettra de créer un tableau de la
+                                // même
+		        // taille que l'ArrayList tampon...
+		        int taille=list.size();
+		        int s=0;
+		        // Génération du tableau qui va contenir les noms de pays présents dans la
+                                // table Pays
+		        String[] liste_pays = new String[taille];
+		        
+		        // On crée une boucle qui va transférer chaque occurence de l'Arrylist dans
+                               // une ligne du tableau
+		        for(String a:list) {
+		        	liste_pays[s]=a;
+		        	s ++;}
+		        
+		        // La méthode retourne un tableau de chaîne de caractère à une dimension
+		        // L'unique colonne contient le nom du pays...
+		        // Le tableau comporte autant de lignes qu'il y a de nom de pays retournés
+                                // par la requête
+		        // C'est ce tableau qui sera renvoyé au format XML par le biais d'un
+                                // message SOAP
+		        // au client ayant invoqué la méthode getListe() à distance par le biais du
+                                // Web Service Info_Pays
+		        // En fait, c'est la JSP Index.jsp qui invoque cette méthode pour obtenir la
+                                // liste des pays
+		        // contenus dans la BDD, pour pouvoir afficher la liste déroulante
+                                // correspondante...
+		        return liste_pays;
+			}
+			
+}

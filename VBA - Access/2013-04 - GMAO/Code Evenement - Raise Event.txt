@@ -1,0 +1,59 @@
+'-------------------------------------------------------------------------------------
+Module de classe Fichier Joint
+
+Option Compare Database
+
+Public Event NouvelAjout(sMsg As String, ByRef Cancel As Boolean)
+
+Public Function Annonce_Ajout()
+    
+    Dim btnCancel As Boolean
+    
+    MsgBox "Ajout de Piece jointe"
+    RaiseEvent NouvelAjout("Un bien vilain crocodile", btnCancel)
+    
+    If btnCancel Then
+        Exit Function
+    End If
+        
+End Function
+
+'-------------------------------------------------------------------------------------
+
+Module de classe Client
+
+Public WithEvents unEvenement As FichierJoint
+
+Public Sub declencheur()
+
+Set unEvenement = New FichierJoint
+
+unEvenement.Annonce_Ajout
+
+End Sub
+
+Public Sub unEvenement_NouvelAjout(sMsg As String, _
+                            Cancel As Boolean)
+                            
+    MsgBox "Evenement intercepté !!!"
+    MsgBox sMsg
+    
+End Sub
+
+
+
+'---------------------------------------------------------------------------------
+
+Module1
+
+Public Sub AppelEvent()
+
+Dim customer As Client
+
+Set customer = New Client
+
+customer.declencheur
+
+End Sub
+
+

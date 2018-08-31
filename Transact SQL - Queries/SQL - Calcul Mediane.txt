@@ -1,0 +1,21 @@
+SELECT
+   CustomerId,
+   AVG(TotalDue)
+FROM
+(
+   SELECT
+      CustomerId,
+      TotalDue,
+      ROW_NUMBER() OVER (
+         PARTITION BY CustomerId 
+         ORDER BY TotalDue ASC, SalesOrderId ASC) AS RowAsc,
+      ROW_NUMBER() OVER (
+         PARTITION BY CustomerId 
+         ORDER BY TotalDue DESC, SalesOrderId DESC) AS RowDesc
+   FROM Sales.SalesOrderHeader SOH
+) x
+WHERE 
+   RowAsc IN (RowDesc, RowDesc - 1, RowDesc + 1)
+GROUP BY CustomerId
+ORDER BY CustomerId;
+

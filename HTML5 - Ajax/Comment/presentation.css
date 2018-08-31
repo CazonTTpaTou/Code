@@ -1,0 +1,198 @@
+@CHARSET "ISO-8859-1";
+
+* { font-size:12px; font-family:times-new-roman; } 
+
+.choix {position: absolute; 
+	  top: 4%; left:2.5%;
+	  text-decoration:none;
+          }
+
+.choix1 {position: absolute; 
+	  top:25%; left:1%;
+          width:15.5%;height:68%;
+	  border:#0000FF solid 4px; 
+          font-weight:bold;
+          font-size:25px;
+	  border-width:5px;
+          margin:5px;
+	  color:#0000FF;
+	  overflow:scroll;}
+
+.choix2 {position: absolute; 
+	  top:22%; left:12%;
+          width:13.5%;height:58%;}
+
+.menu { text-align:center;
+        vertical-align:middle;
+	padding-top:10px;
+        font-weight:bold;
+        font-size:40px;}
+
+.menub {font-size:15px;
+        text-decoration:underline;}
+
+
+.mention1 {position: absolute; 
+	  top:1.5%; left:84%;
+	  }
+
+.mention2 {position: absolute; 
+	  top:5%; left:10%;
+          width:10%;height:10%;}
+
+.mention3 {position: absolute; 
+	  top:33%; left:10%;
+          width:10%;height:10%;}
+
+.mention4 {position: absolute; 
+	  top:59%; left:10%;
+          width:10%;height:10%;}
+
+
+.societ{  text-align:center;
+	  font-size:30pt;
+	  font-weight:bold;
+	  font-color:000000;
+	  background-color:#DC143C;	  
+	  color:#FFFFFF;}
+
+.societes {
+	  margin-left: auto; 
+  	  margin-right: auto; 
+	  padding-top:0.5%;
+	  width:65%;
+	  text-align:center;
+          }
+
+.societe {
+	  margin-left: auto; 
+  	  margin-right: auto; 
+	  padding-top:0.5%;
+	  padding-bottom:0.5%;
+	  width:65%;
+	  text-align:center;
+          }
+
+.sous-societe {
+	  text-align:center;
+	  font-size:25px;
+	  text-decoration:none;
+	  font-color:000000;
+	  font-weight:bold;
+	  background-color:#0000FF;
+	  color:#FFFFFF;
+	 }
+
+.image {position: absolute; 
+	  top:7%; left:2%;
+	  }
+
+.image2 {position: absolute; 
+	  top:7%; left:85%;
+	  }
+
+.mention {position: absolute; 
+	  top:1%; left:1%;
+	  font-size:2%;
+          width:97%;height:23%;
+	  
+          }
+
+.formu {position:absolute;
+         top:27.5%; left:1%;
+         width:97%;
+	 height:69%;
+         border:#0000FF solid 3px;
+         border-width:3px;
+	 background-position: 1% 1%;
+         background:url('./Picture/Parchemin.jpeg') 2% 25% no-repeat;}
+
+.formi {position:absolute;
+         top:2%; left:25%;
+         width:35%;
+	 height:82%;
+         border:#0000FF solid 1px;
+         border-width:0px;
+	 margin-right:2%;}
+
+.formo {position:absolute;
+         top:2%; left:65%;
+         width:35%;
+	 height:82%;
+         border:#0000FF solid 1px;
+         border-width:0px;
+	 margin-right:2%;}
+
+.forma {position:absolute;
+         top:85%; left:55%;}
+
+.avertissement_1 {position:absolute;
+        	  top:10%; left:30%;
+		  width:60%;
+		  font-weight:bold;
+		  font-size:32px;
+		  color:#DC143C;
+		  text-decoration:none;
+		  text-align:center;}
+
+.avertissement_2 {position:absolute;
+        	  top:70%;left:35%;
+		  width:55%;
+		  font-weight:bold;
+		  font-size:26px;
+		  color:#0000FF;
+		  text-decoration:blink;
+		  text-align:center;}
+
+.champs {position:absolute;
+         left:45%;}
+
+.intitule {color:#0000FF;
+           font-weight:bold;
+	   font-size:14px;}
+
+.profil-title {font-size:20px;
+	       font-weight:bold;
+               color:#0000FF;
+		text-align : center;}
+
+.profil-answer {font-size:15px;
+	       font-weight:normal;
+		position:absolute:
+                left:25%;}
+
+.dex {font-weight:bold;
+      font-size:19px;
+      color:#228B22;
+     text-align:center;}
+
+.tableau {position: absolute;
+       top:89%;left:8%;
+       font-size:25px;
+       width:85%;
+	height:45%;
+       }
+
+.remarque {position: absolute;
+	   top:50px;
+           left:320px;            
+            text-decoration:blink;
+             font-size:25px;
+             font-weight:bold;
+	     color:#DC143C;
+	     text-align:center;
+	     padding-right:10px;}
+
+.titref{font-size:18px;
+	  font-weight:bold;
+	  color:#DC143C;}
+	  
+.message{font-size:25px;
+	  font-weight:bold;
+	  color:#DC143C;
+	  text-decoration:blink;}
+	  
+.detail{color:#0000FF;}
+
+
+

@@ -1,0 +1,247 @@
+CREATE OR REPLACE TYPE  "T_ETAT" AS OBJECT (
+	pays VARCHAR(50),
+	superficie NUMBER(10) NOT NULL DEFAULT 0);
+
+
+CREATE OR REPLACE TYPE  "T_LOCALITE" AS OBJECT (
+	ville VARCHAR(50) ,
+	nb_habitant NUMBER(10) NOT NULL DEFAULT 0,
+	etat VARCHAR(50));
+ 	
+
+CREATE OR REPLACE TYPE  "T_TEMPS" AS OBJECT (
+	jour_date DATE DEFAULT SYSDATE,
+	temperature NUMBER(3,2) NOT NULL DEFAULT 0,
+	localite VARCHAR(50));
+
+b) Définition des collections:
+
+CREATE TYPE "TAB_ETAT" AS TABLE OF T_ETAT;
+
+CREATE TYPE "TAB_LOCALITE" AS TABLE OF T_LOCALITE;
+
+CREATE TYPE "TAB_TEMPS" AS TABLE OF T_TEMPS;
+
+c) Implémentation et instanciation des tables:
+
+CREATE TABLE etats of TAB_ETAT (
+CONSTRAINT pk_etat  PRIMARY KEY (pays),
+  	CONSTRAINT superficie_positive CHECK (superficie > 0));
+
+CREATE TABLE localites of TAB_LOCALITE (
+CONSTRAINT pk_ville  PRIMARY KEY (ville),
+CONSTRAINT fk_ville_pays   
+FOREIGN KEY (etat) REFERENCES etats (pays)  ON DELETE CASCADE,
+  	CONSTRAINT nb_hab_positif CHECK (nb_habitant > 0));
+
+CREATE TABLE temps of TAB_TEMPS (
+CONSTRAINT pk_localite_temperature  PRIMARY KEY (localite,temperature),
+CONSTRAINT fk_localite_ville 
+FOREIGN KEY (localite) REFERENCES localites (ville)  ON DELETE CASCADE);
+
+ 
+2) Création de la table LIEU utilisant une table imbriquée:
+
+a) Définition de la structure:
+
+CREATE OR REPLACE TYPE  "T_LOCALITE" AS OBJECT (
+	ville VARCHAR(50) ,
+	nb_habitant NUMBER(9) NOT NULL DEFAULT 0);
+
+b) Définition des collections:
+
+CREATE OR REPLACE TYPE "T_LIEU" AS OBJECT (
+	Etat T_ETAT,
+	Localite TAB_LOCALITE);
+
+c) Implémentation et instanciation de la table LIEU:
+
+CREATE TABLE LIEU OF T_LIEU
+(CONSTRAINT pk_lieu  PRIMARY KEY (Etat.pays))
+	CONSTRAINT superficie_positive2 CHECK (Etat.superficie > 0),
+CONSTRAINT pk_ville2  Unique_Ville UNIQUE (LesLocalites.ville),
+  	CONSTRAINT nb_hab2_positif CHECK (LesLocalites.nb_habitant > 0))
+
+	NESTED TABLE Localite STORE AS LesLocalites;
+
+  	
+
+ 
+
+3) Insertion des données dans la table LIEU:
+
+
+1ère méthode:
+
+
+INSERT INTO LIEU 
+		  VALUES (T_ETAT('France',500 000),
+			        TAB_LOCALITE(T_LOCALITE('Paris',6 000),
+                                      T_LOCALITE('Strasbourg',250),
+  			                                      T_LOCALITE('Toulouse',300)));
+
+INSERT INTO LIEU 
+		  VALUES (T_ETAT('Suisse',10 500),
+			        TAB_LOCALITE(T_LOCALITE('Genève',320),
+                                      T_LOCALITE('Zurich',175)));
+
+INSERT INTO LIEU 
+		  VALUES (T_ETAT('Vénézuela',435 000),
+			        TAB_LOCALITE(T_LOCALITE('Caracas',4 000)));
+
+INSERT INTO LIEU 
+		  VALUES (T_ETAT('Burkina Faso',150 000),
+			        TAB_LOCALITE(T_LOCALITE('Ouagadougou',5 000),
+                                      T_LOCALITE('Bobo Dioulasso',1 250)));
+
+ 
+2ème méthode:
+
+Insertion des pays:
+
+INSERT INTO LIEU 
+VALUES T_ETAT (France,500 000),
+			     TAB_LOCALITE());
+
+INSERT INTO LIEU 
+VALUES T_ETAT (Suisse,10 500),
+	     TAB_LOCALITE());
+
+INSERT INTO LIEU 
+VALUES T_ETAT (Vénézuéla, 435 000),			        
+                 TAB_LOCALITE());
+
+INSERT INTO LIEU 
+VALUES T_ETAT (Burkina Faso, 150 000),
+	     TAB_LOCALITE());
+
+Insertion des villes dans la table imbriquée:
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etat.pays = 'France') 
+  VALUES (T_LOCALITE (Paris, 6000));
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etat.pays = 'France') 
+	              VALUES (T_LOCALITE (Strasbourg, 250));
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etat.pays = 'France') 
+                         VALUES (T_LOCALITE (Toulouse, 300));
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etats.pays = 'Suisse') 
+                         VALUES (T_LOCALITE (Genève, 320));
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etats.pays = 'Suisse') 
+	              VALUES (T_LOCALITE (Zürich, 175));
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etat.pays = 'Vénézuela') 
+                          VALUES( T_LOCALITE (Caracas, 4000));
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etat.pays = 'Burkina Faso') VALUES 
+(T_LOCALITE (Ouagadougou, 320));
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etat.pays = 'Burkina Faso') VALUES 
+           (T_LOCALITE (Bobo Dioulasso, 175));
+
+
+ 
+
+Exemples de requêtes:
+
+- Nombre de pays: 
+
+SELECT COUNT(L.Etat.pays) FROM LIEU L;
+
+-Superficie moyenne de tous les pays: 
+
+SELECT AVG(L.Etat.supericie) FROM LIEU L;
+
+- Nombre de villes par pays:
+
+SELECT L.Etat.pays, COUNT(Loc.ville) FROM 
+LIEU L, 
+TABLE (SELECT L2.Localite.ville FROM LIEU L2 WHERE L.Etat.pays = L2.Etat.pays) Loc 
+GROUP BY L.Etat.pays;
+
+- Pays ayant la plus grande superficie: 
+
+SELECT L.Etat.pays,L.Etat.superficie FROM LIEU L ORDER BY L.Etat.superficie DESC LIMIT 1;
+
+- Nombre d'habitants par pays:
+
+SELECT L.Etat.pays, SUM(Loc.nb_habitant) 
+FROM LIEU L, 
+TABLE (SELECT L2.L.ville FROM LIEU L2 WHERE L.Etat.pays=L2.Etat.pays)Loc 
+GROUP BY L.Etat.pays;
+
+- Pays classé par densité de population au km²:
+
+SELECT L.Etat.pays, SUM(Loc.nb_habitant)/L.Etat.superficie FROM 
+LIEU L, 
+TABLE (SELECT L2.Localite.ville FROM LIEU L2 WHERE L.Etat.pays = L2.Etat.pays) Loc 
+GROUP BY L.Etat.pays 
+ORDER BY SUM(Loc.nb_habitant)/L.Etat.superficie;
+
+ 
+
+4) Requêtes sur la base de données objet relationnelle:
+
+a) Déterminer les villes situées dans des pays de superficie supérieure à 150 000 km²:
+
+SELECT L.Localite.ville FROM LIEU L WHERE L.Etat.superficie >= 150 000;
+
+Ou bien
+
+SELECT L1.ville
+FROM TABLE  (SELECT L.Localite 
+     FROM LIEU L 
+                  WHERE L.Etat.superficie > 150000) L1;
+
+b) Déterminer le nombre total d'habitants des villes dont la température est inférieure à 15°C du 1er janvier 2009 au 30 juin 2009:
+
+SELECT SUM(Li.nbh) 
+FROM TABLE (SELECT L2.Localite 
+   FROM LIEU L2 WHERE L2.Localite.ville 
+                                                    IN (SELECT T.ville 
+                                                          FROM Temps T 
+                                  WHERE (T.temperature < 15)                  
+                                       AND (T.Date Between '2009-01-01'   
+                                                              AND '2009-06-30'))) Li ;
+
+Ou bien
+
+SELECT SUM(L.Localite.nbh) FROM LIEU L 
+    JOIN TEMPERATURE T 
+              ON (L.Localite.ville = T.ville) 
+                      WHERE (T.date between '01-01-2009' 
+                                      AND '30-06-2009') 
+                      AND (T.Temperature < 15) ;
+
+c) Déterminer les températures maximales de chaque pays au cours de l'année:
+
+Deux propositions pour formaliser la requête:
+
+- Proposition n° 1 avec une jointure et un opérateur de regroupement:
+
+SELECT L.Etat.pays, MAX(T.temperature) 
+FROM Lieu L,
+JOIN Temps T ON L.Localite.ville = T.ville
+WHERE (T.Date Between '2009-01-01' AND '2009-12-31') 
+GROUP BY L.Etat.pays;
+
+
+
+
+- Proposition n°2 avec une sous requête dans le FROM: 
+
+SELECT L.Etat.pays,Temp_pays.Temps_max 
+FROM Lieu L, 
+TABLE (SELECT L2.Localite
+               FROM LIEU L2 WHERE L.Localite.ville = L2.Localite.ville) Loc, 
+(SELECT MAX(T.Temperature) "Temp_max" 
+ FROM Temps T WHERE 
+(T.ville IN (SELECT ville FROM Loc) 
+AND 
+(WHERE T.Date Between '2009-01-01' AND '2009-12-31')) Temp_pays 
+
+ORDER BY L.Etat.pays ASC;
+
+

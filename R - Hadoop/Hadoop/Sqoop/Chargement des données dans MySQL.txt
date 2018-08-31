@@ -1,0 +1,17 @@
+sudo -u hdfs hadoop fs -chmod 777 /user/eulidia
+
+mysql -p -u root --enable-local-infile
+
+mysql > CREATE DATABASE Formation;
+ 
+mysql > use Formation;
+
+mysql > CREATE TABLE autolib (ID INT, CODE_POSTAL INT, VILLE char(20), field12 char(50), type_station char(20), EMPLACEMENT char(20), NOM_STATION char(20), NB_PLACES_AUTOLIB INT, PLACE_RECHARGE_TIER INT, NB_TOTAL_PLACE INT);
+
+mysql > LOAD DATA LOCAL INFILE '~/Autolib_Paris.csv' INTO TABLE autolib FIELDS TERMINATED BY ";" LINES TERMINATED BY "\n" IGNORE 1 LINES;
+
+mysql> update autolib set field12= replace(field12,',',':');
+
+mysql> select * from autolib;
+
+mysql> quit;

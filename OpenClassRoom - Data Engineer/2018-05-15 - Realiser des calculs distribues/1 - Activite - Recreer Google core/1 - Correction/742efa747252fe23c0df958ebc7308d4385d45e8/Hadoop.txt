@@ -1,0 +1,12 @@
+hadoop fs -mkdir input wget http://www.textfiles.com/etext/FICTION/defoe-robinson-103.txt hadoop fs -copyFromLocal defoe-robinson-103.txt input wget http://www.textfiles.com/etext/FICTION/callwild hadoop fs -copyFromLocal callwild input
+
+
+
+
+hadoop fs -ls input
+
+
+w_t,d = (tf_t,d / n_d) × log(N/df_t)
+
+
+Je vais travailler sous cloudera pour executer ces commande 

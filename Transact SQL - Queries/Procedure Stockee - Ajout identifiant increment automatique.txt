@@ -1,0 +1,24 @@
+http://technet.microsoft.com/fr-fr/library/ms188655.aspx
+
+use gmao_dev_8
+go
+create procedure insertion_3 @idIntervention int,@numero int output
+as
+DECLARE @Ajout table (numero int);  
+insert into realisation (idIntervention) 
+	output inserted.idRealisation
+				into @AJOUT 
+	Values (@idIntervention)
+	
+	select @numero = numero from @Ajout
+	return
+go
+
+declare @num int
+
+exec  Insertion_3 600,@numero = @num output
+
+print @num
+go
+
+

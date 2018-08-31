@@ -1,0 +1,74 @@
+USE SQC_DB
+GO
+
+------------------------------------------------------------
+CONCATENATION DE LIGNES
+------------------------------------------------------------
+
+DECLARE @ASSEMBLAGE_2 VARCHAR(1000);
+SET @ASSEMBLAGE_2='';
+SELECT @ASSEMBLAGE_2 = @ASSEMBLAGE_2 + COALESCE([N°Assemblage] + '; ', '') FROM T_LOT_ASSEMBLAGE
+		WHERE idLot = 35269;
+SELECT @ASSEMBLAGE_2;		
+GO
+
+------------------------------------------------------------
+FONCTION DE CONCATENATION DE LIGNES
+------------------------------------------------------------
+
+/* Création de la fonction table : GetAssemblages */
+CREATE FUNCTION [dbo].[GetAssemblages] (@IdLot int)
+RETURNS @retListe TABLE 
+(
+     [Assemblage 1] nvarchar(1000) NOT NULL,
+     [Assemblage 2+] nvarchar(1000) NOT NULL
+     
+)
+AS   
+BEGIN
+	-- Déclaration des variables assemblage
+	DECLARE @ASSEMBLAGE_1 VARCHAR(1000)
+	DECLARE @ASSEMBLAGE_2 VARCHAR(1000)
+
+	-- Initialisation des variables assemblage
+	SET @ASSEMBLAGE_1 = ''
+	SET @ASSEMBLAGE_2 = ''
+
+	-- On recherche le premier assemblage
+	SELECT TOP 1 @ASSEMBLAGE_1 = [N°Assemblage] 
+	FROM   T_LOT_ASSEMBLAGE
+	WHERE  idlot = @IdLot
+	ORDER BY CHRONO ASC
+
+	-- On recherche TOUS les assemblages à l'exception du premier 
+	SELECT @ASSEMBLAGE_2 = @ASSEMBLAGE_2 + COALESCE([N°Assemblage] + '; ', '')
+	FROM   T_LOT_ASSEMBLAGE
+	WHERE  idlot = @IdLot
+	AND	   [N°Assemblage] <> @ASSEMBLAGE_1
+	ORDER BY CHRONO ASC
+
+	-- Supprime le point virgule finale parasite si la chaîne est assignée
+	IF @ASSEMBLAGE_2 IS NOT NULL AND LEN(@ASSEMBLAGE_2) > 1
+	   SET @ASSEMBLAGE_2 = SUBSTRING(@ASSEMBLAGE_2, 1, LEN(@ASSEMBLAGE_2) - 1)
+	ELSE
+		SET @ASSEMBLAGE_2 = ''
+		
+	-- Restitue l'information
+	INSERT @retListe
+	SELECT @ASSEMBLAGE_1, @ASSEMBLAGE_2
+	
+	-- Sort de la fonction
+	RETURN
+END;
+GO
+
+------------------------------------------------------------
+OPERATEUR CROSS APPLY
+------------------------------------------------------------
+
+SELECT Ass.[Assemblage 1], Ass.[Assemblage 2+]
+FROM T_LOT
+	CROSS APPLY dbo.GetAssemblages(T_LOT.idLot) as Ass
+	
+GO
+

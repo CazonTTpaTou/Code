@@ -1,0 +1,143 @@
+﻿/* ------------------------------- Secteur de la photo haut de page ------------------------------- */
+.logo {
+    display: block;
+    margin: 0 auto;
+}
+
+/* ------------------------------- Secteur du conteneur du menu en-tête ------------------------------- */
+
+#Bord_Gauche {    
+    width:12.5%;
+}
+#Triangle_Gauche {        
+     width: 0;
+     height: 0;
+     border-top: 3.2em solid black; 
+     border-left: 3em solid transparent; 
+     float:left;   
+}
+#Triangle_Droit {
+     width: 0;
+     height: 0;
+     border-top: 3.2em solid black; 
+     border-right: 3em solid transparent;          
+}
+.Menu_Conteneur {    
+    text-align: center;
+    z-index:1;
+}
+.Menu {
+    display: inline-block;
+}
+
+/* ------------------------------- Secteur du menu glissant ------------------------------- */
+
+ul.topnav {
+	list-style: none;	
+	margin: 0;
+	float: left;	
+    font:"PTSans";
+    font-weight:bold;
+    font-size:1.2em;
+    padding-left:1.2em;
+    padding-right:1.2em;
+    padding-bottom:0.1em;
+    padding-top:0.1em;
+    background-color:#0a0a0a;
+    color:#ffffff;
+    border-color:#ffffff;
+    border-width:0.3em;  
+}
+ul.topnav li {
+	float: left;
+	margin: 0;	
+	padding: 0 15px 0 0;
+	position: relative; /*--Declare X and Y axis base for sub navigation--*/
+}
+ul.topnav li a{
+	padding: 10px 5px;
+	color: #fff;
+	display: block;
+	text-decoration: none;
+	float: left;
+}
+ul.topnav li a:hover{	
+    background-color:rgb(236,116,16);
+}
+ul.topnav li span { /*--Drop down trigger styles--*/
+	width: 17px;
+	height: 35px;
+	float: left;
+	background: url(/PublishingImages/Picto3.png) no-repeat center top;
+    background-position: center bottom;
+}
+ul.topnav li span.subhover {background: url(/PublishingImages/Picto4.png) no-repeat center top;
+                            background-position: center top; cursor: pointer;} /*--Hover effect for trigger--*/
+ul.topnav li ul.subnav {
+	list-style: none;
+	position: absolute; /*--Important - Keeps subnav from affecting main navigation flow--*/
+	left: 0; top: 35px;	
+    background: #0a0a0a;
+	margin: 0; padding: 0;
+	display: none;
+	float: left;
+	width: 180px;
+	border: 1px solid #111;    
+    z-index:2;
+}
+ul.topnav li ul.subnav li{
+	margin: 0; padding: 0;
+    border-bottom: 1px dashed #ffffff;
+	clear: both;
+	width: 180px;
+}
+html ul.topnav li ul.subnav li a {
+	float: left;
+	width: 145px;
+	padding-left: 20px;
+}
+html ul.topnav li ul.subnav li a:hover { /*--Hover effect for subnav links--*/    
+	border-left: 10px  solid rgb(236,116,16);
+   
+	/*background: #222 url(dropdown_linkbg.gif) no-repeat 10px center; */
+}
+
+/* ------------------------------- Secteur des autres liens Internet ------------------------------- */
+
+#Autres_Liens {    
+    width:11%;
+    position:absolute;
+    top:19%;
+    left:0.8em;     
+}
+#Liste_Liens {
+    list-style: none;      
+}
+ul#Liste_Liens a {
+    color:rgb(0,149,216);
+    font:"PTSans";
+    font-style:normal;
+    font-weight:bold;
+    font-size:1.2em;
+    text-decoration:none;   
+}
+ul#Liste_Liens a:hover {
+        background-color: rgb(116,176,35);
+        color:white;
+    }
+
+#Titre_Lien {
+    font:"PTSans";
+    font-weight:bold;
+    font-size:1.2em;
+    padding-left:1em;
+    padding-right:1em;
+    padding-bottom:0.2em;
+    padding-top:0.2em;
+    background-color:#0a0a0a;
+    color:#ffffff;
+    border-color:#ffffff;
+    border-width:0.5em; 
+}
+
+

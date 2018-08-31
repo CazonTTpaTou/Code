@@ -1,0 +1,4 @@
+SELECT V_CARTON.Atelier, V_CARTON.Format, V_CARTON.Materiau, V_CARTON."Classe Cellule", V_CARTON."Code BAAN", V_CARTON."Carton Num", V_CARTON."Embc Qte", V_CARTON."Embc Date Heure", V_CARTON."Exe Date Heure"
+FROM SQC_DB.dbo.V_CARTON V_CARTON
+WHERE (V_CARTON."Palette Num" Is Null)
+ORDER BY V_CARTON.Atelier, V_CARTON.Format, V_CARTON.Materiau, V_CARTON."Classe Cellule", V_CARTON."Code BAAN", V_CARTON."Carton Num"

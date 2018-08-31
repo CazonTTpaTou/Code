@@ -1,0 +1,71 @@
+Ci-dessous un exemple de code pour LIRE :
+
+ 
+
+    ' On constitue la requete pour rechercher le dernier evenement
+
+    sRequete = Replace(CST_SELECT_DERNIER_EVENEMENT_ECRAN, "%1%", EQU_Identifiant.Value)
+
+    sRequete = Replace(sRequete, "%2%", LIG_Identifiant.Value)
+
+    ' On execute la requete
+
+    Set rstListe = CurrentDb.OpenRecordset(sRequete, dbOpenSnapshot, dbReadOnly)
+
+    ' Il y a un enregistrement
+
+    If Not rstListe.EOF Then
+
+        bEcranPrecedent = IIf(Nz(rstListe.Fields("EVT_Motif").Value, "") = "", True, False)
+
+        TXT_Observations_Precedent.Value = IIf(bEcranPrecedent, Nz(rstListe.Fields("EVT_Observation").Value, ""), "")
+
+    End If
+
+    ' On ferme le recordset
+
+    If Not (rstListe Is Nothing) Then rstListe.Close
+
+    ' On libere la memoire
+
+    Set rstListe = Nothing
+
+ 
+
+Ci-dessous un exemple de code pour ECRIRE :
+
+ 
+
+        ' On constitue et on execute la requete de mise à jour de l'evenement precedent
+
+        sRequete = Replace(CST_UPDATE_EVENEMENT_ECRAN, "%1%", TXT_Demontage_Precedent.Value)
+
+        sRequete = Replace(sRequete, "%2%", TXT_Duree_Vie_Precedent.Value)
+
+        sRequete = Replace(sRequete, "%3%", CBO_Motif_Precedent.Value)
+
+        sRequete = Replace(sRequete, "%4%", Replace(Nz(TXT_Observations_Precedent.Value, ""), "'", "''"))
+
+        sRequete = Replace(sRequete, "%5%", TXT_Identifiant_Precedent.Value)
+
+        Call CurrentDb.Execute(sRequete, dbSeeChanges)
+
+ 
+
+Ci-dessous les références que nous utilisons :
+
+ 
+
+ 
+
+Cordialement
+
+ 
+
+Benjamin ALONSO
+
+Prestataire NORSYS
+
+Poste : 413
+
+                                                                                                    

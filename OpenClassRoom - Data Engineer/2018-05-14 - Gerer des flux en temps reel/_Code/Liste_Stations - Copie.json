@@ -1,0 +1,139 @@
+[
+    {
+        "address": "MAZARGUES - ROND POINT DE MAZARGUES (OBELISQUE)",
+        "available_bike_stands": 20,
+        "available_bikes": 1,
+        "banking": true,
+        "bike_stands": 21,
+        "bonus": false,
+        "contract_name": "Marseille",
+        "last_update": 1493734764000,
+        "name": "9087-MAZARGUES",
+        "number": 9087,
+        "position": {
+            "lat": 43.250903869637334,
+            "lng": 5.403244616491982
+        },
+        "status": "OPEN"
+    },
+    {
+        "address": "Gare SNCF",
+        "available_bike_stands": 28,
+        "available_bikes": 2,
+        "banking": true,
+        "bike_stands": 30,
+        "bonus": false,
+        "contract_name": "Bordeaux",
+        "last_update": 1493734764000,
+        "name": "9087-GARE",
+        "number": 9087,
+        "position": {
+            "lat": 43.250903869637334,
+            "lng": 5.403244616491982
+        },
+        "status": "OPEN"
+    },    
+    {
+        "address": "MAZARGUES - ROND POINT DE MAZARGUES (OBELISQUE)",
+        "available_bike_stands": 21,
+        "available_bikes": 0,
+        "banking": true,
+        "bike_stands": 21,
+        "bonus": false,
+        "contract_name": "Marseille",
+        "last_update": 1493734764000,
+        "name": "9087-MAZARGUES",
+        "number": 9087,
+        "position": {
+            "lat": 43.250903869637334,
+            "lng": 5.403244616491982
+        },
+        "status": "OPEN"
+    },
+    {
+        "address": "Gare SNCF",
+        "available_bike_stands": 27,
+        "available_bikes": 3,
+        "banking": true,
+        "bike_stands": 30,
+        "bonus": false,
+        "contract_name": "Bordeaux",
+        "last_update": 1493734764000,
+        "name": "9087-GARE",
+        "number": 9087,
+        "position": {
+            "lat": 43.250903869637334,
+            "lng": 5.403244616491982
+        },
+        "status": "OPEN"
+    },
+    {
+        "address": "MAZARGUES - ROND POINT DE MAZARGUES (OBELISQUE)",
+        "available_bike_stands": 16,
+        "available_bikes": 5,
+        "banking": true,
+        "bike_stands": 21,
+        "bonus": false,
+        "contract_name": "Marseille",
+        "last_update": 1493734764000,
+        "name": "9087-MAZARGUES",
+        "number": 9087,
+        "position": {
+            "lat": 43.250903869637334,
+            "lng": 5.403244616491982
+        },
+        "status": "OPEN"
+    },
+    {
+        "address": "Gare SNCF",
+        "available_bike_stands": 30,
+        "available_bikes": 0,
+        "banking": true,
+        "bike_stands": 30,
+        "bonus": false,
+        "contract_name": "Bordeaux",
+        "last_update": 1493734764000,
+        "name": "9087-GARE",
+        "number": 9087,
+        "position": {
+            "lat": 43.250903869637334,
+            "lng": 5.403244616491982
+        },
+        "status": "OPEN"
+    },
+    {
+        "address": "MAZARGUES - ROND POINT DE MAZARGUES (OBELISQUE)",
+        "available_bike_stands": 0,
+        "available_bikes": 21,
+        "banking": true,
+        "bike_stands": 21,
+        "bonus": false,
+        "contract_name": "Marseille",
+        "last_update": 1493734764000,
+        "name": "9087-MAZARGUES",
+        "number": 9087,
+        "position": {
+            "lat": 43.250903869637334,
+            "lng": 5.403244616491982
+        },
+        "status": "OPEN"
+    },
+    {
+        "address": "Gare SNCF",
+        "available_bike_stands": 0,
+        "available_bikes": 30,
+        "banking": true,
+        "bike_stands": 30,
+        "bonus": false,
+        "contract_name": "Bordeaux",
+        "last_update": 1493734764000,
+        "name": "9087-GARE",
+        "number": 9087,
+        "position": {
+            "lat": 43.250903869637334,
+            "lng": 5.403244616491982
+        },
+        "status": "OPEN"
+    }
+]
+

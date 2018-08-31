@@ -1,0 +1,12 @@
+IF(
+(('Valeur Maximale Critique'n -Avg [_ByGroup_] ('Valeur mesurée'n))
+/(3*(StdDev [_ByGroup_] ('Valeur mesurée'n))))
+>=
+((Avg [_ByGroup_] ('Valeur mesurée'n)-'Valeur Minimale Critique'n )
+/(3*(StdDev [_ByGroup_] ('Valeur mesurée'n)))))  
+RETURN
+((Avg [_ByGroup_] ('Valeur mesurée'n)-'Valeur Minimale Critique'n )
+/(3*(StdDev [_ByGroup_] ('Valeur mesurée'n))))
+ELSE(
+(('Valeur Maximale Critique'n -Avg [_ByGroup_] ('Valeur mesurée'n))
+/(3*(StdDev [_ByGroup_] ('Valeur mesurée'n)))))

@@ -1,0 +1,7 @@
+Libname Toto "C:\Users\pwsasdev\Desktop\Formation Stat"; 
+
+proc import datafile="C:\Users\pwsasdev\Desktop\Formation Stat\AFD Vins.xls" 
+out=toto.AFD_Vins dbms=EXCEL replace;
+sheet="Feuil1";
+getnames=yes;
+run; quit;

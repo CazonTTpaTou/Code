@@ -1,0 +1,9 @@
+proc sgplot data=stats.data_hennecke_2_mois;
+	scatter X= SawStep Y=SawGroove ;
+	Xaxis label="SawStep";
+	Yaxis label="SawGroove";
+run;
+
+
+
+

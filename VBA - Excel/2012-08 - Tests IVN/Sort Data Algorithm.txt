@@ -1,0 +1,73 @@
+1.	Dim data As Variant
+Dim i As Integer
+Dim cpt As Integer
+
+' comptage du nombre de valeurs
+i = 2
+Do Until IsEmpty(Cells(i, 1))
+    i = i + 1
+Loop
+cpt = i - 2
+
+' redimensionnement du tableau ( 1 colonne et cpt-1 lignes)
+
+ReDim data(cpt - 1)
+
+For i = 1 To cpt
+    data(i - 1) = Cells(i + 1, 1)
+Next i
+
+[COLOR="SeaGreen"]' tri de ce tableau => la ça ne marche pas[/COLOR]
+
+data = Application.Sort(data)
+
+End Sub
+
+1.	Option Compare Text
+Sub macro1()
+Dim tablo, tmp
+Dim i As Integer, j As Integer
+ 
+'initialisation du tableau
+tablo = Range("a1:a" & Range("a65536").End(xlUp).Row)
+ 
+'tri du tableau
+For i = LBound(tablo) To UBound(tablo)
+    For j = LBound(tablo) To UBound(tablo)
+        If tablo(i, 1) < tablo(j, 1) Then
+            tmp = tablo(i, 1): tablo(i, 1) = tablo(j, 1): tablo(j, 1) = tmp
+        End If
+    Next j
+Next i
+ 
+'renvoi du tableau en colonne C
+Range("C1", Cells(UBound(tablo), 3)) = tablo
+ 
+End Sub
+
+
+Sub essai()
+Dim temp(10000) As Double
+For i = 1 To 10000
+temp(i) = Rnd
+Next i
+t = Timer
+Call tri(temp, 1, 10000)
+MsgBox Timer - t 
+End Sub
+
+Sub tri(a() As Double, gauc, droi) ' Quick sort
+ref = a((gauc + droi) \ 2)
+g = gauc: d = droi
+Do
+Do While a(g) < ref: g = g + 1: Loop
+Do While ref < a(d): d = d - 1: Loop
+If g <= d Then
+temp = a(g): a(g) = a(d): a(d) = temp
+g = g + 1: d = d - 1
+End If
+Loop While g <= d
+If g < droi Then Call tri(a, g, droi)
+If gauc < d Then Call tri(a, gauc, d)
+End Sub
+

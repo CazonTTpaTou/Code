@@ -1,0 +1,19 @@
+# Avant le lancement de l'assistant de configuration SharePoint
+# Effectuer un dismount des bases de contenu
+
+Get-SPContentDatabase -WebApplication "SharePoint - intranet80" | Dismount-SPContentDatabase
+Get-SPContentDatabase -WebApplication "SharePoint - MyPhotowatt80" | Dismount-SPContentDatabase
+Get-SPContentDatabase -WebApplication "SharePoint - portail-accueil80" | Dismount-SPContentDatabase
+
+# Après le lancement de l'assistant de configuration SharePoint
+# Remonter les bases de contenu
+
+Mount-SPContentDatabase "WSS_Content_Intranet" -DatabaseServer "SRV-SP-SQL" -WebApplication http://intranet.photowatt.local/
+Mount-SPContentDatabase "WSS_Content_My" -DatabaseServer "SRV-SP-SQL" -WebApplication http://myphotowatt/
+Mount-SPContentDatabase "WSS_Content_PortailAccueil" -DatabaseServer "SRV-SP-SQL" -WebApplication http://portail-accueil.photowatt.local/
+
+# Après l'installation du correctif et le lancement de l'assistant de configuration
+Upgrade-SPContentDatabase WSS_Content_Intranet
+Upgrade-SPContentDatabase WSS_Content_My
+Upgrade-SPContentDatabase WSS_Content_PortailAccueil
+

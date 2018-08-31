@@ -1,0 +1,65 @@
+match_id,match_date,match_time,home_country,home_code,home_goals,away_country,away_code,away_goals,win_country,win_code
+1,12 June,21:00,Brazil,BRA,3,Croatia,CRO,1,Brazil,BRA
+2,13 June,17:00,Mexico,MEX,1,Cameroon,CMR,0,Mexico,MEX
+3,13 June,20:00,Spain,ESP,1,Netherlands,NED,5,Netherlands,NED
+4,13 June,23:00,Chile,CHI,3,Australia,AUS,1,Chile,CHI
+5,14 June,17:00,Colombia,COL,3,Greece,GRE,0,Colombia,COL
+6,14 June,23:00,Ivory Coast,CIV,2,Japan,JPN,1,Ivory Coast,CIV
+7,14 June,20:00,Uruguay,URU,1,Costa Rica,CRC,3,Costa Rica,CRC
+8,15 June,02:00,England,ENG,1,Italy,ITA,2,Italy,ITA
+9,15 June,17:00,Switzerland,SUI,2,Ecuador,ECU,1,Switzerland,SUI
+10,15 June,20:00,France,FRA,3,Honduras,HON,0,France,FRA
+11,15 June,23:00,Argentina,ARG,2,Bosnia and Herzegovina,BIH,1,Argentina,ARG
+12,16 June,20:00,Iran,IRN,0,Nigeria,NGA,0,,
+13,16 June,17:00,Germany,GER,4,Portugal,POR,0,Germany,GER
+14,16 June,23:00,Ghana,GHA,1,USA,USA,2,USA,USA
+15,17 June,17:00,Belgium,BEL,2,Algeria,ALG,1,Belgium,BEL
+16,17 June,23:00,Russia,RUS,1,Korea Republic,KOR,1,,
+17,17 June,20:00,Brazil,BRA,0,Mexico,MEX,0,,
+18,18 June,20:00,Cameroon,CMR,0,Croatia,CRO,4,Croatia,CRO
+19,18 June,23:00,Spain,ESP,0,Chile,CHI,2,Chile,CHI
+20,18 June,17:00,Australia,AUS,2,Netherlands,NED,3,Netherlands,NED
+21,19 June,17:00,Colombia,COL,2,Ivory Coast,CIV,1,Colombia,COL
+22,19 June,23:00,Japan,JPN,0,Greece,GRE,0,,
+23,19 June,20:00,Uruguay,URU,2,England,ENG,1,Uruguay,URU
+24,20 June,17:00,Italy,ITA,0,Costa Rica,CRC,1,Costa Rica,CRC
+25,20 June,20:00,Switzerland,SUI,2,France,FRA,5,France,FRA
+26,20 June,23:00,Honduras,HON,1,Ecuador,ECU,2,Ecuador,ECU
+27,21 June,17:00,Argentina,ARG,1,Iran,IRN,0,Argentina,ARG
+28,21 June,23:00,Nigeria,NGA,1,Bosnia and Herzegovina,BIH,0,Nigeria,NGA
+29,21 June,20:00,Germany,GER,2,Ghana,GHA,2,,
+30,22 June,20:00,USA,USA,2,Portugal,POR,2,,
+31,22 June,23:00,Belgium,BEL,1,Russia,RUS,0,Belgium,BEL
+32,22 June,17:00,Korea Republic,KOR,2,Algeria,ALG,4,Algeria,ALG
+33,23 June,21:00,Cameroon,CMR,1,Brazil,BRA,4,Brazil,BRA
+34,23 June,21:00,Croatia,CRO,1,Mexico,MEX,3,Mexico,MEX
+35,23 June,17:00,Australia,AUS,0,Spain,ESP,3,Spain,ESP
+36,23 June,17:00,Netherlands,NED,2,Chile,CHI,0,Netherlands,NED
+37,24 June,21:00,Japan,JPN,1,Colombia,COL,4,Colombia,COL
+38,24 June,21:00,Greece,GRE,2,Ivory Coast,CIV,1,Greece,GRE
+39,24 June,17:00,Italy,ITA,0,Uruguay,URU,1,Uruguay,URU
+40,24 June,17:00,Costa Rica,CRC,0,England,ENG,0,,
+41,25 June,21:00,Honduras,HON,0,Switzerland,SUI,3,Switzerland,SUI
+42,25 June,21:00,Ecuador,ECU,0,France,FRA,0,,
+43,25 June,17:00,Nigeria,NGA,2,Argentina,ARG,3,Argentina,ARG
+44,25 June,17:00,Bosnia and Herzegovina,BIH,3,Iran,IRN,1,Bosnia and Herzegovina,BIH
+45,26 June,17:00,USA,USA,0,Germany,GER,1,Germany,GER
+46,26 June,17:00,Portugal,POR,2,Ghana,GHA,1,Portugal,POR
+47,26 June,21:00,Korea Republic,KOR,0,Belgium,BEL,1,Belgium,BEL
+48,26 June,21:00,Algeria,ALG,1,Russia,RUS,1,,
+49,28 June,17:00,Brazil,BRA,1,Chile,CHI,1,Brazil,BRA
+50,28 June,21:00,Colombia,COL,2,Uruguay,URU,0,Colombia,COL
+51,29 June,17:00,Netherlands,NED,2,Mexico,MEX,1,Netherlands,NED
+52,29 June,21:00,Costa Rica,CRC,1,Greece,GRE,1,Costa Rica,CRC
+53,30 June,17:00,France,FRA,2,Nigeria,NGA,0,France,FRA
+54,30 June,21:00,Germany,GER,2,Algeria,ALG,1,Germany,GER
+55,1 July,17:00,Argentina,ARG,1,Switzerland,SUI,0,Argentina,ARG
+56,1 July,21:00,Belgium,BEL,2,USA,USA,1,Belgium,BEL
+57,4 July,21:00,Brazil,BRA,2,Colombia,COL,1,Brazil,BRA
+58,4 July,17:00,France,FRA,0,Germany,GER,1,Germany,GER
+59,5 July,21:00,Netherlands,NED,0,Costa Rica,CRC,0,Netherlands,NED
+60,5 July,17:00,Argentina,ARG,1,Belgium,BEL,0,Argentina,ARG
+61,8 July,21:00,Brazil,BRA,1,Germany,GER,7,Germany,GER
+62,9 July,21:00,Netherlands,NED,0,Argentina,ARG,0,Argentina,ARG
+63,12 July,21:00,Brazil,BRA,0,Netherlands,NED,3,Netherlands,NED
+64,13 July,20:00,Germany,GER,1,Argentina,ARG,0,Germany,GER

@@ -1,0 +1,7 @@
+sudo mkdir /var/log/twitter/ 
+
+cd /var/log/twitter/ 
+
+sudo chmod 777 /var/log/twitter
+
+sudo wget http://www.openscg.com/wp-content/uploads/downloads/2013/08/Twitter_data.txt 

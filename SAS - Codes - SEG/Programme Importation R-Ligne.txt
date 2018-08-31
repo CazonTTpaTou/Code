@@ -1,0 +1,103 @@
+
+%let RLigne_chemin=%bquote(")\\office\donnees_machines\Cellules\ILOT2\MesureRLIGNE\R-Ligne*.XLS%bquote(");
+
+filename liste pipe "dir &RLigne_chemin /b /s";                                                                   /* commande listant les fichiers du répertoire */
+
+data Name_File;
+
+       infile liste truncover end=last;                                                                                  /*liste tous les fichiers : on precise la fin avec end */
+       input NOMCHEMIN $250.;                                                                                                                /* la variable nom contient le chemin des fichiers 250 caractères */
+
+       call symputx(cats('chemin',_n_),NOMCHEMIN);                                                                          /*on définit la variable contenant le chemin complet des fichiers */
+       call symputx(cats('nom',_n_),compress(scan(scan(NOMCHEMIN,6,'\'),1,'.'),',-° ',''));          /*on définit la variable contenant le NOM des fichiers */ 
+       /*compress(scan(scan(NOMCHEMIN,6,'\'),1,'.'),'-° ','8888')*/
+
+       if last then call symputx('nobs',_n_);              /* macro variable qui s'enclenche à chaque debut de DATA, utile pour définir la drniere observatoin*/
+       /*%put ---> nom : &nom&i;*/
+                                                                                                                     
+run;
+
+data Work.RLigne;
+
+/*j'affecte la macro-variable texte Num_lot à la variable table sas T_Num_lot--> pb de format?*/
+
+LENGTH                                                      
+            
+        F1                      8.
+        '#'n                    8.
+        LABEL                $ 10.
+        'Libellé'n           $ 10.
+        Tests                $ 27.
+        'Détails'n           $ 10.
+        'Pts Chaud'n         $ 11.
+        'Pts Froid'n         $ 11.
+        Etat                 $  7.
+        'Résultats'n         $ 13.
+        Valeurs              $ 12.
+        'Instruction T5K'n   $ 11.
+        Lot                  $12
+        Val_Num              8.;
+
+/* il faut aussi préciser le format */
+       FORMAT                                                     
+
+             F1                  DDMMYY10.
+             Lot                       $12.
+             Val_Num                     Best12.4;           
+
+* stop;
+
+run; 
+
+/*%put _user_;*/
+
+%macro import;
+
+             %do i=1 %to &nobs;
+       
+			 /* permet de garder les 30 premiers caracteres car ça bug apres 32*/
+				%if %length(&&nom&i)> 32      %then 
+                                                      %let Nom_T = %substr(&&nom&i,1,32);
+                                              %else 
+                                               		  %let Nom_T = &&nom&i;
+
+/*%let Nom_T = %substr(&&nom&i,1,30);*/   
+%put ---> Nom complet Nom__T : &Nom_T;
+
+/*extrait le numero de lot*/
+%let Numero_lot = %scan(&&nom&i,2,'_');
+
+%put ---------> Numero de lot : &Numero_lot; 
+
+/*importe les donnes contenues dans les fichiers excel : proc import*/
+
+                proc import datafile="&&chemin&i"
+                                  out=Work.&Nom_T
+                                  dbms= excel replace;
+                                  *sheet='Feuil1';
+                                  getnames=yes;            /*entête des colonnes*/
+                                  mixed=yes;
+                        run;
+
+DATA work.Beautiful_Caiman;
+
+	set work.&Nom_T;
+
+	Lot = "&Numero_Lot";
+	Val_N = (TRANWRD(Valeurs,',','.'));
+	Val_Num=input(Val_N,Best12.4);
+
+run;
+
+
+/*Work.RLigne est un reservoir qui contient toutes les tables work.&Nom_T jusque _N_*/        
+proc append base=work.RLigne 
+     data=work.Beautiful_Caiman force;      
+
+run;
+
+%end;
+%mend import;
+
+%import
+

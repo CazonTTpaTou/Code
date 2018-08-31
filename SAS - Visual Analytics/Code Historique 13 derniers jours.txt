@@ -1,0 +1,1 @@
+TreatAs(_Number_, DatePart('Waf Ctrl Date Poste'n)) >= ( TreatAs(_Number_, DatePart('Date Heure SAS')) - 13 )

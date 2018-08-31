@@ -1,0 +1,452 @@
+DATA RE_FIN.DTM_FI_LISTE_MVT_STOCKS_2_ans;
+SET STATS.DTM_FINANCE_MVT_STOCKS;
+RUN;
+
+PROC SQL;
+CREATE TABLE RE_FIN.DTM_FI_FICHE_ARTICLE
+AS
+	SELECT 
+
+	      t1.t_abcc, 
+          t1.t_actf, 
+          t1.t_allo, 
+          t1.t_assi LABEL="UQ stock", 
+          t1.t_auso, 
+          t1.t_avpr, 
+          t1.t_bfcp, 
+          t1.t_bfep, 
+          t1.t_bfhr, 
+          t1.t_blck, 
+          t1.t_blcm, 
+          t1.t_buyr, 
+          t1.t_cadr, 
+          t1.t_ccco, 
+          t1.t_ccde, 
+          t1.t_ccfu, 
+          t1.t_ccit, 
+          t1.t_ccur LABEL="Devise achat", 
+          t1.t_cfmd, 
+          t1.t_citg LABEL="Groupe article", 
+          t1.t_cli, 
+          t1.t_cmgp, 
+          t1.t_cntr, 
+          t1.t_cont, 
+          t1.t_copr LABEL="Coût standard", 
+          t1.t_copt, 
+          t1.t_cpcp, 
+          t1.t_cpgp, 
+          t1.t_cpgs, 
+          t1.t_cpha, 
+          t1.t_cplb, 
+          t1.t_cppp, 
+          t1.t_cprp, 
+          t1.t_crmp, 
+          t1.t_csel, 
+          t1.t_csgp, 
+          t1.t_csgs LABEL="Groupe stats vente", 
+          t1.t_csig LABEL="Code blocage", 
+          t1.t_cspd, 
+          t1.t_csps, 
+          t1.t_ctyo, 
+          t1.t_ctyp LABEL="Type produit", 
+          t1.t_cuid, 
+          t1.t_cuni, 
+          t1.t_cupp LABEL="UQ prix achat", 
+          t1.t_cups, 
+          t1.t_cuqp LABEL="UQ Achats", 
+          t1.t_cuqs LABEL="UQ ventes", 
+          t1.t_cvat, 
+          t1.t_cwar, 
+          t1.t_czed, 
+          t1.t_dcnt, 
+          t1.t_ddfq, 
+          t1.t_dsca LABEL="Description article", 
+          t1.t_dscb, 
+          t1.t_dscc, 
+          t1.t_dscd, 
+          t1.t_ecoq, 
+          t1.t_ecot, 
+          t1.t_eitm, 
+          t1.t_equi, 
+          t1.t_exkb, 
+          t1.t_fabr, 
+          t1.t_ffsi, 
+          t1.t_fioq, 
+          t1.t_fodt, 
+          t1.t_hall, 
+          t1.t_item LABEL="Code article", 
+          t1.t_itmt, 
+          t1.t_kitm, 
+          t1.t_kltc, 
+          t1.t_kpsl, 
+          t1.t_lami, 
+          t1.t_lcod, 
+          t1.t_llcd, 
+          t1.t_llci, 
+          t1.t_lmsp, 
+          t1.t_ltcp LABEL="Dernière mise à jour Std", 
+          t1.t_ltdt LABEL="Dernier mouvement stock", 
+          t1.t_ltpp, 
+          t1.t_ltpr LABEL="Dernier prix achat", 
+          t1.t_ltsp LABEL="MAJ prix vente", 
+          t1.t_maoq, 
+          t1.t_matc, 
+          t1.t_maxs, 
+          t1.t_mioq, 
+          t1.t_modu, 
+          t1.t_mrpc, 
+          t1.t_mrpi, 
+          t1.t_mrpo, 
+          t1.t_ncel, 
+          t1.t_ncst, 
+          t1.t_ndrp, 
+          t1.t_nnts, 
+          t1.t_nobd, 
+          t1.t_npsl, 
+          t1.t_obpr, 
+          t1.t_ocst, 
+          t1.t_oint, 
+          t1.t_oltm, 
+          t1.t_omth, 
+          t1.t_opol, 
+          t1.t_oprc, 
+          t1.t_oqdr, 
+          t1.t_oqmf, 
+          t1.t_ordr, 
+          t1.t_orip, 
+          t1.t_osyc, 
+          t1.t_osys, 
+          t1.t_pcgp, 
+          t1.t_pcrp, 
+          t1.t_pics, 
+          t1.t_plmm, 
+          t1.t_potc, 
+          t1.t_prip LABEL="Prix achat courant", 
+          t1.t_prir, 
+          t1.t_pris, 
+          t1.t_proi, 
+          t1.t_prre, 
+          t1.t_pui LABEL="Code puissance", 
+          t1.t_purc, 
+          t1.t_qbsi, 
+          t1.t_qpnt, 
+          t1.t_qual, 
+          t1.t_quot, 
+          t1.t_rbgp, 
+          t1.t_Refcntd, 
+          t1.t_Refcntu, 
+          t1.t_reli, 
+          t1.t_reop, 
+          t1.t_repi, 
+          t1.t_roun, 
+          t1.t_runi, 
+          t1.t_scdl, 
+          t1.t_scpf, 
+          t1.t_scst, 
+          t1.t_seab, 
+          t1.t_seak, 
+          t1.t_serv, 
+          t1.t_sfst, 
+          t1.t_sftm, 
+          t1.t_slmp, 
+          t1.t_sort, 
+          t1.t_stgu, 
+          t1.t_stmr, 
+          t1.t_stoc LABEL="Quantité en stock", 
+          t1.t_stpm, 
+          t1.t_stva, 
+          t1.t_suno, 
+          t1.t_tcel, 
+          t1.t_tech, 
+          t1.t_tmfc, 
+          t1.t_tole, 
+          t1.t_txta, 
+          t1.t_txtp, 
+          t1.t_txts, 
+          t1.t_ufra, 
+          t1.t_umer, 
+          t1.t_umsp, 
+          t1.t_unom, 
+          t1.t_usab, 
+          t1.t_uscu, 
+          t1.t_uset, 
+          t1.t_verr, 
+          t1.t_wght, 
+          /* Valeur_Stock */
+            (t1.t_copr * t1.t_stoc) LABEL="Valeur en stock" AS Valeur_Stock,
+
+          t2.t_desi LABEL="Libellé puissance", 
+          t3.t_desi LABEL="Libellé technologie" AS t_desi1, 
+          t4.t_desi LABEL="Libellé taille cellule" AS t_desi2
+
+      FROM DS_BAAN.ttiitm001300 t1
+           LEFT JOIN DS_BAAN.tspmcs901300 t2 ON (t1.t_pui = t2.t_code)
+           LEFT JOIN DS_BAAN.tspmcs902300 t3 ON (t1.t_pui = t3.t_code)
+           LEFT JOIN DS_BAAN.tspmcs903300 t4 ON (t1.t_pui = t4.t_code);
+   ;
+RUN;
+
+PROC SQL;
+CREATE TABLE RE_FIN.DTM_FI_LISTE_GROUPE_ARTICLE
+AS
+	SELECT T1.*
+	FROM DS_BAAN.ttcmcs023300 AS T1
+   ;
+RUN;
+
+PROC SQL;
+CREATE TABLE RE_FIN.DTM_FI_LISTE_OF
+AS
+	SELECT T1.*,
+           T2.*
+
+	FROM DS_BAAN.ttiitm001300 AS T1
+	INNER JOIN DS_BAAN.ttisfc001300 AS T2
+	ON T1.t_item = T2.t_mitm
+   ;
+RUN;
+
+PROC SQL;
+CREATE TABLE RE_FIN.DTM_FI_CA_Periode
+AS
+	SELECT T1.*,
+           T2.*,
+		   T3.*,
+		   T4.*,
+		   T5.*,
+		   T6.*
+
+	FROM DS_BAAN.ttiitm001300 AS T1
+	INNER JOIN DS_BAAN.ttdsls045300 AS T2
+	ON T1.t_item = T2.t_item
+	INNER JOIN DS_BAAN.ttccom010300 AS T6
+	ON T2.t_cuno = T6.t_cuno
+	INNER JOIN DS_BAAN.ttdsls040300 AS T3
+	ON T2.t_orno = T3.t_orno
+	INNER JOIN DS_BAAN.tspmcs901300 AS T4
+	ON T1.t_pui = T4.t_code
+	INNER JOIN DS_BAAN.ttdinv700300 AS T5
+	ON T3.t_orno = T5.t_orno
+   ;
+RUN;
+
+PROC SQL;
+CREATE TABLE RE_FIN.DTM_FI_STOCK_INSTANTANE
+AS
+	SELECT T1.*,
+           T2.*,
+		   T3.*,
+		   T4.*,
+		   T5.*
+
+	FROM DS_BAAN.ttiitm001300 AS T1
+	INNER JOIN DS_BAAN.ttdinv001300 AS T2
+	ON T1.t_item = T2.t_item
+	INNER JOIN DS_BAAN.ttcmcs003300 AS T3
+	ON T2.t_cwar = T3.t_cwar
+	INNER JOIN DS_BAAN.ttcmcs023300 AS T4
+	ON T1.t_citg = T4.t_citg
+	INNER JOIN DS_BAAN.tspmcs901300 AS T5
+	ON T1.t_pui = T5.t_code
+   ;
+RUN;
+
+PROC SQL;
+CREATE TABLE RE_FIN.DTM_FI_LISTE_MOUVEMENT_STOCK
+AS
+	SELECT 
+
+		  t1.t_item LABEL="Code article", 
+          t1.t_dsca LABEL="Description", 
+          t1.t_dscb, 
+          t1.t_dscc, 
+          t1.t_dscd, 
+          t1.t_wght, 
+          t1.t_seak, 
+          t1.t_seab, 
+          t1.t_kitm, 
+          t1.t_citg LABEL="Groupe article", 
+          t1.t_ctyp, 
+          t1.t_csel, 
+          t1.t_csig, 
+          t1.t_cvat, 
+          t1.t_txta, 
+          t1.t_uset, 
+          t1.t_cuni LABEL="UQ stock", 
+          t1.t_stgu, 
+          t1.t_cwar LABEL="Magasin", 
+          t1.t_kltc, 
+          t1.t_obpr, 
+          t1.t_kpsl, 
+          t1.t_npsl, 
+          t1.t_pics, 
+          t1.t_abcc, 
+          t1.t_lcod, 
+          t1.t_uscu, 
+          t1.t_usab, 
+          t1.t_slmp, 
+          t1.t_serv, 
+          t1.t_sfst, 
+          t1.t_maxs, 
+          t1.t_csps, 
+          t1.t_cspd, 
+          t1.t_cfmd, 
+          t1.t_scst, 
+          t1.t_stoc, 
+          t1.t_blck, 
+          t1.t_ordr, 
+          t1.t_allo, 
+          t1.t_hall, 
+          t1.t_quot, 
+          t1.t_ltdt, 
+          t1.t_opol, 
+          t1.t_osys, 
+          t1.t_omth, 
+          t1.t_oqmf, 
+          t1.t_mioq, 
+          t1.t_maoq, 
+          t1.t_umer, 
+          t1.t_fioq, 
+          t1.t_ecoq, 
+          t1.t_reop, 
+          t1.t_oint, 
+          t1.t_ddfq, 
+          t1.t_oltm, 
+          t1.t_sftm, 
+          t1.t_fodt, 
+          t1.t_ocst, 
+          t1.t_auso, 
+          t1.t_cpha, 
+          t1.t_oqdr, 
+          t1.t_repi, 
+          t1.t_scdl, 
+          t1.t_orip, 
+          t1.t_pcrp, 
+          t1.t_stpm, 
+          t1.t_mrpc, 
+          t1.t_plmm, 
+          t1.t_mrpo, 
+          t1.t_eitm, 
+          t1.t_bfcp, 
+          t1.t_bfep, 
+          t1.t_bfhr, 
+          t1.t_ndrp, 
+          t1.t_nnts, 
+          t1.t_qpnt, 
+          t1.t_unom, 
+          t1.t_runi, 
+          t1.t_scpf, 
+          t1.t_crmp, 
+          t1.t_tmfc, 
+          t1.t_roun, 
+          t1.t_ncst, 
+          t1.t_llcd, 
+          t1.t_llci, 
+          t1.t_mrpi, 
+          t1.t_stmr, 
+          t1.t_cuqp, 
+          t1.t_cupp, 
+          t1.t_cpgp, 
+          t1.t_csgp, 
+          t1.t_pcgp, 
+          t1.t_ccur, 
+          t1.t_ltpp, 
+          t1.t_prip, 
+          t1.t_avpr, 
+          t1.t_ltpr, 
+          t1.t_suno, 
+          t1.t_qual, 
+          t1.t_purc, 
+          t1.t_txtp, 
+          t1.t_cuqs, 
+          t1.t_cups, 
+          t1.t_cpgs, 
+          t1.t_csgs LABEL="Groupe stats vente", 
+          t1.t_cmgp, 
+          t1.t_rbgp, 
+          t1.t_pris, 
+          t1.t_ltsp, 
+          t1.t_prir, 
+          t1.t_umsp, 
+          t1.t_lmsp, 
+          t1.t_ccde, 
+          t1.t_ctyo, 
+          t1.t_txts, 
+          t1.t_cpcp, 
+          t1.t_copr, 
+          t1.t_matc, 
+          t1.t_oprc, 
+          t1.t_cuid, 
+          t1.t_actf, 
+          t1.t_ltcp, 
+          t1.t_stva, 
+          t1.t_buyr, 
+          t1.t_cplb, 
+          t1.t_cppp, 
+          t1.t_ccit, 
+          t1.t_ccfu, 
+          t1.t_ccco, 
+          t1.t_prre, 
+          t1.t_copt, 
+          t1.t_cprp, 
+          t1.t_itmt, 
+          t1.t_proi, 
+          t1.t_cont, 
+          t1.t_cntr, 
+          t1.t_czed, 
+          t1.t_reli, 
+          t1.t_assi, 
+          t1.t_potc, 
+          t1.t_ffsi, 
+          t1.t_qbsi, 
+          t1.t_osyc, 
+          t1.t_ufra, 
+          t1.t_nobd, 
+          t1.t_blcm, 
+          t1.t_dcnt, 
+          t1.t_exkb, 
+          t1.t_modu, 
+          t1.t_pui, 
+          t1.t_tech, 
+          t1.t_tcel, 
+          t1.t_ncel, 
+          t1.t_cli, 
+          t1.t_cadr, 
+          t1.t_sort, 
+          t1.t_verr, 
+          t1.t_lami, 
+          t1.t_fabr, 
+          t1.t_equi, 
+          t1.t_tole, 
+          t1.t_ecot, 
+          t1.t_Refcntd, 
+          t1.t_Refcntu,
+
+		  t2.t_trdt LABEL="Date mouvement", 
+          t2.t_quan LABEL="Quantité", 
+          t2.t_kost LABEL="Type transaction", 
+          t2.t_koor LABEL="Type mouvement", 
+          t2.t_orno LABEL="Ordre", 
+          t2.t_logn LABEL="User ID", 
+          t2.t_item, 
+          t2.t_cntr, 
+          t2.t_cwar, 
+          t2.t_trtm, 
+          t2.t_sern, 
+          t2.t_pono, 
+          t2.t_rlcd, 
+          t2.t_cprj, 
+          t2.t_prst, 
+          t2.t_stoc, 
+          t2.t_Refcntd, 
+          t2.t_Refcntu
+
+	FROM DS_BAAN.ttiitm001300 AS T1
+	INNER JOIN DS_BAAN.ttdinv700300 AS T2
+	ON T1.t_item = T2.t_item
+   ;
+RUN;
+
+
+
+

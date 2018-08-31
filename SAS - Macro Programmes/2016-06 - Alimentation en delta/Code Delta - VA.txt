@@ -1,0 +1,90 @@
+PROC SQL;
+CREATE TABLE WORK.DELTA 
+AS
+	SELECT * FROM DTM_PRO.DTM_LOGS_TRI AS T
+		WHERE T.Date_Heure >= (SELECT MAX(U.Date_Heure) FROM LANDING.DTM_PRO_LOGS_TRI_HISTORIQUE AS U);
+RUN;
+ 
+PROC APPEND BASE = LANDING.DATA_LOGS_TRI
+			DATA = WORK.DELTA
+			FORCE;
+RUN;
+
+
+
+PROC SQL;
+CREATE TABLE WORK.DELTA 
+AS
+	SELECT * FROM DS_SQC.VUE_METIER_MESURES AS T
+		WHERE T.Mesure_Date_Heure >= (SELECT MAX(U.Mesure_Date_Heure) FROM LANDING.dtm_mesures_serigraphie AS U);
+RUN;
+
+PROC APPEND BASE = LANDING.dtm_mesures_serigraphie
+			DATA = WORK.DELTA
+			FORCE;
+RUN;
+
+
+
+
+ option validvarname=V7;
+
+
+
+SELECT 
+DTM_MESURES_SERIGRAPHIE.'Société'n length=11 format=$11. AS 'Société'n,
+DTM_MESURES_SERIGRAPHIE.Produit length=255 format=$255. AS Produit,
+DTM_MESURES_SERIGRAPHIE.Equipement length=50 format=$50. AS Equipement,
+DTM_MESURES_SERIGRAPHIE.Voie length=50 format=$50. AS Voie,
+DTM_MESURES_SERIGRAPHIE.'Carte de contrôle'n length=255 format=$255. AS 'Carte de contrôle'n,
+DTM_MESURES_SERIGRAPHIE.'Mesure Type'n length=255 format=$255. AS 'Mesure Type'n,
+DTM_MESURES_SERIGRAPHIE.'Mesure Date Poste'n length=8 format=DATETIME22.3 AS 'Mesure Date Poste'n,
+DTM_MESURES_SERIGRAPHIE.'Mesure Date Heure'n length=8 format=DATETIME22.3 AS 'Mesure Date Heure'n,
+DTM_MESURES_SERIGRAPHIE.'Mesure Date'n length=8 format=DATETIME22.3 AS 'Mesure Date'n,
+DTM_MESURES_SERIGRAPHIE.'Mesure Jour'n length=30 format=$30. AS 'Mesure Jour'n,
+DTM_MESURES_SERIGRAPHIE.'Mesure Heure'n length=8 format=DATETIME22.3 AS 'Mesure Heure'n,
+DTM_MESURES_SERIGRAPHIE.'Mesure Opérateur'n length=5 format=$5. AS 'Mesure Opérateur'n,
+DTM_MESURES_SERIGRAPHIE.'Mesure Equipe'n length=10 format=$10. AS 'Mesure Equipe'n,
+DTM_MESURES_SERIGRAPHIE.'Mesure Poste'n length=10 format=$10. AS 'Mesure Poste'n,
+DTM_MESURES_SERIGRAPHIE.'Mesure Observation'n length=1024 format=$1024. AS 'Mesure Observation'n,
+DTM_MESURES_SERIGRAPHIE.'Valeur Minimale Dérogation'n length=8 AS 'Valeur Minimale Dérogation'n,
+DTM_MESURES_SERIGRAPHIE.'Valeur Minimale Critique'n length=8 AS 'Valeur Minimale Critique'n,
+DTM_MESURES_SERIGRAPHIE.'Valeur mesurée'n length=8 AS 'Valeur mesurée'n,
+DTM_MESURES_SERIGRAPHIE.'Valeur Maximale Critique'n length=8 AS 'Valeur Maximale Critique'n,
+DTM_MESURES_SERIGRAPHIE.'Valeur Maximale Dérogation'n length=8 AS 'Valeur Maximale Dérogation'n,
+DTM_MESURES_SERIGRAPHIE.'Dérogation Code'n length=20 format=$20. AS 'Dérogation Code'n,
+DTM_MESURES_SERIGRAPHIE.'Dérogation Date Début'n length=8 format=DATETIME22.3 AS 'Dérogation Date Début'n,
+DTM_MESURES_SERIGRAPHIE.'Dérogation Date Fin'n length=8 format=DATETIME22.3 AS 'Dérogation Date Fin'n,
+DTM_MESURES_SERIGRAPHIE.'Dérogation Commentaire'n length=1024 format=$1024. AS 'Dérogation Commentaire'n
+FROM LANDING.DTM_MESURES_SERIGRAPHIE;
+
+UNION 
+
+SELECT 
+DELTA2.'Société'n length=11 format=$11. AS 'Société'n,
+DELTA2.Produit length=255 format=$255. AS Produit,
+DELTA2.Equipement length=50 format=$50. AS Equipement,
+DELTA2.Voie length=50 format=$50. AS Voie,
+DELTA2.'Carte de contrôle'n length=255 format=$255. AS 'Carte de contrôle'n,
+DELTA2.'Mesure Type'n length=255 format=$255. AS 'Mesure Type'n,
+DELTA2.'Mesure Date Poste'n length=8 format=DATETIME22.3 AS 'Mesure Date Poste'n,
+DELTA2.'Mesure Date Heure'n length=8 format=DATETIME22.3 AS 'Mesure Date Heure'n,
+DELTA2.'Mesure Date'n length=8 format=DATETIME22.3 AS 'Mesure Date'n,
+DELTA2.'Mesure Jour'n length=30 format=$30. AS 'Mesure Jour'n,
+DELTA2.'Mesure Heure'n length=8 format=DATETIME22.3 AS 'Mesure Heure'n,
+DELTA2.'Mesure Opérateur'n length=5 format=$5. AS 'Mesure Opérateur'n,
+DELTA2.'Mesure Equipe'n length=10 format=$10. AS 'Mesure Equipe'n,
+DELTA2.'Mesure Poste'n length=10 format=$10. AS 'Mesure Poste'n,
+DELTA2.'Mesure Observation'n length=1024 format=$1024. AS 'Mesure Observation'n,
+DELTA2.'Valeur Minimale Dérogation'n length=8 AS 'Valeur Minimale Dérogation'n,
+DELTA2.'Valeur Minimale Critique'n length=8 AS 'Valeur Minimale Critique'n,
+DELTA2.'Valeur mesurée'n length=8 AS 'Valeur mesurée'n,
+DELTA2.'Valeur Maximale Critique'n length=8 AS 'Valeur Maximale Critique'n,
+DELTA2.'Valeur Maximale Dérogation'n length=8 AS 'Valeur Maximale Dérogation'n,
+DELTA2.'Dérogation Code'n length=20 format=$20. AS 'Dérogation Code'n,
+DELTA2.'Dérogation Date Début'n length=8 format=DATETIME22.3 AS 'Dérogation Date Début'n,
+DELTA2.'Dérogation Date Fin'n length=8 format=DATETIME22.3 AS 'Dérogation Date Fin'n,
+DELTA2.'Dérogation Commentaire'n length=1024 format=$1024. AS 'Dérogation Commentaire'n
+ 
+FROM WORK.DELTA2
+RUN;

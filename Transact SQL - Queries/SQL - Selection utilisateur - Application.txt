@@ -1,0 +1,5 @@
+SELECT	hostname, loginame, program_name,  login_time, last_batch, cmd
+FROM		sys.sysprocesses 
+WHERE		dbid > 0
+AND		HOSTNAME = 'balonso'
+AND		PROGRAM_NAME = 'Microsoft Office 2013'

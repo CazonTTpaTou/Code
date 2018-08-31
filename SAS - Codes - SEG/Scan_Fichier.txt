@@ -1,0 +1,111 @@
+LIBNAME DTM_PUR ODBC  DATASRC=DTM_PROD  SCHEMA=DTM_PUR  USER=sassql  PASSWORD="{SAS002}3625302A43996237206B48FF5188832F3A71A582" ;
+LIBNAME RE_LOG BASE "\\srv-sas\Donnees_SAS\LOGISTIQUE";
+
+%macro ScanFile(Repertoire,Domaine,);
+
+DATA Work.Tampon (keep=Nom_Fichier Dossier Tag);	
+
+	/* Initialize the path of the file*/
+	length Nom_Fichier $200
+	       Dossier $150
+		   Tag $30;
+
+		fich=filename('Gavial',"&Repertoire");
+		%put Répertoire --> "&Repertoire";
+		/* Opening of the directory Gavial - with its tapered jaw, the reptile can swallow a lot of files */
+		saurian=dopen('Gavial');
+
+		/* Count the number of file - preaty easy for the croc*/
+		nb_file=dnum(saurian);		
+
+		/* Be careful, sometimes the croc eat the files instead of counting it*/
+		do i=1 TO nb_file;
+			Nom_Fichier=dread(saurian,i);
+			Dossier = "&Repertoire";
+			Tag = "&Domaine";
+			output;
+		end;
+
+		/* Deallocate the variable pointing on the directory */
+		rc=dclose(did);
+RUN;
+
+PROC APPEND
+	BASE = WORK.DTM_PUR_LISTE_FICHIERS FORCE
+	DATA = WORK.TAMPON;
+RUN;
+
+PROC SQL;
+	DELETE FROM WORK.TAMPON;
+RUN;
+
+%mend;
+
+%let Repertoire1=\\Office\Users\Supply_Chain\01-Achats_Appros\07-Factures;
+%let Repertoire2=\\Office\Users\Supply_Chain\91-Maintenance\03-Catalogue\03-Fiches techniques\;
+%let Repertoire3=\\Office\Users\Commercial\03-OV;
+%let Repertoire4=\\Office\Users\Supply_Chain\91-Maintenance\03-Catalogue\02-Photos;
+%let Repertoire5=\\Office\Users\Supply_Chain\04-ADV\01-Factures;
+%let Repertoire6=\\Office\Users\Supply_Chain\04-ADV\02-PI;
+%let Repertoire7=\\Office\Users\Marketing et communication\Commun-marketing\03-Marketing\Marketing Mix 4P\Product\01- Modules\;
+%let Repertoire8=\\Office\Users\Supply_Chain\91-Maintenance\03-Catalogue\04-Plans;
+
+DATA WORK.DTM_PUR_LISTE_FICHIERS;
+Length 
+	      Nom_Fichier $200
+	      Dossier $150
+		  Tag $30;
+RUN;
+
+Options mprint mlogic;
+/*%ScanFile(var=&Repertoire1.);*/
+%ScanFile(&Repertoire1.,Facture);
+%ScanFile(&Repertoire2.,Fiche);
+%ScanFile(&Repertoire3.,OV);
+%ScanFile(&Repertoire4.,Photo);
+%ScanFile(&Repertoire5.,FactClient);
+%ScanFile(&Repertoire6.,PIClient);
+%ScanFile(&Repertoire7.,Plan);
+/*%ScanFile(&Repertoire7.,Module);*/
+
+PROC SQL;
+DELETE FROM DTM_PUR.DTM_PUR_LISTE_FICHIERS;
+RUN;
+
+PROC SQL;
+DELETE FROM RE_LOG.DTM_PUR_LISTE_FICHIERS;
+RUN;
+
+DATA RE_LOG.DTM_PUR_LISTE_FICHIERS (keep= Tag Nom Extension Nom_Fichier Dossier URI Actualisation);
+Length
+     Tag $30
+	 Nom $200
+	 Extension $10
+     Nom_Fichier $200
+     Dossier $150		  
+	 URI $500;
+	 Format
+	 Actualisation DATETIME22.;
+SET WORK.DTM_PUR_LISTE_FICHIERS;
+
+IF missing(Nom_Fichier) Then Delete;
+
+IF index(Nom_Fichier,'.')>1 THEN DO;
+	Nom = substr(Nom_Fichier,1,index(Nom_Fichier,'.')-1);
+	Extension = substr(Nom_Fichier,index(Nom_Fichier,'.')+1,length(Nom_fichier)-index(Nom_Fichier,'.'));
+END;
+ELSE DO;
+	Nom = Nom_Fichier;
+	Extension = 'N/A';
+END;
+
+	URI = catx('\',trim(Dossier),trim(Nom_Fichier));
+	Actualisation = Datetime();
+
+RUN;
+
+PROC APPEND 
+	BASE=DTM_PUR.DTM_PUR_LISTE_FICHIERS
+	DATA=RE_LOG.DTM_PUR_LISTE_FICHIERS;
+RUN;
+

@@ -1,0 +1,2483 @@
+Sub Settlement_SRM()
+
+Dim i, j As Integer
+Dim nom2, nom3 As String
+
+
+Workbooks("Test Macro.xls").Worksheets(5).Activate
+
+i = Range("J3").Value
+j = Range("J10").Value
+
+Worksheets(3).Activate
+Worksheets(3).Range("B1").Value = i
+Worksheets(3).Range("C1").Value = j
+
+
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Traitement des SRM Files of Leavings.xls"
+
+Workbooks("Traitement des SRM Files of Leavings.xls").Worksheets(2).Activate
+    Worksheets(2).Range("B1").Value = i
+    Worksheets(2).Range("C1").Value = j
+
+Worksheets(2).Range("A6").Select
+
+nom2 = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & i & "- " & j & ")\1 - Traitement Fichiers\" & i & " - " & j & " - SRM File Leavings"
+ActiveWorkbook.SaveAs Filename:=nom2
+nom3 = i & " - " & j & " - SRM File Leavings.xls"
+
+Range(Selection, Selection.End(xlDown)).Select
+Range(Selection, Selection.End(xlToRight)).Select
+Application.CutCopyMode = False
+Selection.Copy
+
+Workbooks("Test Macro.xls").Worksheets(3).Activate
+
+Worksheets(3).Range("A6").Select
+
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+ActiveWindow.DisplayGridlines = False
+
+Worksheets(3).Range("B1").Value = i
+Worksheets(3).Range("C1").Value = j
+Worksheets(3).Range("A1").Select
+
+Workbooks(nom3).Worksheets(1).Activate
+Worksheets(1).Range("A4").Select
+
+Range("A4:AV150").Select
+
+Application.CutCopyMode = False
+Selection.Copy
+
+Workbooks("Test Macro.xls").Worksheets(4).Activate
+
+Worksheets("Feuil4").Range("A6").Select
+
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+ActiveWindow.DisplayGridlines = False
+
+
+Workbooks("Test Macro.xls").Worksheets(5).Activate
+Worksheets(5).Range("A1").Select
+Workbooks(nom3).Close (False)
+
+
+End Sub
+
+
+
+ 
+
+Function Nombre_Individus_SRM()
+
+'Retourne le nombre d'individus générateurs de prestations sur le semestre
+'Accessoirement c'est aussi le nombre de lignes du File of Leavings TOM
+'sujettes à prestations sur le semestre considéré.
+
+Dim i As Integer
+  Windows("Test Macro.xls").Activate
+  Worksheets("Feuil3").Activate
+    i = 6
+        Do While Workbooks("Test Macro.xls").Worksheets("Feuil3").Cells(i, 1) <> Empty
+        i = i + 1
+        Loop
+Nombre_Individus_SRM = i - 6
+
+End Function
+
+
+ 
+
+Function Semestre_SRM()
+
+'Retourne le chemin du fichier sous lequel sera enregistré le classeur
+'compilant les prestations du semestre
+'Se présente sous cette forme:
+'C:\Documents and Settings\ms\Bureau\3-1 Settlement.xls
+
+Dim a1, a2 As Integer
+Dim File, Sem As String
+
+a1 = Workbooks("Test Macro.xls").Sheets("Feuil3").Range("B1").Value
+a2 = Workbooks("Test Macro.xls").Sheets("Feuil3").Range("C1").Value
+File = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & a1 & "- " & a2 & ")\3 - Proformas SRM\"
+Sem = a1 & " - " & a2 & " SRM Settlement"
+Semestre_SRM = File & Sem & ".xls"
+End Function
+
+
+ 
+Sub Création_Tableau_SRM()
+
+' Crée un fichier comportant autant de feuilles de calcul qu'il y a
+' d'individus générateurs de prestations soumises à facturation sur le
+' semestre, chaque feuille étant renommé du nom de chaque TBE et comprend les
+' prestations TOM versées à chaque affilié et qui seront soumises
+' à la facturation du Settlement Process, conformément à la législation.
+
+
+Dim k, l, m, n, o, p, q, Settlement, Measurement As Integer
+Dim Nom, Fichier  As String
+Dim Tableau2() As String
+ReDim Tableau2(Nombre_Individus_SRM)
+Measurement = Worksheets("Feuil3").Cells(1, 2).Value
+Settlement = Worksheets("Feuil3").Cells(1, 3).Value
+    For k = 1 To Nombre_Individus_SRM
+    Tableau2(k) = Worksheets("Feuil3").Cells(k + 5, 4).Value
+    Next k
+    
+n = Nombre_Individus_SRM
+Workbooks.Add
+
+
+ActiveSheet.Select
+
+
+If n > 3 Then
+    
+    For m = 1 To n - 3
+
+        Sheets.Add
+
+    Next m
+End If
+
+For o = 1 To n
+
+Worksheets(o).Name = Tableau2(o)
+
+Next o
+
+ActiveWorkbook.SaveAs Filename:=Semestre_SRM
+Nom = Right(Semestre_SRM, 24)
+Workbooks("Test Macro.xls").Worksheets("Feuil3").Activate
+Range("A5").Select
+
+For p = 1 To n
+    
+    ActiveCell.Offset(1, 0).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.Copy
+    Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Pro-Formas SRM Specimen.xls"
+    ActiveWorkbook.Activate
+    Worksheets("Employee").Activate
+    Worksheets("Employee").Range("A48").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    
+    Range("B1") = Measurement
+    Range("C1") = Settlement
+    
+        Workbooks("Pro-Formas SRM Specimen.xls").Worksheets("Intput SECOIA").Activate
+        Worksheets("Intput SECOIA").Select
+        
+   
+            Range("A3").Select
+            Range(Selection, Selection.End(xlDown)).Select
+            Range(Selection, Selection.End(xlToRight)).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+                
+    Workbooks(Nom).Worksheets(p).Activate
+    Range("A1").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        ActiveWindow.DisplayGridlines = False
+        Columns("C:C").EntireColumn.AutoFit
+   Workbooks("Pro-Formas SRM Specimen.xls").Close (False)
+   
+    Workbooks("Test Macro.xls").Worksheets("Feuil1").Activate
+    
+    Next p
+Workbooks(Nom).Activate
+ActiveWorkbook.Save
+ActiveWorkbook.Close (False)
+Workbooks("Test Macro.xls").Worksheets("Feuil3").Activate
+
+End Sub
+
+
+ 
+Sub Création_Fichiers_SRM()
+
+' Crée autant de fichiers qu'il y a d'individus générateurs
+' de prestations soumises à facturation sur le semestre
+' à partir des fichiers masters TOM Pro Formas
+' Les fichiers créés sont de la forme: 3 - 1 Franck Morot Sir.xls
+' Attention: en raison de la taille importante des fichiers masters TOM
+' l'export des prestations qui seront soumises à facturation par
+' le biais du Settlement Process ne se font pas par le biais de cette
+' procédure étant donné que la sauvegarde des fichiers créés engendre
+' une pertubation des calculs matriciels des intérêts EURIBOR
+' empêchant l'export par copier coller...
+
+Dim k, l, m, n, o, p, q, Settlement, Measurement As Integer
+Dim Nom, Fichier, Appel, Dossier  As String
+Dim Tableau3() As String
+
+n = Nombre_Individus_SRM
+
+ReDim Tableau3(n)
+
+Measurement = Worksheets("Feuil3").Cells(1, 2).Value
+Settlement = Worksheets("Feuil3").Cells(1, 3).Value
+    
+    For k = 1 To n
+    Tableau3(k) = Worksheets("Feuil3").Cells(k + 5, 4).Value
+    Next k
+    
+
+
+Workbooks("Test Macro.xls").Worksheets(3).Activate
+Range("A5").Select
+
+For p = 1 To n
+    
+    ActiveCell.Offset(1, 0).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.Copy
+    Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Pro-Formas SRM Specimen.xls"
+    
+    ActiveWorkbook.Activate
+    Worksheets("Employee").Activate
+    Worksheets("Employee").Range("A48").Select
+    
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    
+    Range("B1") = Measurement
+    Range("C1") = Settlement
+    
+        Workbooks("Pro-Formas SRM Specimen.xls").Worksheets("Intput SECOIA").Activate
+        Worksheets("Intput SECOIA").Select
+        
+        
+   
+            Range("A3").Select
+    
+            Dossier = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & Measurement & "- " & Settlement & ")"
+            Appel = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & Measurement & "- " & Settlement & ")\3 - Proformas SRM\" & Measurement & " - " & Settlement & "- SRM - " & Tableau3(p)
+            
+            ChDir Dossier
+            ActiveWorkbook.SaveAs Filename:=Appel
+            ActiveWorkbook.Close
+                
+  
+   
+    Workbooks("Test Macro.xls").Worksheets("Feuil3").Activate
+    
+    Next p
+
+
+End Sub
+
+ 
+Function Semestre2_SRM()
+
+' Retourne le numéro de rang du semestre de calcul de facturation
+
+Dim a, b As Integer
+
+Workbooks("Test Macro.xls").Worksheets("Feuil3").Activate
+a = Range("B1").Value
+b = Range("C1").Value
+Semestre2_SRM = (a - 1) * 6 + b + 1
+
+End Function
+
+ 
+Sub Synthèse2_SRM()
+
+' Crée une feuille synthèse qui compile l'ensemble des prestations versées
+' à tous les TBE sur le semestre de calcul
+' puis exporte l'ensemble des données vers le classeur Settlement Benefits
+' qui compile toutes les prestations soumises à facturation entre le 1er
+' semestre 2000 et le second semestre 2014
+
+Dim a, b, c, d, e, f, i, n, z As Integer
+Dim Lignes() As Integer
+Dim nom1 As String
+
+z = Semestre2_SRM
+ Workbooks.Open Filename:=Semestre_SRM
+nom1 = Right(Semestre_SRM, 24)
+Workbooks(nom1).Worksheets(1).Activate
+Sheets.Add
+    Sheets("Feuil1").Select
+    Sheets("Feuil1").Name = "Synthèse"
+    Sheets("Synthèse").Select
+    Sheets("Synthèse").Move Before:=Sheets(1)
+n = Nombre_Individus_SRM
+
+
+ReDim Lignes(n, 3)
+Workbooks(nom1).Worksheets(2).Activate
+For b = 2 To n + 1
+    i = 1
+    Do While Worksheets(b).Cells(i, 1) <> Empty
+        Lignes(b - 1, 1) = i
+        i = i + 1
+        Loop
+    Next b
+
+Lignes(1, 2) = Lignes(1, 1)
+Lignes(1, 3) = 1
+
+
+For c = 2 To n
+
+Lignes(c, 2) = Lignes(c - 1, 2) + Lignes(c, 1)
+Lignes(c, 3) = Lignes(c, 2) - Lignes(c, 1) + 1
+Next c
+
+Worksheets("Synthèse").Activate
+Range("A1").Activate
+
+
+For a = 2 To n + 1
+
+Workbooks(nom1).Worksheets(a).Activate
+    Range("A1").Select
+    
+    For d = Lignes(a - 1, 3) To Lignes(a - 1, 2)
+        
+        Range(Selection, Selection.End(xlToRight)).Select
+        Application.CutCopyMode = False
+        Selection.Copy
+        Worksheets("Synthèse").Activate
+        ActiveSheet.Cells(d, 1).Activate
+        Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+        Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+        Worksheets(a).Activate
+        ActiveCell.Offset(1, 0).Select
+     Next d
+     
+Next a
+
+Worksheets("Synthèse").Activate
+Range("A1").Activate
+Columns("C:C").EntireColumn.AutoFit
+
+ActiveWindow.WindowState = xlMaximized
+    Application.CutCopyMode = False
+    ActiveWindow.DisplayGridlines = False
+    
+    
+If Lignes(n, 2) <> 0 Then
+
+    ActiveSheet.Cells(Lignes(n, 2), 1).Activate
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .Weight = xlMedium
+        .ColorIndex = xlAutomatic
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .Weight = xlMedium
+        .ColorIndex = xlAutomatic
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .Weight = xlMedium
+        .ColorIndex = xlAutomatic
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .Weight = xlMedium
+        .ColorIndex = xlAutomatic
+    End With
+    With Selection.Borders(xlInsideVertical)
+        .LineStyle = xlContinuous
+        .Weight = xlThin
+        .ColorIndex = xlAutomatic
+    End With
+
+ActiveWorkbook.Save
+
+Range("A1").Select
+
+    Range("A1:K32").Select
+    
+    Application.CutCopyMode = False
+    Selection.Copy
+    
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Settlement Benefits.xls"
+Workbooks("Settlement Benefits.xls").Worksheets(z).Activate
+Worksheets(z).Activate
+Worksheets(z).Range("A4").Select
+i = 4
+
+    Do While Worksheets(z).Cells(i, 1) <> Empty
+        i = i + 1
+    Loop
+
+Cells(i, 1).Select
+
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Columns("C:C").EntireColumn.AutoFit
+
+ActiveWorkbook.Save
+ActiveWorkbook.Close
+
+End If
+
+Workbooks(nom1).Worksheets(1).Activate
+ActiveWorkbook.Close (True)
+
+
+End Sub
+
+
+Sub Imprime_SRM()
+
+' Imprime la feuille de calcul synthèse du classeur compilant les prestations
+' du semestre considéré
+' Définit la plage de cellule contenant les données comme zone d'impression.
+
+Dim nom2 As String
+Dim zone As Range
+
+    nom2 = Right(Semestre_SRM, 20)
+
+    Workbooks.Open Filename:=Semestre_SRM
+    Workbooks(nom2).Worksheets("Synthèse").Activate
+    Range("A1").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    
+    Selection.CurrentRegion.Select
+    Set zone = Selection.CurrentRegion
+    ActiveSheet.PageSetup.PrintArea = Selection.Address
+
+    With ActiveSheet.PageSetup
+        .PrintTitleRows = ""
+        .PrintTitleColumns = ""
+    End With
+    ActiveSheet.PageSetup.PrintArea = Selection.Address
+    With ActiveSheet.PageSetup
+        .LeftHeader = ""
+        .CenterHeader = nom2
+        .RightHeader = ""
+        .LeftFooter = ""
+        .CenterFooter = nom2
+        .RightFooter = ""
+        .LeftMargin = Application.InchesToPoints(0.787401575)
+        .RightMargin = Application.InchesToPoints(0.787401575)
+        .TopMargin = Application.InchesToPoints(0.984251969)
+        .BottomMargin = Application.InchesToPoints(0.984251969)
+        .HeaderMargin = Application.InchesToPoints(0.4921259845)
+        .FooterMargin = Application.InchesToPoints(0.4921259845)
+        .PrintHeadings = False
+        .PrintGridlines = False
+        .PrintComments = xlPrintNoComments
+        .PrintQuality = 600
+        .CenterHorizontally = False
+        .CenterVertically = False
+        .Orientation = xlLandscape
+        .Draft = False
+        .PaperSize = xlPaperA4
+        .FirstPageNumber = xlAutomatic
+        .Order = xlDownThenOver
+        .BlackAndWhite = False
+        .Zoom = False
+        .FitToPagesWide = 1
+        .FitToPagesTall = 1
+    End With
+    ActiveWindow.SelectedSheets.PrintOut Copies:=1, Collate:=True
+    Range("A1").Select
+    Windows("Test Macro.xls").Activate
+End Sub
+
+
+ 
+Sub Process_SRM()
+
+Dim a, b As Integer
+
+Workbooks("Test Macro.xls").Worksheets(1).Activate
+
+    a = Worksheets(1).Range("B1").Value
+    b = Worksheets(1).Range("C1").Value
+    
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Settlement Benefits.xls"
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Facturation BP Mobil - Specimen.xls"
+
+Workbooks("Settlement Benefits.xls").Worksheets(1).Activate
+Worksheets(1).Range("A4").Select
+
+Range(Selection, Selection.End(xlDown)).Select
+Range(Selection, Selection.End(xlToRight)).Select
+Application.CutCopyMode = False
+Selection.Copy
+
+Workbooks("Facturation BP Mobil - Specimen.xls").Worksheets(1).Activate
+Worksheets(1).Range("A4").Select
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+
+    Application.CutCopyMode = False
+    Application.CommandBars("Clipboard").Visible = False
+
+Workbooks("Settlement benefits.xls").Close (False)
+
+Workbooks("Test Macro.xls").Worksheets(2).Activate
+Worksheets(2).Range("A6").Select
+
+Range(Selection, Selection.End(xlDown)).Select
+Range(Selection, Selection.End(xlToRight)).Select
+Application.CutCopyMode = False
+Selection.Copy
+
+Workbooks("Facturation BP Mobil - Specimen.xls").Worksheets(2).Activate
+Worksheets(2).Range("A4").Select
+
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+
+Workbooks("Facturation BP Mobil - Specimen.xls").Worksheets(5).Activate
+Worksheets(5).Range("A1").Select
+Worksheets(5).Range("B2").Value = a
+Worksheets(5).Range("B3").Value = b
+  
+
+With ActiveSheet.PageSetup
+        .PrintTitleRows = ""
+        .PrintTitleColumns = ""
+    End With
+    ActiveSheet.PageSetup.PrintArea = "$A$1:$AD$21"
+    With ActiveSheet.PageSetup
+        .LeftHeader = ""
+        .CenterHeader = ""
+        .RightHeader = ""
+        .LeftFooter = ""
+        .CenterFooter = ""
+        .RightFooter = ""
+        .LeftMargin = Application.InchesToPoints(0.78740157480315)
+        .RightMargin = Application.InchesToPoints(0.78740157480315)
+        .TopMargin = Application.InchesToPoints(0.984251968503937)
+        .BottomMargin = Application.InchesToPoints(0.984251968503937)
+        .HeaderMargin = Application.InchesToPoints(0.511811023622047)
+        .FooterMargin = Application.InchesToPoints(0.511811023622047)
+        .PrintHeadings = False
+        .PrintGridlines = False
+        .PrintComments = xlPrintNoComments
+        .PrintQuality = 600
+        .CenterHorizontally = False
+        .CenterVertically = False
+        .Orientation = xlLandscape
+        .Draft = False
+        .PaperSize = xlPaperA3
+        .FirstPageNumber = xlAutomatic
+        .Order = xlDownThenOver
+        .BlackAndWhite = False
+        .Zoom = False
+        .FitToPagesWide = 1
+        .FitToPagesTall = 1
+    End With
+    
+    
+    Windows("Facturation BP Mobil - Specimen.xls").Activate
+    Application.ActivePrinter = "\\SRV_W2K\HP LaserJet 5Si PCL 5e sur Ne04:"
+    ActiveWindow.SelectedSheets.PrintOut Copies:=1, Collate:=True
+    
+ActiveWorkbook.Save
+ActiveWorkbook.Close (False)
+Workbooks("Test Macro.xls").Worksheets(1).Activate
+Worksheets(1).Range("A1").Select
+
+
+End Sub
+
+
+
+
+
+
+
+
+
+ 
+
+
+Function Nombre_Individus()
+
+'Retourne le nombre d'individus générateurs de prestations sur le semestre
+'Accessoirement c'est aussi le nombre de lignes du File of Leavings TOM
+'sujettes à prestations sur le semestre considéré.
+
+Dim i As Integer
+  Windows("Test Macro.xls").Activate
+  
+    i = 6
+        Do While Workbooks("Test Macro.xls").Worksheets("Feuil1").Cells(i, 1) <> Empty
+        i = i + 1
+        Loop
+Nombre_Individus = i - 6
+
+End Function
+
+
+
+ 
+Function Semestre()
+
+'Retourne le chemin du fichier sous lequel sera enregistré le classeur
+'compilant les prestations du semestre
+'Se présente sous cette forme:
+'C:\Documents and Settings\ms\Bureau\3-1 Settlement.xls
+
+Dim a1, a2 As Integer
+Dim Sem, File As String
+
+a1 = Workbooks("Test Macro.xls").Sheets("Feuil1").Range("B1").Value
+a2 = Workbooks("Test Macro.xls").Sheets("Feuil1").Range("C1").Value
+File = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & a1 & "- " & a2 & ")\2 - Proformas TOM\"
+Sem = a1 & " - " & a2 & " TOM Settlement"
+Semestre = File & Sem & ".xls"
+
+End Function
+
+
+ 
+Sub Création_Tableau_3()
+
+' Crée un fichier comportant autant de feuilles de calcul qu'il y a
+' d'individus générateurs de prestations soumises à facturation sur le
+' semestre, chaque feuille étant renommé du nom de chaque TBE et comprend les
+' prestations TOM versées à chaque affilié et qui seront soumises
+' à la facturation du Settlement Process, conformément à la législation.
+
+
+Dim k, l, m, n, o, p, q, Settlement, Measurement As Integer
+Dim Nom, Fichier  As String
+Dim Tableau2() As String
+ReDim Tableau2(Nombre_Individus)
+Measurement = Worksheets("Feuil1").Cells(1, 2).Value
+Settlement = Worksheets("Feuil1").Cells(1, 3).Value
+    For k = 1 To Nombre_Individus
+    Tableau2(k) = Worksheets("Feuil1").Cells(k + 5, 5).Value
+    Next k
+    
+n = Nombre_Individus
+Workbooks.Add
+
+
+ActiveSheet.Select
+
+
+If n > 3 Then
+    
+    For m = 1 To n - 3
+
+        Sheets.Add
+
+    Next m
+End If
+
+For o = 1 To n
+
+Worksheets(o).Name = Tableau2(o)
+
+Next o
+
+ActiveWorkbook.SaveAs Filename:=Semestre
+Nom = Right(Semestre, 24)
+Workbooks("Test Macro.xls").Worksheets("Feuil1").Activate
+Range("A5").Select
+
+For p = 1 To n
+    
+    ActiveCell.Offset(1, 0).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.Copy
+    Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Pro-Formas TOM Specimen.xls"
+    ActiveWorkbook.Activate
+    Range("A72").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    
+    Range("B1") = Measurement
+    Range("C1") = Settlement
+    
+        ActiveSheet.Next.Select
+        
+   
+            Range("A3").Select
+            Range(Selection, Selection.End(xlDown)).Select
+            Range(Selection, Selection.End(xlToRight)).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+                
+    Workbooks(Nom).Worksheets(p).Activate
+    Range("A1").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        ActiveWindow.DisplayGridlines = False
+        Columns("C:C").EntireColumn.AutoFit
+   Workbooks("Pro-Formas TOM Specimen.xls").Close (False)
+   
+    Workbooks("Test Macro.xls").Worksheets("Feuil1").Activate
+    
+    Next p
+Workbooks(Nom).Activate
+ActiveWorkbook.Save
+ActiveWorkbook.Close (False)
+Workbooks("Test Macro.xls").Worksheets("Feuil1").Activate
+
+End Sub
+
+
+ 
+Sub Création_Fichiers()
+
+' Crée autant de fichiers qu'il y a d'individus générateurs
+' de prestations soumises à facturation sur le semestre
+' à partir des fichiers masters TOM Pro Formas
+' Les fichiers créés sont de la forme: 3 - 1 Franck Morot Sir.xls
+' Attention: en raison de la taille importante des fichiers masters TOM
+' l'export des prestations qui seront soumises à facturation par
+' le biais du Settlement Process ne se font pas par le biais de cette
+' procédure étant donné que la sauvegarde des fichiers créés engendre
+' une pertubation des calculs matriciels des intérêts EURIBOR
+' empêchant l'export par copier coller...
+
+Dim k, l, m, n, o, p, q, Settlement, Measurement As Integer
+Dim Nom, Fichier, Appels, Dossier  As String
+Dim Tableau3() As String
+
+n = Nombre_Individus
+
+ReDim Tableau3(n)
+
+Measurement = Worksheets("Feuil1").Cells(1, 2).Value
+Settlement = Worksheets("Feuil1").Cells(1, 3).Value
+    
+    For k = 1 To n
+    Tableau3(k) = Worksheets("Feuil1").Cells(k + 5, 5).Value
+    Next k
+    
+
+
+Workbooks("Test Macro.xls").Worksheets("Feuil1").Activate
+Range("A5").Select
+
+For p = 1 To n
+    
+    ActiveCell.Offset(1, 0).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.Copy
+    Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Pro-Formas TOM Specimen.xls"
+    ActiveWorkbook.Activate
+    Range("A72").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    
+    Range("B1") = Measurement
+    Range("C1") = Settlement
+    
+        ActiveSheet.Next.Select
+        
+   
+            Range("A3").Select
+            Dossier = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & Measurement & "- " & Settlement & ")"
+            Appels = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & Measurement & "- " & Settlement & ")\2 - Proformas TOM\" & Measurement & " - " & Settlement & "- TOM - " & Tableau3(p)
+            ChDir Dossier
+            ActiveWorkbook.SaveAs Filename:=Appels
+            ActiveWorkbook.Close
+                
+   
+    Workbooks("Test Macro.xls").Worksheets("Feuil1").Activate
+    
+    Next p
+
+
+End Sub
+
+ 
+Function Semestre2()
+
+' Retourne le numéro de rang du semestre de calcul de facturation
+
+Dim a, b As Integer
+
+Workbooks("Test Macro.xls").Worksheets("Feuil1").Activate
+a = Range("B1").Value
+b = Range("C1").Value
+Semestre2 = (a - 1) * 6 + b + 1
+
+End Function
+
+ 
+Sub Synthèse2()
+
+' Crée une feuille synthèse qui compile l'ensemble des prestations versées
+' à tous les TBE sur le semestre de calcul
+' puis exporte l'ensemble des données vers le classeur Settlement Benefits
+' qui compile toutes les prestations soumises à facturation entre le 1er
+' semestre 2000 et le second semestre 2014
+
+Dim a, b, c, d, e, f, n, z As Integer
+Dim Lignes() As Integer
+Dim nom1 As String
+
+z = Semestre2
+ Workbooks.Open Filename:=Semestre
+nom1 = Right(Semestre, 24)
+Workbooks(nom1).Worksheets(1).Activate
+Sheets.Add
+    Sheets("Feuil1").Select
+    Sheets("Feuil1").Name = "Synthèse"
+    Sheets("Synthèse").Select
+    Sheets("Synthèse").Move Before:=Sheets(1)
+n = Nombre_Individus
+
+
+ReDim Lignes(n, 3)
+Workbooks(nom1).Worksheets(2).Activate
+For b = 2 To n + 1
+    i = 1
+    Do While Worksheets(b).Cells(i, 1) <> Empty
+        Lignes(b - 1, 1) = i
+        i = i + 1
+        Loop
+    Next b
+
+Lignes(1, 2) = Lignes(1, 1)
+Lignes(1, 3) = 1
+
+
+For c = 2 To n
+
+Lignes(c, 2) = Lignes(c - 1, 2) + Lignes(c, 1)
+Lignes(c, 3) = Lignes(c, 2) - Lignes(c, 1) + 1
+Next c
+
+Worksheets("Synthèse").Activate
+Range("A1").Activate
+
+
+For a = 2 To n + 1
+
+Workbooks(nom1).Worksheets(a).Activate
+    Range("A1").Select
+    
+    For d = Lignes(a - 1, 3) To Lignes(a - 1, 2)
+        
+        Range(Selection, Selection.End(xlToRight)).Select
+        Application.CutCopyMode = False
+        Selection.Copy
+        Worksheets("Synthèse").Activate
+        ActiveSheet.Cells(d, 1).Activate
+        Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+        Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+        Worksheets(a).Activate
+        ActiveCell.Offset(1, 0).Select
+     Next d
+     
+Next a
+
+Worksheets("Synthèse").Activate
+Range("A1").Activate
+Columns("C:C").EntireColumn.AutoFit
+
+ActiveWindow.WindowState = xlMaximized
+    Application.CutCopyMode = False
+    ActiveWindow.DisplayGridlines = False
+    
+If Lignes(n, 2) <> 0 Then
+
+    ActiveSheet.Cells(Lignes(n, 2), 1).Activate
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .Weight = xlMedium
+        .ColorIndex = xlAutomatic
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .Weight = xlMedium
+        .ColorIndex = xlAutomatic
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .Weight = xlMedium
+        .ColorIndex = xlAutomatic
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .Weight = xlMedium
+        .ColorIndex = xlAutomatic
+    End With
+    With Selection.Borders(xlInsideVertical)
+        .LineStyle = xlContinuous
+        .Weight = xlThin
+        .ColorIndex = xlAutomatic
+    End With
+
+ActiveWorkbook.Save
+
+Range("A1").Select
+
+    Range("A1:K101").Select
+    
+    Application.CutCopyMode = False
+    Selection.Copy
+    
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Settlement Benefits.xls"
+Workbooks("Settlement Benefits.xls").Worksheets(z).Activate
+Worksheets(z).Range("A4").Select
+
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Columns("C:C").EntireColumn.AutoFit
+Worksheets(z).Range("A4").Select
+
+ActiveWorkbook.Save
+ActiveWorkbook.Close
+End If
+
+Workbooks(nom1).Worksheets(1).Activate
+ActiveWorkbook.Close (True)
+
+
+End Sub
+
+
+ 
+Sub Imprime()
+
+' Imprime la feuille de calcul synthèse du classeur compilant les prestations
+' du semestre considéré
+' Définit la plage de cellule contenant les données comme zone d'impression.
+
+Dim nom2 As String
+Dim zone As Range
+
+    nom2 = Right(Semestre, 24)
+
+    Workbooks.Open Filename:=Semestre
+    Workbooks(nom2).Worksheets("Synthèse").Activate
+    Range("A1").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    
+    Selection.CurrentRegion.Select
+    Set zone = Selection.CurrentRegion
+    ActiveSheet.PageSetup.PrintArea = Selection.Address
+
+    With ActiveSheet.PageSetup
+        .PrintTitleRows = ""
+        .PrintTitleColumns = ""
+    End With
+    ActiveSheet.PageSetup.PrintArea = Selection.Address
+    With ActiveSheet.PageSetup
+        .LeftHeader = ""
+        .CenterHeader = nom2
+        .RightHeader = ""
+        .LeftFooter = ""
+        .CenterFooter = nom2
+        .RightFooter = ""
+        .LeftMargin = Application.InchesToPoints(0.787401575)
+        .RightMargin = Application.InchesToPoints(0.787401575)
+        .TopMargin = Application.InchesToPoints(0.984251969)
+        .BottomMargin = Application.InchesToPoints(0.984251969)
+        .HeaderMargin = Application.InchesToPoints(0.4921259845)
+        .FooterMargin = Application.InchesToPoints(0.4921259845)
+        .PrintHeadings = False
+        .PrintGridlines = False
+        .PrintComments = xlPrintNoComments
+        .PrintQuality = 600
+        .CenterHorizontally = False
+        .CenterVertically = False
+        .Orientation = xlLandscape
+        .Draft = False
+        .PaperSize = xlPaperA4
+        .FirstPageNumber = xlAutomatic
+        .Order = xlDownThenOver
+        .BlackAndWhite = False
+        .Zoom = False
+        .FitToPagesWide = 1
+        .FitToPagesTall = 1
+    End With
+    ActiveWindow.SelectedSheets.PrintOut Copies:=1, Collate:=True
+    Range("A1").Select
+    Windows("Test Macro.xls").Activate
+End Sub
+
+
+ 
+Sub Process()
+
+Dim a, b, c, t, u As Integer
+Dim Dossier, Nom, nom2, nom3, nom4, nom5, nom6 As String
+
+Workbooks("Test Macro.xls").Worksheets(1).Activate
+
+    a = Worksheets(1).Range("B1").Value
+    b = Worksheets(1).Range("C1").Value
+    
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Settlement Benefits.xls"
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Facturation BP Mobil - Specimen.xls"
+
+Workbooks("Settlement Benefits.xls").Worksheets(1).Activate
+Worksheets(1).Range("A4").Select
+
+Range(Selection, Selection.End(xlDown)).Select
+Range(Selection, Selection.End(xlToRight)).Select
+Application.CutCopyMode = False
+Selection.Copy
+
+Workbooks("Facturation BP Mobil - Specimen.xls").Worksheets(1).Activate
+Worksheets(1).Range("A4").Select
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+
+    Application.CutCopyMode = False
+    Application.CommandBars("Clipboard").Visible = False
+
+    Worksheets(1).Range("A4").Select
+    u = 4
+    Do While Cells(u, 1) <> ""
+    u = u + 1
+    Loop
+    Cells(u, 1).Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.Clear
+
+Workbooks("Settlement benefits.xls").Activate
+
+nom4 = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & a & "- " & b & ")\4 - Settlement Benefits\" & a & " - " & b & " - Settlement Benefits"
+
+ActiveWorkbook.SaveAs Filename:=nom4
+ActiveWorkbook.Close (False)
+
+Workbooks("Test Macro.xls").Worksheets(2).Activate
+Worksheets(2).Range("A6").Select
+
+Range(Selection, Selection.End(xlDown)).Select
+Range(Selection, Selection.End(xlToRight)).Select
+Application.CutCopyMode = False
+Selection.Copy
+
+Workbooks("Facturation BP Mobil - Specimen.xls").Worksheets(2).Activate
+Worksheets(2).Range("A4").Select
+
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+
+    Worksheets(2).Range("A4").Select
+    t = 4
+    Do While Cells(t, 1) <> ""
+    t = t + 1
+    Loop
+    Cells(t, 24).Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToLeft)).Select
+    Selection.Clear
+    
+Workbooks("Test Macro.xls").Worksheets(4).Activate
+Range("A6:AV152").Select
+
+Application.CutCopyMode = False
+Selection.Copy
+
+Workbooks("Facturation BP Mobil - Specimen.xls").Worksheets(3).Activate
+Worksheets(3).Range("A4").Select
+
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+
+Workbooks("Facturation BP Mobil - Specimen.xls").Worksheets(5).Activate
+Worksheets(5).Range("A1").Select
+Worksheets(5).Range("B2").Value = a
+Worksheets(5).Range("B3").Value = b
+  
+
+With ActiveSheet.PageSetup
+        .PrintTitleRows = ""
+        .PrintTitleColumns = ""
+    End With
+    
+ Application.ActivePrinter = "\\SRV_W2K\TOSHIBA-PCL5c sur Ne03:"
+    
+    ActiveSheet.PageSetup.PrintArea = "$A$1:$AD$121"
+    
+    With ActiveSheet.PageSetup
+        .PrintTitleRows = ""
+        .PrintTitleColumns = ""
+    End With
+    ActiveSheet.PageSetup.PrintArea = "$A$1:$AD$121"
+    
+    With ActiveSheet.PageSetup
+        .LeftHeader = ""
+        .CenterHeader = ""
+        .RightHeader = ""
+        .LeftFooter = ""
+        .CenterFooter = ""
+        .RightFooter = ""
+        .LeftMargin = Application.InchesToPoints(0.78740157480315)
+        .RightMargin = Application.InchesToPoints(0.78740157480315)
+        .TopMargin = Application.InchesToPoints(0.984251968503937)
+        .BottomMargin = Application.InchesToPoints(0.984251968503937)
+        .HeaderMargin = Application.InchesToPoints(0.511811023622047)
+        .FooterMargin = Application.InchesToPoints(0.511811023622047)
+        .PrintHeadings = False
+        .PrintGridlines = False
+        .PrintComments = xlPrintNoComments
+        .PrintQuality = 600
+        .CenterHorizontally = False
+        .CenterVertically = False
+        .Orientation = xlLandscape
+        .Draft = False
+        .PaperSize = xlPaperA3
+        .FirstPageNumber = xlAutomatic
+        .Order = xlDownThenOver
+        .BlackAndWhite = False
+        .Zoom = False
+        .FitToPagesWide = 1
+        .FitToPagesTall = 1
+    
+    End With
+    
+    Windows("Facturation BP Mobil - Specimen.xls").Activate
+    'Application.ActivePrinter = "\\SRV_W2K\TOSHIBA-PCL5c sur Ne03:"
+    'ActiveWindow.SelectedSheets.PrintOut Copies:=1, Collate:=True
+
+Dossier = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & a & "- " & b & ")\5 - Settlement Process"
+Nom = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & a & "- " & b & ")\5 - Settlement Process\" & a & " - " & b & " - Invoice Settlement"
+ChDir Dossier
+ActiveWorkbook.SaveAs Filename:=Nom
+nom3 = a & " - " & b & " - Invoice Settlement.xls"
+
+Worksheets("Settlement Schedule").Range("A7").Select
+Range("A7:AD121").Select
+Range(Selection, Selection.End(xlToRight)).Select
+Application.CutCopyMode = False
+Selection.Copy
+
+c = Semestre2
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Synthèse Facturation BP Mobil.xls"
+Workbooks("Synthèse Facturation BP Mobil.xls").Worksheets(c).Activate
+Worksheets(c).Range("A7").Select
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Worksheets(c).Range("A7").Select
+
+ActiveWorkbook.Save
+nom2 = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & a & "- " & b & ")\6 - Synthèse Facturation\" & a & " - " & b & " - Synthèse Facturation"
+ChDir Dossier
+ActiveWorkbook.SaveAs Filename:=nom2
+ActiveWorkbook.Close (False)
+
+    nom5 = a & " - " & b & " - Retail Billing.xls"
+    nom6 = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & a & "- " & b & ")\7 - Retail Billing\" & a & " - " & b & " - Retail Billing"
+    Workbooks(nom3).Activate
+    Worksheets(12).Select
+    Range("A7:T7").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.Copy
+    Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Retail Billing.xls"
+    Worksheets(c + 1).Activate
+    Worksheets(c + 1).Select
+    Range("A7").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+    Worksheets(c + 1).Range("A7").Select
+    ActiveWorkbook.Save
+    ActiveWorkbook.SaveAs Filename:=nom6
+    Workbooks(nom3).Activate
+    Worksheets(6).Select
+    Range("C3:R40").Select
+    Selection.Copy
+    Workbooks(nom5).Activate
+    Worksheets(1).Select
+    Range("C3").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+    ActiveWorkbook.Save
+    ActiveWorkbook.Close (False)
+    
+Workbooks(nom3).Activate
+ActiveWorkbook.Close (False)
+
+Workbooks("Test Macro.xls").Worksheets(1).Activate
+Worksheets(1).Range("A1").Select
+
+
+End Sub
+
+ 
+Sub Settlement_TOM()
+
+Dim i, j As Integer
+Dim nom2, nom3 As String
+
+Workbooks("Test Macro.xls").Worksheets(5).Activate
+
+i = Range("J3").Value
+j = Range("J10").Value
+
+Worksheets(1).Activate
+Worksheets(1).Range("B1").Value = i
+Worksheets(1).Range("C1").Value = j
+
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Traitement des TOM Files of Leavings.xls"
+
+Workbooks("Traitement des TOM Files of Leavings.xls").Worksheets(1).Activate
+    Worksheets(1).Range("B1").Value = i
+    Worksheets(1).Range("C1").Value = j
+
+Worksheets(1).Range("A6").Select
+Range(Selection, Selection.End(xlDown)).Select
+Range(Selection, Selection.End(xlToRight)).Select
+Application.CutCopyMode = False
+Selection.Copy
+
+Workbooks("Test Macro.xls").Worksheets(1).Activate
+
+Worksheets(1).Range("A6").Select
+
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+ActiveWindow.DisplayGridlines = False
+
+Worksheets(1).Range("B1").Value = i
+Worksheets(1).Range("C1").Value = j
+Worksheets(1).Range("A1").Select
+
+Workbooks("Traitement des TOM Files of Leavings.xls").Worksheets(2).Activate
+Worksheets(2).Range("A6").Select
+
+nom2 = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & i & "- " & j & ")\1 - Traitement Fichiers\" & i & " - " & j & " - TOM File Leavings"
+ActiveWorkbook.SaveAs Filename:=nom2
+nom3 = i & " - " & j & " - TOM File Leavings.xls"
+
+Range(Selection, Selection.End(xlDown)).Select
+Range(Selection, Selection.End(xlToRight)).Select
+Application.CutCopyMode = False
+Selection.Copy
+
+Workbooks("Test Macro.xls").Worksheets(2).Activate
+
+Worksheets("Feuil2").Range("A6").Select
+
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+ActiveWindow.DisplayGridlines = False
+
+
+Workbooks("Test Macro.xls").Worksheets(1).Activate
+Worksheets(1).Range("A1").Select
+
+Workbooks(nom3).Close (False)
+
+
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+Sub TOM_Processus()
+
+Dim Action As String
+Dim i As Integer
+
+Call Création_Tableau_3
+    i = 3
+    If Nombre_Individus > 1 Then
+    Action = Nombre_Individus & " synthèses de TOM Benefits"
+    Else: Action = Nombre_Individus & " synthèse de TOM Benefits"
+    End If
+    Call Testing_2(Action, i, 200, 64, 64)
+Call Création_Fichiers
+    i = 4
+    If Nombre_Individus > 1 Then
+    Action = Nombre_Individus & " créations de fichiers TOM pro-formas"
+    Else: Action = Nombre_Individus & " création de fichiers TOM pro-formas"
+    End If
+    Call Testing_2(Action, i, 200, 64, 64)
+Call Synthèse2
+    i = 5
+    If Nombre_Individus > 1 Then
+    Action = Nombre_Individus & " exports de prestations TOM vers le Settlement Benefits"
+    Else: Action = Nombre_Individus & " export de prestations TOM vers le Settlement Benefits"
+    End If
+    Call Testing_2(Action, i, 200, 64, 64)
+End Sub
+
+Sub SRM_Processus()
+
+Dim Action As String
+Dim i As Integer
+
+Call Création_Tableau_SRM
+    i = 7
+    If Nombre_Individus_SRM > 1 Then
+    Action = Nombre_Individus_SRM & " synthèses individuelles de SRM Benefits"
+    Else: Action = Nombre_Individus_SRM & " synthèse individuelle de SRM Benefits"
+    End If
+    Call Testing_2(Action, i, 200, 64, 64)
+Call Création_Fichiers_SRM
+    i = 8
+    If Nombre_Individus_SRM > 1 Then
+    Action = Nombre_Individus_SRM & " créations de fichiers SRM pro-formas"
+    Else: Action = Nombre_Individus_SRM & " création de fichiers SRM pro-formas"
+    End If
+    Call Testing_2(Action, i, 200, 64, 64)
+Call Synthèse2_SRM
+    i = 9
+    If Nombre_Individus_SRM > 1 Then
+    Action = Nombre_Individus_SRM & " exports de prestations SRM vers le Settlement Benefits"
+    Else: Action = Nombre_Individus_SRM & " export de prestations SRM vers le Settlement Benefits"
+    End If
+    Call Testing_2(Action, i, 200, 64, 64)
+End Sub
+
+ 
+Sub Exit_Catch_Up()
+
+Dim Action As String
+Dim a, b, i As Integer
+
+Call Clean_Up
+
+Workbooks("Test Macro.xls").Worksheets(5).Activate
+a = Range("J3").Value
+b = Range("J10").Value
+
+
+
+    i = 1
+    Action = "Activation du Settlement Process (" & a & " - " & b & " )"
+    Call Testing_2(Action, i, 200, 64, 64)
+
+Call Settlement_TOM
+
+    i = 2
+    Action = Nombre_Individus & " TBE soumis à facturation TOM sur le semestre"
+    Call Testing_2(Action, i, 200, 64, 64)
+
+Workbooks("Test Macro.xls").Worksheets(1).Activate
+Worksheets(1).Range("A6").Select
+
+If Worksheets(1).Cells(6, 1) <> Empty Then
+    Call TOM_Processus
+    End If
+    
+    
+    
+Call Settlement_SRM
+    
+    i = 6
+    Action = Nombre_Individus_SRM & " TBE soumis à facturation SRM sur le semestre"
+    Call Testing_2(Action, i, 200, 64, 64)
+    
+Workbooks("Test Macro.xls").Worksheets(3).Activate
+Worksheets(3).Range("A6").Select
+    
+If Worksheets(3).Cells(6, 1) <> Empty Then
+    Call SRM_Processus
+    End If
+
+Call Process
+
+    i = 11
+    Action = "La facturation du semestre (" & a & " - " & b & " ) a réussi sans incident..."
+    Call Testing_2(Action, i, 200, 64, 64)
+
+Workbooks("Test Macro.xls").Worksheets(5).Activate
+Worksheets(5).Range("B3").Select
+
+End Sub
+
+
+ 
+Sub Testing()
+
+Dim Message As String
+Dim n As Integer
+Dim a As Single
+
+n = Nombre_Individus
+Message = "Importation de " & n & " fichiers réussis"
+
+UserForm1.TextBox2.Value = Message
+a = n / 20
+
+    With UserForm1
+        .Frame1.Caption = Format(a, "0%")
+        .Label1.Width = a * (UserForm1.Frame1.Width - 10)
+    End With
+
+UserForm1.Show
+
+
+
+End Sub
+
+
+ 
+Sub Testing_2(Messi, Pourcent, Couleur1, Couleur2, Couleur3)
+
+Dim Pourcents As Single
+
+Pourcents = Pourcent / 11
+
+UserForm1.TextBox2.Value = Messi
+
+
+    With UserForm1
+        .Frame1.Caption = Format(Pourcents, "0%") & " accompli "
+        .Label1.Width = Pourcents * (UserForm1.Frame1.Width - 20)
+        .Label1.BackColor = RGB(Couleur1, Couleur2, Couleur3)
+    End With
+
+UserForm1.Show
+
+End Sub
+
+ 
+Sub Testing_3()
+
+Dim Message As String
+Dim n As Integer
+Dim a As Single
+
+n = Nombre_Individus
+Message = "Importation de " & n & " fichiers réussis"
+
+a = n / 40
+
+Call Testing_2(Message, a)
+
+
+End Sub
+
+
+
+ 
+Sub Total_Exit_Catch_Up()
+
+Dim Catch_Measurement, Catch_Settlement As Integer
+Dim i, j As Integer
+Workbooks("Test Macro.xls").Worksheets(5).Activate
+Catch_Measurement = Worksheets(5).Range("J3").Value
+Catch_Settlement = Worksheets(5).Range("J10").Value
+
+For i = 1 To Catch_Measurement
+    For j = 1 To Catch_Settlement
+        Worksheets(5).Range("J3").Value = i
+        Worksheets(5).Range("J10").Value = j
+        Call Exit_Catch_Up
+    Next
+Next
+
+
+i = 11
+Action = "Le processus de facturation de sortie de Catch up a été effectué sans erreur..."
+Call Testing_2(Action, i, 200, 64, 64)
+
+End Sub
+
+
+ 
+Sub Clean_Up()
+
+Dim a, b As Integer
+
+For a = 1 To 4
+
+    Workbooks("Test Macro.xls").Worksheets(a).Activate
+    Workbooks("Test Macro.xls").Worksheets(a).Range("A6:AZ150").Select
+    Workbooks("Test Macro.xls").Worksheets(a).Range("A6:AZ150").Clear
+    Workbooks("Test Macro.xls").Worksheets(a).Range("A6").Select
+
+Next
+
+Workbooks("Test Macro.xls").Worksheets(5).Activate
+Worksheets(5).Range("B3").Select
+
+End Sub
+
+
+Sub Replace()
+
+Workbooks("Test Macro.xls").Worksheets(5).Activate
+Worksheets(5).Range("B3").Select
+
+End Sub
+
+
+
+ 
+Sub Dissociation_1()
+'
+' Facturation dissociée:
+' Lance le process des facturations dissociées des cas exceptionnels
+' des TBE qui ne peuvent être traités selon le mode opératoire normalisé...
+
+    
+ Dim a, b, c As Integer
+ Dim d As Single
+ Dim Nom, nom2 As String
+ 
+ 
+ a = Range("J3").Value
+ b = Range("J10").Value
+ c = (a - 1) * 6 + b
+ Nom = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & a & "- " & b & ")\9 - Dissociated Process\" & a & " - " & b & " - Dissociated Process.xls"
+ nom2 = a & " - " & b & " - Dissociated Process.xls"
+ 
+ Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Facturation Dissociée.xls"
+    Worksheets(1).Select
+    Range("A4").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Range("A4:AR4").Select
+    Selection.Copy
+    
+    Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Pro-Formas TOM Specimen.xls"
+    ActiveWorkbook.Worksheets(1).Select
+    Range("A72").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Range("B1").Select
+    Range("B1").Value = a
+    Range("C1").Value = b
+    ActiveSheet.Next.Select
+    
+    d = WorksheetFunction.Sum(Range("F3:F24"), Range("H3:H24"))
+    
+    Windows("Facturation Dissociée.xls").Activate
+    Worksheets(c + 2).Select
+    Range("K3").Value = d
+    
+    Windows("Pro-Formas TOM Specimen.xls").Activate
+    Range("A3").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    
+    Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Facturation BP Mobil - Specimen.xls"
+    ActiveWorkbook.Worksheets(1).Select
+    Range("A4").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Range("A2:K2").Select
+    Workbooks("Pro-Formas TOM Specimen.xls").Activate
+    
+    
+    Windows("Facturation Dissociée.xls").Activate
+    Worksheets(1).Select
+    Range("A10").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.Copy
+    Windows("Facturation BP Mobil - Specimen.xls").Activate
+    ActiveWorkbook.Worksheets(2).Select
+    Range("A4").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Range("A1").Select
+    Worksheets(5).Select
+    Range("B2").Value = a
+    Range("B3").Value = b
+    
+    Range("A7:AD21").Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    Range("A1").Select
+  
+    
+    Windows("Facturation Dissociée.xls").Activate
+    ActiveWorkbook.Worksheets(c + 2).Select
+    Range("A7").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Range("A1").Select
+    
+    Windows("Facturation BP Mobil - Specimen.xls").Activate
+    ActiveWorkbook.Worksheets(12).Select
+    Range("A7").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Range("A7:U21").Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    
+    
+    Windows("Facturation Dissociée.xls").Activate
+    ActiveWorkbook.Worksheets(c + 32).Select
+    Range("A7").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    
+    Worksheets(1).Select
+    Range("A1").Select
+    ActiveWorkbook.Save
+    
+    ActiveWorkbook.SaveAs Filename:=Nom _
+        , FileFormat:=xlNormal, Password:="", WriteResPassword:="", _
+        ReadOnlyRecommended:=False, CreateBackup:=False
+    
+        
+       Windows("Facturation BP Mobil - Specimen.xls").Activate
+       ActiveWorkbook.Close (False)
+       Windows("Pro-Formas TOM Specimen.xls").Activate
+       ActiveWorkbook.Close (False)
+        
+       Windows(nom2).Activate
+       ActiveWorkbook.Close (False)
+        
+End Sub
+
+
+
+
+ 
+Sub Dissociation()
+
+Dim a As Integer
+Dim b As String
+
+a = 1
+
+b = "Facturation dissociée des cas particuliers..."
+
+Call Testing_2(b, a, 64, 200, 64)
+
+Call Dissociation_1
+
+a = 11
+
+b = "La facturation dissociée s'est déroulée sans incident..."
+
+Call Testing_2(b, a, 64, 200, 64)
+
+End Sub
+
+
+
+
+ 
+Sub Notification()
+
+' Lance le dénombrement des notifications de paiement
+
+Dim a, b, c As Integer
+ Dim d As Single
+ Dim Nom, nom2, nom3 As String
+ 
+ 
+ a = Range("J3").Value
+ b = Range("J10").Value
+ c = (a - 1) * 6 + b
+ Nom = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & a & "- " & b & ")\10 - Payment Notifications\" & a & " - " & b & " - Payment Notifications.xls"
+ nom2 = a & " - " & b & " - Dissociated Process.xls"
+ nom3 = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & a & "- " & b & ")\0 - Fichiers Source\1 - Fichier Source Global\" & a & " - " & b & " - Fichier Source.xls"
+ 
+ Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Traitement des TOM Files of Leavings.xls"
+    Worksheets(1).Select
+
+Range("B1").Value = a
+Range("C1").Value = b
+
+Range("E6").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Range("E6:AP151").Select
+    Selection.Copy
+
+ Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Payment Notifications.xls"
+ Worksheets(7 + c).Select
+ Range("A3").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Range("A3").Select
+    Application.CutCopyMode = False
+    
+    Windows("Traitement des TOM Files of Leavings.xls").Activate
+    Worksheets(2 + c).Select
+    Range("A3:AR304").Select
+    Selection.Copy
+    
+    Workbooks.Add
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Range("A3").Select
+    Application.CutCopyMode = False
+    ActiveWorkbook.SaveAs Filename:=nom3
+    ActiveWorkbook.Close
+      
+    Windows("Traitement des TOM Files of Leavings.xls").Activate
+    ActiveWorkbook.Close (False)
+    
+    Windows("Payment Notifications.xls").Activate
+    Worksheets(4).Select
+    Range("O1:O113").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Range("O1:BX113").Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Settlement Report.xls"
+Worksheets(26).Select
+Range("B1").Select
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+Worksheets(1).Select
+ActiveWorkbook.Save
+ActiveWorkbook.Close (False)
+
+Windows("Payment Notifications.xls").Activate
+Worksheets(1).Select
+ActiveWorkbook.Save
+ActiveWorkbook.SaveAs Nom
+ActiveWorkbook.Close (False)
+
+End Sub
+
+
+ 
+Sub Notifications()
+
+Dim m As String
+
+
+m = "Dénombrement des notifications de paiement du File of Leavings..."
+
+Call Testing_2(m, 2, 64, 64, 200)
+
+Call Notification
+
+m = "Le dénombrement des notifications s'est déroulé sans incident..."
+
+Call Testing_2(m, 11, 64, 64, 200)
+
+
+End Sub
+
+
+ 
+Sub Report()
+
+
+Dim a, b, c, d, e As Integer
+Dim nom1, nom2, nom3 As String
+Dim Feuille As Worksheet
+
+Windows("Test Macro.xls").Activate
+Worksheets(5).Select
+
+a = Range("J3").Value
+b = Range("J10").Value
+
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Settlement Report.xls"
+
+Windows("Settlement Report.xls").Activate
+Worksheets(1).Select
+Range("K3").Value = a
+Range("K9").Value = b
+
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Report.xls"
+
+nom1 = a & " - " & b & " - Settlement Report.xls"
+nom2 = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & a & "- " & b & ")\8 - Settlement Report\" & nom1
+
+ActiveWorkbook.SaveAs Filename:=nom2, Password:="crocodile"
+Worksheets(1).Range("E12").Value = a
+Worksheets(1).Range("E15").Value = b
+ActiveSheet.Protect Password:="crocodile", DrawingObjects:=True, Contents:=True, Scenarios:=True
+
+Worksheets(2).Select
+ActiveSheet.Protect Password:="crocodile", DrawingObjects:=True, Contents:=True, Scenarios:=True
+
+For c = 1 To 13
+
+
+Workbooks("Settlement Report.xls").Activate
+Worksheets(3 + c).Select
+
+    Cells.Select
+    Selection.Copy
+    
+    Windows(nom1).Activate
+    Worksheets(2 + c).Select
+    
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+  ActiveSheet.Protect Password:="crocodile", DrawingObjects:=True, Contents:=True, Scenarios:=True
+
+Next c
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Synthèse Facturation BP Mobil.xls"
+d = (a - 1) * 6 + b
+Worksheets(1 + d).Select
+Range("A7:AE125").Select
+    Selection.Copy
+Workbooks(nom1).Activate
+
+Worksheets(16).Select
+Range("A7").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        
+        Application.CutCopyMode = False
+  ActiveSheet.Protect Password:="crocodile", DrawingObjects:=True, Contents:=True, Scenarios:=True
+  
+        
+Workbooks("Synthèse Facturation BP Mobil.xls").Activate
+Workbooks("Synthèse Facturation BP Mobil.xls").Close (False)
+
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Retail Billing.xls"
+d = (a - 1) * 6 + b
+Worksheets(2 + d).Select
+Range("A7:V125").Select
+    Selection.Copy
+Workbooks(nom1).Activate
+
+Worksheets(17).Select
+Range("A7").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        
+        Application.CutCopyMode = False
+  ActiveSheet.Protect Password:="crocodile", DrawingObjects:=True, Contents:=True, Scenarios:=True
+  
+        
+Workbooks("Retail Billing.xls").Activate
+Workbooks("Retail Billing.xls").Close (False)
+
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Facturation Dissociée.xls"
+d = (a - 1) * 6 + b
+Worksheets(2 + d).Select
+Range("A7:AE125").Select
+    Selection.Copy
+Workbooks(nom1).Activate
+
+Worksheets(18).Select
+Range("A7").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        
+        Application.CutCopyMode = False
+  ActiveSheet.Protect Password:="crocodile", DrawingObjects:=True, Contents:=True, Scenarios:=True
+  
+Windows("Facturation Dissociée.xls").Activate
+Worksheets(32 + d).Select
+Range("A7:V125").Select
+    Selection.Copy
+
+Workbooks(nom1).Activate
+Worksheets(19).Select
+Range("A7").Select
+    Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        
+        Application.CutCopyMode = False
+  ActiveSheet.Protect Password:="crocodile", DrawingObjects:=True, Contents:=True, Scenarios:=True
+  
+Workbooks("Facturation Dissociée.xls").Activate
+Workbooks("Facturation Dissociée.xls").Close (False)
+
+Workbooks(nom1).Activate
+    
+    For Each Feuille In ActiveWorkbook.Worksheets
+    Feuille.Select
+    Range("A1").Select
+    Next Feuille
+    
+Worksheets(1).Select
+
+ActiveWorkbook.Save
+ActiveWorkbook.Close (False)
+
+Windows("Settlement Report.xls").Activate
+ActiveWorkbook.Close (False)
+    
+
+
+End Sub
+
+ 
+Sub Mise_à_jour()
+
+Dim a, b, c, d, e As Integer
+Dim nom1, nom2, nom3 As String
+
+Windows("Test Macro.xls").Activate
+Worksheets(5).Select
+
+a = Range("J3").Value
+b = Range("J10").Value
+
+nom1 = "E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Facture (" & a & "- " & b & ")\5 - Settlement Process\" & a & " - " & b & " - Invoice Settlement.xls"
+nom2 = a & " - " & b & " - Invoice Settlement.xls"
+
+Workbooks.Open Filename:=nom1
+
+'Mise à jour du Listing TBE
+Worksheets(11).Select
+Range("A2:X300").Select
+Selection.Copy
+
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Settlement Report.xls"
+Worksheets(19).Select
+Range("B2").Select
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        Application.CutCopyMode = False
+
+'Mise à jour des Benefits
+Windows(nom2).Activate
+Worksheets(1).Select
+Range("A4:K4").Select
+Range(Selection, Selection.End(xlDown)).Select
+Selection.Copy
+
+Windows("Settlement Report.xls").Activate
+Worksheets(21).Select
+Range("A1").Select
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        Application.CutCopyMode = False
+
+'Mise à jour du coefficient XS
+Windows(nom2).Activate
+Worksheets(6).Select
+Range("A1:R41").Select
+Selection.Copy
+
+Windows("Settlement Report.xls").Activate
+Worksheets(22).Select
+Range("A1").Select
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        Application.CutCopyMode = False
+
+'Mise à jour du Cap
+Windows(nom2).Activate
+Worksheets(7).Select
+Range("A1:G24").Select
+Selection.Copy
+
+Windows("Settlement Report.xls").Activate
+Worksheets(23).Select
+Range("A1").Select
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        Application.CutCopyMode = False
+
+Windows(nom2).Activate
+ActiveWorkbook.Close (False)
+
+'Mise à jour du File of Leavings Global
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\File of Leavings - Global.xls"
+Worksheets(1).Select
+Range("A4:AN350").Select
+Selection.Copy
+
+Windows("Settlement Report.xls").Activate
+Worksheets(20).Select
+Range("A4").Select
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        Application.CutCopyMode = False
+
+Windows("File of Leavings - Global.xls").Activate
+ActiveWorkbook.Close (False)
+
+'Mise à jour des Settlement Schedule
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Synthèse Facturation BP Mobil.xls"
+Worksheets(1).Select
+Range("J3:AI32").Select
+Selection.Copy
+
+Windows("Settlement Report.xls").Activate
+Worksheets(24).Select
+Range("J3").Select
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        Application.CutCopyMode = False
+
+Windows("Synthèse Facturation BP Mobil.xls").Activate
+ActiveWorkbook.Close (False)
+
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Facturation Dissociée.xls"
+Worksheets(2).Select
+Range("J3:K32").Select
+Selection.Copy
+
+Windows("Settlement Report.xls").Activate
+Worksheets(24).Select
+Range("AJ3").Select
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        Application.CutCopyMode = False
+        
+Windows("Facturation dissociée.xls").Activate
+ActiveWorkbook.Close (False)
+
+'Mise à jour du Retail Billing
+Workbooks.Open Filename:="E:\Dossier clients\BP-Mobil 2006\5 - Facturation BP - Mobil\Applications Source\Retail Billing.xls"
+Worksheets(2).Select
+Range("G42:AJ73").Select
+Selection.Copy
+Windows("Settlement Report.xls").Activate
+Worksheets(27).Select
+Range("A1").Select
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        Application.CutCopyMode = False
+
+Windows("Retail Billing.xls").Activate
+Worksheets(2).Select
+Range("G82:AJ113").Select
+Selection.Copy
+Windows("Settlement Report.xls").Activate
+Worksheets(27).Select
+Range("A41").Select
+Selection.PasteSpecial Paste:=xlValues, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlFormats, Operation:=xlNone, SkipBlanks:= _
+        False, Transpose:=False
+        Application.CutCopyMode = False
+
+Windows("Retail Billing.xls").Activate
+ActiveWorkbook.Close (False)
+
+'Initialisation du Settlement Report
+Windows("Settlement Report.xls").Activate
+Worksheets(1).Select
+ActiveWorkbook.Save
+ActiveWorkbook.Close (False)
+
+
+End Sub
+
+ 
+Sub Reports()
+
+
+Dim m As String
+
+
+m = "Rédaction automatique des rapports semestriels d'activité"
+
+Call Testing_2(m, 2, 0, 0, 0)
+
+Call Mise_à_jour
+
+m = "Mise à jour des paramètres effectués..."
+
+Call Testing_2(m, 5, 0, 0, 0)
+
+Call Report
+
+m = "La rédaction des rapports s'est déroulée sans incident..."
+
+Call Testing_2(m, 11, 0, 0, 0)
+
+
+End Sub
+
+
+ 
+Macro permettant de nommer les éléments d’un nuage de points (pour une ACP par ex).
+
+
+
+Option Explicit
+Global Noms As Range
+
+Sub NuageAvecEtiquettes()
+Dim Donnees As Range, NomFeuille As String, ValX As Range, ValY As Range
+
+'
+'
+    If TypeName(Selection) <> "Range" Then
+        MsgBox "Il faut sélectionner une plage de la feuille de calcul !", vbExclamation, "Création d'un nuage de points"
+        Exit Sub
+    End If
+    Set Donnees = Application.Selection
+    If Donnees.Rows.Count < 3 Or Donnees.Columns.Count < 3 Then
+        MsgBox "La zone sélectionnée est trop petite !", vbExclamation, "Création d'un nuage de points"
+        Exit Sub
+    End If
+    Set Noms = Range(Donnees.Cells(2, 1), Donnees.Cells(Donnees.Rows.Count, 1))
+    Set Donnees = Range(Donnees.Cells(2, 2), Donnees.Cells(Donnees.Rows.Count, Donnees.Columns.Count))
+    Set ValX = Range(Donnees.Cells(2, 1), Donnees.Cells(Donnees.Rows.Count, 1))
+    Set ValY = Range(Donnees.Cells(2, 2), Donnees.Cells(Donnees.Rows.Count, 2))
+    NomFeuille = ActiveSheet.Name
+    Charts.Add
+    ActiveChart.ChartType = xlXYScatter
+    ActiveChart.SetSourceData source:=Donnees, PlotBy:=xlColumns
+    ActiveChart.Location Where:=xlLocationAsObject, Name:=NomFeuille
+    With ActiveChart
+        .Axes(xlCategory, xlPrimary).HasTitle = False
+        .Axes(xlValue, xlPrimary).HasTitle = False
+        .HasLegend = False
+        .Axes(xlValue).MinimumScale = WorksheetFunction.Min(ValY)
+        .Axes(xlValue).MaximumScale = WorksheetFunction.Max(ValY)
+        .Axes(xlCategory).MinimumScale = WorksheetFunction.Min(ValX)
+        .Axes(xlCategory).MaximumScale = WorksheetFunction.Max(ValX)
+    End With
+    NuageEtiquettes Noms, 1
+End Sub
+ 
+Sub NuageEtiquettes(source As Range, serie)
+
+Dim num As Integer, x As XlDataLabelPosition, Donnees As Range, carte As Chart, sens As Integer, nb As Integer
+    Set carte = ActiveChart
+    sens = 1
+    nb = source.Rows.Count
+    If nb = 1 Then
+        nb = source.Columns.Count
+        sens = 0
+    End If
+    For num = 1 To nb
+        With carte.SeriesCollection(serie).Points(num)
+            .HasDataLabel = True
+            If .HasDataLabel Then
+                If sens = 1 Then
+                    .DataLabel.Text = source.Cells(num, 1)
+                Else
+                    .DataLabel.Text = source.Cells(1, num)
+                End If
+                If .DataLabel.Left < carte.ChartArea.Width / 2 Then
+                    x = xlLabelPositionLeft
+                Else
+                    x = xlLabelPositionRight
+                End If
+                .DataLabel.Position = x
+                If .DataLabel.Top < carte.ChartArea.Height / 4 Then .DataLabel.Position = xlLabelPositionAbove
+                If .DataLabel.Top > 3 * carte.ChartArea.Height / 4 Then .DataLabel.Position = xlLabelPositionBelow
+            End If
+        End With
+    Next
+End Sub
+
+ 
+Sub EchantillonStratifié()
+'
+'  Sélectionner dans une feuille contenant des "données brutes", c'est-à-dire
+'  un tableau d'observations avec
+'     les individus en lignes et
+'     les variables en colonnes, avec leurs libellés en ligne 1
+'  et le libellé de la variable servant de stratification.
+'  Lancer la macro.
+'
+'  La macro :
+'  a) Vérifie la sélection :
+'     *  d'une cellule de la première ligne
+'     *  avec un libellé,
+'     *  et sans données manquantes.
+'  b) Demande la taille de l'échantillon, avec, par défaut le sondage au 10ème.
+'     Cette taille est contrôlée, et doit, évidemment, être inférieure à celle de la population
+'  c) Trie les données selon les valeurs de la variable de stratification,
+'  d) Place dans une feuille "Stratification" (créée ou remplacée si elle existait déjà)
+'     les noms, tailles, débuts, fins des strates et les effectifs prélevés
+'  e) Place dans une feuille "Echantillon" (créée ou remplacée si elle existait déjà)
+'     un échantillon "représentatif" au hasard sans remise.
+'     Les effectifs des échantillons des strates sont arrondis :
+'     Il peut y avoir plus ou moins d'individus dans l'échantillon
+'     que le nombre demandé.
+'  f) Note dans la feuille des données brutes
+'     les "individus" qui ont été sélectionnés dans l'échantillon
+'
+   Application.ScreenUpdating = False
+   Bandeau = "Tirage au hasard d'un échantillon stratifié représentatif " & Signature
+   MessageDerreur = "Une erreur indéterminée s'est produite !"
+   Message = MessageDerreur
+   On Error GoTo erreur
+'
+   Message = "Sélectionnez (ligne 1) le libellé de la variable de stratification !"
+   If Selection.Row <> 1 _
+   Or Selection.Cells.Count > 1 _
+   Or Selection.Value = Empty Then GoTo erreur
+'
+'  Sauvegarde la stratification demandée :
+   Set VarStrate = Selection
+'
+'  Compte le nombre de variables, et supprime la colonne dont l'en-tête serait "dans l'éch"
+'
+   NbVar = 0
+   While NbVar < 255 And Not IsEmpty(Cells(1, NbVar + 1))
+      If Cells(1, NbVar + 1) = "dans l'éch" Then
+         Cells(1, NbVar + 1).Select
+         Message = "Déprotégez la feuille !"
+         Selection.EntireColumn.Delete
+         ActiveWorkbook.Save
+         Message = MessageDerreur
+      Else
+         NbVar = NbVar + 1
+      End If
+   Wend
+'
+   On Error GoTo 0
+   Selection.SpecialCells(xlLastCell).Select
+'
+   Message = "Données manquantes pour cette variable !"
+   If Application.CountBlank(Range(Cells(2, VarStrate.Column), Cells(ActiveCell.Row, VarStrate.Column))) > 0 Then GoTo erreur
+   Message = MessageDerreur
+'
+   NomVarStrate = VarStrate.Value
+   NomFeuillePop = ActiveSheet.Name
+'
+'  Trie toutes les données selon la colonne sélectionnée :
+'
+   Range("A1").Select
+   Selection.Sort Key1:=Range(VarStrate.Address), Order1:=xlAscending, Header:= _
+      xlGuess, OrderCustom:=1, MatchCase:=False, _
+      Orientation:=xlTopToBottom
+   VarStrate.Select
+'
+   Row% = VarStrate.Row                                                 ' son numéro de ligne
+   While Not IsEmpty(Cells(Row% + 1, VarStrate.Column))
+      Row% = Row% + 1
+   Wend
+   Range(Cells(VarStrate.Row + 1, VarStrate.Column).Address(), Cells(Row%, VarStrate.Column).Address()).Select
+   TaillePop = Selection.Cells.Count
+'
+   Dim NomStrate()
+   Dim DébutStrate()
+   Dim TailleStrate()
+   Dim FinStrate()
+   Dim EchStrate()
+'
+   NbStrates = 1
+   ReDim Preserve NomStrate(NbStrates)
+   ReDim Preserve DébutStrate(NbStrates)
+   ReDim Preserve TailleStrate(NbStrates)
+   ReDim Preserve FinStrate(NbStrates)
+   DébutStrate(NbStrates) = 2
+   NomStrate(NbStrates) = ActiveCell.Value
+   TailleStrate(NbStrates) = 0
+   For Each Individu In Selection
+      If Individu.Value <> NomStrate(NbStrates) Then
+         FinStrate(NbStrates) = Individu.Row - 1
+         NbStrates = NbStrates + 1
+         ReDim Preserve NomStrate(NbStrates)
+         ReDim Preserve DébutStrate(NbStrates)
+         ReDim Preserve TailleStrate(NbStrates)
+         ReDim Preserve FinStrate(NbStrates)
+         NomStrate(NbStrates) = Individu.Value
+         TailleStrate(NbStrates) = 1
+         DébutStrate(NbStrates) = Individu.Row
+      Else
+         TailleStrate(NbStrates) = TailleStrate(NbStrates) + 1
+      End If
+   Next
+   FinStrate(NbStrates) = FinStrate(NbStrates - 1) + TailleStrate(NbStrates)
+'
+   Header = "Entrez la taille de l'échantillon (maxi "
+   Dim TaillEch As Integer
+SaisTaille:
+   On Error GoTo 0
+   TailleProposée = TaillePop / 10
+   TaillEch = Val(InputBox(Header & TaillePop & ")" _
+               & Chr(10) & Chr(10) & "(0 = Annuler)", _
+               Bandeau, Str(Int(TailleProposée))))
+   If TaillEch = 0 Then
+      VarStrate.Select
+      End
+   End If
+   If TaillEch < 1 Or TaillEch > TaillePop Then
+      Beep
+ErrTaille:
+      Décision = MsgBox("Valeur erronnée ! Voulez-vous recommencer ?", 4, Bandeau)
+      If Décision = vbYes Then GoTo SaisTaille
+      If Décision = vbNo Then
+        VarStrate.Select
+        End
+      End If
+   End If
+'   On Error GoTo 0
+'
+' Calcul et affichage des éléments de stratification
+'
+   ReDim EchStrate(NbStrates)
+   Total = 0
+   For i = 1 To NbStrates
+      EchStrate(i) = Application.Round(TailleStrate(i) * TaillEch / TaillePop, 0)
+      If EchStrate(i) < 1 Then
+         Message = "Attention la strate n°" & i _
+         & " (= " & NomStrate(i) & ")" _
+         & " de '" & VarStrate & "'" _
+         & " ne sera pas représentée." _
+         & Chr(13) _
+         & "Il faudrait un échantillon de " _
+         & Application.RoundUp(TaillePop / TailleStrate(i), 0) _
+         & Chr(13) & "Voulez vous abandonner, réessayer une autre taille, ou continuer ?"
+         Réponse = MsgBox(Message, vbAbortRetryIgnore, Bandeau)
+         If Réponse = vbRetry Then GoTo SaisTaille
+         If Réponse = vbAbort Then
+            VarStrate.Select
+            End
+         End If
+      End If
+      Total = Total + EchStrate(i)
+   Next
+   For i_feuille = 1 To Sheets.Count
+      If Sheets(i_feuille).Name = "Stratification" Then
+         Sheets(i_feuille).Delete
+      End If
+   Next
+   Sheets.Add
+   ActiveSheet.Name = "Stratification"
+'
+   Cells(1, 1) = "Strate"
+   Cells(1, 2) = "Taille"
+   Cells(1, 3) = "Ligne début"
+   Cells(1, 4) = "Ligne fin"
+   Cells(1, 5) = "Nb d'éch."
+   For iLigne = 1 To NbStrates
+      Cells(iLigne + 1, 1) = NomVarStrate + " = " & NomStrate(iLigne)
+      Cells(iLigne + 1, 2) = TailleStrate(iLigne)
+      Cells(iLigne + 1, 3) = DébutStrate(iLigne)
+      Cells(iLigne + 1, 4) = FinStrate(iLigne)
+      Cells(iLigne + 1, 5) = EchStrate(iLigne)
+   Next
+   Cells(NbStrates + 2, 1) = "Total :"
+   Cells(NbStrates + 2, 1).HorizontalAlignment = xlRight
+   Cells(NbStrates + 2, 2) = TaillePop
+   Cells(NbStrates + 2, 4) = "Total :"
+   Cells(NbStrates + 2, 4).HorizontalAlignment = xlRight
+   Cells(NbStrates + 2, 5) = Total
+   Range(Cells(1, 1), Cells(1, 5)).Select
+   With Selection
+      .HorizontalAlignment = xlCenter
+      .VerticalAlignment = xlBottom
+      .WrapText = False
+      .Orientation = xlHorizontal
+      .Font.ColorIndex = 45
+      .Interior.ColorIndex = 35
+   End With
+   Range(Cells(1, 1), Cells(NbStrates + 2, 5)).Columns.AutoFit
+   Cells(1, 1).Select
+'
+'  Prépare feuille Echantillon
+'
+   For i_feuille = 1 To Sheets.Count
+      If Sheets(i_feuille).Name = "Echantillon tiré" Then
+         Sheets(i_feuille).Delete
+      End If
+   Next
+   Sheets.Add
+   ActiveSheet.Name = "Echantillon tiré"
+'
+' recopier les en-têtes dans la feuille échantillon
+'
+   Sheets(NomFeuillePop).Select
+   Range(Cells(1, 1), Cells(1, NbVar)).Select
+   Application.CutCopyMode = False
+   Selection.Copy
+   Sheets("Echantillon").Select
+   Range("A1").Select
+   ActiveSheet.Paste
+'
+'  Prélèvement et affichage de l'échantillon
+'
+   ' prépare colonne marquage individus sélectionnés dans feuille données brutes
+   Sheets(NomFeuillePop).Select
+   Cells(1, NbVar + 1).Value = "dans l'éch"
+   Range(Cells(1, NbVar + 1), Cells(TaillePop + 1, NbVar + 1)).Select
+   With Selection
+      .HorizontalAlignment = xlCenter
+      .Font.ColorIndex = 22
+   End With
+'
+   NumLigne = 2
+   For istrate = 1 To NbStrates
+      iéch = 1
+      While iéch < EchStrate(istrate) + 1
+         Randomize ' Initialise le générateur de nombres aléatoires avec l'horloge système
+         LignAuHasard = Int((FinStrate(istrate) - DébutStrate(istrate) + 2) * Rnd + DébutStrate(istrate))
+         If Sheets(NomFeuillePop).Cells(LignAuHasard, NbVar + 1).Value = Empty Then
+            Sheets(NomFeuillePop).Range(Cells(LignAuHasard, 1), Cells(LignAuHasard, NbVar)).Copy
+            Sheets("Echantillon").Paste Destination:=Sheets("Echantillon").Cells(NumLigne, 1)
+            NumLigne = NumLigne + 1
+            Sheets(NomFeuillePop).Cells(LignAuHasard, NbVar + 1).Value = "*"
+            iéch = iéch + 1
+         End If
+      Wend
+   Next
+    Sheets(NomFeuillePop).Cells(1, NbVar + 1).Select   Sheets("Echantillon").Select
+   ActiveSheet.Range("A1").Select
+   Application.Calculate
+   GoTo Fin
+erreur:
+   Beep
+   Réponse = MsgBox(Message, , Bandeau)
+Fin:
+   Application.ScreenUpdating = True
+End Sub
+
+ 
+Function RuptureMoyenneDeStock(NiveauDeStock As Variant, DemandeMoyenne, EcartypeDemande)
+
+' renvoie la demande moyenne non satisfaite
+' le 05/12/2006
+'
+   If EcartypeDemande > 0 Then
+      RuptureMoyenneDeStock = _
+         EcartypeDemande * _
+         (Application.NormDist((NiveauDeStock - DemandeMoyenne) / EcartypeDemande, 0, 1, False) _
+         - (NiveauDeStock - DemandeMoyenne) / EcartypeDemande _
+         * (1 - Application.NormDist(NiveauDeStock, DemandeMoyenne, EcartypeDemande, True)))
+   End If
+
+End Function
+
+
+
+

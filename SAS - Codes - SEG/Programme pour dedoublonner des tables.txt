@@ -1,0 +1,49 @@
+/*DATA Work.Lot_Non_Remonte;
+MERGE DTM_PRO.DTM_LOGS_TRI (Keep=Serial),STATS.BASE_DE_DONNEES_MONOLIKE_2(Keep='Lot Serig-tri'n);
+If
+RUN;*/ 
+
+PROC SQL;
+CREATE TABLE RE_PROC.Num_Lot_Base AS
+SELECT 
+/*T2.Serial,*/
+T1.'Lot Serig-tri'n,Cel_Tri_Date_Sortie
+FROM 
+	STATS.BASE_DE_DONNEES_MONOLIKE_2 AS T1
+	/*DTM_PRO.DTM_LOGS_TRI AS T2*/
+WHERE T1.'Lot Serig-tri'n NOT IN (SELECT distinct Serial FROM DTM_PRO.DTM_LOGS_TRI)
+ORDER BY Cel_Tri_Date_Sortie DESC;
+/*AS T2
+	LEFT OUTER JOIN
+	DTM_PRO.DTM_LOGS_TRI AS T1
+	ON T1.Serial = T2.'Lot Serig-tri'n;*/
+RUN;
+PROC SQL;
+CREATE TABLE RE_PROC.Date_Lots
+AS
+SELECT Serial,Max(Date_Heure) format=DATETIME22.3 AS Date_Lot
+FROM DTM_PRO.DTM_LOGS_TRI
+GROUP BY SERIAL
+ORDER BY Date_Lot DESC;
+RUN;
+
+PROC SQL;
+CREATE TABLE RE_PROC.Num_Lot_Logs AS
+SELECT 
+Distinct T2.Serial,Date_Lot
+/*T1.'Lot Serig-tri'n,Date_Heure*/
+FROM 
+	/*STATS.BASE_DE_DONNEES_MONOLIKE_2 AS T1*/
+	RE_PROC.Date_Lots AS T2
+WHERE T2.Serial NOT IN (SELECT distinct 'Lot Serig-tri'n FROM STATS.BASE_DE_DONNEES_MONOLIKE_2)
+ORDER BY Date_Lot DESC;
+/*AS T2
+	LEFT OUTER JOIN
+	DTM_PRO.DTM_LOGS_TRI AS T1
+	ON T1.Serial = T2.'Lot Serig-tri'n;*/
+RUN;
+
+
+
+
+

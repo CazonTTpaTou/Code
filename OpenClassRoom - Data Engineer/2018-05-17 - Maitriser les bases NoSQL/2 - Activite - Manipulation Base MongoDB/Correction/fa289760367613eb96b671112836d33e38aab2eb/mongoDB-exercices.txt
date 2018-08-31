@@ -1,0 +1,83 @@
+### QUESTION 01 ###
+# Importez le jeu de données tour-pedia.json dans une base de données “tourPedia” avec une collection “paris” ;
+
+mongoimport --db tourPedia --collection paris tour-Pedia_paris.json/tourPedia_paris.json
+
+
+
+
+### QUESTION 02 ###
+# Filtrez les lieux par type “accommodation” et service “blanchisserie” ;
+
+db.paris.find( {"category":"accommodation", "services":"blanchisserie"} ).pretty();
+
+
+
+
+### QUESTION 03 ###
+# Projetez les adresses des lieux de type "accommodation" ;
+
+db.paris.find( {"category":"accommodation"}, {"location.address":1,"_id":0} );
+
+
+
+
+
+### QUESTION 04 ###
+# Filtrez les listes de commentaires (reviews) des lieux, pour lesquelles au moins un commentaire (reviews) est écrit en anglais (en)
+# et a une note (rating) supérieure à 3 (attention, LE commentaire en anglais doit avoir un rang de 3 ou plus) ;
+
+db.paris.find({
+	"reviews":{
+		$elemMatch:{
+			"language":"en",
+			"rating": {"gt" : 3}
+		}
+	}},
+	{"name":1,"reviews.language":1,"reviews".rating":1}
+).pretty();
+
+
+
+
+
+### QUESTION 05 ###
+# Groupez les lieux par catégorie et comptez les ;
+
+
+varMatch = {$match : {"category": {"$exists":1} } };
+varGroup = {$group : {"_id" : "$category", "total": {$sum : 1} } };
+db.paris.aggregate( [varMatch, varGroup] );
+
+
+
+
+
+### QUESTION 06 ###
+# Créez un pipeline d’agrégation pour les lieux de catégorie "accommodation", et donnez le nombre de lieux par valeur de "services".
+
+
+varUnwind = {"$unwind : $services"};
+varMatch = {$match : {"category": "accommodation" } };
+varGroup = {$group : {"_id" : "$services", "total": {$sum : 1} } };
+db.paris.aggregate( [varUnwind, varMatch, varGroup] );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    Filtrez les lieux par type “accommodation” et service “blanchisserie” ;
+    Projetez les adresses des lieux de type "accommodation" ;
+    Filtrez les listes de commentaires (reviews) des lieux, pour lesquelles au moins un commentaire (reviews) est écrit en anglais (en) et a une note (rating) supérieure à 3 (attention, LE commentaire en anglais doit avoir un rang de 3 ou plus) ;
+    Groupez les lieux par catégorie et comptez les ;
+    Créez un pipeline d’agrégation pour les lieux de catégorie "accommodation", et donnez le nombre de lieux par valeur de "services".

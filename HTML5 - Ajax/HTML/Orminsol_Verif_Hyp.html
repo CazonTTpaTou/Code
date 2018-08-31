@@ -1,0 +1,105 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<link rel="stylesheet" type="text/css" href="./Presentation.css"></link>
+<script src="fonctions_JS.js" type="text/javascript"></script>
+<title>Orminsol - Test Hypothèses</title>
+</head>
+
+<body class="Jaune" >
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Irminsul_Verif_Hyp.php">Version en PDF</a></p>
+<H1><div><span class="Titre2">▼ VÉRIFICATION D'HYPOTHÈSES MARKETING ▼ </br> AVEC TESTS STATISTIQUES </span></div></H1>
+<p class="TexteI"><img src="../Pictures/Click_Fam_1.JPG"/></p>
+</br>
+
+
+<table class="sommaire">
+  <tr><td>
+  <center><span class="titre_sommaire">► Sommaire ◄</span><center>
+<ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="/HTML/Orminsol.html" title="Se rendre à cette section...">Présentation de la société.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section2" title="Se rendre à cette section...">Explication de la mission.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section3" title="Se rendre à cette section...">Rappel sur les tests statistiques.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section4" title="Se rendre à cette section...">Quelques exemples d'hypothèses testées.</li></a>
+<ol start="41">
+             <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section41" title="Se rendre à cette sous section...">Vérification de la conformité d'un échantillon de fichier de prospection.</li></a>
+	     <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section42" title="Se rendre à cette sous section...">Comparaison des proportions moyennes homme-femme de deux échantillons.</li></a>
+             <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section43" title="Se rendre à cette sous section...">Comparaison des variances des montants d'achat entre deux fichiers client.</li></a>
+	     <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section44" title="Se rendre à cette sous section...">Comparaison du panier moyen d'un échantillon avec celui de la population client.</a>
+</ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Conclusion" title="Se rendre à cette section...">Conclusion.</li></a>
+</ol>
+</td></tr></table></br>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section2"></a>
+<p class="Texte">Avant d'envoyer un catalogue à un fichier de prospection, il était nécessaire de s'assurer que ce dernier présentait suffisamment de garanties concernant sa rentabilité potentielle. En effet, imaginons un fichier de 10 000 adresses. Envoyer un catalogue à 10 000 prospects avait un coût important, qui ne pouvait être rentable que si le fichier en question offrait un taux de retour client décent.</p>
+<p class="Texte">C'est pourquoi avant d'être complètement prospecté, un fichier était testé par le biais d'un échantillon. Pour un fichier de 10 000 adresses, un échantillon d'une centaine d'adresses était constitué (par strates ou bien par tirage aléatoire). </p>
+<p class="Texte">Le mailing de prospection était envoyé à cet échantillon, puis les statistiques de retour rigoureusement enregistrés. Dans un premier temps, les proportions de l'échantillon étaient comparées à celle de la population mère par la méthode des tests statistiques, afin de déterminer si l'échantillon était représentatif. Puis, les résultats obtenus à partir de l'échantillon étaient comparés avec ceux d'autres échantillons et d'autres fichiers, afin d'inférer les caractéristiques marketing du fichier source.</p>
+<p class="Texte">Au final, le but était de décider si le fichier source devait être prospecté dans son intégralité ou non. Les tests statistiques effectués étaient opérés par le biais du logiciel Open Source R.</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Test_1.gif"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section3"></a>
+<p class="Texte">Un test d'hypothèse est une démarche consistant à évaluer une hypothèse en fonction d'un échantillon. La probabilité que l'hypothèse testée soit juste est égale à la surface non grisée sous la courbe (p value). En dessous d'un certain seuil, lorsque cette probabilité est trop faible, l'hypothèse est rejetée, car les écarts observés ne peuvent s'expliquer par les seules fluctuations de l'échantillonnage.</p>
+<p class="Texte">On parle de statistique inférentielle, car on induit les propriétés d'une population à partir d'un échantillon plus restreint, qu'on considère comme représentatif. </p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section4"></a>
+<p class="Texte">Voici quelques exemples d'hypothèses marketing qui étaient testées :</p>
+<a name="Section41"></a>
+<div class="Paragraphe2Stats">
+<ul type="square" class="Paragraphe2Stats">
+
+<li class="Paragraphe2Stats">Vérification que les proportions de l'échantillon construit sont représentatives de celles du fichier source :</li>
+</ul>
+</div>
+<p class="Texte">On cherchait à vérifier que la proportion d'hommes et de femmes dans l'échantillon de 100 personnes, qu'on a construit à partir du fichier France Loisirs (taille de 10 000 personnes) était bien conforme aux proportions de 60% d'homme et de 40% de femmes de la population totale du fichier.</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Test_2.JPG"/></p>
+<p class="Texte">Grâce au test du Khi-deux, on avait donc pu constater que l'échantillon construit n'était pas représentatif de la distribution hommes femmes du fichier source (40% de femme et 60 % d'homme). </p>
+<p class="Texte">En effet, l'hypothèse nulle d'une proportion identique des différents sexes pouvait être rejetée, car la probabilité d'obtenir les différences observées entre l'échantillon et la population mère était trop faible, pour pouvoir être interprétée à la seule lumière des fluctuations d'échantillonnage.</p>
+<p class="Texte">Il faudrait donc en tenir compte concernant certains attributs influencés par le sexe (comme le choix des produits achetés qui différait sensiblement selon le sexe du client). On pourrait même envisager la construction d'un nouvel échantillon plus représentatif.</p>
+
+<a name="Section42"></a>
+<div class="Paragraphe2Stats">
+<ul type="square" class="Paragraphe2Stats">
+<li class="Paragraphe2Stats">Comparaison de deux moyennes observées dans deux échantillons à l'aide d'un test de Student :</li>
+</ul>
+</div>
+<p class="Texte">Deux échantillons du fichier France Loisirs avaient été constitués. Le premier ne contenait que des individus féminins. Le second ne comportait que des éléments masculins. Ces deux échantillons furent prospectés lors d'une opération de mailing et donnèrent des retours de résultats commerciaux très différents. </p>
+<p class="Texte">La question qui se posait était alors de savoir si ces différences de comportement s'expliquait par une distribution d'âge différente. Le test d'hypothèse devait donc vérifier si la moyenne d'âge des femmes prospects du fichier France Loisirs était la même que celui des hommes issus du même fichier. </p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Test_3.JPG"/></p>
+<p class="Texte">Après calcul, le test permettait donc de confirmer alors que l'âge et le sexe étaient deux variables complètement indépendantes dans le fichier France Loisirs. Les différences d'achat entre hommes et femmes issues de ce fichier ne pouvait donc pas s'expliquer par des critères d'âge. Creuser une nouvelle piste était donc nécessaire...</p>
+
+<a name="Section43"></a>
+<div class="Paragraphe2Stats">
+<ul type="square" class="Paragraphe2Stats">
+<li class="Paragraphe2Stats">Comparaison de deux variances de deux échantillons de fichiers client différents :</li>
+</ul>
+</div>
+<p class="TexteI"><img src="../Pictures/Irminsul_Test_4.JPG"/></p>
+
+<a name="Section44"></a>
+<div class="Paragraphe2Stats">
+<ul type="square" class="Paragraphe2Stats">
+<li class="Paragraphe2Stats">Comparaison d'une moyenne observée dans un échantillon et d'une moyenne globale :</li>
+</ul>
+</div>
+<p class="Texte">Le fichier de prospection du magazine Le Point loué à un courtier contenait près de 15 000 adresses postales. Afin de s'assurer que sa prospection avait des chances d'être rentable (le coût de prospection de 15 000 adresses était d'environ 30 000 €), un échantillon de 120 adresses de ce fichier avait été constitué. Un mailing avait été envoyé à cet échantillon afin d'obtenir des indicateurs marketing. </p>
+<p class="Texte">Il avait alors été observé que la moyenne d'achat des clients, issus de l'échantillon d'adresses était d'environ 47 €. Or, le panier moyen de l'ensemble des clients de la société Orminsol était de 52 euros. Il était donc important de savoir si la moyenne d'achat de l'échantillon était la même que celle de la population toute entière car en dessous d'un panier moyen de 50 €, un client n'était plus rentable (la somme dépensée à lui envoyer des catalogues n'est pas couverte par les bénéfices réalisés sur ses achats). </p>
+<p class="Texte">De ce fait, il était primordial de savoir si le panier moyen de l'échantillon était descendu en dessous des 50 € juste en raison des fluctuations de l'échantillonnage (auquel cas la rentabilité du fichier source n'est pas remise en cause) ou si le panier moyen à espérer du fichier Le Point est réellement inférieur à celui de la clientèle de l'entreprise (auquel cas le fichier ne sera sans doute pas routé).</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Test_5.JPG"/></p>
+<p class="Texte">Grâce à la réalisation d'un test de Student, il avait pu être établi que l'hypothèse d'égalité des paniers moyens entre l'échantillon et la population totale ne pouvait pas être rejeté. Les différences observées entre les deux moyennes s'expliquaient principalement par des fluctuations d'échantillonnage. </p>
+<p class="Texte">De ce fait, avec un panier moyen au dessus du seuil des 50 €, les clients obtenus par l'échantillon du fichier Le Point étaient rentables. Le routage et l'envoi du prochain mailing commercial à l'intégralité du fichier d'adresses postales Le Point pouvait donc être envisagé. </p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Conclusion"></a>
+<p class="Texte">Ces quelques exemples montraient ainsi toute l'utilité des test statistiques pour vérifier des hypothèses marketing ou plus simplement vérifier la conformité d'un échantillon par rapport au fichier source, dont il avait été extrait...</p>
+
+</br>
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Irminsul_Verif_Hyp.php">Version en PDF</a></p>
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+</br>
+</body>
+</html>

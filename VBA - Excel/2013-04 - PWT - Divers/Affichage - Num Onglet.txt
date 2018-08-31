@@ -1,0 +1,14 @@
+Public Sub NumeroOnglet()
+
+Dim Numero As String
+Dim Nom As String
+Dim Message As String
+
+Numero = ActiveSheet.Index
+Nom = ActiveSheet.CodeName
+
+Message = "L'onglet n° " + Numero + " a pour nom " + Nom
+
+MsgBox Message
+
+End Sub

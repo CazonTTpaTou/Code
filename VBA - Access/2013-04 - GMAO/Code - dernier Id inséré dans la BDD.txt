@@ -1,0 +1,52 @@
+Public Function SQLInsertionID(ByVal tableCible As String) As String
+
+        Dim strQuery, strSsQuery1, strSsQuery2, _
+            strQueryID, selecteur As String
+        
+        On Error GoTo GestionErreur
+        
+        strQuery = ""
+        strSsQuery1 = "("
+        strSsQuery2 = "Values("
+        selecteur = ""
+
+For lig = LBound(TamponRequest, 1) To UBound(TamponRequest, 1)
+
+    If (IsNull(TamponRequest(lig, 1))) _
+       Or (Nz(TamponRequest(lig, 1), "") = "") Then
+            Exit For
+    Else
+        strSsQuery1 = strSsQuery1 & selecteur _
+                      & TamponRequest(lig, 1)
+        
+        If TamponRequest(lig, 3) = "String" Then
+            strSsQuery2 = strSsQuery2 & selecteur _
+                          & Quoting(TamponRequest(lig, 2))
+        Else
+            strSsQuery2 = strSsQuery2 & selecteur _
+                          & TamponRequest(lig, 2)
+        End If
+        
+        selecteur = ","
+    End If
+    
+Next lig
+
+strQueryID = "DECLARE @Ajout table (numero int); "
+
+strQuery = strQueryID _
+           & "insert into " & tableCible & " " _
+           & strSsQuery1 & ") " _
+           & " output inserted.* into @AJOUT " _
+           & strSsQuery2 & ");" _
+           & "select numero from @Ajout;"
+
+SQLInsertionID = strQuery
+
+Exit Function
+
+GestionErreur:
+SQLInsertionID = ""
+MsgBox Message_erreur_insertion
+
+End Function

@@ -1,0 +1,3 @@
+proc copy in=DTM_tech out=DTM_PRO force ;
+select DTM_PRO_TBO_PVA;
+run;

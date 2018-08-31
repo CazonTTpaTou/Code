@@ -1,0 +1,11 @@
+ods graphics on;
+title 'Measures of Association for Hennecke results';
+proc corr data=Stats.data_hennecke_2_mois pearson spearman kendall hoeffding
+          plots(maxpoints=17500000)=matrix(histogram);
+   var SawEdge SawStep SawGroove BOW Thickn TTV;
+ods output  SpearmanCorr=__SpearmanCorr_1an;
+run;
+ods graphics off;
+
+
+

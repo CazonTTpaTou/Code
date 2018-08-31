@@ -1,0 +1,8 @@
+            Requête AD :
+
+SELECT mail " _
+FROM 'LDAP://dc=photowatt;dc=local
+                WHERE objectCategory='person'  AND objectClass='user' 
+                AND memberOf='CN=GMAO_APP,OU=Applications et Databases,OU=Groupes,DC=photowatt,DC=local'
+
+

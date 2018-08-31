@@ -1,0 +1,26 @@
+data fichiers (keep=fichiers);
+length fichiers $256;
+	fich=filename('fich',"C:\Users\pwsasdev\Desktop\Formation Stat\");
+	did=dopen('fich');/* ouverture du répertoire */
+	nb_fich=dnum(did);/* comptage du nb de fichier */
+	do i=1 TO nb_fich;
+		fichiers=dread(did,i); 
+		output;
+	end;	
+	rc=dclose(did); /* fermeture du répertoire */
+run;
+
+Data fichiers; 
+	set fichiers; 
+	N=_N_; 
+run; 
+
+%let Date_Min=17DEC2014; 
+%let Date_Max=21DEC2014; 
+
+data essai; 
+	format date1 date2 date9.;
+	Date1="&date_min"; 
+	Date2="&date_max"; 
+	jours=date2-date1; 
+run; 

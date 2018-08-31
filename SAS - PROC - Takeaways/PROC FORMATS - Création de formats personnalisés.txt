@@ -1,0 +1,48 @@
+LIBNAME FORMATS BASE "E:\SAS\6_Formats" ; 
+options fmtsearch=(FORMATS);
+
+PROC FORMAT library=FORMATS;
+VALUE MOIS
+1 = 'Janvier'
+2 = 'Février'
+3 = 'Mars'
+4 = 'Avril'
+5 = 'Mai'
+6 = 'Juin'
+7 = 'Juillet'
+8 = 'Août'
+9 = 'Septembre'
+10 = 'Octobre'
+11 = 'Novembre'
+12 = 'Décembre';
+RUN ; 
+
+PROC FORMAT library=FORMATS;
+VALUE SEMAINE
+1 = 'Lundi'
+2 = 'Mardi'
+3 = 'Mercredi'
+4 = 'Jeudi'
+5 = 'Vendredi'
+6 = 'Samedi'
+7 = 'Dimanche';
+RUN ; 
+
+proc catalog c=formats.formats;
+   contents stat;
+run;
+
+proc format library=formats.formats fmtlib;
+   select mois semaine week semestre trimestre;
+   *exclude $cntry ny;
+run;
+
+-----------------------------------------------------------
+/* Utilisation d'un format */
+
+DATA WORK.MOIS;
+FORMAT Num_Mois MOIS_TRIE20.;
+SET GMAO.SAS_Dimension_Date;
+RUN;
+-----------------------------------------------------------
+

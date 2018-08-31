@@ -1,0 +1,55 @@
+http://drq.developpez.com/vb/tutoriels/ADO/
+
+Option Compare Database
+
+Private Sub Command0_Click()
+
+Dim NomBaseDeDonnées As String
+Dim NomServeur As String
+Dim strSQL As String
+
+Dim cnx As ADODB.Connection
+Dim RS_Devis As New ADODB.Recordset
+
+On Error GoTo GestionErreur
+
+Set cnx = New ADODB.Connection
+
+NomBaseDeDonnées = "GMAO_DEV_8"
+NomServeur = "EMACHINE-82827D"
+
+'Définition de la chaîne de connexion
+'cnx.ConnectionString = "DRIVER={SQL Server};Server=" & NomServeur _
+'                       & ";Database=" & NomBaseDeDonnées & ";" _
+'                       & "integrated security = true"
+
+cnx.ConnectionString = "DSN=ODBC_GMAO;Trusted_Connection=yes;"
+
+'Ouverture de la base de données
+cnx.Open
+'MsgBox cnx.ConnectionString
+
+strSQL = "select distinct Libelle from realisation"
+
+RS_Devis.Open strSQL, cnx, adOpenStatic, adLockReadOnly
+MsgBox RS_Devis.RecordCount
+
+cnx.Execute "Exec Insertion_2 500", result
+
+MsgBox "Resultat : " & result
+
+RS_Devis.Open "Select dbo.CompteEquip(2)", cnx, adOpenStatic, adLockReadOnly
+MsgBox RS_Devis.Fields(0).Value
+
+cnx.Close
+
+Exit Sub
+
+GestionErreur:
+
+MsgBox Err.Description
+Debug.Print Err.Description
+
+End Sub
+
+

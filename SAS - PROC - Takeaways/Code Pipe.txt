@@ -1,0 +1,14 @@
+x 'net use q: \\office\pvaproduction';
+
+%let path = %bquote(")\\CHEMIN%bquote(");
+
+filename liste pipe "dir &path /b /s";
+
+
+data work.temp_fichiers_textu_pva;
+	infile liste truncover;
+	input fichier $100.;
+run;
+
+
+

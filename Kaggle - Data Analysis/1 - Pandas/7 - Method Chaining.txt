@@ -1,0 +1,124 @@
+################################################################################################################################
+Exercise 1: It's well-known that in the game of chess, white has a slight first-mover advantage against black. 
+Can you measure this effect in this dataset? 
+Use the winner column to create a pandas Series showing how often white wins, how often black wins, 
+and how often the result is a tie, as a ratio of total games played. In other words, a Series that looks something like this:
+    white    0.48
+    black    0.44
+    draw     0.08
+    Name: winner, dtype: float64
+################################################################################################################################
+
+chess_games.groupby('winner').winner.count().div(chess_games.winner.count())
+
+chess_games['winner'].value_counts() / len(chess_games
+
+################################################################################################################################
+**Exercise 2**: The `opening_name` field of the `chess_games` dataset provides interesting data on what the most commonly used chess openings are.  
+However, it gives a bit _too_ much detail, including information on the variation used for the most common opening types. 
+For example, rather than giving `Queen's Pawn Game`, the dataset often includes `Queen's Pawn Game: Zukertort Variation`.
+################################################################################################################################
+
+parsing = lambda n: n.split(":")[0].split("|")[0].split("#")[0].strip()
+chess_games.opening_name.map(parsing).value_counts()
+
+(chess_games
+    .opening_name
+    .map(lambda n: n.split(":")[0].split("|")[0].split("#")[0].strip())
+    .value_counts()
+)
+
+################################################################################################################################
+Exercise 3: In this dataset various players play variably number of games. Group the games by {white_id, victory_status} 
+and count how many times each white player ended the game in mate , draw, resign, etcetera. 
+The name of the column counting how many times each outcome occurred should be n (hint: rename or assign may help).
+################################################################################################################################
+
+chess_games.groupby(['white_id', 'victory_status']).victory_status.count()
+
+chess_games.assign(n=0).groupby(['white_id', 'victory_status']).n.apply(len).reset_index()
+
+(chess_games
+    .assign(n=0)
+    .groupby(['white_id', 'victory_status'])
+    .n
+    .apply(len)
+    .reset_index()
+)
+
+################################################################################################################################
+**Exercise 4**: There are a lot of players in the dataset who have only played one or a small handful of games. 
+Create a `DataFrame` like the one in the previous exercise, 
+but only include users who are in the top 20 users by number of games played as white. 
+See if you can do this using method chaining alone! Hint: reuse the code from the previous example. Then, use `pipe`.
+################################################################################################################################
+
+top_20 = pd.concat([chess_games.white_id,chess_games.black_id]).value_counts().sort_values(ascending=False).iloc[:20]
+
+chess_games.assign(
+    top_player=chess_games.apply(lambda df: 1 if (df.white_id in top_20) or (df.black_id in top_20 ) else 0, 
+                        axis='columns'))
+
+chess_games.loc[chess_games.top_player==1]
+
+(chess_games
+    .assign(n=0)
+    .groupby(['white_id', 'victory_status'])
+    .n
+    .apply(len)
+    .reset_index()
+    .pipe(lambda df: df.loc[df.white_id.isin(chess_games.white_id.value_counts().head(20).index)]) 
+)
+
+################################################################################################################################
+**Exercise 5**: The Kepler space observatory is in the business of finding potential exoplanets (planets orbiting stars other suns) and, 
+after collecting the evidence, generating whether or not to confirm, decline to confirm, or deny that a given space body is, in fact, 
+an exoplanet. In the dataset above, the "before" status of the body is `koi_pdisposition`, and the "after" status is `koi_disposition`. 
+
+Using the dataset above, generate a `Series` counting all of the possible transitions between pre-disposition and post-disposition. 
+In other words, generate a `Series` whose index is a `MultiIndex` based on the `{koi_pdisposition, koi_disposition}` fields, and whose values 
+is a count of how many times each possible combination occurred.
+################################################################################################################################
+
+kepler.groupby(['koi_pdisposition','koi_disposition']).rowid.count()
+
+kepler.assign(n=0).groupby(['koi_pdisposition', 'koi_disposition']).n.count()
+
+################################################################################################################################
+Exercise 6: As we demonstrated in previous workbooks, the points column in the wine_reviews dataset 
+is measured on a 20-point scale between 80 and 100. Create a Series which normalizes the ratings 
+so that they fit on a 0-to-5 scale instead (e.g. a score of 80 translates to 1 star, 
+while a score of 100 is five stars), and returns the count of how many times each of those values occurs. 
+Set the Series name to "Wine Ratings", and sort by index value (ascending).
+################################################################################################################################
+
+wine_reviews['points_reduce'] = round(4*(wine_reviews.points-wine_reviews.points.min())/(wine_reviews.points.max()-wine_reviews.points.min()),0)+1
+wine_reviews.points_reduce.value_counts().sort_values(ascending=False).rename_axis("Wine Ratings")
+
+wine_reviews.points_reduce.value_counts().sort_index(ascending=False).rename_axis("Wine Ratings")
+
+(((wine_reviews['points'].dropna() - 80) / 4)
+    .value_counts()
+    .sort_index()
+    .rename_axis("Wine Ratings")
+)
+
+################################################################################################################################
+Exercise 7: The Stars column in the ramen_reviews dataset is the ramen equivalent to the similar data points in wine_reviews. 
+Luckily it is already on a 0-to-5 scale, but it has some different problems...create a Series counting how many ramens 
+earned each of the possible scores in the dataset. Convert the Series to the float64 dtype and drop rames whose rating is "Unrated". 
+Set the name of the Series to "Ramen Ratings". Sort by index value (ascending).
+################################################################################################################################
+
+ramen_reviews.loc[ramen_reviews.Stars != "Unrated"].Stars.astype('float64').value_counts().sort_index().rename_axis("Ramen Ratings")
+
+(ramen_reviews
+    .Stars
+    .replace('Unrated', None)
+    .dropna()
+    .astype('float64')
+    .value_counts()
+    .rename_axis("Ramen Reviews")
+    .sort_index())
+
+

@@ -1,0 +1,27 @@
+USE [WSS_UsageApplication];
+
+Select Max(LogTime),UserLogin from [dbo].[RequestUsage]
+Where
+	--[UserLogin] not like 'sp_service'
+	[UserLogin] <> 'i:0#w|photowatt\sp_service'
+	and 
+	(right([DocumentPath],5)='.aspx'
+	 or right([DocumentPath],5)='.docx'
+	 or right([DocumentPath],5)='.xlsx'
+	 or right([DocumentPath],4)='.pdf'
+	 or right([DocumentPath],5)='.pwtx')
+	 
+	 AND UserLogin like '%%'
+
+	 AND DATEDIFF(DAY,LogTime,GetDate()) = 0
+
+	 GROUP BY UserLogin
+
+	 ORDER BY UserLogin ASC;
+
+	 
+	 
+	GO
+
+
+

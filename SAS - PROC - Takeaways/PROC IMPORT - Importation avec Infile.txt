@@ -1,0 +1,39 @@
+%macro operation();
+%do i =1 %to &nb.;
+ 
+/*etapes pour creer la table "donnees&i."*/
+ 
+%if &i.=1 %then %do;
+data resultats; set donnees&i.; run;
+%end; %else %do;
+data resultats; set resultats donnees&i.; run;
+%end;
+ 
+%end;
+%mend;
+
+filename exTemp1 temp;  
+
+data _null_;
+infile 'C:\Users\pwsasdev\Desktop\Formation Stat\Tri2_2014-12-15.csv' firstobs=27;
+file exTemp1;
+input;
+put _infile_;
+run;
+
+PROC IMPORT DATAFILE=exTemp1
+  OUT=Work.essai
+  DBMS=CSV  REPLACE;
+  GETNAMES=YES;
+  DELIMITER='09'x;
+  GUESSINGROWS=10000;
+RUN;
+
+Data Work.essai; 
+	set Work.essai; 
+	if _N_ <=5 then delete; 
+run; 
+
+data test; 
+	date=D-1D; 
+run; 

@@ -1,0 +1,80 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<link rel="stylesheet" type="text/css" href="./Presentation.css"></link>
+<script src="fonctions_JS.js" type="text/javascript"></script>
+<title>Secoia - Macros</title>
+</head>
+
+<body class="Orange" >
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Secoia_macros.php">Version en PDF</a></p>
+<H1><div><span class="Titre2">▼ PROGRAMMATION DE MACROS FINANCIÈRES ▼</span></div></H1>
+<p class="TexteI"><img src="../Pictures/Click_Fam_2.JPG"/></p>
+</br>
+
+<table class="sommaire">
+  <tr><td>
+  <center><span class="titre_sommaire">► Sommaire ◄</span><center>
+<ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="/HTML/Secoia.html" title="Se rendre à cette section...">Présentation de la société.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section2" title="Se rendre à cette section...">Explication de la mission.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section3" title="Se rendre à cette section...">Calcul d'intérêts EURIBOR.</li></a></li>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section4" title="Se rendre à cette section...">Calcul d'évolution salariale.</li></a></li>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section5" title="Se rendre à cette section...">Transformation de fichiers.</li></a></li>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section6" title="Se rendre à cette section...">Vérification de données.</li></a></li>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Conclusion" title="Se rendre à cette section...">Conclusion.</li></a>
+</ol>
+</td></tr></table></br>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section2"></a>
+<ul style="list-style-type : none;font-family:times-new-roman;font-size:14pt;" >Une de mes missions dans l'entreprise Secoia consistait à réaliser des macros pour résoudre des problèmes au périmètre très délimité. La programmation de macros appliquées aux mathématiques financières permettait ainsi d'automatiser des tâches récurrentes et régulières comme : 
+<li></br></li>
+<li class="ParagrapheMacros">■ la mise à jour de taux d'intérêt journalier, </li>
+<li class="ParagrapheMacros">■ le calcul d'indices salariaux, </li>
+<li class="ParagrapheMacros">■ l'annualisation salariale à partir d'un fichier de rémunérations mensuelles, </li>
+<li class="ParagrapheMacros">■ la vérification de la bonne conformité de données salariales à importer.</li></ul>
+
+<a name="Section3"></a>
+<div><p class="Texte">Voici l'aperçu d'une application calculant des intérêts selon le taux financier de référence Euribor à 3 mois: </br> <span class="TexteSI"> (il s'agit du taux moyen auquel un échantillon de 57 grandes banques établies en Europe prêtent en blanc, sans que le prêt ne soit gagé par des titres, à d'autres grandes banques - ce taux de référence du marché monétaire de la zone euro est calculé chaque jour ouvré à 11h et publié par la Fédération bancaire de l'Union européenne) </span></p></div>
+<p class="TexteI"><img src="../Pictures/Secoia_PPA_1.JPG"/></p>
+<p class="Texte">Cette macro enregistrait chaque matin le taux d'intérêt EURIBOR du jour par le biais d'une API spécifique, afin de pouvoir calculer des moyennes mensuelles les plus précises possibles. Cette macro combinait modules en VBA et feuilles de calcul Excel avec formules complexes élaborées : </p>
+<p class="TexteI"><img src="../Pictures/Secoia_PPA_2.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section4"></a>
+<p class="Texte">Voici l'aperçu d'une application calculant la moyenne géométrique de l'évolution salariale dépassant le taux d'inflation d'une population de salariés :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_PPA_3.JPG"/></p>
+<p class="Texte">Chaque mois, cette macro extrayait dans un fichier source tous les salaires des individus du périmètre de calcul, pour calculer la moyenne géométrique annuelle la plus pertinente possible. Elle combinait code VBA et formules Excel :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_PPA_4.JPG"/></p>
+<p class="TexteI"><img src="../Pictures/Macro2.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section5"></a>
+<p class="Texte">Voici une macro qui a été réalisée pour transformer un fichier salariés multi-lignes en fichier mono-ligne.</p>
+<p class="Texte">En effet, pour le calcul des passifs d'engagements sociaux, les clients envoyaient à Secoia des fichiers salariés extrait de leurs progiciels comptables. Parfois, certains étaient dans l'impossibilité d'envoyer des données annuelles agrégées. C'est pourquoi, Secoia devait transformer des données salariés mensuelles éparses en données consolidées par année d'exercice. </p>
+<p class="Texte">Pour exemple, voici l'aperçu d'un fichier source envoyé par l'entreprise cliente :</br> (on remarque qu'il y a plusieurs lignes par numéro de matricule)</p>
+<p class="TexteI"><img src="../Pictures/Secoia_PPA_9.JPG"/></p>
+<p class="Texte">Et voilà, l'aperçu du fichier cible obtenu après action de la macro sur le fichier source :</br> (on remarque ainsi qu'il n'y a désormais plus qu'une seule ligne par numéro de matricule) </p>
+<p class="TexteI"><img src="../Pictures/Secoia_PPA_10.JPG"/></p>
+<p class="Texte">La macro était composée de modules programmées en VBA Excel:</p>
+<p class="TexteI"><img src="../Pictures/Secoia_PPA_11.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section6"></a>
+<p class="Texte">Enfin, voici l'aperçu d'une autre macro vérifiant la conformité d'un fichier de données salariales source :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_PPA_7.JPG"/></p>
+<p class="Texte">Cette macro utilisait des feuilles de calcul et des formules Excel de type calcul matriciel :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_PPA_8.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Conclusion"></a>
+<p class="Texte">Ces macros permettaient donc d'effectuer des calculs précis de mathématiques financières, qui en réduisant l'intervention humaine, diminuaient sensiblement le risque d'erreurs commises. Par ailleurs, l'utilisation de ces diverses macros permettaient également des gains de temps conséquents et de ce fait, amélioraient de façon significative la productivité de réalisation de certains dossiers...</p>
+
+</br>
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Secoia_macros.php">Version en PDF</a></p>
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+</br>
+</body>
+</html>

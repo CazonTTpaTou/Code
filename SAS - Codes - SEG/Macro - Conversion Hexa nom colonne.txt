@@ -1,0 +1,35 @@
+%macro convertHexa(Path,Directory,Name);
+  %let PathFile = %bquote(')%sysfunc(cat(&Path, &Name, .csv))%bquote(');
+  %let NameNew = %sysfunc(cat(&Name,N));
+  %let PathNew = %bquote(')%sysfunc(cat(&Path,&Directory,\,&NameNew,.csv))%bquote(');
+
+%put --> PathFile: &PathFile;
+%put --> PathNew: &PathNew;
+
+data _null_;
+  infile "&PathFile" recfm=n ; 
+  file   "&PathNew" recfm=n;
+
+  input c $char1.;       
+  if c = '23'x then put '5F'x;
+
+  else put c $char1.;
+run;
+
+/*data _null_;
+  infile 'C:\Users\pwsasdev\Desktop\Files\Measurements_1.csv' recfm=n ; 
+  file  'C:\Users\pwsasdev\Desktop\Files\Measurements_1N.csv' recfm=n;
+
+  input c $char1.;       
+  if c = '23'x then put '5F'x;
+
+  else put c $char1.;
+run;*/
+
+%mend;
+
+%convertHexa(C:\Users\pwsasdev\Desktop\Files\,New,Measurements_1);
+
+
+
+

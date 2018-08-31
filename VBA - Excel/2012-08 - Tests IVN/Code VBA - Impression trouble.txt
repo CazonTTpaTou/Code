@@ -1,0 +1,275 @@
+Public reference(1 To 100, 1 To 6) As Variant
+
+Sub Extract_Prop()
+
+'Dim reference(1 To 100, 1 To 6) As Variant
+Dim feuille As Worksheet
+Dim Liste As String
+Dim Obj As Object
+Dim i As Integer
+
+i = 1
+For Each feuille In Worksheets
+    feuille.Activate
+    For Each Obj In ActiveSheet.DrawingObjects
+     
+     If Obj.name = "CommandButton1" Then Obj.PrintObject = False
+     reference(i, 1) = Obj.name
+     reference(i, 2) = Obj.Top
+     reference(i, 3) = Obj.Left
+     reference(i, 4) = Obj.Height
+     reference(i, 5) = Obj.Width
+     reference(i, 6) = feuille.Index
+     i = i + 1
+     Next Obj
+         
+Next feuille
+
+i = 1
+Worksheets("Données").Activate
+Range("Z5").Select
+
+Do While reference(i, 1) <> ""
+    For a = 1 To 6
+        ActiveCell.Value = reference(i, a)
+        ActiveCell.Offset(0, 1).Select
+    Next a
+    i = i + 1
+    ActiveCell.Offset(1, -6).Select
+Loop
+
+End Sub
+
+
+
+
+Private Sub Workbook_BeforePrint(Cancel As Boolean)
+
+Dim feuille As Worksheet
+Dim liste As String
+Dim Obj As Object
+Dim i As Integer
+
+i = 1
+For Each feuille In Worksheets
+    feuille.Activate
+    For Each Obj In ActiveSheet.DrawingObjects
+     
+     If reference(i, 1) = Obj.name Then
+          Obj.Top = reference(i, 2)
+          Obj.Left = reference(i, 3)
+          Obj.Height = reference(i, 4)
+          Obj.Width = reference(i, 5)
+     End If
+     i = i + 1
+     Next Obj
+     
+Next feuille
+
+End Sub
+
+Private Sub Workbook_BeforeSave(ByVal SaveAsUI As Boolean, Cancel As Boolean)
+
+Dim feuille As Worksheet
+Dim liste As String
+Dim Obj As Object
+Dim i As Integer
+
+i = 1
+For Each feuille In Worksheets
+    feuille.Activate
+    For Each Obj In ActiveSheet.DrawingObjects
+     
+     If reference(i, 1) = Obj.name Then
+          Obj.Top = reference(i, 2)
+          Obj.Left = reference(i, 3)
+          Obj.Height = reference(i, 4)
+          Obj.Width = reference(i, 5)
+     End If
+     i = i + 1
+     Next Obj
+     
+Next feuille
+
+End Sub
+
+Private Sub Workbook_Open()
+
+MsgBox ("Extraction des propriétés en marche !!!")
+
+Call Extract_Prop
+
+End Sub
+
+Sub Retablir_Dim()
+
+Dim reference(1 To 100, 1 To 6) As Variant
+Dim feuille As Worksheet
+Dim liste As String
+Dim Obj As Object
+Dim i As Integer
+
+Worksheets("Données").Activate
+Range("Z5").Select
+
+Do While ActiveCell.value <> ""
+    For a = 1 To 6
+        reference(i, a)=ActiveCell.Value
+        ActiveCell.Offset(0, 1).Select
+    Next a
+    i = i + 1
+    ActiveCell.Offset(1, -6).Select
+Loop
+
+i = 1
+For Each feuille In Worksheets
+    feuille.Activate
+    For Each Obj In ActiveSheet.DrawingObjects
+     
+     If reference(i, 1) = Obj.name Then
+          Obj.Top = reference(i, 2)
+          Obj.Left = reference(i, 3)
+          Obj.Height = reference(i, 4)
+          Obj.Width = reference(i, 5)
+     End If
+     i = i + 1
+     Next Obj
+     
+Next feuille
+
+End sub
+
+=si(I35="";"/";si(I35="OUI";"N/A";"NON"))
+
+Propriétés 					
+					
+CommandButton1	11,25	344,25	48,75	136,5	1
+CommandButton1	11,25	344,25	48,75	136,5	1
+Picture 2	24,75	24,75	28,91834641	76,50007629	2
+CommandButton1	12	351,75	49,5	139,5	2
+CommandButton1	9,75	462,75	53,25	138	3
+CommandButton1	9,75	462,75	53,25	138	3
+Picture 57	22,5	24,75	28,91834641	76,50007629	4
+OptionButton7	328,5	315	14,25	60	4
+OptionButton9	328,5	414,75	14,25	60	4
+OptionButton1	390,75	103,5	14,25	60	4
+OptionButton2	390,75	185,25	14,25	60	4
+CommandButton1	12	357	51	159,75	4
+OptionButton3	410,25	318,75	14,25	60	4
+OptionButton4	410,25	414,75	14,25	60	4
+Group 163	263,25	162	66,75	46,5	5
+Group 217	263,25	243	66,75	46,5	5
+Group 244	263,25	324,75	66,75	46,5	5
+Group 271	263,25	405	66,75	46,5	5
+Oval 182	289,8650513	167,8125153	3,55385828	4,843779564	5
+Picture 116	22,5	27,75	28,91834641	69,75007629	5
+OptionButton1	667,5	237,75	15,75	58,5	5
+OptionButton2	667,5	319,5	15,75	58,5	5
+OptionButton3	690	237,75	15,75	58,5	5
+OptionButton4	690	319,5	15,75	58,5	5
+OptionButton5	712,5	237,75	15,75	58,5	5
+OptionButton6	712,5	319,5	15,75	58,5	5
+CommandButton1	11,25	354,75	51	145,5	5
+Group 163	263,25	162	66,75	46,5	6
+Group 217	263,25	243	66,75	46,5	6
+Group 244	263,25	324,75	66,75	46,5	6
+Group 271	263,25	405	66,75	46,5	6
+Oval 182	289,8650513	167,8125153	3,55385828	4,843779564	6
+Picture 110	22,5	27,75	28,91834641	69,75007629	6
+OptionButton1	667,5	237,75	15,75	58,5	6
+OptionButton2	667,5	319,5	15,75	58,5	6
+OptionButton3	690	237,75	15,75	58,5	6
+OptionButton4	690	319,5	15,75	58,5	6
+OptionButton5	712,5	237,75	15,75	58,5	6
+OptionButton6	712,5	319,5	15,75	58,5	6
+CommandButton1	11,25	354	51	145,5	6
+Group 163	263,25	162	66,75	46,5	7
+Group 217	263,25	243	66,75	46,5	7
+Group 244	263,25	324,75	66,75	46,5	7
+Group 271	263,25	405	66,75	46,5	7
+Oval 182	289,8650513	167,8125153	3,55385828	4,843779564	7
+Picture 110	22,5	27,75	28,91834641	69,75007629	7
+OptionButton1	667,5	237,75	15,75	58,5	7
+OptionButton2	667,5	319,5	15,75	58,5	7
+OptionButton3	690	237,75	15,75	58,5	7
+OptionButton4	690	319,5	15,75	58,5	7
+OptionButton5	712,5	237,75	15,75	58,5	7
+OptionButton6	712,5	319,5	15,75	58,5	7
+CommandButton1	11,25	353,25	51	146,25	7
+Picture 6	24,75	24,75	28,91834641	76,50007629	8
+OptionButton1	612	34,5	16,5	226,5	8
+OptionButton2	636,75	34,5	16,5	226,5	8
+OptionButton3	660	34,5	18	84,75	8
+OptionButton4	660	129,75	17,25	84,75	8
+OptionButton5	683,25	33,75	15	87	8
+OptionButton6	682,5	130,5	15	84,75	8
+OptionButton7	704,25	33,75	15,75	87	8
+OptionButton8	704,25	130,5	15	84,75	8
+CommandButton1	11,25	338,25	51	145,5	8
+Picture 2	20,25	27,75	38,27425385	101,25	9
+Picture 1	20,25	27,75	38,27425385	101,25	10
+OptionButton1	615	25,5	15,75	402,75	11
+OptionButton1	615	25,5	15,75	402,75	11
+OptionButton2	642	25,5	15	402,75	11
+CommandButton1	13,5	349,5	49,5	145,5	11
+OptionButton3	678,75	108	15	41,25	11
+OptionButton4	678,75	163,5	15	41,25	11
+OptionButton5	708	108	15	41,25	11
+OptionButton6	708	163,5	15	41,25	11
+OptionButton7	736,5	108	15	41,25	11
+OptionButton8	736,5	163,5	15	41,25	11
+
+Sub Export_Doc()
+
+Dim Mon_Word As New Word.Application
+Dim Mon_Doc As Word.Document
+Dim plage As Range
+
+Set Mon_Doc = Mon_Word.Documents.Add
+
+With Mon_Word.Selection
+    .TypeText "Résultats Test Nacl"
+    .HomeKey wdLine
+    .EndKey wdLine, wdExtend
+    .ParagraphFormat.Alignment = wdAlignParagraphCenter
+    With .Font
+        .name = "Comic sans MS"
+        .Size = 20
+        .Bold = True
+    End With
+    .EndKey wdLine
+    
+    .TypeParagraph
+    
+    .TypeText "Document émis par " & Application.UserName
+    .HomeKey wdLine
+    .EndKey wdLine, wdExtend
+    .ParagraphFormat.Alignment = wdAlignParagraphCenter
+    With .Font
+        .name = "Arial"
+        .Size = 12
+        .Bold = False
+    End With
+    
+    Worksheets("9 NaCl").Select
+    Range("B10:O42").Copy
+    .EndKey wdLine
+    .TypeParagraph
+    .TypeParagraph
+    
+    .PasteSpecial , True, wdInLine, False
+    
+End With
+    
+Mon_Doc.SaveAs ThisWorkbook.Path & "\Tableaux.docx"
+Mon_Doc.Close
+Mon_Word.Quit
+
+Set Mon_Doc = Nothing
+Set Mon_Word = Nothing
+
+End Sub
+
+
+
+

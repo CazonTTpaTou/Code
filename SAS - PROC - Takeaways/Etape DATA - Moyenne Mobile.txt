@@ -1,0 +1,10 @@
+DATA Work.arret;
+SET Work.realisation;
+IF not missing(TpsArret) AND TpsArret^=0 Then OutPut;
+RUN;
+
+DATA Work.MoyenneMobile;
+SET Work.arret;
+Cumul+TpsArret;
+Moy=DIF10(Cumul)/10;
+RUN;

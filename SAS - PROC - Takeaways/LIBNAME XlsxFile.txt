@@ -1,0 +1,23 @@
+data Name_File;
+
+	infile liste truncover end=last;
+	input Name $200.;
+
+	call symputx(cats('path',_n_),Name);
+	call symputx(cats('dsn',_n_),compress(cats('F_',scan(scan(Name,6,'\'),1,'.'))));
+
+	if last then call symputx('nobs',_n_);
+
+	%put ---> Path : &path1;
+	%put ---> Dsn : &dsn1;
+
+run;
+
+libname  xlsxfile "&path1";
+
+
+data sheet1;
+
+set xlsxfile."Feuil1$"n(dbSASType=(F1=datetime));
+
+run;

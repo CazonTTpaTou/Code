@@ -1,0 +1,146 @@
+Attribute VB_Name = "GD_Droits_Specifs"
+Option Compare Database
+Option Explicit
+
+
+
+' Nom du group AD dans lequel les utilisateurs doivent etre présents pour accéder à l'appli
+Public Const GD_nomGroupeAD As String = "GMAO_APP"
+
+' FM 2013 : Valeur mise à True le 17/03/2013 car il était impossible d'ajouter de nouveaux utilisateurs
+Public Const GD_CheckAD As Boolean = True   ' True en exploitation
+                                            ' False pour supprimer toutes les vérifications AD
+
+
+'module de gestion des droits d'accès propres à GMAO
+
+
+
+Public Sub InitialiseDroits()
+
+
+'avant tout on enlève toutes les toolbars
+        DoCmd.ShowToolbar "GD_ADMIN", acToolbarNo
+        DoCmd.ShowToolbar "GMAO_MAINTENANCE", acToolbarNo
+        DoCmd.ShowToolbar "GMAO_Simplifié", acToolbarNo
+        DoCmd.ShowToolbar "GMAO_EmissionDI", acToolbarNo
+        DoCmd.ShowToolbar "rapport", acToolbarNo
+        DoCmd.ShowToolbar "bare_fichier", acToolbarNo
+        DoCmd.ShowToolbar "imprimer", acToolbarNo
+
+
+'on ferme toutes les fenetes
+ 
+ Dim f As Form
+ 
+ While Application.Forms.Count > 0
+ 
+ DoCmd.Close acForm, Application.Forms(0).Name, acSaveYes
+ 
+Wend
+ 
+ 
+    If Not GD_Droits.GD_initialisation() Then
+        'utilisateur non autorisé
+        MsgBox "Vous n'êtes pas autorisé à utiliser cette application." & vbCrLf _
+            & "Veuiller contacter l'administrateur réseau"
+        Application.Quit
+    End If
+    Dim authOk As Boolean
+    authOk = False
+    If GD_estAutorise("GD_ADMIN") Then
+        DoCmd.ShowToolbar "GD_ADMIN", acToolbarYes
+        authOk = True
+    Else
+        DoCmd.ShowToolbar "GD_ADMIN", acToolbarNo
+    End If
+
+    If GD_estAutorise("GMAO_COMPLETE") Then
+        authOk = True
+        DoCmd.ShowToolbar "GMAO_MAINTENANCE", acToolbarYes
+        DoCmd.ShowToolbar "GMAO_Simplifié", acToolbarNo
+        DoCmd.ShowToolbar "GMAO_EmissionDI", acToolbarNo
+        DoCmd.OpenForm "intervention_nom_prises_en_compte_maint"
+        
+    ElseIf GD_estAutorise("GMAO_SIMPLIFIEE") Then
+        authOk = True
+        DoCmd.ShowToolbar "GMAO_MAINTENANCE", acToolbarNo
+        DoCmd.ShowToolbar "GMAO_Simplifié", acToolbarYes
+        DoCmd.ShowToolbar "GMAO_EmissionDI", acToolbarNo
+        DoCmd.OpenForm "intervention_nom_prises_en_compte_maint"
+        
+    ElseIf GD_estAutorise("GMAO_SAISIE_DI") Then
+        authOk = True
+        
+        DoCmd.ShowToolbar "GMAO_MAINTENANCE", acToolbarNo
+        DoCmd.ShowToolbar "GMAO_Simplifié", acToolbarNo
+        DoCmd.ShowToolbar "GMAO_EmissionDI", acToolbarYes
+        
+        
+         CurrentDb.Execute "delete * from SaisieDI_configuration"
+   
+        'Compatibilité version Texte
+        
+        If GD_estAutorise("GMAO_SDI_SECU") Then
+                CurrentDb.Execute "insert into  SaisieDI_configuration (CodeSecteur) Values (""21"")", dbSeeChanges
+        End If
+        If GD_estAutorise("GMAO_SDI_MG") Then
+                CurrentDb.Execute "insert into  SaisieDI_configuration (CodeSecteur) Values (""20"")", dbSeeChanges
+        End If
+        If GD_estAutorise("GMAO_SDI_CEL") Then
+                CurrentDb.Execute "insert into  SaisieDI_configuration (CodeSecteur) Values (""03"")", dbSeeChanges
+        End If
+        If GD_estAutorise("GMAO_SDI_CRO") Then
+                CurrentDb.Execute "insert into  SaisieDI_configuration (CodeSecteur) Values (""1A"")", dbSeeChanges
+        End If
+        If GD_estAutorise("GMAO_SDI_DEB") Then
+                CurrentDb.Execute "insert into  SaisieDI_configuration (CodeSecteur) Values (""1B"")", dbSeeChanges
+        End If
+        If GD_estAutorise("GMAO_SDI_BAC") Then
+                CurrentDb.Execute "insert into  SaisieDI_configuration (CodeSecteur) Values (""43"")", dbSeeChanges
+        End If
+        If GD_estAutorise("GMAO_SDI_ATS") Then
+                CurrentDb.Execute "insert into  SaisieDI_configuration (CodeSecteur) Values (""23"")", dbSeeChanges
+        End If
+        If GD_estAutorise("GMAO_SDI_ATSFR") Then
+                CurrentDb.Execute "insert into  SaisieDI_configuration (CodeSecteur) Values (""33"")", dbSeeChanges
+        End If
+        If GD_estAutorise("GMAO_SDI_MOD") Then
+                CurrentDb.Execute "insert into  SaisieDI_configuration (CodeSecteur) Values (""04"")", dbSeeChanges
+        End If
+        If GD_estAutorise("GMAO_SDI_SCI") Then
+                CurrentDb.Execute "insert into  SaisieDI_configuration (CodeSecteur) Values (""2A"")", dbSeeChanges
+        End If
+        If GD_estAutorise("GMAO_SDI_NET") Then
+                CurrentDb.Execute "insert into  SaisieDI_configuration (CodeSecteur) Values (""2B"")", dbSeeChanges
+       End If
+       
+             
+         Dim rs As DAO.Recordset
+         Set rs = CurrentDb.OpenRecordset("CODES_SECTEURS")
+         
+         While Not rs.EOF
+            If GD_estAutorise("GMAO_SDI_" & rs![Code secteur]) Then
+                If IsNull(DLookup("CodeSecteur", "SaisieDI_configuration", "CodeSecteur = """ & rs![Code secteur] & """")) Then
+                    CurrentDb.Execute "insert into  SaisieDI_configuration (CodeSecteur) Values (""" & rs![Code secteur] & """)", dbSeeChanges
+                End If
+            End If
+            rs.MoveNext
+         Wend
+         
+       
+       
+
+        DoCmd.OpenForm "SaisieDI_Menu Général"
+     End If
+
+     If Not authOk Then
+        'aucun droit pour l'utilisateur
+        MsgBox "Vous n'êtes pas autorisé à utiliser cette application." & vbCrLf _
+            & "Veuiller contacter l'administrateur réseau"
+        Application.Quit
+     End If
+    DoCmd.Close acForm, "frm_initialisation", acSaveNo
+End Sub
+
+

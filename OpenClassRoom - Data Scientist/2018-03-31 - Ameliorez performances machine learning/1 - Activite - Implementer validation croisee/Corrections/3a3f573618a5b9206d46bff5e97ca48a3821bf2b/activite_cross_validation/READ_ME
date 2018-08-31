@@ -1,0 +1,1 @@
+j'ai pas utilise la fonction KFold() qui genere les indices de la validation croisee .. j'ai diviser a chaque fois la data set en training?testing sets .. 

@@ -1,0 +1,72 @@
+
+options emailsys=SMTP emailhost=smtp.photowatt.com emailport=25;
+
+/* Macro pour l'envoi de mail des interventions de la veille au service Process */
+%macro envoi_mail(uap=,dest=,Libelle=);
+
+/* Mise en forme de la variable de liste des UAP */
+DATA _null_;
+	call symput("list_int",tranwrd("&uap","_",","));	
+RUN;
+
+	%put ---> list_int : &list_int;
+
+/* Paramétrage de la fonction d'envoi de mail */
+FileName  SENDMAIL Email 	  	
+			to 		= ("&dest")
+			from	= ("SuiviIntervention@photowatt.com")
+			type	= "text/html"
+			subject = "Suivi des Interventions des dernières 24 h";
+	
+/* Requête sur la vue source des interventions de la veille  */
+DATA intervention_dans_periode;
+	SET gmao.Vue_Process_Liste_Intervention;
+	if id_UAP in (&list_int) then output;
+RUN;
+
+/* Détermination du nombre d'intervention de la veille */
+PROC SQL;
+		SELECT count(*) into: nb_int from intervention_dans_periode;
+quit;
+
+/* Si des interventions ont eu lieu l'email est envoyé */
+%if &nb_int >0 
+				%then %do;
+
+				/* Tri des interventions de la veille par ancienneté */
+				PROC SORT DATA= intervention_dans_periode;
+						by descending date_debut ;
+				RUN;
+
+				/* Construction du corps de l'email à envoyer */
+				ODS HTML BODY=SENDMAIL ;
+					title "Sur les dernières 24 h, &nb_int intervention(s) ont eu lieu sur le(s) UAP &libelle (elles sont triées de la plus récente à la plus ancienne) :";
+					PROC report data=intervention_dans_periode;
+						 		columns Recence Type_Intervention Date_Debut Equipement Sous_Equipement Description 
+						 		Statut_Intervention Duree_Intervention_h Date_Fin;
+					RUN;
+				ODS HTML CLOSE;
+
+				%end;
+
+%mend;
+
+
+
+
+/* Envoi des e-mails au service Process */
+
+%envoi_mail(uap=1_2_3,dest=f.monnery@photowatt.com,libelle=Wafers-Cellules-Modules);
+%envoi_mail(uap=3,dest=R.ROUSSEL@photowatt.com,libelle=Modules);
+%envoi_mail(uap=2,dest=n.andre@photowatt.com,libelle=Cellules);
+%envoi_mail(uap=2,dest=e.caddoux@photowatt.com,libelle=Cellules);
+%envoi_mail(uap=2,dest=T.GALVEZ@photowatt.com,libelle=Cellules);
+%envoi_mail(uap=2,dest=A.RAMBAUD@photowatt.com,libelle=Cellules);
+%envoi_mail(uap=2,dest=B.BAZERBACHI@photowatt.com,libelle=Cellules);
+%envoi_mail(uap=2,dest=M.GERARD@photowatt.com,libelle=Cellules);
+%envoi_mail(uap=2,dest=D.MASONI@photowatt.com,libelle=Cellules);
+
+
+
+
+

@@ -1,0 +1,49 @@
+SELECT t_operateur.nom, t_operateur.prenom, r_emargement_ListeDesPostes.idEmargement, 
+r_emargement_ListeDesPostes.t_emargement.idPoste, r_emargement_ListeDesPostes.reference, r_emargement_ListeDesPostes.Indice, 
+r_emargement_ListeDesPostes.titre, r_emargement_ListeDesPostes.Affichage, r_emargement_ListeDesPostes.t_poste.idPoste, 
+r_emargement_ListeDesPostes.nom, t_equipe.idEquipe, t_equipe.nom AS EquipeNom, t_habilitation.formation, 
+t_operateur_1.nom AS Faciliteur_N, t_operateur_1.prenom AS Faciliteur_P
+FROM ((((t_operateur INNER JOIN t_habilitation ON t_operateur.idOperateur = t_habilitation.idOperateur) 
+INNER JOIN r_emargement_ListeDesPostes ON t_habilitation.idPoste = r_emargement_ListeDesPostes.t_poste.idPoste) 
+INNER JOIN t_equipe ON t_operateur.idEquipe = t_equipe.idEquipe) 
+LEFT JOIN t_operateur AS t_operateur_1 ON t_equipe.idFaciliteur = t_operateur_1.idOperateur) 
+INNER JOIN t_poste ON t_habilitation.idPoste = t_poste.idPoste
+WHERE (((t_habilitation.habilitation)=True) AND ((t_operateur.dateFinContrat) Is Null)) 
+OR (((t_habilitation.formation)=True) AND ((t_operateur.dateFinContrat) Is Null));
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT t_poste.nom,count(t_equipe.idEquipe) as Nombre_Equipe
+FROM ((((t_operateur INNER JOIN t_habilitation ON t_operateur.idOperateur = t_habilitation.idOperateur) ) 
+INNER JOIN t_equipe ON t_operateur.idEquipe = t_equipe.idEquipe) 
+LEFT JOIN t_operateur AS t_operateur_1 ON t_equipe.idFaciliteur = t_operateur_1.idOperateur) 
+INNER JOIN t_poste ON t_habilitation.idPoste = t_poste.idPoste
+WHERE (((t_habilitation.habilitation)=True) AND ((t_operateur.dateFinContrat) Is Null)) 
+OR (((t_habilitation.formation)=True) AND ((t_operateur.dateFinContrat) Is Null))
+GROUP BY t_poste.nom
+order by count(t_equipe.idEquipe);
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT t_Equipe.idEquipe,t_Equipe.Nom
+FROM ((((t_operateur INNER JOIN t_habilitation ON t_operateur.idOperateur = t_habilitation.idOperateur) ) 
+INNER JOIN t_equipe ON t_operateur.idEquipe = t_equipe.idEquipe) 
+LEFT JOIN t_operateur AS t_operateur_1 ON t_equipe.idFaciliteur = t_operateur_1.idOperateur) 
+INNER JOIN t_poste ON t_habilitation.idPoste = t_poste.idPoste
+WHERE (t_habilitation.habilitation=True) AND (t_operateur.dateFinContrat Is Null)
+AND (t_Poste.idPoste = 64)
+GROUP BY  t_Equipe.idEquipe,t_Equipe.Nom;
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT t_operateur.nom, t_operateur.prenom, r_emargement_ListeDesPostes.idEmargement, r_emargement_ListeDesPostes.t_emargement.idPoste, 
+r_emargement_ListeDesPostes.reference, r_emargement_ListeDesPostes.Indice, r_emargement_ListeDesPostes.titre, 
+r_emargement_ListeDesPostes.Affichage, r_emargement_ListeDesPostes.t_poste.idPoste, r_emargement_ListeDesPostes.nom, 
+t_equipe.idEquipe, t_equipe.nom AS EquipeNom, t_habilitation.formation, t_operateur_1.nom AS Faciliteur_N, 
+t_operateur_1.prenom AS Faciliteur_P
+FROM ((((t_operateur INNER JOIN t_habilitation ON t_operateur.idOperateur = t_habilitation.idOperateur) 
+INNER JOIN r_emargement_ListeDesPostes ON t_habilitation.idPoste = r_emargement_ListeDesPostes.t_poste.idPoste) 
+INNER JOIN t_equipe ON t_operateur.idEquipe = t_equipe.idEquipe) LEFT JOIN t_operateur AS t_operateur_1 
+ON t_equipe.idFaciliteur = t_operateur_1.idOperateur) INNER JOIN t_poste ON t_habilitation.idPoste = t_poste.idPoste
+WHERE (((t_habilitation.habilitation)=True) AND ((t_operateur.dateFinContrat) Is Null)) OR (((t_habilitation.formation)=True) 
+AND ((t_operateur.dateFinContrat) Is Null));

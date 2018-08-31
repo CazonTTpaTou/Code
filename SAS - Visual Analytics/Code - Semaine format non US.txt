@@ -1,0 +1,5 @@
+IF ( DayOfWeek(DatePart('TimeStamp'n)) = 1 )
+RETURN ( WeekNumber(DatePart('TimeStamp'n)) - 1 )
+ELSE WeekNumber(DatePart('TimeStamp'n))
+
+

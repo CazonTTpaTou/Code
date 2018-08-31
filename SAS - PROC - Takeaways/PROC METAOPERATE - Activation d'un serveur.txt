@@ -1,0 +1,9 @@
+proc metaoperate
+        server="srv-sas"
+        port=8561
+        userid="sasadm@saspw"
+        password="sasadm"
+        protocol=bridge
+        action=resume
+        noautopause;
+run;

@@ -1,0 +1,46 @@
+Option Compare Database
+
+'Private Sub Form_Load()
+' Call ListeDLMaker(Me.RecordSource, Me.Name)
+'  end sub
+
+Sub ListeDLMaker(ByVal tableSource As String, ByVal frm As String)
+
+Dim Formulaire As Form
+Dim ListeDeroul As ComboBox
+Dim SourceSQL, id, libel, tableLiee As String
+
+Set Formulaire = Forms(frm)
+
+Call InitForeignKey
+
+For lig = LBound(ForeignKey, 1) To UBound(ForeignKey, 1)
+    
+    If ForeignKey(lig, 1) = tableSource Then
+        
+        ctl = ForeignKey(lig, 2)
+        tableLiee = ForeignKey(lig, 3)
+        libel = ForeignKey(lig, 4)
+        id = LookId(tableLiee)
+        
+        SourceSQL = "select " & id & "," _
+                   & libel & " from " & tableLiee _
+                   & " where actif = -1 " _
+                   & " order by nz(ordre,9999) ASC," _
+                   & libel & " ASC"
+         
+        MsgBox SourceSQL
+        Set ListeDeroul = Formulaire(ctl)
+        
+        ListeDeroul.ColumnCount = 2
+        ListeDeroul.ColumnWidths = "0 cm;10 cm"
+        ListeDeroul.BoundColumn = 1
+        ListeDeroul.RowSource = SourceSQL
+        ListeDeroul.Requery
+    
+    End If
+    
+Next lig
+
+End Sub
+

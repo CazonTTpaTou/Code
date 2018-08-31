@@ -1,0 +1,80 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<link rel="stylesheet" type="text/css" href="./Presentation.css"></link>
+<script src="fonctions_JS.js" type="text/javascript"></script>
+<title>Lange - Gestion RH</title>
+</head>
+
+<body class="Rouge" >
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Lange_gestion_RH.php">Version en PDF</a></p>
+<H1><div><span class="Titre2">▼ MISE EN PLACE D'UN OUTIL DE GESTION RH ▼</span></div></H1>
+<p class="TexteI"><img src="../Pictures/Click_Fam_3.JPG"/></p>
+</br>
+
+<table class="sommaire">
+  <tr><td>
+  <center><span class="titre_sommaire">► Sommaire ◄</span><center>
+<ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Presentation" title="Se rendre à cette section...">Présentation de la société.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section2" title="Se rendre à cette section...">Explication de la mission.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section3" title="Se rendre à cette section...">Comptabilisation des RTT.</li></a></li>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section4" title="Se rendre à cette section...">Génération des fiches de paie.</li></a></li>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section5" title="Se rendre à cette section...">Gestion des congés payés.</li></a></li>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Conclusion" title="Se rendre à cette section...">Conclusion</li></a>
+</ol>
+</td></tr></table></br>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Presentation"></a>
+<p class="Texte">Lange SA est une société de type holding qui gére 5 magasins de pressing et exploite une vingtaine de baux commerciaux en location immobilière. Son chiffre d'affaires annuel avoisine les 1,5 millions d'euros. La société holding s'occupe de toute la gestion administrative du personnel embauché par les sociétés filiales, tâche qui était consommatrice de temps. </p>
+<p class="TexteI"><img src="../Pictures/arton58.jpg"/></p>
+
+<a name="Section2"></a>
+<p class="Texte">C'est pourquoi, une de mes missions lors de mon contrat dans cette entreprise fut de constituer un outil permettant d'automatiser au maximum la gestion administrative des ressources humaines. Le périmètre de l'applicatif s'étendait donc de l'élaboration des feuilles de paie, à la gestion des congés payés, en passant par la comptabilisation des RTT.</p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section3"></a>
+<p class="Texte">Les horaires du personnel étaient flexibles, ce qui nécessitait une gestion rigoureuse de la comptabilisation des jours de RTT. L'outil mis en place affichait pour chaque salarié les horaires habituels sur le calendrier du mois. Il ne restait plus qu'à l'opérateur de saisie de saisir les jours où le nombre d'heures effectuées était inhabituel (cases orangées): </p>
+<p class="TexteI"><img src="../Pictures/Lange_RH_13.JPG"/></p>
+<p class="Texte">L'application de comptabilisation des RTT se présentait sous la forme suivante (les noms présentés sont fictifs) :</p>
+<p class="TexteI"><img src="../Pictures/Lange_RH_1.JPG"/></p>
+<p class="Texte">L'application permettait de comptabiliser pour chaque salarié le nombre d'heures effectuées en plus ou en moins sur leur quota d'heures mensuel. Le reliquat était ensuite reporté sur le mois suivant. </p>
+<p class="Texte">Cet outil développé sous Excel faisait appel à des formules complexes et élaborées, qui se déclinait de la façon suivante :</p>
+<p class="TexteI"><img src="../Pictures/Lange_RH_2.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section4"></a>
+<p class="Texte">L'outil mis en place permettait également d'éditer les fiches de paie de l'ensemble des salariés. L'interface graphique de cette fonctionnalité se présentait sous cette forme :</p>
+<p class="TexteI"><img src="../Pictures/Lange_RH_12.JPG"/></p>
+<p class="Texte">Les différents paramètres (valeur du SMIC horaire, montant du plafond SS, taux de cotisations patronales, contributions diverses) devaient être régulièrement mis à jour selon les évolutions de la législation.</p>
+<p class="Texte">Pour chaque salarié, un taux de salaire horaire était défini. A partir des horaires effectuées sur le mois et renseignés dans le module de comptabilisation des jours RTT présentés ci-dessus, l'applicatif générait automatiquement la fiche de paie correspondante.</p>
+<p class="Texte">La feuille de paie générée se déclinait sous l'aspect suivant :</p>
+<p class="TexteI"><img src="../Pictures/Lange_RH_9.JPG"/></p>
+<p class="Texte">L'applicatif de génération des fiches de paie était développé sous Excel et combinait des procédures programmées sous VBA :</p>
+<p class="TexteI"><img src="../Pictures/Lange_RH_11.JPG"/></p>
+<p class="Texte">ainsi que des formules Excel élaborées dans les différentes cellules de le feuille de calcul:</p>
+<p class="TexteI"><img src="../Pictures/Lange_RH_10.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section5"></a>
+<p class="Texte">Enfin, l'outil développé sous Excel permettait également de gérer les congés payés du personnel.</p>
+<p class="TexteI"><img src="../Pictures/Lange_RH_5.JPG"/></p>
+<p class="Texte">Pour chaque jour d'absence du salarié concerné, l'outil permettait de choisir le type de congé approprié par l'intermédiaire d'un menu déroulant (congé payé ou RTT, une demi-journée ou jour entier) :</p>
+<p class="TexteI"><img src="../Pictures/Lange_RH_6.JPG"/></p>
+<p class="Texte">L'applicatif permettait de générer pour chaque salarié une synthèse des congés pris depuis le début de l'année avec le cumul des congés et des jours de RTT restant :</p>
+<p class="TexteI"><img src="../Pictures/Lange_RH_7.JPG"/></p>
+<p class="Texte">Ce module de l'application a été élaboré par le biais de diverses formules Excel élaborées utilisant les calculs matriciels :</p>
+<p class="TexteI"><img src="../Pictures/Lange_RH_8.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Conclusion"></a>
+<p class="Texte">Au final, l'outil Excel mis en place permit un gain de temps conséquent, en supprimant plusieurs activités de saisie manuelle dans le processus initial de gestion administrative RH du personnel. Par ailleurs, en regroupant les différentes tâches de la gestion RH du personnel, l'outil facilitait les différentes vérifications et limitait les sources d'erreurs...</p>
+
+</br>
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Lange_gestion_RH.php">Version en PDF</a></p>
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+</br>
+</body>
+</html>

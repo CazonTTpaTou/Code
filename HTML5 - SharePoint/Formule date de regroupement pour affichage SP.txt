@@ -1,0 +1,5 @@
+=ANNEE(Crיי)&" "&TEXTE(MOIS(Crיי);"0#")&" - "&TEXTE(Crיי;"mmmm")
+
+
+
+

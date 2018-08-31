@@ -1,0 +1,49 @@
+%macro PackingIntervall(Number);
+
+%let _nb_Inter = &Number;
+%let i=0;
+
+%do %while(&_nb_Inter >0 and &_nb_Inter ^=.);
+
+	%let i=%eval(&i+1);
+
+	DATA WORK.Liste_Arret_Trie (keep=idRealisation Avant Apres debutArret FinArret2 Intersection);
+	Format Avant Datetime23.
+	       Apres Datetime23.;       
+	SET Work.Liste_Arret;
+	Avant0=Lag(DebutArret);
+	Avant2 = intck('Day',datepart(Lag(DebutArret)),datepart(FinArret2));
+	avant = Max(Lag(FinArret2),DebutArret);
+	apres = Max(Avant,FinArret2);
+	if avant ^= debutArret Then Intersection = 1;
+	RUN;
+
+	PROC SQL Noprint;
+	SELECT SUM(Intersection) Into: _nb_Inter FROM Work.Liste_Arret_Trie;
+	RUN;
+
+	DATA Work.Liste_Arret2 (keep=DebutArret FinArret2 idRealisation);
+	SET WORK.Liste_Arret_Trie;
+	DebutArret = Avant;
+	FinArret2 = Apres;
+	IF (avant ^= apres) Then Output;
+	RUN;
+
+	PROC SORT data=Work.Liste_Arret2 out=Work.Liste_Arret;
+	BY DebutArret;
+	RUN;
+
+%put Nombre intersection pour itération n° &i ---> &_nb_Inter;
+%end;
+
+%mend;
+
+DATA Work.Liste_Arret;
+SET Work.Liste_Arret_Total;
+RUN;
+
+%PackingIntervall(1);
+
+
+
+

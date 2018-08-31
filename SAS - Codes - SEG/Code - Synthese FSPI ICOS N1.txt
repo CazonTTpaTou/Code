@@ -1,0 +1,49 @@
+PROC SQL;
+   CREATE TABLE STATS.SYNTHESE_ICOS_FSPI_N1 AS 
+   SELECT 
+
+		  t1.LotId, 
+          case when t1.IdEquipement = 24 then 'Rouge' ELSE 'Bleue' end length=5 format=$5. as VOIE, 
+          t1.IdEquipement, 
+          
+          /* MAX_of_TimeStamp */
+            (MAX(t1.TimeStamp)) FORMAT=DATETIME22.3 AS MAX_of_TimeStamp,
+
+		/* COUNT of_Cell */
+            (COUNT(t1.LotWaferId)) FORMAT=BEST5. AS NB_Cellules,
+			
+   		  /* SUM_of_Cellule_En_Defaut */
+            (SUM(ifn(Quality_Result_Classification In ('Not Present', 'break', 'Bad', 'bad'),1,0) )) LABEL=
+            "Cellule_En_Defaut" AS SUM_of_Cellule_In_Default, 
+
+		/* SUM_of_FPI_Nbr_Screen_En_Defaut */
+            (SUM(ifn(FPI_Number_Screen_Result In ('Not Present', 'break', 'Bad', 'bad'),1,0) )) LABEL=
+            "FPI_Nbr_Screen_In_Default" AS FPI_Nbr_Screen_In_Default,
+
+		/* SUM_of_FPI_Total_Length_En_Defaut */
+            (SUM(ifn(FPI_Total_Length_Screen_Result In ('Not Present', 'break', 'Bad', 'bad'),1,0) )) LABEL=
+            "FPI_Total_Length_In_Default" AS FPI_Total_Length_In_Default, 
+ 
+		/* SUM_of_FPI_length_longest_En_Defaut */
+            (SUM(ifn(FPI_length_longest_Screen_Result In ('Not Present', 'break', 'Bad', 'bad'),1,0) )) LABEL=
+            "FPI_length_longest_In_Default" AS FPI_length_longest_In_Default, 
+ 
+          /* AVG_of_Front_Print_Screen_transl */
+            (AVG(t1.FP_Screen_translation_X_Value)) FORMAT=32.5 AS AVG_FPI_Screen_Translation_X, 
+          /* AVG_of_Front_Print_Screen_trans1 */
+            (AVG(t1.FP_Screen_translation_Y_Value)) FORMAT=32.5 AS AVG_FPI_Screen_Translation_Y, 
+          /* SUM_of_Front_Print_Interruption_ */
+            (SUM(t1.FPI_Number_Screen_Value)) FORMAT=32.5 AS SUM_of_FPI_Number, 
+          /* SUM_of_Front_Print_Interruption1 */
+            (AVG(t1.FPI_length_longest_Screen_Value)) FORMAT=32.5 AS SUM_of_FPI_Lengthest, 
+          /* SUM_of_Front_Print_Interruption2 */
+            (AVG(t1.FPI_Total_Length_Screen_Value)) FORMAT=32.5 AS SUM_of_FPI_Total_Length          
+
+      FROM IN_LINE.V_ICOS_FSPI_N1_DEFAUTS t1
+      WHERE datepart(TimeStamp) >= INTNX('month', DATE(), -12)
+      GROUP BY t1.LotId,
+               t1.IdEquipement;
+QUIT;
+
+
+

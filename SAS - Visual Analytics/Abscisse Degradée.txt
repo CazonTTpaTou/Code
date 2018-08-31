@@ -1,0 +1,49 @@
+1. Créer un champ "Semaine" :
+IF ( DayOfWeek(DatePart('Cel_Tri_Date_Heure_Sortie'n)) = 1 )
+RETURN ( WeekNumber(DatePart('Cel_Tri_Date_Heure_Sortie'n)) - 1 )
+ELSE WeekNumber(DatePart('Cel_Tri_Date_Heure_Sortie'n))
+
+2. Créer un champ "Date_Tri" :
+DatePart('Cel_Tri_Date_Heure_Sortie'n)
+
+3. Créer un champ "Date_Jour" :
+IF ( DayOfMonth('Date_Tri'n) < 10 )
+RETURN Concatenate('J0', Format(DayOfMonth('Date_Tri'n), 'BEST1.'))
+ELSE Concatenate('J', Format(DayOfMonth('Date_Tri'n), 'BEST2.'))
+
+4. Créer un champ "Date_Semaine" :
+IF ( 'Semaine'n < 10 )
+RETURN Concatenate('S0', Format('Semaine'n, 'BEST1.'))
+ELSE Concatenate('S', Format('Semaine'n, 'BEST2.'))
+
+5. Créer un champ "Date_Mois" :
+IF ( DayOfMonth('Date_Tri'n) < 10 )
+RETURN Concatenate('J0', Format(DayOfMonth('Date_Tri'n), 'BEST1.'))
+ELSE Concatenate('J', Format(DayOfMonth('Date_Tri'n), 'BEST2.'))
+
+6. Créer un champ "Date_A" :
+Format(Year('Date_Tri'n), 'BEST4.')
+
+ 
+7. Créer un champ "Date_AM" :
+Concatenate(Format(Year('Date_Tri'n), 'BEST4.'), 'Date_Mois'n)
+
+8. Créer un champ "Date_AMS" :
+Concatenate(Format(Year('Date_Tri'n), 'BEST4.'), Concatenate('Date_Mois'n, 'Date_Semaine'n))
+
+9. Créer un champ "Date_AMSD" :
+Concatenate(Concatenate('Date_AMS'n, '-'), 'Date_Jour'n)
+
+10. Créer un champ "Date_Tri_Degradee" :
+IF ( ( Year('Date_Tri'n) = Year(DatePart(Now())) ) AND ( 'Semaine'n = WeekNumber(DatePart(Now())) ) )
+RETURN 'Date_AMSD'n
+ELSE ( 
+  IF ( ( Year('Date_Tri'n) = Year(DatePart(Now())) ) AND ( Month('Date_Tri'n) = Month(DatePart(Now())) ) )
+  RETURN 'Date_AMS'n
+  ELSE ( 
+    IF ( Year('Date_Tri'n) = Year(DatePart(Now())) )
+    RETURN 'Date_AM'n
+    ELSE 'Date_A'n ) )
+
+
+

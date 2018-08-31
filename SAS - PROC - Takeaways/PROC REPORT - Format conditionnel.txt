@@ -1,0 +1,18 @@
+/* Génération du PDF */
+ods pdf file="&root_out.\correlation Hennecke sur 2 mois.pdf" ;
+
+Title1 "Corrélations entre les paramètres journaliers moyens Hennecke" ;
+Title2 "Corrélations de Spearman" ;
+
+proc report data=__SpearmanCorr_1an split='$'  split='$'  NOWD      style(report)=[rules=groups frame=hsides background=white bordercolor=black borderwidth=.05cm]
+        style(header)=[foreground=black background=white font_size=9 pt font_face=arial font_weight=bold just=center vjust=center]
+        style(column)=[foreground=black font_face=arial font_size=9 pt just=center vjust=center] spanrows;
+          column ("Corrélation paramètres de coupe scie diamant" variable SawEdge SawStep SawGroove BOW Thickn TTV);
+
+		  define Variable/ display "Paramètres de coupe";
+		  define SawEdge/ display "SawEdge";
+		  compute SawEdge;	
+			if (SawEdge>0.5 or SawEdge<-0.5) AND SawEdge <1 then call define(_col_, "style", "style=[backgroundcolor=orange]");
+			if (SawEdge>0.7 or SawEdge<-0.7) AND SawEdge < 1 then call define(_col_, "style", "style=[backgroundcolor=lightred]");
+		endcomp;
+run;

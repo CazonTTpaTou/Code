@@ -1,0 +1,156 @@
+﻿body {
+}
+
+/* BOUTONS DE LIBELLE*/
+.Libelle {
+    box-shadow: 0 1px 3px rgb(0,0,0);
+    /*text-shadow: 0 -1px 1px rgb(128, 128, 128);*/
+    border-bottom: 1px solid rgb(128, 128, 128);
+    border-radius:12px 0 12px 0;
+    /*background-color:rgba(79, 79, 79, 1);*/
+    padding:4px 4px 4px 4px;
+    background-color:lightgrey;
+    color:#555;
+    font:bold 12px Verdana;
+    }
+
+/* ENCADREMENT DES FORMULAIRES*/
+/* da-block : Bloc du formulaire de demande d'achats */
+table.da-bloc {
+    width:83%;
+    border-top: 4px solid black;
+}
+
+/* da-block-bleu : Bloc du formulaire de demande d'achats */
+table.da-bloc-bleu {
+    width:83%;
+    border-top: 4px solid #478bf9;
+}
+
+/* da-block-vert : Bloc du formulaire de demande d'achats */
+table.da-bloc-vert {
+    width:83%;
+    border-top: 4px solid #57D53B;
+}
+
+/* da-block-rouge : Bloc du formulaire de demande d'achats */
+table.da-bloc-rouge {
+    width:83%;
+    border-top: 4px solid #d34836;
+}
+
+/* TABLEAU LIGNES DETAILLEES*/
+/*table.da-formdetail th {
+    height: 50px;}*/
+
+/* TABLES DE VALIDATION BLEU */
+table.da-formvalidation {
+    border:3px solid #478bf9;
+    border-collapse:collapse;
+	width:250px;
+	margin:auto;}
+
+table.da-formvalidation tfoot {
+    background-color:#478bf9;
+	border:1px solid #478bf9;}
+
+table.da-formvalidation thead {
+	color:white;
+	font-weight:bold;
+	/*text-decoration:underline;*/
+	background-color:#478bf9;
+	border:1px solid #478bf9;}
+
+table.da-formvalidation th {
+	font-family:monospace;
+	border:1px dotted #478bf9;
+	padding:5px;
+	background-color:#478bf9;
+	width:75%;}
+
+
+table.da-formvalidation td {
+	font-family:sans-serif;
+	font-size:80%;
+	border:1px solid #478bf9;
+	padding:5px;
+	text-align:left;}
+
+/* TABLES DE VALIDATION VERTE */
+
+table.da-formvalidationv {
+	border:3px solid #57D53B;
+	border-collapse:collapse;
+	width:250px;
+	margin:auto;}
+
+table.da-formvalidationv tfoot {
+	background-color:#57D53B;
+	border:1px solid #478bf9;}
+
+table.da-formvalidationv thead {
+	color:white;
+	font-weight:bold;
+	/*text-decoration:underline;*/
+	background-color:#57D53B;
+	border:1px solid #57D53B;}
+
+table.da-formvalidationv th {
+	font-family:monospace;
+	border:1px dotted #57D53B;
+	padding:5px;
+	background-color:#57D53B;
+	width:75%;}
+
+
+table.da-formvalidationv td {
+	font-family:sans-serif;
+	font-size:80%;
+	border:1px solid #57D53B;
+	padding:5px;
+	text-align:left;
+}
+
+/* TABLES DE VALIDATION ROUGE */
+
+table.da-formvalidationr {
+    border:3px solid #d34836;
+    border-collapse:collapse;
+	width:75%;
+	margin:auto;}
+
+table.da-formvalidationr tfoot {
+    background-color:#d34836;
+	border:1px solid #d34836;}
+
+table.da-formvalidationr thead {
+	color:white;
+	font-weight:bold;
+	/*text-decoration:underline;*/
+	background-color:#d34836;
+	border:1px solid #d34836;}
+
+table.da-formvalidationr th {
+	font-family:monospace;
+	border:1px dotted #d34836;
+	padding:5px;
+	background-color:#d34836;
+	width:75%;}
+
+table.da-formvalidationr td {
+	font-family:sans-serif;
+	font-size:80%;
+	border:1px solid #d34836;
+	padding:5px;
+	text-align:left;}
+
+/* Alignement à droite des colonnes prix total, prix unitaire et quantité sur chaque ligne de détail */
+div.PT, input.PU, input.Qte  {
+	text-align: right;
+}
+
+
+
+
+
+

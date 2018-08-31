@@ -1,0 +1,40 @@
+﻿############################################################################################################################################
+## Activité - Compter le nombre de fois que chaque lettre est utilisée dans le dictionnaire anglais
+## Mode d'emploi du script proposé
+############################################################################################################################################
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Question 1
+
+Pour lancer le scriptBash du décompte de lettre dans le dictionnaire, il faut :
+
+	- Taper le nom du script suivi du nom du fichier contenant le dictionnaire :
+	
+	- ./scriptDictionnaire.sh dico.txt
+	
+Le script renvoie le nombre d'occurence de chacune des 26 lettres dans tout le dictionnaire de mots enregistrés dans le fichier dico.txt.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Question 2
+
+La fonctionnalité complémentaire consiste à pouvoir choisir l'ordre de tri du classement des lettres :
+
+	- Descendante : De la lette la plus courante à la moins fréquente,
+	
+	- Ascendante : De la lettre la moins fréquente à la plus courante,
+	
+Pour utiliser cette fonctionnalité, on saisit un second argument :
+
+	- ./scriptDictionnaire.sh dici.txt ASC :
+	
+		--> Ordre de tri ascendant
+	
+	- ./scriptDictionnaire.sh dici.txt DSC :
+	
+		--> Ordre de tri descendant
+		
+Par défaut, si aucun second argument n'est saisi, le classement des lettres s'affichera en mode descendant (de la plus fréquente à la moins courante).
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+

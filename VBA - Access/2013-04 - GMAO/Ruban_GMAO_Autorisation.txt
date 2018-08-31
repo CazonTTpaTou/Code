@@ -1,0 +1,82 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" >
+	<ribbon startFromScratch="false">
+<tabs>
+<tab id="Fichier" label="Fichier">
+	<group id="Fichiers">
+	<button id="Fichier1" label="Changer d'utilisateur" imageMso="_3DBevelPictureTopGallery" onAction="Action_Fichier1" getEnabled="Aut_Fichier1"  />
+	<button id="Fichier2" label="Changer d'environnement" imageMso="BevelShapeGallery" getEnabled="Aut_Fichier2"  onAction="Action_Fichier2"/>
+	<button id="Fichier3" label="Quitter" imageMso="PrintPreviewClose" getEnabled="Aut_Fichier3"  onAction="Action_Fichier3"/>
+	</group>
+</tab>
+<tab id="Administration" label="Administration">
+	<group id="AdministrationG" label="Administration">
+		<button id="AdministrationG1" label="Droits utilisateurs" imageMso="BevelTextGallery" getEnabled="Aut_AdministrationG1"  onAction="Action_AdministrationG1"/>
+		<button id="AdministrationG2" label="Versions déployées" imageMso="PageColorPicker" getEnabled="Aut_AdministrationG2"  onAction="Action_AdministrationG2"/>
+	</group>
+	<group id="ParametreAdmin" label="Paramètres">
+		<button id="ParametreAdmin1" label="Paramètres généraux" imageMso="RecordsAddFromOutlook" getEnabled="Aut_ParametreAdmin1"  onAction="Action_ParametreAdmin1"/>
+		<button id="ParametreAdmin2" label="Fournisseurs" imageMso="ViewsLayoutView" getEnabled="Aut_ParametreAdmin2"  onAction="Action_ParametreAdmin2"/>
+	</group>
+</tab>
+<tab id="Parametres" label="Paramètres">
+	<group id="DonneesGen" label="Données Générales">
+		<button id="DonneesGen1" label="Unités de production" imageMso="ColumnsDialog" getEnabled="Aut_DonneesGen1"  onAction="Action_DonneesGen1"/>
+		<button id="DonneesGen2" label="Secteurs" imageMso="ReviewCompareMajorVersion" getEnabled="Aut_DonneesGen2"  onAction="Action_DonneesGen2"/>
+	</group>
+	<group id="Fournisseurs" label="Fournisseurs">
+		<button id="Fournisseurs1" label="Contacts" imageMso="AcceptInvitation" getEnabled="Aut_Fournisseurs1"  onAction="Action_Fournisseurs1"/>
+		<button id="Fournisseurs2" label="Fournisseurs" imageMso="ReviewAcceptChange" getEnabled="Aut_Fournisseurs2"  onAction="Action_Fournisseurs2"/>
+	</group>
+	<group id="Equipements" label="Equipements">
+		<button id="Equipements1" label="Catégories" imageMso="AutoFormatWizard" getEnabled="Aut_Equipements1"  onAction="Action_Equipements1"/>
+		<button id="Equipements2" label="Modèles" imageMso="CacheListData" getEnabled="Aut_Equipements2"  onAction="Action_Equipements2"/>
+		<button id="Equipements3" label="Equipements" imageMso="ConvertDatabaseFormat" getEnabled="Aut_Equipements3"  onAction="Action_Action_Equipements3"/>
+		<button id="Equipements4" label="Sous-ensembles" imageMso="FileManageMenu" getEnabled="Aut_Equipements4"  onAction="Action_Equipements4"/>
+		<button id="Equipements5" label="Pièces" imageMso="DatabaseMoveToSharePoint" getEnabled="Aut_Equipements5"  onAction="Action_Equipements5"/>
+		<button id="Equipements6" label="Dépendances" imageMso="QueryAppend" getEnabled="Aut_Equipements6"  onAction="Action_Equipements6"/>
+	</group>
+	<group id="ParamInterventions" label="Interventions">
+		<button id="ParamInterventions1" label="Priorités" imageMso="AppointmentColorDialog" getEnabled="Aut_ParamInterventions1"  onAction="Action_ParamInterventions1"/>
+		<button id="ParamInterventions2" label="Domaine" imageMso="AddOrRemoveAttendees" getEnabled="Aut_ParamInterventions2"  onAction="Action_ParamInterventions2"/>
+		<button id="ParamInterventions3" label="Etats affectés" imageMso="ChartAreaChart" getEnabled="Aut_ParamInterventions3"  onAction="Action_ParamInterventions3"/>
+		<button id="ParamInterventions4" label="Urgence" imageMso="AttachMenu" getEnabled="Aut_ParamInterventions4"  onAction="Action_ParamInterventions4"/>
+		<button id="ParamInterventions5" label="Type" imageMso="AutoDial" getEnabled="Aut_ParamInterventions5"  onAction="Action_ParamInterventions5"/>
+	</group>
+</tab>
+<tab id="Interventions" label="Interventions">
+	<group id="InterventionsG" label="Gestion des interventions">
+		<button id="InterventionsG1" label="Liste des interventions" imageMso="FileBackupDatabase" getEnabled="Aut_InterventionsG1"  onAction="Action_InterventionsG1"/>
+		<button id="InterventionsG2" label="Demande d'intervention" imageMso="Chart3DBarChart" getEnabled="Aut_InterventionsG2"  onAction="Action_InterventionsG2"/>
+	</group>
+	<group id="Tables" label="Tables">
+		<button id="Tables1" label="Interventions / actions" imageMso="BlogHomePage" getEnabled="Aut_Tables1"  onAction="Action_Tables1"/>
+		<button id="Tables2" label="Interventions / temps" imageMso="BlogPublish" getEnabled="Aut_Tables2"  onAction="Action_Tables2"/>
+	</group>
+</tab>
+<tab id="MaintenanceP" label="Maintenance préventive">
+	<group id="FichePrev" label="Fiches préventives">
+		<button id="FichePrev1" label="Liste des fiches préventives" imageMso="ObjectBringToFront" getEnabled="Aut_FichePrev1"  onAction="Action_FichePrev1"/>
+		<button id="FichePrev2" label="Nouvelle fiche préventive" imageMso="ChartResetToMatchStyle" getEnabled="Aut_FichePrev2"  onAction="Action_FichePrev2"/>
+	</group>
+	<group id="Compteurs" label="Compteurs">
+		<button id="Compteurs1" label="Gestion des compteurs" imageMso="ChartStylesGallery" getEnabled="Aut_Compteurs1"  onAction="Action_Compteurs1"/>
+	</group>
+</tab>
+</tabs>
+</ribbon>
+<backstage>
+         <button idMso="FileSave" visible="true"/>
+         <button idMso="SaveObjectAs" visible="true"/>
+         <button idMso="FileSaveAsCurrentFileFormat" visible="true"/>
+         <button idMso="FileOpen" visible="true"/>
+         <button idMso="FileCloseDatabase" visible="true"/>
+         <tab idMso="TabInfo" visible="true"/>
+         <tab idMso="TabRecent" visible="true"/>
+         <tab idMso="TabNew" visible="true"/>
+         <tab idMso="TabPrint" visible="true"/>
+         <tab idMso="TabShare" visible="true"/>
+         <tab idMso="TabHelp" visible="true"/>
+         <button idMso="ApplicationOptionsDialog" visible="true"/>
+         <button idMso="FileExit" visible="true"/>
+    </backstage>
+</customUI> 

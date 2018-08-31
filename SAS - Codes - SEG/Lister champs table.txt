@@ -1,0 +1,3 @@
+proc contents data=DTM_PRO.DTM_PRO_TRAC_LINGOTS out=Liste_Champs;
+run;
+

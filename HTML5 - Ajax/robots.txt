@@ -1,0 +1,3 @@
+# robots.txt for http://www.votredomaine.fr/
+User-agent: * # S'adresse à tous les moteurs de recherche
+Disallow: / # Aucun moteur n'a donc accès à quoi que ce soit.

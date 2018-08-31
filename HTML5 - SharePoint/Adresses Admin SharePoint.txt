@@ -1,0 +1,12 @@
+Gestionnaire de conception :
+
+http://intranet/_layouts/15/DesignWelcomePage.aspx
+
+Contenu de site :
+
+http://intranet/_layouts/15/viewlsts.aspx
+
+Paramètres de site :
+
+http://intranet/_layouts/15/settings.aspx?Source=http%3A%2F%2Fintranet%2F%5Flayouts%2F15%2Fviewlsts%2Easpx
+

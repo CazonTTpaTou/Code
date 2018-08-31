@@ -1,0 +1,7 @@
+IF ( 'TNQ'n < 'Objectif Contrôle'p )
+RETURN 0
+ELSE ( 
+  IF ( 'TNQ'n < ( 1.15 * 'Objectif Contrôle'p ) )
+  RETURN 1
+  ELSE 2 )
+

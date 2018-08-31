@@ -1,0 +1,31 @@
+DATA Work.Liste_Arret_SSE (keep=Code_Emplacement);
+SET Work.LISTE_ARRET_COMPLET;
+IF (substr(reverse(trim(Code_Emplacement)),1,1) NE '0') Then Output; 														  
+RUN;
+
+PROC SORT data=Work.Liste_Arret_SSE Out=Work.Liste_SSE Nodupkey;
+BY Code_Emplacement;
+RUN;
+
+%Macro Selection(Emplacement);
+	DATA Work.Liste_Arret;
+	SET Work.LISTE_ARRET_COMPLET;
+	IF Code_Emplacement = &Emplacement Then Output;
+	RUN;
+%mend;
+
+
+DATA _NULL_;
+SET Work.liste_SSE;
+	Call Symputx('Code_Equip',Code_Emplacement);
+	%Selection(&Code_Equip.);
+	%PackingIntervall(&Code_Equip.);
+RUN;
+
+
+
+
+
+
+
+

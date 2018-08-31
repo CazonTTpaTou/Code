@@ -1,0 +1,600 @@
+Option Compare Database
+
+Private Const CST_FORMULAIRE = "PROGRESS_BAR"
+
+Private WithEvents oProgressForm As Access.Form
+
+Private lProgressMin As Long
+Private lProgressMax As Long
+Private lProgressValue As Long
+
+Private lAnimationValue As Long
+Private lAnimationImages As Collection
+
+Private dDateHeureDebut As Date
+Private lSecondes As Long
+
+Private Sub Class_Initialize()
+
+' ===============================================================================
+' Fonction      : Class_Initialize
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Retourne l'identifiant de la base sélectionnée.
+' ===============================================================================
+
+On Error GoTo GestionErreur
+
+    ' Initialisation des valeurs de la barre de progression
+    lProgressMin = 1
+    lProgressMax = 100
+    lProgressValue = 0
+    dDateHeureDebut = Format(Now, "dd/mm/yyyy hh:nn")
+    ' Création d'un nouvel objet formulaire
+    Set oProgressForm = New Form_F__ATTENTE
+    ' Images d'animation
+    AnimationPrefix = "ImgFrame"
+    ' Sortie de la procedure
+    Exit Sub
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".Class_Initialize", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Sub
+
+Public Property Get Visible() As Boolean
+
+' ===============================================================================
+' Fonction      : Visible
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Visibilité du formulaire
+' ===============================================================================
+    
+On Error GoTo GestionErreur
+    
+    Visible = oProgressForm.Visible
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".Visible", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Let Visible(ByVal pVisible As Boolean)
+
+' ===============================================================================
+' Fonction      : Visible
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Visibilité du formulaire
+' ===============================================================================
+    
+On Error GoTo GestionErreur
+    
+    oProgressForm.Visible = pVisible
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".Visible", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Get GeneralInfo() As String
+
+' ===============================================================================
+' Fonction      : GeneralInfo
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Information générale
+' ===============================================================================
+    
+On Error GoTo GestionErreur
+    
+    GeneralInfo = oProgressForm.lblInfo.Caption
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".GeneralInfo", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Let GeneralInfo(ByVal pInfo As String)
+
+' ===============================================================================
+' Fonction      : GeneralInfo
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Information générale
+' ===============================================================================
+    
+On Error GoTo GestionErreur
+    
+    oProgressForm.lblInfo.Caption = pInfo
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".GeneralInfo", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Get ProgressInfo() As String
+
+' ===============================================================================
+' Fonction      : ProgressInfo
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Information détaillée (au-dessus de la barre de progression)
+' ===============================================================================
+    
+On Error GoTo GestionErreur
+    
+    ProgressInfo = oProgressForm.lblProgressText.Caption
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".ProgressInfo", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Let ProgressInfo(ByVal pInfo As String)
+
+' ===============================================================================
+' Fonction      : ProgressInfo
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Information détaillée (au-dessus de la barre de progression)
+' ===============================================================================
+    
+On Error GoTo GestionErreur
+    
+    oProgressForm.lblProgressText.Caption = pInfo
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".ProgressInfo", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Get ProgressMin() As Long
+
+' ===============================================================================
+' Fonction      : ProgressMin
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Valeur mini de la progression
+' ===============================================================================
+    
+On Error GoTo GestionErreur
+    
+    ProgressMin = lProgressMin
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".ProgressMin", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Let ProgressMin(ByVal pMin As Long)
+
+' ===============================================================================
+' Fonction      : ProgressMin
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Valeur mini de la progression
+' ===============================================================================
+
+On Error GoTo GestionErreur
+    
+    lProgressMin = pMin
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".ProgressMin", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Get ProgressMax() As Long
+    
+' ===============================================================================
+' Fonction      : ProgressMax
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Valeur maxi de la progression
+' ===============================================================================
+
+On Error GoTo GestionErreur
+    
+    ProgressMax = lProgressMax
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".ProgressMax", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Let ProgressMax(ByVal Pmax As Long)
+    
+' ===============================================================================
+' Fonction      : ProgressMax
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Valeur maxi de la progression
+' ===============================================================================
+
+On Error GoTo GestionErreur
+    
+    lProgressMax = Pmax
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".ProgressMax", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Get ProgressValue() As Long
+    
+' ===============================================================================
+' Fonction      : ProgressValue
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Valeur de la progression
+' ===============================================================================
+    
+On Error GoTo GestionErreur
+    
+    ProgressValue = lProgressValue
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".ProgressValue", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Let ProgressValue(ByVal pValue As Long)
+    
+' ===============================================================================
+' Fonction      : ProgressValue
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Valeur de la progression
+' ===============================================================================
+    
+On Error GoTo GestionErreur
+    
+    ' Stocke la valeur
+    lProgressValue = pValue
+    ' On met à jour la barre
+    oProgressForm.lblProgress.Width = oProgressForm.lblProgressBack.Width / _
+                (lProgressMax - lProgressMin + 1) * (ProgressValue - lProgressMin + 1)
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".ProgressValue", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Get ProgressPercent() As Currency
+    
+' ===============================================================================
+' Fonction      : ProgressPercent
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Progression en pourcentage
+' ===============================================================================
+    
+On Error GoTo GestionErreur
+    
+    ProgressPercent = (ProgressValue - lProgressMin + 1) / (lProgressMax - lProgressMin + 1)
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".ProgressPercent", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Let ProgressPercent(ByVal pProgress As Currency)
+    
+' ===============================================================================
+' Fonction      : ProgressPercent
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Progression en pourcentage
+' ===============================================================================
+    
+On Error GoTo GestionErreur
+    
+    ProgressValue = lProgressMin + pProgress * (lProgressMax - lProgressMin + 1)
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".ProgressPercent", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Sub Repaint()
+    
+' ===============================================================================
+' Fonction      : Repaint
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Raffraîchit l'affichage du formulaire
+' ===============================================================================
+    
+On Error GoTo GestionErreur
+    
+    ' Repeint le formulaire
+    oProgressForm.Repaint
+    ' Evite que l'application ne soit figée
+    DoEvents
+    Exit Sub
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".Repaint", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Sub
+
+Public Property Let AnimationPrefix(ByVal pPrefix As String)
+    
+' ===============================================================================
+' Fonction      : AnimationPrefix
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Prefixe des images d'animation
+' ===============================================================================
+    
+Dim loCtrl As Control
+Dim lCpt As Long
+
+On Error GoTo GestionErreur
+
+    ' Nouvelle collection
+    Set lAnimationImages = New Collection
+    ' Si le formulaire est défini
+    If Not oProgressForm Is Nothing Then
+        ' Si le préfixe n'est pas vide
+        If pPrefix <> "" Then
+            ' Parcours les contrôles du formulaire
+            For Each loCtrl In oProgressForm.Controls
+                ' Si c'est un control image
+                If TypeOf loCtrl Is Access.Image Then
+                    ' Si le nom du contrôle commence par le préfixe
+                    If loCtrl.Name Like pPrefix & "*" Then
+                        ' Si c'est la première image on l'ajoute
+                        If lAnimationImages.Count = 0 Then
+                            lAnimationImages.Add loCtrl.Name, loCtrl.Name
+                        Else
+                            ' Sinon on ajoute l'image rangée par ordre alphabétique
+                            For lCpt = 1 To lAnimationImages.Count
+                                If loCtrl.Name > lAnimationImages.Item(lCpt) Then
+                                    lAnimationImages.Add loCtrl.Name, loCtrl.Name, , lAnimationImages.Item(lCpt)
+                                    Exit For
+                                End If
+                            Next
+                        End If
+                    End If
+                End If
+            Next
+        End If
+    End If
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".AnimationPrefix", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Get AnimationTimer() As Long
+    
+' ===============================================================================
+' Fonction      : AnimationTimer
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Minuterie de l'animation
+' ===============================================================================
+
+On Error GoTo GestionErreur
+    
+    AnimationTimer = oProgressForm.TimerInterval
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".AnimationTimer", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Let AnimationTimer(ByVal pTimer As Long)
+    
+' ===============================================================================
+' Fonction      : AnimationTimer
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Minuterie de l'animation
+' ===============================================================================
+
+On Error GoTo GestionErreur
+
+    oProgressForm.TimerInterval = pTimer
+    Call oProgressForm_Timer
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".AnimationTimer", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Get SecondesEcoulees() As Long
+    
+' ===============================================================================
+' Fonction      : SecondesEcoulees
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Calcule le nombre de secondes ecoulees depuis la date de debut
+' ===============================================================================
+
+On Error GoTo GestionErreur
+    
+    SecondesEcoulees = DateDiff("s", Format(dDateHeureDebut, "dd/mm/yyyy hh:nn:ss"), Format(Now, "dd/mm/yyyy hh:nn:ss"))
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".SecondesEcoulees", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Let DateDebut(ByVal pDateHeureDebut As Date)
+    
+' ===============================================================================
+' Fonction      : DateDebut
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Affecte la date de debut
+' ===============================================================================
+
+On Error GoTo GestionErreur
+
+    dDateHeureDebut = pDateHeureDebut
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".DateDebut", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Public Property Let TitreFenetre(ByVal pTitre As String)
+    
+' ===============================================================================
+' Fonction      : TitreFenetre
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Affecte la date de debut
+' ===============================================================================
+
+On Error GoTo GestionErreur
+
+    oProgressForm.Caption = pTitre
+    Exit Property
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".TitreFenetre", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Property
+
+Private Sub oProgressForm_Timer()
+    
+' ===============================================================================
+' Fonction      : oProgressForm_Timer
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Evenement minuterie du formulaire
+' ===============================================================================
+
+On Error GoTo GestionErreur
+
+    ' Test si au moins une image dans la collection
+    If lAnimationImages.Count > 0 Then
+        ' Avance d'une image
+        lAnimationValue = 1 + lAnimationValue Mod lAnimationImages.Count
+        ' Affiche l'image
+        oProgressForm.ImgProgress.PictureData = oProgressForm.Controls(lAnimationImages.Item(lAnimationValue)).PictureData
+    End If
+    ' On calcule le temps d'affichage de la fenetre
+    lSecondes = DateDiff("s", Format(dDateHeureDebut, "dd/mm/yyyy hh:nn"), Now())
+    Exit Sub
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".AnimationTimer", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Sub

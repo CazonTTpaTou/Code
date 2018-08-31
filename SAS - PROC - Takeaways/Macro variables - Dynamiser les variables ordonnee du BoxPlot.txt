@@ -1,0 +1,28 @@
+%let var1=Rend; 
+%let var2=Rs; 
+%let var3=Serial;
+%let var_count=2; 
+
+/* Initialisation de la macro-variable temp indispensable */
+%let temp=;
+%macro test(); /* Permet de créer une macro : %macro NOMDELAMACRO(paramètres) */
+
+%do i=1 %to &var_count; /* Boucle FOR/DO pour créer une nouvelle macro-variable 
+                     contenant toutes les variables sélectionnées par l'utilisateur */
+     %let temp=&temp &&var&i ; /* Nouvelle macro-variable temp */
+     %put &temp; /* Affichage au fur et à mesure de la valeur de temp, pour contrôler uniquement 
+                = ligne de code que l'on peut supprimer */
+%end; /* Fin de la boucle FOR/DO */
+
+proc sort data=Training.Multivariee_Courant; /* Tri de la table selon la variable de groupe tracée dans le boxplot */
+     by Serial; 
+run; 
+
+Proc boxplot data=Training.Multivariee_Courant; 
+     plot (&temp) * &var3 / outbox=work.essai2; /* Tracé de toutes les varfiables sélectionnées par l'utilisateur en fonction de C */
+run; 
+
+%mend test; 
+%test;
+
+

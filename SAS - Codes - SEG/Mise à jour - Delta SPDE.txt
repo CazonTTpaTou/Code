@@ -1,0 +1,73 @@
+LIBNAME IN_LINE ODBC  DATASRC=SSIS_DWH  SCHEMA=dbo  USER=SASSQL  PASSWORD="{SAS002}3625302A43996237206B48FF5188832F3A71A582" ;
+
+option compress=binary msglevel=i DBIDIRECTEXEC; 
+
+LIBNAME SPDEWAV SPDE "E:\Donnees_SAS\WAVESLABS" 
+METAPATH=("E:\Donnees_SAS\WAVESLABS\Meta")  
+DATAPATH=("E:\Donnees_SAS\WAVESLABS\dataA" 
+          "E:\Donnees_SAS\WAVESLABS\dataB" 
+          "E:\Donnees_SAS\WAVESLABS\dataC" 
+		  "E:\Donnees_SAS\WAVESLABS\dataD" 
+          "E:\Donnees_SAS\WAVESLABS\dataE" 
+          "E:\Donnees_SAS\WAVESLABS\dataF" 
+		  "E:\Donnees_SAS\WAVESLABS\dataG" 
+          "E:\Donnees_SAS\WAVESLABS\dataH")  
+INDEXPATH=("E:\Donnees_SAS\WAVESLABS\idxA" 
+           "E:\Donnees_SAS\WAVESLABS\idxB" 
+           "E:\Donnees_SAS\WAVESLABS\idxC" 
+           "E:\Donnees_SAS\WAVESLABS\idxD")  
+PARTSIZE=1250 ;
+
+/* On cherche la dernière date chargée dans les 15 derniers jours*/
+proc summary data=spdelog.TL_WAVESLABS (idxwhere=yes);
+where date()-15 <= journee <= date() ;
+var time;
+output out= dernierTime max=;
+run;
+
+/*La valeur est placée dans une macro-variable*/
+data _null_;
+	set dernierTime;
+	call symputx('_dernierTime' , Time ) ;
+run;
+
+%put ** La dernière date chargée dans les 15 derniers jours : &_dernierTime. ;
+
+/*Les index SPDE sont détruits*/
+Proc datasets  lib=spdelog nolist nowarn nodetails;
+	modify TL_WAVESLABS (ASYNCINDEX=YES);
+	index delete LotID WaferNr Estsur10jours EstSurUnMois EstSurTroisMois;
+run;
+quit;
+
+data spdelog.TL_WAVESLABS;
+set 
+	spdelog.TL_WAVESLABS 
+	IN_LINE.WAFER_WAV (where=(time gt &_dernierTime.));
+
+	journee=datepart(TimeStamp_Flash);
+	jour=day(journee);
+
+	EstSur10jours = ( date()-10 <= journee <= date() );
+	EstSurUnMois = ( date()-30 <= journee <= date() );
+	EstSurTroisMois = ( date()-90 <= journee <= date() );
+
+	format journee DDMMYYS10. ;
+
+label
+	journee="Journée"
+	Estsur10jours  = "Filtre (0/1) données sur les 10 derniers jours"
+	EstSurUnMois = "Filtre (0/1) données sur les 30 derniers jours"
+	EstSurTroisMois = "Filtre (0/1) données sur les 90 derniers jours";
+run;
+
+/*Les index SPDE sont reconstruits*/
+Proc datasets  lib=spdelog nolist nowarn nodetails;
+
+	modify TL_WAVESLABS (ASYNCINDEX=YES);
+	index create LotID WaferNr Estsur10jours EstSurUnMois EstSurTroisMois;
+Run;
+Quit;
+
+
+

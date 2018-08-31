@@ -1,0 +1,136 @@
+Option Compare Database
+
+
+Public Sub FR_DI_Factory(ByVal frm As String)
+
+Dim Section As Collection
+Dim formulaire As Form
+Dim NumEtatIntervention, sectionActive As Integer
+Dim flag As Boolean
+
+Set formulaire = Forms(frm)
+
+For Each sfr In Forms(formulaire.Name).Controls
+    If TypeOf sfr Is SubForm Then
+        If Section Is Nothing Then
+            Set Section = New Collection
+        End If
+        Section.Add sfr
+    End If
+Next sfr
+
+flag = True
+
+For Each Sect In Section
+    Sect.Visible = False
+Next Sect
+
+For i = 1 To Section.Count
+        
+        If flag Then
+            
+            Section.Item(i).Visible = True
+            If Not IsNull(Section.Item(i).Controls("Etat")) Then
+                flag = (Section.Item(i).Controls("Etat").value <> 0)
+            End If
+            
+            Select Case (i)
+            '-----------------------------------------------------------
+            ' Section Demande
+            Case 1:
+                    For Each ctrl In Section.Item(i).Controls
+                        If (ctrl.ControlType = acComboBox) _
+                            Or (ctrl.ControlType = acTextBox) _
+                            Or (ctrl.ControlType = acCommandButton) Then
+                                ctrl.Enabled = False
+                        End If
+                    Next ctrl
+                    Section.Item(i).Controls("Imprimer").Enabled = True
+            '-----------------------------------------------------------
+            ' Section Intervention
+            Case 2:
+                    For Each ctrl In Section.Item(i).Controls
+                        If (ctrl.ControlType = acComboBox) _
+                            Or (ctrl.ControlType = acTextBox) _
+                            Or (ctrl.ControlType = acCommandButton) Then
+                                ctrl.Enabled = False
+                        End If
+                    Next ctrl
+                    'Section.Item(i).Controls("PieceJointe").Enabled =
+                    '    Section.Item(i).Controls("FichierJoint").value
+            '-----------------------------------------------------------
+            ' Section Affectation
+             Case 3:
+                    'flag = Section.Item(i).Controls("Etat").value
+                
+                For Each ctrl In Section(i).Controls
+                     If (ctrl.ControlType = acCommandButton) Then
+                        ctrl.Enabled = Not (flag)
+                    End If
+                Next ctrl
+           
+            '-----------------------------------------------------------
+            ' Section Prise en compte
+             Case 4:
+                     'flag = Section.Item(i).Controls("Etat").value
+                
+                For Each ctrl In Section(i).Controls
+                    If (ctrl.ControlType = acComboBox) Then
+                        Call DI_DLMaker(Nz(ctrl.Name, ""), _
+                                        formulaire.Name, Section.Item(i).Name)
+                     End If
+                     If (ctrl.ControlType = acCommandButton) Then
+                        ctrl.Enabled = Not (flag)
+                    End If
+                Next ctrl
+            
+            '-----------------------------------------------------------
+            ' Section Réalisation
+             Case 5:
+             'flag = Section.Item(i).Controls("Etat").value
+                
+                For Each ctrl In Section(i).Controls
+                    If (ctrl.ControlType = acComboBox) Then
+                        Call DI_DLMaker(Nz(ctrl.Name, ""), _
+                                        formulaire.Name, Section.Item(i).Name)
+                     End If
+                     If (ctrl.ControlType = acCommandButton) Then
+                        ctrl.Enabled = Not (flag)
+                    End If
+                Next ctrl
+             '-----------------------------------------------------------
+            ' Section Activité
+             Case 6:
+             ' flag = Section.Item(i).Controls("Etat").value
+              
+              For Each ctrl In Section(i).Controls
+                    
+                     If (ctrl.ControlType = acCommandButton) Then
+                        ctrl.Enabled = Not (flag)
+                    End If
+                Next ctrl
+                
+           End Select
+       
+       End If
+    
+Next i
+  
+End Sub
+
+Public Sub DICaption()
+
+Dim strOA As String
+Dim Etat As Integer
+
+'strOA = Nz(Me.OpenArgs, "")
+
+'  If Not IsNull(strOA) Then
+    
+'    Me.Caption = strOA
+    
+End If
+
+
+End Sub
+

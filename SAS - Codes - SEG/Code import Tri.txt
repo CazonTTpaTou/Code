@@ -1,0 +1,180 @@
+
+%let tri_chemin=%bquote(")\\office\users\Bases_de_donnees\Machines\TRIs-PASAN\PASAN-C02\Fichiers-Journaliers\Tri2_2015*.csv%bquote(");
+
+filename liste pipe "dir &tri_chemin /b /s";/* commande listant les fichiers du répertoire */
+
+
+data WORK.LOGS_TRI_PASAN_C02_2015;							/* création de la table */
+
+LENGTH
+        'N°'n              8
+        Date               8
+        Heure              8
+        Recette          $ 27
+        Serial           $ 9
+        Comment          $ 1
+        Classe           $ 6
+        Voc                8
+        Isc                8
+        Pmax               8
+        FF                 8
+        Rend               8
+        Rs                 8
+        Rsh                8
+        Vmax               8
+        Imax               8
+        'I@Vref'n          8
+        Comment_0001     $ 1
+        Irrad              8
+        IrrDev             8
+        'T°Mon'n           8
+        'T°Cell'n          8
+        CoeffI             8
+        CoeffV             8
+        CoeffP             8
+        Idk                8 ;
+    LABEL
+        Comment_0001     = "Comment" ;
+    FORMAT
+        'N°'n            BEST5.
+        Date             DDMMYY10.
+        Heure            TIME8.
+        Recette          $CHAR27.
+        Serial           $CHAR9.
+        Comment          $CHAR1.
+        Classe           $CHAR6.
+        Voc              BEST5.
+        Isc              BEST5.
+        Pmax             BEST5.
+        FF               BEST5.
+        Rend             BEST5.
+        Rs               BEST4.
+        Rsh              BEST5.
+        Vmax             BEST5.
+        Imax             BEST5.
+        'I@Vref'n        BEST5.
+        Comment_0001     $CHAR1.
+        Irrad            BEST5.
+        IrrDev           BEST3.
+        'T°Mon'n         BEST4.
+        'T°Cell'n        BEST4.
+        CoeffI           BEST7.
+        CoeffV           BEST7.
+        CoeffP           BEST7.
+        Idk              BEST5. ;
+    INFORMAT
+        'N°'n            BEST5.
+        Date             DDMMYY10.
+        Heure            TIME11.
+        Recette          $CHAR27.
+        Serial           $CHAR9.
+        Comment          $CHAR1.
+        Classe           $CHAR6.
+        Voc              BEST5.
+        Isc              BEST5.
+        Pmax             BEST5.
+        FF               BEST5.
+        Rend             BEST5.
+        Rs               BEST4.
+        Rsh              BEST5.
+        Vmax             BEST5.
+        Imax             BEST5.
+        'I@Vref'n        BEST5.
+        Comment_0001     $CHAR1.
+        Irrad            BEST5.
+        IrrDev           BEST3.
+        'T°Mon'n         BEST4.
+        'T°Cell'n        BEST4.
+        CoeffI           BEST7.
+        CoeffV           BEST7.
+        CoeffP           BEST7.
+        Idk              BEST5. ;
+
+
+infile liste truncover;       /* lecture de la liste des fichiers trouvés */
+       input fichier $200.;/*Variable contenant chemin et nom des fichiers de la liste*/        
+       infile Parcourt                    
+       filevar=fichier   /* quel fichier est à lire */
+LRECL=181
+ENCODING="WLATIN1"
+TERMSTR=CRLF
+DSD
+truncover
+       end=termine       /* la variable ‘termine’ est créée lorsque toute la liste de fichier a été lue */
+       firstobs=33        /* lire à partir de la 33eme ligne */
+       DLM='09'x;          /* le séparateur de nos fichiers est une tab */  
+
+       do while(not termine); /* On boucle sur chaque ligne du fichier en cours */
+       input
+		'N°'n            : ?? BEST5.
+        Date             : ?? DDMMYY10.
+        Heure            : ?? TIME8.
+        Recette          : $CHAR27.
+        Serial           : $CHAR9.
+        Comment          : $CHAR1.
+        Classe           : $CHAR6.
+        Voc              : ?? COMMA5.
+        Isc              : ?? COMMAX5.
+        Pmax             : ?? COMMAX5.
+        FF               : ?? COMMA5.
+        Rend             : ?? COMMA5.
+        Rs               : ?? COMMA4.
+        Rsh              : ?? COMMA5.
+        Vmax             : ?? COMMA5.
+        Imax             : ?? COMMAX5.
+        'I@Vref'n        : ?? COMMAX5.
+        Comment_0001     : $CHAR1.
+        Irrad            : ?? COMMA5.
+        IrrDev           : ?? COMMA3.
+        'T°Mon'n         : ?? COMMA4.
+        'T°Cell'n        : ?? COMMA4.
+        CoeffI           : ?? COMMA7.
+        CoeffV           : ?? COMMA7.
+        CoeffP           : ?? COMMA7.
+        Idk              : ?? COMMAX5. ;    /* récupère les trois premières variables */
+        output;       						/* écrire les variables var1, var2 et var3 dans notre table */
+       end;
+
+	   ATTRIB
+			'N°'n           LABEL="Numero"
+	        Date            LABEL="Date"
+	        Heure           LABEL="Heure"
+	        Recette         LABEL="Recette"
+	        Serial          LABEL="Serial"
+	        Comment         LABEL="Comment"
+	        Classe          LABEL="Classe"
+	        Voc             LABEL="Voc"
+	        Isc             LABEL="Isc"
+	        Pmax            LABEL="Pmax"
+	        FF              LABEL="FF"
+	        Rend            LABEL="Rend"
+	        Rs              LABEL="Rs"
+	        Rsh             LABEL="Rsh"
+	        Vmax            LABEL="Vmax"
+	        Imax            LABEL="Imax"
+	        'I@Vref'n       LABEL="IVRef"
+	        Comment_0001    LABEL="Commentaire"
+	        Irrad           LABEL="Irrad"
+	        IrrDev          LABEL="IrrDev"
+	        'T°Mon'n        LABEL="Temperature_Mon"
+	        'T°Cell'n       LABEL="Temperature_Cell"
+	        CoeffI          LABEL="CoeffI"
+	        CoeffV          LABEL="CoeffV"
+	        CoeffP          LABEL="CoeffP"
+	        Idk             LABEL="Idk" ; 
+			
+run ; 
+
+DATA DTM_PRO.DTM_LOGS_TRI (drop= 'N°'n Date Heure 'I@Vref'n 'T°Cell'n 'T°Mon'n);
+	format Date_Heure datetime18. Numero 8. Origine $16.; 
+
+			SET WORK.LOGS_TRI_PASAN_C02_2015; 
+					IVREF = 'I@Vref'n;
+					T_Cell = 'T°Cell'n;
+					T_Mon = 'T°Mon'n;
+				    Date_Heure = dhms(Date,Hour(Heure),Minute(Heure),Second(Heure));
+					Numero = 'N°'n;
+					Origine = 'Tri_Pasan_C02';
+
+RUN;
+

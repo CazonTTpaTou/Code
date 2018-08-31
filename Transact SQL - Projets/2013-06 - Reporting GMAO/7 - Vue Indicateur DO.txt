@@ -1,0 +1,29 @@
+/****** Object:  View [dbo].[Vue_Indicateur_DO]    Script Date: 07/22/2013 10:40:51 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE VIEW [dbo].[Vue_Indicateur_DO]
+AS
+
+select 
+DATENAME(year, EQ.DateJour) as année
+    ,DATENAME(QUARTER, EQ.DateJour) as Trimestre
+    ,DATENAME(MONTH, EQ.DateJour) as Mois
+    ,DATENAME(WEEK, EQ.DateJour) as Semaine    
+    ,DATENAME(dayofyear, EQ.DateJour)as JourAnnee
+    ,DATENAME(weekday, EQ.DateJour) as JourSemaine
+    ,DATENAME(day, EQ.DateJour) as Jour,
+EQ.*,
+SEQ.[Sous-Equipement] as [Sous-Equipement],
+SEQ.Tps_Arret_h as Tps_Arret_SSEquipement,
+SEQ.Nb_Arret AS Nb_Arret_SSEquipement from dbo.Vue_Indicateur_DO_Equipement as EQ 
+left outer join dbo.Vue_Indicateur_DO_Sous_Equipement as SEQ
+on EQ.Numero = SEQ.Equipement
+and EQ.DateJour = SEQ.DateJour
+
+
+GO
+

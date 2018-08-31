@@ -1,0 +1,13 @@
+PROC SQL;
+
+Connect to odbc(readbuff=32767 DATASRC=GMAO  USER=SASSQL  PASSWORD="{SAS002}3625302A43996237206B48FF5188832F3A71A582");
+
+CREATE TABLE RE_GMAO.Arbo_Test 
+AS 
+select * from connection to odbc
+(
+	Select *
+	FROM dbo.SAS_Dimension_Emplacement_Tr
+);
+disconnect from odbc;
+QUIT;

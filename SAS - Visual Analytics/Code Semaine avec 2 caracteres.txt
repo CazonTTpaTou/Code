@@ -1,0 +1,5 @@
+RemoveBlanks(
+Concatenate(Concatenate(Format('Année'n[Raw], 'BEST12.'), '-'), 
+IF ('Numéro semaine'n<10) 
+RETURN (Concatenate('0',Format('Numéro semaine'n,'BEST1.'))) 
+ELSE (Format('Numéro semaine'n,'BEST2.')), _All_))

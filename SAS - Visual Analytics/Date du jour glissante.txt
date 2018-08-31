@@ -1,0 +1,7 @@
+DateFromMDY(
+( Month(DatePart(Now())) - 'Mois'p ), 
+( DayOfMonth(DatePart(Now())) - 'Jour'p ), 
+( Year(DatePart(Now())) - 'Annee'p ))
+
+
+

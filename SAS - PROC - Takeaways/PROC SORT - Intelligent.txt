@@ -1,0 +1,10 @@
+proc sort data = WORK.LOGS_LYTOX Out= Work.LOGS_TRIES;
+   by Jour LotID Tube;
+run;
+
+data WORK.LOGS_UNIQUE WORK.DOUBLONS;
+   set Work.LOGS_TRIES;
+   by Jour LotID Tube;
+   if first.LotID then output WORK.LOGS_UNIQUE;
+   else output WORK.DOUBLONS;
+run;

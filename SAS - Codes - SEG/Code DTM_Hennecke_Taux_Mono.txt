@@ -1,0 +1,36 @@
+LIBNAME CDSN ODBC  DATASRC=CDSN  SCHEMA=CDSN_app  USER=SASSQL  PASSWORD="{SAS002}3625302A43996237206B48FF5188832F3A71A582" ;
+
+PROC SQL;
+   CREATE TABLE WORK.Taux_Mono_Assemblage AS 
+   SELECT t1.'N°Assemblage'n LABEL="Num_Assemblage" AS Num_Assemblage, 
+          /* Taux_Mono */
+            (AVG(t1.Struct / 100)) LABEL="Taux_Mono_Assemblage" AS Taux_Mono_Assemblage, 
+          /* Num_Lingot */
+            (int( t1.'N°Assemblage'n /100)) LABEL="Num_Lingot" AS Num_Lingot
+      FROM CDSN.TL_Hennecke t1
+      GROUP BY t1.'N°Assemblage'n;
+QUIT;
+
+PROC SQL;
+   CREATE TABLE WORK.Taux_Mono_Lingot AS 
+   SELECT /* Num_Lingot */
+            (int(t1.'N°Assemblage'n/100) ) LABEL="Num_Lingot" AS Num_Lingot, 
+          /* Taux_Mono_Lingot */
+            (MEAN(t1.Struct / 100)) LABEL="Taux_Mono_Lingot" AS Taux_Mono_Lingot
+      FROM CDSN.TL_Hennecke t1
+      GROUP BY (CALCULATED Num_Lingot);
+QUIT;
+
+PROC SQL;
+	CREATE TABLE DTM_PRO.DTM_Hennecke_Taux_Mono AS
+	SELECT
+		T1.Num_Assemblage,
+		T1.Taux_Mono_Assemblage,
+		T2.Taux_Mono_Lingot
+		FROM 
+			WORK.Taux_Mono_Assemblage AS T1
+			LEFT OUTER JOIN WORK.Taux_Mono_Lingot AS T2
+			ON T1.Num_lingot = T2.Num_Lingot;
+RUN;
+
+

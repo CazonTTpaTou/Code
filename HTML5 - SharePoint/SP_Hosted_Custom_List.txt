@@ -1,0 +1,60 @@
+<%-- Les 4 lignes suivantes sont des directives ASP.NET nécessaires lors de l'utilisation des composants SharePoint --%>
+
+<%@ Page Inherits="Microsoft.SharePoint.WebPartPages.WebPartPage, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" MasterPageFile="~masterurl/default.master" Language="C#" %>
+
+<%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+
+<%-- Le balisage et le script de l'élément Contenu suivant seront placés dans la partie <head> de la page --%>
+<asp:Content ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
+    <script type="text/javascript" src="../Scripts/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="/_layouts/15/sp.runtime.js"></script>
+    <script type="text/javascript" src="/_layouts/15/sp.js"></script>
+    <meta name="WebPartPageExpansion" content="full" />
+
+    <!-- Ajoutez vos styles CSS au fichier suivant -->
+    <link rel="Stylesheet" type="text/css" href="../Content/App.css" />
+
+    <!-- Ajoutez votre JavaScript au fichier suivant -->
+    <script type="text/javascript" src="../Scripts/App.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function ()
+            { sharePointReady(); })
+        });
+    </script>
+</asp:Content>
+
+<%-- Le balisage de l'élément Contenu suivant sera placé dans la partie TitleArea de la page --%>
+<asp:Content ContentPlaceHolderID="PlaceHolderPageTitleInTitleArea" runat="server">
+    Page Title
+</asp:Content>
+
+<%-- Le balisage et le script de l'élément Contenu suivant seront placés dans le <body> de la page --%>
+<asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
+
+    <div>
+        <p id="message">
+            <!-- Le contenu suivant sera remplacé par le nom de l'utilisateur lors de l'exécution de l'application, voir App.js -->
+            initializing...
+        </p>
+    </div>
+    <WebPartPages:WebPartZone
+        runat="server"
+        FrameType="TitleBarOnly"
+        ID="full"
+        Title="loc:full" >
+        <WebPartPages:XsltListViewWebPart
+            ID="XsltListViewEmployeeWebPart"
+            runat="server"
+            ListUrl="Lists/Employees"
+            IsIncluded="True"
+            NoDefaultStyle="TRUE"
+            Title="Employees"
+            PageType="PAGE_NORMALVIEW"
+            Default="False"
+            ViewContentTypeId="0x">
+        </WebPartPages:XsltListViewWebPart>
+    </WebPartPages:WebPartZone>
+</asp:Content>

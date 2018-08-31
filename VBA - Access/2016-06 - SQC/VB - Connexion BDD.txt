@@ -1,0 +1,1286 @@
+Option Compare Database
+Option Explicit
+
+Private Const CST_FORMULAIRE = "M_ADMIN_BASE"
+
+Private Const CST_APP_SQC = "SQC"
+Private Const CST_APP_CDSN = "CDSN"
+
+Private Const CST_PREFIXE_APP_BDD = "APP_"
+Private Const CST_PREFIXE_SQC_BDD = "SQC_"
+Private Const CST_PREFIXE_COMPTE = CST_PREFIXE_APP_BDD & CST_PREFIXE_SQC_BDD
+
+Public Const SQC_TABLE_OWNER = "dbo"
+Public Const CDSN_TABLE_OWNER = "cdsn_app"
+
+' Enumeration associée aux bases connectées
+Public Enum L_CNX
+    SQC = 1
+    CDSN = 2
+    DWH = 3
+End Enum
+
+' Structure decrivant une connexion
+Public Type DescConnexion
+    TableConfig         As String           ' Nom de la table de configuration
+    Application         As String           ' Nom de l'application
+    IdBase              As Long             ' Identifiant de la base de données
+    libelle             As String           ' Libelle de la base de données
+    CompteBDD           As String           ' Compte utilisateur de départ
+    MotDePasseBDD       As String           ' Mot de passe utilisateur du compte utilisateur de départ
+    Driver              As String           ' Driver utilisé
+    Serveur             As String           ' Serveur de la base de données
+    BaseDeDonnees       As String           ' Base de données par defaut
+    ConnecteurODBC      As String           ' Connecteur ODBC
+    TrustedConnexion    As String           ' Option 'Trusted_Connexion'
+    Shema               As String           ' Shema de la base de données
+    ChaineConnexionODBC As String           ' Chaine de connexion ODBC associée à l'utilisateur par defaut
+    ChaineConnexionADO  As String           ' Chaine de connexion associée à l'utilisateur par defaut
+End Type
+
+' Structure decrivant un utilisateur
+Public Type DescUtilisateur
+    CompteBDD           As String           ' Nom du compte utilisateur
+    MotDePasseBDD       As String           ' Mot de passe du compte utilisateur
+    ChaineConnexionODBC As String           ' Chaine de connexion ODBC associée à l'utilisateur specifique
+    ChaineConnexionADO  As String           ' Chaine de connexion ADO associée à l'utilisateur specifique
+    Shema               As String           ' Shema de la base de données
+End Type
+
+' Structure decrivant les tables et vues liées
+Private Type DescTable
+    Nom_SQLServer           As String
+    Nom_Access              As String
+End Type
+
+Dim tTablesLiees()          As DescTable    ' Tableau recapitulatif des tables SQC liées
+Dim tTablesCDSNLiees()      As DescTable    ' Tableau recapitulatif des tables CDSN liées
+Dim sUserConnecte           As String       ' User connecté
+
+Public Function BD_SEL_ID_BASE() As Long
+
+' ===============================================================================
+' Fonction      : BD_SEL_ID_BASE
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. Retourne l'identifiant de la base sélectionnée.
+' ===============================================================================
+
+    ' On recherche l'identifiant de la base selectionnee
+    BD_SEL_ID_BASE = Nz(DLookup("ID_BASE", "t__BaseSelect"), 0)
+
+End Function
+
+Public Function BD_SEL_UTILISATEUR() As String
+
+' ===============================================================================
+' Fonction      : BD_SEL_UTILISATEUR
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. Retourne le user connecté à la base de données.
+' ===============================================================================
+
+    ' On recherche l'identifiant de la base selectionnee
+    BD_SEL_UTILISATEUR = Nz(DLookup("USERNAME", "t__BaseSelect"), 0)
+
+End Function
+
+Public Function BD_SEL_LIBELLE_BASE(Optional ByVal P_AppBase As Integer = L_CNX.SQC) As String
+
+' ===============================================================================
+' Fonction      : BD_SEL_LIBELLE_BASE
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. Recherche le libelle de la base de
+'                 données sélectionnée.
+' ===============================================================================
+
+Dim sCriteres As String
+
+    ' Si la base de données est connectée
+    If BD_est_connectee() Then
+        ' On constitue le critère de recherche
+        sCriteres = "Application = %APPLICATION% AND IdBase = %ID_BASE%"
+        sCriteres = Replace(sCriteres, "%APPLICATION%", P_AppBase)
+        sCriteres = Replace(sCriteres, "%ID_BASE%", BD_SEL_ID_BASE)
+        ' On recherche l'identifiant de la base selectionnee
+        BD_SEL_LIBELLE_BASE = Nz(DLookup("LIBELLE", "t__Base", sCriteres), "")
+    ' Si aucune base de données n'est connectée
+    Else
+        ' On retourne un libelle par defaut
+        BD_SEL_LIBELLE_BASE = "Aucune base connectée"
+    End If
+
+End Function
+
+Private Function BD_Selectionner(ByVal P_IdBase As Long) As Boolean
+
+' ===============================================================================
+' Fonction      : BD_Selectionner
+' Entrée        : P_IdBase       : Identifiant de la base de données sur laquelle se connecter
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. Stocke dans la table "t__BaseSelect"
+'                 l'identifiant de la base sélectionnée. La suppression et l'insertion
+'                 au cas ou aucune valeur presente.
+' ===============================================================================
+    
+Dim sRequete As String
+    
+On Error GoTo GestionErreur
+    
+    ' On constitue la requete de suppression
+    sRequete = "DELETE * FROM t__BaseSelect"
+    ' On execute la requete de suppression
+    Call CurrentDb.Execute(sRequete)
+    ' On constitue la requete d'insertion
+    sRequete = "INSERT INTO t__BaseSelect (ID_BASE, USERNAME) VALUES(%ID_BASE%, '%USERNAME%')"
+    sRequete = Replace(sRequete, "%ID_BASE%", P_IdBase)
+    sRequete = Replace(sRequete, "%USERNAME%", sUserConnecte)
+    ' On execute la requete d'insertion
+    Call CurrentDb.Execute(sRequete)
+    ' On sort de la fonction sans erreur
+    BD_Selectionner = CST_OK
+    Exit Function
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".BD_Selectionner", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Function
+
+Private Function BD_Tables_Lister_SQC() As Boolean
+
+' ===============================================================================
+' Fonction      : BD_Tables_Lister_SQC
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Modification                           Version : V2.14.0
+' Description   : Refonte du mode de connexion. On ne traite plus deux tableaux
+'                 à une dimension, mais un seul tableau à deux dimensions.
+' ===============================================================================
+
+Dim bRetour As Boolean
+Dim iTableVue As Integer        ' Compteur tables & vues
+Dim iGroupe As Long             ' Groupe de tables
+Dim iIndex As Integer           ' Index
+Dim sNomAccess As String        ' nom table dans Access
+Dim sNomSQLServer As String     ' nom table SQL server
+
+On Error GoTo GestionErreur
+
+    ' Initialisation des variables
+    bRetour = CST_OK
+    iIndex = -1
+    ' On parcours les groupes de tables et de vues
+    For iGroupe = 1 To TABLEVUE_GROUPE_NB
+        ' On reinitialise à 1 le compteur des tables et des vues
+        iTableVue = 1
+        ' On parcours
+        Do
+            ' On recupere le nom de la table dans Access
+            sNomAccess = BD_TableVue_attachée(iGroupe, iTableVue, False)
+            ' Le nom de la table ACCESS est non renseignée
+            If sNomAccess <> "" Then
+                ' On recupere le nom de la table SQL SERVER
+                sNomSQLServer = BD_TableVue_attachée(iGroupe, iTableVue, True)
+                ' On incremente l'index du tableau
+                iIndex = iIndex + 1
+                ' On passe à la table ou la vue suivante
+                iTableVue = iTableVue + 1
+                ' On incremente le tableau des tables liées
+                ReDim Preserve tTablesLiees(iIndex)
+                ' On stocke le nom de la table ACCESS
+                tTablesLiees(iIndex).Nom_Access = sNomAccess
+                ' On stocke le nom de la table SQL SERVER (en y concaténant le propriétaire)
+                tTablesLiees(iIndex).Nom_SQLServer = sNomSQLServer
+            End If
+        Loop While sNomAccess <> ""
+    Next
+    ' On sort de la fonction avec succes
+    BD_Tables_Lister_SQC = bRetour
+    Exit Function
+
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".BD_Tables_Lister_SQC", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On sort de la fonction en erreur
+    BD_Tables_Lister_SQC = CST_KO
+
+End Function
+
+Private Function BD_TesteConnexionUser(ByRef P_cnxADOUSER As DescUtilisateur) As Boolean
+
+' ===============================================================================
+' Fonction      : TesteConnexionUser
+' Entrée        : P_cnxADOUSER       : Description de la connexion utilisateur
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. On teste la connexion utilisateur
+' ===============================================================================
+
+Dim cnxADO As ADODB.Connection
+
+On Error GoTo GestionErreur
+ 
+    ' On cree une instance de la connexion
+    Set cnxADO = New ADODB.Connection
+    ' On cree une connexion sur le compte par defaut de SQC
+    cnxADO.ConnectionString = P_cnxADOUSER.ChaineConnexionADO
+    ' Ouverture de la connexion à la base de données
+    cnxADO.Open
+    ' Fermeture de la connexion à la base de donnees
+    cnxADO.Close
+    ' On libere la memoire
+    Set cnxADO = Nothing
+    ' On sort de la procedure avec succes
+    BD_TesteConnexionUser = CST_OK
+    Exit Function
+        
+GestionErreur:
+    ' On libere la memoire
+    Set cnxADO = Nothing
+    ' On sort de la procedure en erreur
+    BD_TesteConnexionUser = CST_KO
+
+End Function
+
+Private Function setUtilisateurCompte() As String
+
+' ===============================================================================
+' Fonction      : setUtilisateurCompte
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. On constitue le nom du compte utilisateur
+' ===============================================================================
+
+    ' On retourne le libelle du compte utilisateur
+    setUtilisateurCompte = CST_PREFIXE_COMPTE & UCase(Replace(Environ("USERNAME"), "-", "_"))
+
+End Function
+
+Public Function setUtilisateurMotDePasse() As String
+
+' ===============================================================================
+' Fonction      : setUtilisateurMotDePasse
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. On constitue le mot de passe utilisateur
+' ===============================================================================
+
+    ' On crypte le compte utilisateur
+    setUtilisateurMotDePasse = Crypter(L_SECURITE.CRYPTAGE, setUtilisateurCompte, CST_SECURITE_DECALAGE)
+    
+End Function
+
+
+Private Function setInfosUtilisateur(ByRef P_CnxSQC As DescConnexion, ByRef P_cnxUSER As DescUtilisateur) As Boolean
+
+' ===============================================================================
+' Fonction      : setInfosUtilisateur
+' Entrée        : P_InfosConnexion         : Structure decrivant la connexion
+'                 P_InfosUtilisateur       : Description du compte utilisateur
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. On definit les informations de l'utilisateur
+'                 avec lequel l'application va se connecter :
+'                  - Compte utilisateur : "APP_SQC_" + Compte utilisateur WINDOWS
+'                  - Mot de passe : Compte utilisateur crypté
+' ===============================================================================
+
+Dim bRetour As Boolean
+
+On Error GoTo GestionErreur
+ 
+    ' Initialisation des variables
+    bRetour = CST_OK
+    ' On traite de la connexion
+    With P_cnxUSER
+        ' Aucune erreur detectee
+        If bRetour = CST_OK Then
+            ' Nom utilisateur : Prefixe identifiant l'application SQC + Nom utilisateur Windows
+            .CompteBDD = setUtilisateurCompte
+            ' Mot de passe : Nom utilisateur crypté
+            .MotDePasseBDD = setUtilisateurMotDePasse
+            ' On iinitialise le Shema des objets de la base de données
+            .Shema = P_CnxSQC.Shema
+            ' On definit la chaîne de connexion sur le compte windows (Connexion ODBC)
+            .ChaineConnexionODBC = "ODBC;DSN=%CONNECTEUR%;Trusted_Connection=%TRUSTED%;DATABASE=%DATABASE%;UID=%USERNAME%;PWD=%PASSWORD%;"
+            .ChaineConnexionODBC = Replace(.ChaineConnexionODBC, "%CONNECTEUR%", P_CnxSQC.ConnecteurODBC)
+            .ChaineConnexionODBC = Replace(.ChaineConnexionODBC, "%TRUSTED%", P_CnxSQC.TrustedConnexion)
+            .ChaineConnexionODBC = Replace(.ChaineConnexionODBC, "%DATABASE%", P_CnxSQC.BaseDeDonnees)
+            .ChaineConnexionODBC = Replace(.ChaineConnexionODBC, "%USERNAME%", .CompteBDD)
+            .ChaineConnexionODBC = Replace(.ChaineConnexionODBC, "%PASSWORD%", .MotDePasseBDD)
+            ' On definit la chaîne de connexion sur le compte windows (Connexion ADO)
+            .ChaineConnexionADO = "DRIVER=%DRIVER%;Server=%SERVEUR%;Database=%DATABASE%;UID=%USERNAME%;PWD=%PASSWORD%;"
+            .ChaineConnexionADO = Replace(.ChaineConnexionADO, "%DRIVER%", P_CnxSQC.Driver)
+            .ChaineConnexionADO = Replace(.ChaineConnexionADO, "%SERVEUR%", P_CnxSQC.Serveur)
+            .ChaineConnexionADO = Replace(.ChaineConnexionADO, "%DATABASE%", P_CnxSQC.BaseDeDonnees)
+            .ChaineConnexionADO = Replace(.ChaineConnexionADO, "%USERNAME%", .CompteBDD)
+            .ChaineConnexionADO = Replace(.ChaineConnexionADO, "%PASSWORD%", .MotDePasseBDD)
+        End If
+    End With
+    ' On sort de la procedure avec succes
+    setInfosUtilisateur = CST_OK
+    Exit Function
+        
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".setInfosUtilisateur", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On sort de la procedure en erreur
+    setInfosUtilisateur = CST_KO
+
+End Function
+
+Public Function getInfosUtilisateur() As DescUtilisateur
+
+' ===============================================================================
+' Fonction      : getInfosUtilisateur
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 17/05/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.1
+' Description   : On retourne les informations de la connexion.
+' ===============================================================================
+
+Dim bRetour As Boolean
+Dim cnxInfos As DescConnexion
+Dim userInfos As DescUtilisateur
+
+On Error GoTo GestionErreur
+    
+    ' Initialisation des variables
+    bRetour = CST_OK
+    ' On recupere l'identifiant de la base sur laquelle, on est connecté
+    cnxInfos.IdBase = BD_SEL_ID_BASE
+    ' On definit les informations de connexion
+    If bRetour = CST_OK Then bRetour = setInfosConnexionSQC(cnxInfos)
+    ' On definit les informations d'utilisateur
+    If bRetour = CST_OK Then bRetour = setInfosUtilisateur(cnxInfos, userInfos)
+    ' On retourne la structure contenant la description de l'utilisateur
+    getInfosUtilisateur = userInfos
+    Exit Function
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".getInfosUtilisateur", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Function
+
+Private Function setInfosConnexion(ByRef P_InfosConnexion As DescConnexion) As Boolean
+
+' ===============================================================================
+' Fonction      : setInfosConnexion
+' Entrée        : P_InfosConnexion       : Structure decrivant la connexion
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. On complete les informations de
+'                 connexion à la base de données pour l'utilisateur par defaut (SQC_APP).
+' ===============================================================================
+    
+Dim bRetour As Boolean
+Dim sMessage As String
+Dim sCriteres As String
+
+On Error GoTo GestionErreur
+    
+    ' Initialisation des variables
+    bRetour = CST_OK
+    ' On traite la structure decrivant la connexion
+    With P_InfosConnexion
+        ' On initialise les criteres de recherche de l'enregistrement
+        sCriteres = "Application = %APPLICATION% AND IdBase = %ID_BASE%"
+        sCriteres = Replace(sCriteres, "%APPLICATION%", .Application)
+        sCriteres = Replace(sCriteres, "%ID_BASE%", .IdBase)
+        ' On recupere le libelle de la base de données
+        .libelle = Trim(Nz(DLookup("Libelle", .TableConfig, sCriteres), ""))
+        ' On recupere le compte utilisateur de depart de la base de données
+        .CompteBDD = Trim(Nz(DLookup("Utilisateur", .TableConfig, sCriteres), ""))
+        ' On recupere mot de passe du compte utilisateur de depart de la base de données
+        .MotDePasseBDD = Trim(Nz(DLookup("MotDePasse", .TableConfig, sCriteres), ""))
+        ' On recupere le driver utilise de depart de la base de données
+        .Driver = Trim(Nz(DLookup("Driver", .TableConfig, sCriteres), ""))
+        ' On recupere le serveur de la base de données
+        .Serveur = Trim(Nz(DLookup("Serveur", .TableConfig, sCriteres), ""))
+        ' On recupere la base de donnees utilisee
+        .BaseDeDonnees = Trim(Nz(DLookup("BaseDeDonnees", .TableConfig, sCriteres), ""))
+        ' On recupere le connecteur ODBC utilise
+        .ConnecteurODBC = Trim(Nz(DLookup("ConnecteurODBC", .TableConfig, sCriteres), ""))
+        ' On recupere l'option 'Trusted_Connexion'
+        .TrustedConnexion = Trim(Nz(DLookup("TrustedConnection", .TableConfig, sCriteres), ""))
+        ' On recupere le Shema de la base de données
+        .Shema = Trim(Nz(DLookup("Shema", .TableConfig, sCriteres), ""))
+        ' On definit la chaîne de connexion sur le compte windows (Connexion ODBC)
+        .ChaineConnexionODBC = "ODBC;DSN=%CONNECTEUR%;Trusted_Connection=%TRUSTED%;DATABASE=%DATABASE%;UID=%USERNAME%;PWD=%PASSWORD%;"
+        .ChaineConnexionODBC = Replace(.ChaineConnexionODBC, "%CONNECTEUR%", .ConnecteurODBC)
+        .ChaineConnexionODBC = Replace(.ChaineConnexionODBC, "%TRUSTED%", .TrustedConnexion)
+        .ChaineConnexionODBC = Replace(.ChaineConnexionODBC, "%DATABASE%", .BaseDeDonnees)
+        .ChaineConnexionODBC = Replace(.ChaineConnexionODBC, "%USERNAME%", .CompteBDD)
+        .ChaineConnexionODBC = Replace(.ChaineConnexionODBC, "%PASSWORD%", .MotDePasseBDD)
+        ' On definit la chaîne de connexion sur le compte par defaut 'SQC_APP' (Connexion ADO)
+        .ChaineConnexionADO = "DRIVER=%DRIVER%;Server=%SERVEUR%;Database=%DATABASE%;UID=%USERNAME%;PWD=%PASSWORD%;"
+        .ChaineConnexionADO = Replace(.ChaineConnexionADO, "%DRIVER%", .Driver)
+        .ChaineConnexionADO = Replace(.ChaineConnexionADO, "%SERVEUR%", .Serveur)
+        .ChaineConnexionADO = Replace(.ChaineConnexionADO, "%DATABASE%", .BaseDeDonnees)
+        .ChaineConnexionADO = Replace(.ChaineConnexionADO, "%USERNAME%", .CompteBDD)
+        .ChaineConnexionADO = Replace(.ChaineConnexionADO, "%PASSWORD%", .MotDePasseBDD)
+        ' La chaine de connexion contient les mots clés "Trusted_Connection=Yes"
+        If .TrustedConnexion = "Yes" Then
+            ' On constitue le message
+            sMessage = "L'authentification Windows n'est pas adaptée aux postes de production." & vbNewLine & _
+                       "L'option 'Trusted_Connection' de la chaine de connexion doit être à 'No'." & vbNewLine & vbNewLine & _
+                       "AUCUNE TABLE N'A ETE ATTACHEE !!!"
+            ' On affiche le message
+            MsgBox sMessage, vbCritical, "CONNEXION"
+            ' On sort en erreur
+            bRetour = CST_KO
+        End If
+    End With
+    ' On sort de la fonction sans erreur
+    setInfosConnexion = bRetour
+    Exit Function
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".setInfosConnexion", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On sort de la fonction en erreur
+    setInfosConnexion = CST_KO
+
+End Function
+
+Public Function setInfosConnexionSQC(ByRef P_InfosConnexion As DescConnexion) As Boolean
+
+' ===============================================================================
+' Fonction      : setInfosConnexionSQC
+' Entrée        : P_InfosConnexion       : Structure decrivant la connexion
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. On recupere les informations de
+'                 connexion à la base de données pour l'utilisateur par defaut (SQC_APP).
+' ===============================================================================
+    
+Dim bRetour As Boolean
+
+On Error GoTo GestionErreur
+    
+    ' Initialisation des variables
+    bRetour = CST_OK
+    ' On initialise la structure decrivant la connexion
+    With P_InfosConnexion
+        .TableConfig = "T__BASE"        ' On declare la table contenant le parametrage de la connexion
+        .Application = L_CNX.SQC        ' On stocke l'application associée à la connexion
+    End With
+    ' On complete les informations de la connexion specifiques à SQC
+    bRetour = setInfosConnexion(P_InfosConnexion)
+    ' On sort de la fonction sans erreur
+    setInfosConnexionSQC = bRetour
+    Exit Function
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".setInfosConnexionSQC", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Function
+
+Public Function setInfosConnexionCDSN(ByRef P_InfosConnexion As DescConnexion) As Boolean
+
+' ===============================================================================
+' Fonction      : setInfosConnexionCDSN
+' Entrée        : P_InfosConnexion       : Structure decrivant la connexion
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. On recupere les informations de
+'                 connexion à la base de données pour l'utilisateur par defaut (CDSN_APP).
+' ===============================================================================
+    
+Dim bRetour As Boolean
+
+On Error GoTo GestionErreur
+    
+    ' Initialisation des variables
+    bRetour = CST_OK
+    ' On initialise la structure decrivant la connexion
+    With P_InfosConnexion
+        If .IdBase <= 0 Then .IdBase = BD_SEL_ID_BASE
+        .TableConfig = "T__BASE"        ' On declare la table contenant le parametrage de la connexion
+        .Application = L_CNX.CDSN       ' On stocke l'application associée à la connexion
+    End With
+    ' On complete les informations de la connexion specifiques à SQC
+    bRetour = setInfosConnexion(P_InfosConnexion)
+    ' On sort de la fonction sans erreur
+    setInfosConnexionCDSN = bRetour
+    Exit Function
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".setInfosConnexionCDSN", Err), vbCritical + vbOKOnly, Applic_titre
+
+End Function
+
+Private Function BD_DemandeCreationCompte(ByRef P_CnxSQC As DescConnexion, ByRef P_cnxUSER As DescUtilisateur) As Boolean
+
+' ===============================================================================
+' Fonction      : BD_DemandeCreationCompte
+' Entrée        : P_CnxSQC       : Description de la connexion a SQC
+'                 P_CnxUSER      : Description de la connexion UTILISATEUR
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. Execute une procedure stockee pour
+'                 demander au serveur de créer un compte utilisateur.
+' ===============================================================================
+
+Dim cnxADO As ADODB.Connection
+Dim cmdObjet As ADODB.Command
+
+On Error GoTo GestionErreur
+ 
+    ' On cree une instance de la connexion
+    Set cnxADO = New ADODB.Connection
+    ' On cree une connexion sur le compte par defaut de SQC
+    cnxADO.ConnectionString = P_CnxSQC.ChaineConnexionADO
+    ' Ouverture de la connexion à la base de données
+    cnxADO.Open
+    ' Cree l'objet Commande pour exécuter la procédure stockée
+    Set cmdObjet = New ADODB.Command
+    ' On modifie les propriétés de la commande
+    With cmdObjet
+        ' On initialise la connexion active
+        .ActiveConnection = cnxADO
+        ' On definit le type de la commande executée : Procedure stockée
+        .CommandType = adCmdStoredProc
+        ' On definit le nom de la procedure stockee : DEMANDE_UTILISATEUR
+        .CommandText = P_CnxSQC.Shema & ".DEMANDE_UTILISATEUR"
+        ' On cree le paramétre : @USERNAME
+        .Parameters.Append .CreateParameter("@USERNAME", adVarChar, adParamInput, 50, P_cnxUSER.CompteBDD)
+        ' On cree le paramétre : @PASSWORD
+        .Parameters.Append .CreateParameter("@PASSWORD", adVarChar, adParamInput, 50, P_cnxUSER.MotDePasseBDD)
+        ' On execute la procedure stockée
+        .Execute
+    End With
+    ' On libere la memoire
+    Set cmdObjet = Nothing
+    ' Fermeture de la connexion à la base de donnees
+    cnxADO.Close
+    ' On libere la memoire
+    Set cnxADO = Nothing
+    ' On sort de la procedure avec succes
+    BD_DemandeCreationCompte = CST_OK
+    Exit Function
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".BD_DemandeCreationCompte", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On sort de la procedure en erreur
+    BD_DemandeCreationCompte = CST_KO
+
+End Function
+
+Private Function BD_ValideCompteUtilisateur(ByRef P_CnxSQC As DescConnexion, ByRef P_cnxUSER As DescUtilisateur) As Boolean
+
+' ===============================================================================
+' Fonction      : BD_ValideCompteUtilisateur
+' Entrée        : P_CnxSQC       : Description de la connexion a SQC
+'                 P_CnxUSER      : Description de la connexion UTILISATEUR
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. Ouvre une connection avec le compte
+'                 utilisateur par defaut (SQC_APP), et valide l'utilisateur auprès
+'                 du serveur (si l'utilisateur n'existe pas, le serveur le crée).
+'                 Sur le serveur un job tourne toutes les 10 secondes pour créer
+'                 eventuellement l'utilisateur.
+' ===============================================================================
+
+Dim bRetour As Boolean
+Dim bUserExiste As Boolean
+Dim iEssai As Integer
+Dim oProgress As PROGRESS_BAR
+Dim sMessage As String
+Dim dDateHeure As Date
+
+Const CST_ESSAIS = 3
+
+On Error GoTo GestionErreur
+ 
+    ' Initialisation des variables
+    bRetour = CST_OK
+    iEssai = 0
+    sUserConnecte = P_cnxUSER.CompteBDD
+    ' On teste la connexion avec le compte utilisateur
+    If bRetour = CST_OK Then bRetour = BD_TesteConnexionUser(P_cnxUSER)
+    ' On garde l'info indiquant si la connexion est possible ou non
+    bUserExiste = bRetour
+    ' La connexion n'a pas été possible, on demande au serveur de creer l'utilisateur
+    If bRetour = CST_KO Then bRetour = BD_DemandeCreationCompte(P_CnxSQC, P_cnxUSER)
+    ' Tout est ok
+    If bRetour = CST_OK And Not bUserExiste Then
+        ' On initialise la valeur de retour
+        bRetour = bUserExiste
+        ' Ouverture et initialisation du formulaire d'attente
+        Set oProgress = New PROGRESS_BAR
+        oProgress.TitreFenetre = "Validation compte utilisateur"
+        ' Tant que le test de connexion
+        While bRetour = CST_KO And iEssai < CST_ESSAIS
+            ' On incremente le nombre d'essais realises
+            iEssai = iEssai + 1
+            ' On traite la fenetre d'attente
+            With oProgress
+                ' On reinitialise le temps d'attente
+                .DateDebut = Now()
+                .ProgressMin = 1            ' On attend minimum 1 seconde
+                .ProgressMax = 15           ' On attend maximum 15 secondes
+                .ProgressValue = 0
+                sMessage = "Tentative de connexion au serveur (%ESSAI%/%NOMBRE%)." & vbNewLine & "Veuillez patienter quelques secondes ... "
+                sMessage = Replace(sMessage, "%ESSAI%", iEssai)
+                sMessage = Replace(sMessage, "%NOMBRE%", CST_ESSAIS)
+                .GeneralInfo = sMessage
+                .AnimationTimer = 500
+                .Visible = True
+                ' Tant que le temps n'est pas ecoule
+                Do
+                    ' On recupere le nombre de secondes ecoulees depuis la tentative de connexion
+                    .ProgressValue = .SecondesEcoulees
+                    ' Met à jour l'étiquette
+                    .ProgressInfo = Replace("Nouvelle tentative de connexion dans %SECONDES% secondes", "%SECONDES%", .ProgressMax - .ProgressValue)
+                    ' Repeint le formulaire
+                    .Repaint
+                    ' On rend la main au systeme
+                    DoEvents
+                Loop While .SecondesEcoulees <= .ProgressMax
+                ' On teste la connexion avec le compte utilisateur
+                bRetour = BD_TesteConnexionUser(P_cnxUSER)
+             End With
+        Wend
+        ' Fermeture du formulaire d'attente
+        Set oProgress = Nothing
+    End If
+    ' Si erreur,
+    If bRetour = CST_KO Then
+        ' On initialise le nom du user connecte a la base
+        sUserConnecte = P_CnxSQC.CompteBDD
+        ' On reprend la connexion de l'utilisateur SQC_APP pour se connecter à l'application
+        P_cnxUSER.ChaineConnexionODBC = P_CnxSQC.ChaineConnexionODBC
+        ' On signale que tout est OK
+        bRetour = CST_OK
+    End If
+    ' On sort de la procedure avec succes
+    BD_ValideCompteUtilisateur = bRetour
+    Exit Function
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".BD_ValideCompteUtilisateur", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On sort de la procedure en erreur
+    BD_ValideCompteUtilisateur = CST_KO
+
+End Function
+
+Private Function BD_Tables_Attacher_SQC(ByRef P_cnxUSER As DescUtilisateur) As Boolean
+
+' ===============================================================================
+' Fonction      : BD_Tables_Attacher_SQC
+' Entrée        : P_CnxUSER      : Description de la connexion UTILISATEUR
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. Parcours le tableau des tables SQL
+'                 SERVER pour les lier à la base de données ACCESS courante.
+' ===============================================================================
+
+Dim bRetour As Boolean
+Dim dbs As Database
+Dim dft As TableDef
+Dim iIndex As Integer
+Dim oProgress As PROGRESS_BAR
+
+On Error GoTo GestionErreur
+ 
+    ' Initialisation des variables
+    bRetour = CST_OK
+    ' Aucune erreur n'est remonté
+    If bRetour = CST_OK Then
+        ' On cree une instance de la base de données courante
+        Set dbs = CurrentDb
+        ' Ouverture et initialisation du formulaire d'attente
+        Set oProgress = New PROGRESS_BAR
+        ' On traite des propriétés du formulaire d'attente
+        With oProgress
+            .TitreFenetre = "Connexion à SQC"
+            .ProgressMin = 1
+            .ProgressMax = UBound(tTablesLiees) + 1
+            .ProgressValue = 0
+            .GeneralInfo = "Veuillez patienter durant la connexion à la base de données ... "
+            .AnimationTimer = 500
+            .Visible = True
+            ' On parcours les tables
+            For iIndex = 0 To UBound(tTablesLiees)
+                ' Met à jour la progression
+                .ProgressValue = iIndex + 1
+                ' Met à jour l'étiquette
+                .ProgressInfo = "Traitement en cours ... " & Format(.ProgressPercent, "0%")
+                ' Repeint le formulaire
+                .Repaint
+                ' On cree une instance de la table
+                Set dft = dbs.CreateTableDef(tTablesLiees(iIndex).Nom_Access)
+                ' On sauvegarde le mot de passe
+                dft.Attributes = dbAttachSavePWD
+                ' On se connecte à la base SQL SERVER
+                dft.Connect = P_cnxUSER.ChaineConnexionODBC
+                ' On identifie la table distante
+                dft.SourceTableName = IIf(Nz(P_cnxUSER.Shema, "") <> "", P_cnxUSER.Shema & ".", "") & tTablesLiees(iIndex).Nom_SQLServer
+                ' On cree le lien avec la table distante
+                dbs.TableDefs.Append dft
+            Next
+            ' On rafraichit les tables
+            dbs.TableDefs.Refresh
+        End With
+        ' Fermeture du formulaire d'attente
+        Set oProgress = Nothing
+    End If
+    ' On sort de la procedure avec succes
+    BD_Tables_Attacher_SQC = bRetour
+    Exit Function
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".BD_Tables_Attacher_SQC", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On sort de la procedure en erreur
+    BD_Tables_Attacher_SQC = CST_KO
+
+End Function
+
+Private Function BD_Tables_Attacher_CDSN(ByRef P_InfosConnexion As DescConnexion) As Boolean
+
+' ===============================================================================
+' Fonction      : BD_Tables_Attacher_CDSN
+' Entrée        : P_InfosConnexion      : Description de la connexion
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. Parcours le tableau des tables SQL
+'                 SERVER pour les lier à la base de données ACCESS courante.
+' ===============================================================================
+
+Dim bRetour As Boolean
+Dim dbs As Database
+Dim dft As TableDef
+Dim iIndex As Integer
+Dim oProgress As PROGRESS_BAR
+
+On Error GoTo GestionErreur
+ 
+    ' Initialisation des variables
+    bRetour = CST_OK
+    ' Aucune erreur n'est remonté
+    If bRetour = CST_OK Then
+        ' On cree une instance de la base de données courante
+        Set dbs = CurrentDb
+        ' Ouverture et initialisation du formulaire d'attente
+        Set oProgress = New PROGRESS_BAR
+        ' On traite des propriétés du formulaire d'attente
+        With oProgress
+            .TitreFenetre = "Connexion à CDSN"
+            .ProgressMin = 1
+            .ProgressMax = UBound(tTablesCDSNLiees) + 1
+            .ProgressValue = 0
+            .GeneralInfo = "Veuillez patienter durant la connexion à la base de données ... "
+            .AnimationTimer = 500
+            .Visible = True
+            ' On parcours les tables
+            For iIndex = 0 To UBound(tTablesCDSNLiees)
+                ' Met à jour la progression
+                .ProgressValue = iIndex + 1
+                ' Met à jour l'étiquette
+                .ProgressInfo = "Traitement en cours ... " & Format(.ProgressPercent, "0%")
+                ' Repeint le formulaire
+                .Repaint
+                ' On cree une instance de la table
+                Set dft = dbs.CreateTableDef(tTablesCDSNLiees(iIndex).Nom_Access)
+                ' On sauvegarde le mot de passe
+                dft.Attributes = dbAttachSavePWD
+                ' On se connecte à la base SQL SERVER
+                dft.Connect = P_InfosConnexion.ChaineConnexionODBC
+                ' On identifie la table distante
+                dft.SourceTableName = IIf(Nz(P_InfosConnexion.Shema, "") <> "", P_InfosConnexion.Shema & ".", "") & tTablesCDSNLiees(iIndex).Nom_SQLServer
+                ' On cree le lien avec la table distante
+                dbs.TableDefs.Append dft
+            Next
+            ' On rafraichit les tables
+            dbs.TableDefs.Refresh
+        End With
+        ' Fermeture du formulaire d'attente
+        Set oProgress = Nothing
+    End If
+    ' On sort de la procedure avec succes
+    BD_Tables_Attacher_CDSN = bRetour
+    Exit Function
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".BD_Tables_Attacher_CDSN", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On sort de la procedure en erreur
+    BD_Tables_Attacher_CDSN = CST_KO
+
+End Function
+
+Private Function BD_Tables_Detacher_SQC() As Boolean
+
+' ===============================================================================
+' Fonction      : BD_Tables_Detacher_SQC
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. Parcours du tableau des tables SQL
+'                 SERVER pour les detacher de la base de données ACCESS courante.
+'                 On ne gère pas les erreurs dans cette fonction.
+' ===============================================================================
+
+Dim dbs As Database
+Dim iIndex As Integer
+Dim oProgress As PROGRESS_BAR
+
+On Error Resume Next
+ 
+    ' On cree une instance de la base de données courante
+    Set dbs = CurrentDb
+    ' Ouverture et initialisation du formulaire d'attente
+    Set oProgress = New PROGRESS_BAR
+    ' On traite des propriétés du formulaire d'attente
+    With oProgress
+        .TitreFenetre = "Déconnexion de SQC"
+        .ProgressMin = 1
+        .ProgressMax = UBound(tTablesLiees) + 1
+        .ProgressValue = 0
+        .GeneralInfo = "Veuillez patienter durant la déconnexion à la base de données ... "
+        .AnimationTimer = 500
+        .Visible = True
+        ' On parcours les tables
+        For iIndex = 0 To UBound(tTablesLiees)
+            ' Met à jour la progression
+            .ProgressValue = iIndex + 1
+            ' Met à jour l'étiquette
+            .ProgressInfo = "Traitement en cours ... " & Format(.ProgressPercent, "0%")
+            ' Repeint le formulaire
+            .Repaint
+            ' On supprime la table liee
+            dbs.TableDefs.Delete tTablesLiees(iIndex).Nom_Access
+        Next
+    End With
+    ' Fermeture du formulaire d'attente
+    Set oProgress = Nothing
+    ' On rafraichit les tables
+    dbs.TableDefs.Refresh
+    ' On sort de la procedure avec succes
+    BD_Tables_Detacher_SQC = CST_OK
+    Exit Function
+
+End Function
+
+Private Function BD_Tables_Detacher_CDSN() As Boolean
+
+' ===============================================================================
+' Fonction      : BD_Tables_Detacher_CDSN
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. Parcours du tableau des tables SQL
+'                 SERVER pour les detacher de la base de données ACCESS courante.
+'                 On ne gère pas les erreurs dans cette fonction.
+' ===============================================================================
+
+Dim dbs As Database
+Dim iIndex As Integer
+Dim oProgress As PROGRESS_BAR
+
+On Error Resume Next
+ 
+    ' On cree une instance de la base de données courante
+    Set dbs = CurrentDb
+    ' Ouverture et initialisation du formulaire d'attente
+    Set oProgress = New PROGRESS_BAR
+    ' On traite des propriétés du formulaire d'attente
+    With oProgress
+        .TitreFenetre = "Déconnexion de CDSN"
+        .ProgressMin = 1
+        .ProgressMax = UBound(tTablesCDSNLiees) + 1
+        .ProgressValue = 0
+        .GeneralInfo = "Veuillez patienter durant la déconnexion à la base de données ... "
+        .AnimationTimer = 500
+        .Visible = True
+        ' On parcours les tables
+        For iIndex = 0 To UBound(tTablesCDSNLiees)
+            ' Met à jour la progression
+            .ProgressValue = iIndex + 1
+            ' Met à jour l'étiquette
+            .ProgressInfo = "Traitement en cours ... " & Format(.ProgressPercent, "0%")
+            ' Repeint le formulaire
+            .Repaint
+            ' On supprime la table liee
+            dbs.TableDefs.Delete tTablesCDSNLiees(iIndex).Nom_Access
+        Next
+    End With
+    ' Fermeture du formulaire d'attente
+    Set oProgress = Nothing
+    ' On rafraichit les tables
+    dbs.TableDefs.Refresh
+    ' On sort de la procedure avec succes
+    BD_Tables_Detacher_CDSN = CST_OK
+    Exit Function
+
+End Function
+
+Public Function BD_Connecter_SQC(ByVal Base_Id As Long, Optional ByVal bavard As Boolean = True) As Boolean
+
+' ===============================================================================
+' Fonction      : BD_Connecter_SQC
+' Entrée        : Base_Id       : Identifiant de la base de données sur laquelle se connecter
+'                 bavard        : Affiche ou non les messages d'information (OPTIONNEL)
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. Ouvre une connection avec le compte
+'                 utilisateur par defaut, puis se connecte avec le compte personnel du poste.
+' -------------------------------------------------------------------------------
+' Date          : 09/12/2016                             Par     : BAO
+' Objet         : Modification                           Version : V2.19.0
+' Description   : Lorsque l'on se connecte à SQC, on se connecte également à CDSN
+'                 même si on se trouve en mode exploitation.
+' ===============================================================================
+
+Dim bRetour As Boolean
+Dim cnxSQC As DescConnexion                 ' Description de la connexion SQC
+Dim cnxCDSN As DescConnexion                ' Description de la connexion CDSN
+Dim cnxUSER As DescUtilisateur              ' Informations de connexion utilisateur
+Dim sMessage As String
+Dim lReponse As Long
+Dim sConnexion As String
+
+On Error GoTo GestionErreur
+ 
+    ' Initialisation des variables
+    bRetour = CST_OK
+    lReponse = vbYes
+    cnxSQC.IdBase = Base_Id
+    cnxCDSN.IdBase = Base_Id
+    
+    ' ========== BASE SQC ==========
+    ' On initialise les informations de connexion a la base SQC
+    If bRetour = CST_OK Then bRetour = setInfosConnexionSQC(cnxSQC)
+    ' On est en mode bavard
+    If bRetour = CST_OK And bavard Then
+        ' On constitue le message de confirmation
+        sMessage = "Confirmez-vous vouloir vous connecter à la base de données '%DATABASE%' ?"
+        sMessage = Replace(sMessage, "%DATABASE%", cnxSQC.libelle)
+        ' On demande confirmation pour la connexion
+        lReponse = MsgBox(sMessage, vbQuestion + vbYesNo + vbDefaultButton2, "Connexion à la base de données")
+        ' L'operateur annule la connexion
+        If lReponse = vbNo Then
+            ' On sort avec succes
+            BD_Connecter_SQC = CST_OK
+            Exit Function
+        End If
+    End If
+    ' On modifie la forme du curseur
+    Screen.MousePointer = CST_POINTEUR_OCCUPE
+    ' Constitution du login et du mot de passe specifique à l'utilisateur connecté
+    If bRetour = CST_OK Then bRetour = setInfosUtilisateur(cnxSQC, cnxUSER)
+    ' On gere le compte utilisateur sur la base de données (si l'utilisateur n'existe pas, on demande à le creer)
+    If bRetour = CST_OK Then bRetour = BD_ValideCompteUtilisateur(cnxSQC, cnxUSER)
+    ' On cree le tableau des tables et des vues à lier
+    If bRetour = CST_OK Then Call BD_Tables_Lister_SQC
+    ' On attache les tables, en se connectant avec le compte utilisateur
+    If bRetour = CST_OK Then bRetour = BD_Tables_Attacher_SQC(cnxUSER)
+    ' ========== BASE CDSN ==========
+    ' V2.19.0 - Début MODIFICATION
+    ' On cree le tableau des tables et des vues CDSN à lier
+    If bRetour = CST_OK Then bRetour = BD_Tables_Lister_CDSN
+    ' On initialise les informations de connexion a la base CDSN
+    If bRetour = CST_OK Then bRetour = setInfosConnexionCDSN(cnxCDSN)
+    ' On attache les tables, en se connectant avec le compte utilisateur
+    If bRetour = CST_OK Then bRetour = BD_Tables_Attacher_CDSN(cnxCDSN)
+    ' V2.19.0 - Fin MODIFICATION
+    ' Enregistrement du numéro de la base sélectionnée
+    If bRetour = CST_OK Then bRetour = BD_Selectionner(Base_Id)
+    ' On modifie la forme du curseur
+    Screen.MousePointer = CST_POINTEUR_DEFAUT
+    ' On est en mode bavard
+    If bRetour = CST_OK And bavard Then
+        ' On constitue le message de confirmation
+        sMessage = "Vous êtes maintenant connecté à la base de données '%DATABASE%'"
+        sMessage = Replace(sMessage, "%DATABASE%", cnxSQC.libelle)
+        ' On affiche le resultat de la connexion
+        MsgBox sMessage, vbInformation + vbOKOnly, "Connexion à la base de données"
+    End If
+    
+    ' On sort de la procedure avec succes
+    BD_Connecter_SQC = bRetour
+    Exit Function
+    
+GestionErreur:
+    ' On modifie la forme du curseur
+    Screen.MousePointer = CST_POINTEUR_DEFAUT
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".BD_Connecter_SQC", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On sort de la procedure en erreur
+    BD_Connecter_SQC = CST_KO
+    
+End Function
+
+Function BD_est_connectee() As Boolean
+
+' ===============================================================================
+' Fonction      : BD_est_connectee
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. Verifie si l'on est connectee a une
+'                 base de données. Retourne TRUE si une base est connectée.
+'                 - donnée modifiée optionnelle : BD_Id = Identifiant base
+' ===============================================================================
+
+    ' Si l'identifiant de la base selectionnee est superieur à 0 alors la base est connectée
+    BD_est_connectee = (BD_SEL_ID_BASE > 0)
+
+End Function
+
+Public Function BD_Deconnecter_SQC(Optional ByVal bavard As Boolean = True) As Boolean
+
+' ===============================================================================
+' Fonction      : BD_Deconnecter_SQC
+' Entrée        : bavard       : Identifiant de la base de données sur laquelle se deconnecter
+'                 bavard       : Affiche ou non les messages d'information (OPTIONNEL)
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. Ouvre une connection avec le compte
+'                 utilisateur par defaut, puis se connecte avec le compte personnel du poste.
+' N.B. Pas de déconnexion si tiret (-) dans le nom !
+' -------------------------------------------------------------------------------
+' Date          : 09/12/2016                             Par     : BAO
+' Objet         : Modification                           Version : V2.19.0
+' Description   : Lorsque l'on se deconnecte de SQC, on se deconnecte également de CDSN
+'                 même si on se trouve en mode exploitation.
+' ===============================================================================
+
+Dim bRetour As Boolean
+Dim sMessage As String
+Dim lReponse As Long
+
+On Error GoTo GestionErreur
+ 
+    ' Initialisation des variables
+    bRetour = CST_OK
+    lReponse = vbYes
+    ' On est en mode bavard
+    If bRetour = CST_OK And bavard Then
+        ' On constitue le message de confirmation
+        sMessage = "Confirmez-vous vouloir vous déconnecter de la base de données courante ?"
+        ' On demande confirmation pour la deconnexion
+        lReponse = MsgBox(sMessage, vbQuestion + vbYesNo + vbDefaultButton2, "Déconnexion de la base de données")
+        ' L'operateur annule la déconnexion
+        If lReponse = vbNo Then
+            ' On sort avec succes
+            BD_Deconnecter_SQC = CST_OK
+            Exit Function
+        End If
+    End If
+    ' On modifie la forme du curseur
+    Screen.MousePointer = CST_POINTEUR_OCCUPE
+    ' ========== BASE SQC ==========
+    ' On cree le tableau des tables et des vues à lier
+    If bRetour = CST_OK Then Call BD_Tables_Lister_SQC
+    ' On detache toutes les tables de SQL SERVER
+    If bRetour = CST_OK Then Call BD_Tables_Detacher_SQC
+    ' ========== BASE CDSN ==========
+    ' V2.19.0 - Début MODIFICATION
+    ' On cree le tableau des tables et des vues à lier
+    If bRetour = CST_OK Then Call BD_Tables_Lister_CDSN
+    ' On detache toutes les tables de SQL SERVER
+    If bRetour = CST_OK Then Call BD_Tables_Detacher_CDSN
+    ' V2.19.0 - Fin MODIFICATION
+    ' Enregistrement du numéro de la base non selectionnable
+    Call BD_Selectionner(-1)
+    ' On modifie la forme du curseur
+    Screen.MousePointer = CST_POINTEUR_DEFAUT
+    ' On est en mode bavard
+    If bRetour = CST_OK And bavard Then
+        ' On constitue le message de confirmation
+        sMessage = "Vous n'êtes maintenant connecté à aucune base de données."
+        ' On affiche le resultat de la connexion
+        MsgBox sMessage, vbInformation + vbOKOnly, "Déconnexion à la base de données"
+    End If
+    
+    ' On sort de la procedure avec succes
+    BD_Deconnecter_SQC = bRetour
+    Exit Function
+    
+GestionErreur:
+    ' On modifie la forme du curseur
+    Screen.MousePointer = CST_POINTEUR_DEFAUT
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".BD_Deconnecter_SQC", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On sort de la procedure en erreur
+    BD_Deconnecter_SQC = CST_KO
+   
+End Function
+
+Private Function BD_Tables_Lister_CDSN() As Boolean
+
+' ===============================================================================
+' Fonction      : BD_Tables_Lister_CDSN
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Modification                           Version : V2.14.0
+' Description   : Refonte du mode de connexion. On ne traite plus deux tableaux
+'                 à une dimension, mais un seul tableau à deux dimensions.
+' ===============================================================================
+
+Dim bRetour As Boolean
+Dim iTableVue As Integer        ' Compteur tables & vues
+Dim iIndex As Integer           ' Index
+Dim sNomAccess As String        ' nom table dans Access
+Dim sNomSQLServer As String     ' nom table SQL server
+
+On Error GoTo GestionErreur
+
+    ' Initialisation des variables
+    bRetour = CST_OK
+    iIndex = -1
+    ' On reinitialise à 1 le compteur des tables et des vues
+    iTableVue = 1
+    ' On parcours
+    Do
+        ' On recupere le nom de la table dans Access
+        sNomAccess = BD_TableVue_attachée_CDSN(iTableVue)
+        ' Le nom de la table ACCESS est non renseignée
+        If sNomAccess <> "" Then
+            ' On incremente l'index du tableau
+            iIndex = iIndex + 1
+            ' On passe à la table ou la vue suivante
+            iTableVue = iTableVue + 1
+            ' On incremente le tableau des tables liées
+            ReDim Preserve tTablesCDSNLiees(iIndex)
+            ' On stocke le nom de la table ACCESS
+            tTablesCDSNLiees(iIndex).Nom_Access = sNomAccess
+            ' On stocke le nom de la table SQL SERVER (en y concaténant le propriétaire)
+            tTablesCDSNLiees(iIndex).Nom_SQLServer = sNomAccess
+        End If
+    Loop While sNomAccess <> ""
+    ' On sort de la fonction avec succes
+    BD_Tables_Lister_CDSN = bRetour
+    Exit Function
+
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".BD_Tables_Lister_CDSN", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On sort de la fonction en erreur
+    BD_Tables_Lister_CDSN = CST_KO
+    
+ End Function
+
+Public Function BD_Connexion_Auto() As Boolean
+
+' ===============================================================================
+' Fonction      : BD_Connexion_Auto
+' Entrée        : <Sans objet>
+' Sortie        : <Sans objet>
+' -------------------------------------------------------------------------------
+' Date          : 01/04/2016                             Par     : BAO
+' Objet         : Création                               Version : V2.14.0
+' Description   : Refonte du mode de connexion. Ouvre une connexion automatique au
+'                 lancement de l'application, si l'on est en mode exploitation et
+'                 qu'aucune base de données n'a été séelctionnée.
+' ===============================================================================
+
+Dim bRetour As Boolean
+Dim bExistUser As Boolean
+Dim cnxSQC As DescConnexion                 ' Description de la connexion SQC
+Dim cnxUSER As DescUtilisateur              ' Informations de connexion utilisateur
+Dim IdBase As Integer
+
+    ' Initialisation des variables
+    bRetour = CST_OK
+    bExistUser = True
+    ' On est en mode exploitation
+    If Applic_en_mode_exploitation() Then
+        ' Une base est connectee, sur un autre utilisateur que celui courant
+        If bRetour = CST_OK And BD_SEL_ID_BASE() > 0 Then
+            ' L'utilisateur connecte est different
+            If BD_SEL_UTILISATEUR <> setUtilisateurCompte Then
+                ' On se deconnecte
+                bRetour = BD_Deconnecter_SQC(False)
+            ' L'utilisateur est le meme - Cas ou l'utilisateur a été supprimé sur le serveur SQL
+            Else
+                ' On recupere l'identifiant de la base connectee
+                cnxSQC.IdBase = BD_SEL_ID_BASE
+                ' On initialise les informations de connexion a la base SQC
+                If bRetour = CST_OK Then bRetour = setInfosConnexionSQC(cnxSQC)
+                ' Constitution du login et du mot de passe specifique à l'utilisateur connecté
+                If bRetour = CST_OK Then bRetour = setInfosUtilisateur(cnxSQC, cnxUSER)
+                ' On teste la connexion avec le compte utilisateur
+                If bRetour = CST_OK Then bExistUser = BD_TesteConnexionUser(cnxUSER)
+                ' La connexion n'est pas possible, on se deconnecte
+                If bRetour = CST_OK And bExistUser = False Then bRetour = BD_Deconnecter_SQC(False)
+            End If
+        End If
+        ' On se connecte à la base de developpement si TEST_CONNEXION_AUTO_DEVELOPPEMENT = TRUE, sinon à la base de production
+        IdBase = IIf(TEST_CONNEXION_AUTO_DEVELOPPEMENT, 3, 1)
+        ' Aucune base n'est selectionnee, on ouvre une connexion sur la base de production
+        If bRetour = CST_OK And BD_SEL_ID_BASE() < 0 Then bRetour = BD_Connecter_SQC(IdBase, False)
+    End If
+    ' On sort de la procedure avec succes
+    BD_Connexion_Auto = bRetour
+    Exit Function
+    
+GestionErreur:
+    ' On affiche le message d'erreur
+    MsgBox FormaterErreurAffichage(CST_FORMULAIRE & ".BD_Connexion_Auto", Err), vbCritical + vbOKOnly, Applic_titre
+    ' On sort de la procedure en erreur
+    BD_Connexion_Auto = CST_KO
+  
+End Function

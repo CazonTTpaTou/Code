@@ -1,0 +1,5 @@
+SELECT t_poste.idPoste, t_poste.nom, t_poste.idIlot, t_poste.posteActif, Nz([ordre],9999) AS Expr1
+FROM t_poste
+where t_poste.posteActif = true
+ORDER BY Cint(Nz([ordre],9999)), t_poste.nom;
+

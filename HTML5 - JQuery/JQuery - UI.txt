@@ -1,0 +1,211 @@
+jQuery(document).ready(function ($) {
+    // Menu accordéon
+    $("#accordion").accordion({
+        collapsible: true,
+        active: false
+    });
+
+    // Boutons radio box
+    $("#dialog").dialog({ minWidth: 400 });
+    $("span[class=buttons]").button();
+    //$("input").button();
+    $("#Choix").buttonset();
+
+    // Barre de progression
+    $("#progressbar").progressbar({
+        change: function (event) {
+            var value = $("#progressbar").progressbar("value");
+            $("#percent").html(value + " %");
+        }
+    });
+    $("div#progressbar").progressbar();
+    var value = 0;
+    var timer = setInterval(function () {
+        $("#progressbar").progressbar("value", value);
+        value++;
+        if (value > 100) clearInterval(timer);
+    }
+        , 10);
+
+    // Sliders
+    $("#slider").slider();
+    $("#slider").slider({
+        animate: true,
+        change: function(event)
+        {var value = $("#slider").slider("value");
+        $("#valueChange").html(value);
+        }
+    });
+    // Calndriers
+    $("input#date").datepicker({
+        numberOfMonths: [1, 1],
+        showOtherMonths: true,
+        selectOtherMonths: true
+    });
+
+    // Auto complétion
+    var livres = ["Développement de sites Web", "Pratique de CSS", "Pratique de Ruby", "Introduction à HTML", "Visual Studio et C#","XHTML et CSS","JQuery"];
+    $("input#livre").autocomplete({
+        source: livres
+    });
+    $("input#livre2").autocomplete({
+        source: livres,
+        minLength: 0
+        }).focus(function (event) {
+            $(this).autocomplete("search", "");
+        });
+
+    // Drag and drop
+    $("div#1 span").draggable({
+        revert:"invalid",
+        start: function (event, ui) {
+            $("#start").text(ui.offset.top + ", " + ui.offset.left);
+        },
+        drag: function (event, ui) {
+            $("#drag").text(ui.offset.top + ", " + ui.offset.left);
+        },
+        stop: function (event, ui) {
+            $("#stop").text(ui.offset.top + ", " + ui.offset.left);
+        }
+    });
+    $("div#shopping span").droppable({
+        hoverClass:"hover",
+        drop: function (event, ui) {
+            $("div#shopping").append(ui.draggable);
+            $(ui.draggable).css({ position: "relative", top: "0px", left: "0px" })
+                            //.draggable("disable")
+                             //.css({ opacity: 1 });
+                            .addClass("bought");
+        }
+    });
+    //$("div#1")({
+    //    accept: ".bought",
+    //    drop: function (event, ui) {
+    //        $("div#1").append(ui.draggable);
+    //        $(ui.draggable).css({ position: "relative", top: "0px", left: "0px" })
+     //                       .removeClass("bought");
+    //    }
+    //});
+
+    // Sélection multiple
+    $("#Selectionable").selectable();
+    $("#Selectionable").sortable();
+
+    // Redimensionnement
+    $("#dimensionable").resizable();
+
+    // Agrandissement d'image
+    $("#image:hover").effect("size", { to: { width: 500 } }, 1000);
+    
+});
+
+// Fonction Toogle
+function toogle() {
+    $('p.toog').toggleClass("class1", 1000);
+};
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="Scripts/jquery.js"></script>
+    <script src="Scripts/Custom/jquery-ui.js"></script>
+    <script src="Scripts/Custom/jquery-ui.min.js"></script>
+    <link href="Scripts/Custom/jquery-ui.css" rel="stylesheet" />
+    <link href="Scripts/Custom/jquery-ui.min.css" rel="stylesheet" /> 
+    <script src="Scripts/jquery.ui.datepicker-fr.js"></script>
+    <script src="JavaScript1.js"></script>
+    <style type="text/css">div#accordion {font-style:italic;}
+                        .class1 {
+                            border-width:10px;
+                            border-color:red;
+                            background-color:black;
+                            color:white;
+                        }
+    </style>
+    <title></title>
+</head>
+<body>    
+    <div id="accordion">
+        <h1><a>Menu 1</a></h1>
+        <div>Contenu du menu 1</div>
+        <h1><a>Menu 2</a></h1>
+        <div>Contenu du menu 2</div>
+        <h1><a>Menu 3</a></h1>
+        <div>Contenu du menu 3</div>
+    </div>
+    <div id="dialog" title="Informations complémentaires">
+        <ul class="Grec">
+            <li>Alligator</li>
+            <li>Caïman</li>
+            <li>Crocodile</li>
+            <li>Gavial</li>
+        </ul>
+    </div>
+    <div id="Liste_Boutons">
+        <span class="buttons">Bouton 1</span>
+        <span class="buttons">Bouton 2</span>
+    </div>
+    <div id="Choix">
+        Sexe :
+                <input type="radio" name="sexe" id=m><label for=m>Masculin</label></input>
+                <input type="radio" name="sexe" id=f><label for=f>Féminin</label></input>
+    </div>
+    <br />
+    <div id="progressbar"></div>
+    <div id="percent" style="text-align:center">0</div>
+    <br />
+    <div id="slider">
+        <span id="valueChange"></span>
+    </div>    
+    <label>Date de la commande :</label>
+    <input id="date" />
+    <br />
+    <label>Titre du livre :</label>
+    <input id="livre" />
+    <label>Titre du livre n° 2 :</label>
+    <input id="livre2" />
+    <br />
+    <br />
+    <div id="1" style="border:solid 1px;background-color:gainsboro;">
+        <span>Eléments 1 à déplacer</span><br /><br />
+        <span>Eléments 2 à déplacer</span><br /><br />
+        <span>Eléments 3 à déplacer</span><br /><br />
+    </div>
+    <br />
+    <br />
+    <h2>Vos achats :</h2>
+    <div id="shopping" style="border:2px;background-color:yellow;padding:2em;">
+        <span id="Panier" style="background-color:orangered;padding:2em;">Panier</span>
+    </div>
+    <p>Start : <span id="start"></span></p>
+    <p>Drag : <span id="drag"></span></p>
+    <p>Stop : <span id="stop"></span></p>
+    <br /><br />
+    <div id="Selectionable">
+        <p>Paragraphe n° 1</p>
+        <p>Paragraphe n° 2</p>
+        <p>Paragraphe n° 3</p>
+    </div>
+    <br /><br />
+    <div id="dimension">
+        <p id="dimensionable" style="border:solid 1px;width:150px;">The boys worry about security at the house. Adam Davies' revenge for Ari stealing Zac Efron as a client involves Lloyd. Drama turns into a private eye to find Vince's new stalker. Ashley demands a more honest relationship with Eric.</p>
+    </div>
+    <div>
+        <button onclick="toogle()">Toogle</button>
+        <p class="toog">Paragraphe n° 1</p>
+        <p class="toog">Paragraphe n° 2</p>
+    </div>
+    <br />
+    <div>        
+        <img id="image" src="images/tapisserie-bleue-6713528.jpg" />
+        <br />
+    </div>
+</body>
+</html>
+
+

@@ -1,0 +1,6 @@
+use SAS_Cartographie
+GO
+
+dbcc show_statistics ("dbo.Table", aaaaaTable_PK) WITH HISTOGRAM
+GO
+

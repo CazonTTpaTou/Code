@@ -1,0 +1,8 @@
+BACKUP LOG [SQM_DB] TO  DISK = N'\\netapppra\Backups\SQLPhotowatt\SQL SRV-SQL\SQM\Default_SAVE\SQM_DB\BackupLogsSQM_DB.trn'
+GO
+USE [SQM_DB]
+GO
+DBCC SHRINKFILE (N'sqmdb_Log' , 500)
+GO
+
+

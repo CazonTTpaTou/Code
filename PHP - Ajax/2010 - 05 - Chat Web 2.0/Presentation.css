@@ -1,0 +1,272 @@
+* { font-size:12px; font-family:times-new-roman; } 
+
+/*Définition de la position du formulaire, de sa taille, de son encadré et de sa couleur d'arrière plan */
+
+.title  {color:#000000;
+	 font-weight:bold;
+	 font-size:35px;
+	 position: absolute;
+	 top:1px; left:272px;}
+
+.title_pop {position: absolute;
+	 top:1px; left:152px;}
+
+.subtitle {position: absolute;
+	   top:10px; left:30px;
+	   font-size:20px;
+	   color:#AAC;}
+
+.menus1 {position: absolute; 
+	 top:80px; left:30px;
+	 width:350px;  
+	 padding:10px; 
+	 border:#AAC solid 6px; 
+	 list-style-type:none; 
+         background:#DDF; }
+
+div span.label {
+ 	float:left;
+ 	text-align: left;
+	font-weight:bold;}
+
+div span.formw {
+	float:right;
+	text-align: right;}
+
+div span.button {}
+
+.erreur {position: fixed; 
+	 top:293px; left:82px;
+	 width:350px;
+	 border:#000000 solid 4px; 
+	 border-width:1px;
+	 padding:3px;
+	 
+	 text-decoration:blink;
+	 font-weight:bold;
+	 background-color:#F0E68C;
+	 color:#FF0000;}
+
+.ereur {position: fixed; 
+	 top:345px; left:82px;
+	 width:350px;
+	 text-decoration:blink;
+	 font-weight:bold;
+	 color:#FF0000;}
+
+
+.image {position: absolute; 
+	  top:5px; left:5px;
+	  }
+
+.image-accueil {position: absolute; 
+	 	 top:75px; left:597px;
+	         border:#AAC solid 3px; }
+
+.nouveau {position: absolute; 
+	  top:25px; left:619px;
+	  width:200px;
+	  }
+
+.nouveau1 {
+	   text-align:center;
+	   font-size:20px;
+	   font-weight:bold;
+	   color:#0000FF;
+	   text-decoration:blink;}
+
+.nouveau2 {
+	   font-size:12px;
+	   color:#AAC;
+	   }
+
+.fond1 {
+	background-color:#98FB98;
+	color:#000000;}
+
+.fond2 {
+	background-color:#FFFFFF;
+	color:#000000;}
+          	   
+.encadrons {position: absolute; 
+	    top:80px; left:40px;
+	    width:930px;
+	    height:300px;
+	    border:#AAC solid 3px;
+            border-width:3px;}
+
+
+.filet {position: absolute; 
+	top:1px; left:40px;
+	color:#AAC;}
+
+.image {position: absolute; 
+	  top:1px; left:1px;
+	  }
+
+.mention {position: absolute; 
+	  top:1px; left:349px;
+	  font-size:20px;
+          width:641px;height:120px;
+	  border:#8A2BE2 solid 4px; 
+	  border-width:5px;
+          margin:5px;}
+
+.mention1 {position: absolute; 
+	  top:1px; left:10px;
+          width:300px;height:110px;
+	  border:#8A2BE2 solid 4px; 
+	  border-width:5px;
+          margin:5px;
+	  padding-left:15px;
+          padding-top:10px;}
+
+.societe {position: absolute; 
+	  top:1px; left:177px;
+	  font-size:60px;
+	  font-weight:bold;
+	  font-color:000000;
+	  color:#4B0082;}
+
+.sous-societe {position: absolute; 
+	  top:65px; left:237px;
+	  text-decoration:blink;
+	  font-size:25px;
+	  font-color:#8A2BE2;
+	  color:#8A2BE2;
+	  font-weight:bold;
+	  scrolldelay=150;}
+
+.adresse {position: absolute; 
+	  top:92px; left:222px;
+	  font-size:15px;
+	  font-color:000000;
+	  font-weight:normal;}
+
+.barre {position: absolute; 
+        top:17px; left:537px;
+	color:000000;
+	background-color:000000;}
+
+.profil-title {font-size:20px;
+	       font-weight:bold;
+               color:#8A2BE2;
+		text-align : center;}
+
+.profil-answer {font-size:20px;
+	       font-weight:normal;
+		position:absolute:
+                left:15px;}
+
+.dex {position: absolute;
+	left:90px;
+	font-weight:bold;
+      font-size:23px;
+      color:#0050FF;
+     text-align:center;}
+
+.choix {position: absolute; 
+	  top:1px; left:10px;
+          width:153px;height:50px;
+	  border:#8A2BE2 solid 4px; 
+          font-weight:bold;
+          font-size:50px;
+	  border-width:5px;
+          margin:5px;
+	  text-align:center;
+	  vertical-align:middle;
+	  color:#00A050;;
+          }
+
+.choix1 {position: absolute; 
+	  top:140px; left:10px;
+          width:315px;height:258px;
+	  border:#8A2BE2 solid 4px; 
+	  border-width:5px;
+          margin:5px;}
+
+.menu {position: absolute; 
+	top:2px; left:70px;
+	text-transform:uppercase;
+	text-decoration:underline;
+        font-weight:bold;
+        font-size:19px;
+	color:#8A2BE2;}
+
+.menub {position: absolute; 
+	top:30px; left:9px;}
+
+.menuc {position: absolute; 
+	top:232px; left:60px;
+	text-align:center;
+	width:70px;}
+
+.menud {position: absolute; 
+	top:232px; left:200px;
+	width:70px;}
+
+
+.image2 {position:absolute;
+         top:160px; left:195px;
+         border:#00A050 solid 4px; }
+
+.formu {position:absolute;
+         top:145px; left:353px;
+         width:643px;
+	 height:258px;
+         border:#8A2BE2 solid 4px;
+         border-width:5px;
+         background:url('Dessin-le-chat.jpg') top left no-repeat;}
+
+.remarque {position: absolute;
+	   top:50px;
+           left:320px;            
+            text-decoration:blink;
+             font-size:25px;
+             font-weight:bold;
+	     color:#00A050;
+	     text-align:center;
+	     padding-right:10px;}
+
+.formi {position:absolute;
+         top:15px; left:220px;
+         width:375px;
+	 height:225px;
+         border:#00A050 solid 1px;
+         border-width:0px;
+	 overflow:scroll;
+	 }
+
+.expediteur {font-weight:bold;
+	     color:#8A2BE2;}
+
+.mentionc {position: absolute; 
+	  top:1px; left:5px;
+	  font-size:20px;
+          width:631px;height:120px;
+	  border:#8A2BE2 solid 4px; 
+	  border-width:5px;
+          margin:5px;}
+
+.formuc {position:absolute;
+         top:145px; left:9px;
+         width:633px;
+	 height:258px;
+         border:#8A2BE2 solid 4px;
+         border-width:5px;
+         background:url('Dessin-le-chat.jpg') top left no-repeat;}
+
+.formic {position:absolute;
+         top:15px; left:220px;
+         width:367px;
+	 height:225px;
+         border:#00A050 solid 1px;
+         border-width:0px;
+	 overflow:scroll;
+	 }
+
+.numero {font-weight:bold;}
+
+.norm {font-size:25px;
+       font-weight:bold;
+       font-family:times-new-roman;}	

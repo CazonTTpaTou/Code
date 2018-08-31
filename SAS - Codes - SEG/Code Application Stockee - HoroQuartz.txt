@@ -1,0 +1,43 @@
+PROC SQL;
+ CREATE TABLE WORK.DETAIL_HEURES_TRAVAILLEES AS SELECT hophjou.MATRI label="Matricule" AS Matricule,
+	 TEMPTATION_EMPLOYES.Nom_prenom AS Nom_prenom,
+	 (DATEPART(hophjou.DAT)) FORMAT=DDMMYY8.0 label="Date" AS Date,
+	 (int(hophjou.HJPOIN) /60) label="Heures badgées" AS Heures_badgees,
+	 (int(hophjou.HJPOIN) *60) FORMAT=TIME5.0 label="Heures mn badgées" AS Heures_mn_badgees,
+	 (int(hophjou.HJTHEO) /60) label="Heures théoriques" AS Heures_theoriques,
+	 (int(hophjou.HJTHEO) *60) FORMAT=TIME5.0 label="Heures mn théoriques" AS Heures_mn_theoriques,
+	 (int(hophjou.CBPAUSE) /60) label="Heures de pause" AS Heures_pause,
+	 (int(hophjou.CBPAUSE) *60) FORMAT=TIME5.0 label="Heures mn de pause" AS Heures_mn_pause,
+	 (CASE 
+WHEN int(hophjou.HJPOIN) > 0 THEN (int(hophjou.HJPOIN)- int(hophjou.CBPAUSE) ) /60 
+ELSE CASE WHEN int(hophjou.HJTHEO) - int(hophjou.HJABS) > 0 THEN (int(hophjou.HJTHEO) - int(hophjou.HJABS)) /60 ELSE 0 END END) label="Heures travaillées" AS Heures_travaillees,
+	 (CASE 
+WHEN int(hophjou.HJPOIN) > 0 THEN (int(hophjou.HJPOIN)- int(hophjou.CBPAUSE) ) *60 
+ELSE CASE WHEN int(hophjou.HJTHEO) - int(hophjou.HJABS) > 0 THEN (int(hophjou.HJTHEO) - int(hophjou.HJABS)) *60 ELSE 0 END END) FORMAT=TIME5.0 label="Heures mn travaillées" AS Heures_mn_travaillees,
+	 (YEAR(DATEPART(hophjou.DAT))) label="Année" AS Annee,
+	 ('Q'||PUT(QTR(DATEPART(hophjou.DAT)),
+	 1.)) label="Trimestre" AS Trimestre,
+	 (MONTH(DATEPART(hophjou.DAT))) label="Num. mois" AS Num_mois,
+	 (DATEPART(hophjou.DAT)) FORMAT=FRSDFMN9. label="Mois" AS Mois,
+	 hophjou.NUMSEM label="Num. semaine" AS Num_semaine,
+	 hophjou.JOUR label="Num. jour" AS Num_jour,
+	 (( CASE WHEN "1" = hophjou.JOUR THEN "Lundi" WHEN "2" = hophjou.JOUR THEN "Mardi" WHEN "3" = hophjou.JOUR THEN "Mercredi" WHEN "4" = hophjou.JOUR THEN "Jeudi" WHEN "5" = hophjou.JOUR THEN "Vendredi" WHEN "6" = hophjou.JOUR THEN "Samedi" WHEN "7" =
+ hophjou.JOUR THEN "Dimanche" ELSE hophjou.JOUR END )) label="Jour" AS Jour,
+	 hophjou.HORCODE label="Code horaire" AS Code_horaire,
+	 hophora.LIBELLE label="Libellé code horaire" AS Libelle_code_horaire,
+	 TEMPTATION_EMPLOYES.Sexe AS Sexe,
+	 TEMPTATION_EMPLOYES.Categorie AS Categorie,
+	 TEMPTATION_EMPLOYES.Date_ouverture AS Date_ouverture,
+	 TEMPTATION_EMPLOYES.Date_cloture AS Date_cloture,
+	 TEMPTATION_EMPLOYES.Section_horaire AS Section_horaire,
+	 TEMPTATION_EMPLOYES.Libelle_section_horaire AS Libelle_section_horaire,
+	 TEMPTATION_EMPLOYES.Section_origine AS Section_origine,
+	 TEMPTATION_EMPLOYES.Libelle_section_origine AS Libelle_section_origine,
+	 (&Date_debut) FORMAT=DDMMYY8.0 label="Date de début" AS Date_debut,
+	 (&Date_fin) FORMAT=DDMMYY8.0 label="Date de fin" AS Date_fin 
+ FROM DS_TEMPT.hophjou AS hophjou 
+	  LEFT JOIN DS_TEMPT.hophora AS hophora ON (hophjou.HORCODE = hophora.HORCODE) 
+	    LEFT JOIN WORK.TEMPTATION_EMPLOYES AS TEMPTATION_EMPLOYES ON (hophjou.MATRI = TEMPTATION_EMPLOYES.Matricule)
+ WHERE CALCULATED Date >= &Date_debut AND CALCULATED Date <= &Date_fin
+ ORDER BY hophjou.MATRI, hophjou.DAT DESCENDING;
+QUIT;

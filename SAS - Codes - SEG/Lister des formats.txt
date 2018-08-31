@@ -1,0 +1,3 @@
+proc catalog c=formats.formats;
+   contents stat;
+run;

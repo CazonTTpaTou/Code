@@ -1,0 +1,32 @@
+proc sql noprint;
+create table WORK.DATA_ICOS_FSPI_P1 as
+select t.*,
+dhms(datepart(timestamp),0,0,0) length=8 format=DATETIME16. as TIMESTAMP_DATE,
+case when IdEquipement = 24 then 'Rouge' ELSE 'Bleue' end length=5 format=$5. as VOIE,
+datetime() length=8 format=DATETIME16. AS Date_Actualisation,
+catx("-",
+	ifc(Contour_Result In ('break'),'Cont',''),
+	ifc(Back_Print_Result In ('Bad', 'bad'),'FP',''),
+	ifc(Geometry_Result In ('bad'),'Geo',''),
+	ifc(Presence_Result In ('Not Present'),'Pres',''),
+	ifc(Surface_Result In ('bad', 'Bad'),'Surf','')) as DEFAULT_RESULT,
+ifn(Contour_Result In ('break'),1,0) as Contour_Result_NB length=3 format=3.,
+ifn(Back_Print_Result In ('Bad', 'bad'),1,0) as Back_Print_Result_NB length=3 format=3.,
+ifn(Geometry_Result In ('bad'),1,0) as Geometry_Result_NB length=3 format=3.,
+ifn(Presence_Result In ('Not Present'),1,0) as Presence_Result_NB length=3 format=3.,
+ifn(Surface_Result In ('bad', 'Bad'),1,0) as Surface_Result_NB length=3 format=3.,
+ifn(Quality_Result_Inspection In ('Not Present', 'break', 'Bad', 'bad'),1,0) as Cel_En_Defaut length=3 format=3.,
+Hour(datepart(t.Timestamp)) AS Heure,
+IFN( WeekDay(DatePart('TimeStamp'n)) = 1 ,Week(DatePart('TimeStamp'n)) - 1,Week(DatePart('TimeStamp'n))) AS Numero_Semaine,
+(ifn(Contour_Result In ('break'),1,0) 
+	+ ifn(Back_Print_Result In ('Bad', 'bad'),1,0) 
+	+ ifn(Geometry_Result In ('bad'),1,0) 
+	+ ifn(Presence_Result In ('Not Present'),1,0)
+	+ ifn(Surface_Result In ('bad', 'Bad'),1,0)) AS Total_Defaut
+
+FROM 
+ 
+IN_LINE.ICOS_BSPI_P1 as t
+where 
+datepart(t.TimeStamp) >= INTNX('month', DATE(), -1) ;
+quit;

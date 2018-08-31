@@ -1,0 +1,54 @@
+<?php
+
+//session_start();
+
+//----- Détermination de la commande qui va être recherchée dans la base de droits utilisateur
+switch($_SESSION['Requ']) {
+	case 'Suppression':$Commande='DELETE';break;
+	case 'Modification':$Commande='UPDATE';break;
+	case 'Insertion':$Commande='INSERT';break;
+	case 'Consultation':$Commande='SELECT';break;}
+
+include("Connexion.php");
+
+//----- Construction de la requête qui va vérifier qu'il existe bien une ligne contenant
+//----- Et le nom de l'utilisateur Et le nom de la commande
+//----- Si c'est le cas, alors l'utilisateur a bien les droits pour effectuer la requête souhaitée
+$droit="select * from information_schema.table_privileges where table_name='".$_SESSION['Tab']."'";
+$droit.=" and privilege_type='".$Commande."' and grantee like ".$id.";";
+
+echo $requete;
+$auth=mysql_query($droit,$connectID) or die ("Impossible d'accéder aux données");
+mysql_close($connectID);
+
+if($auth) {include("Connexion.php");
+
+	   //----- Si l'utilisateur a bien les droits requis on exécute la reqûte constuite précédemment
+	   $success = mysql_query($requete,$connectID) or die ("Impossible d'accéder aux données2");
+	
+	   //----- Si la requête réussit, on enregistre un message de succès dans la variable de session message
+	   if ($success) {$_SESSION['Message']='Votre requête '.$_SESSION['Requ'].' dans la table '.$_SESSION['Tab'].' a réussi !!!';}
+	     
+	      //----- Sinon, on enregistre un message d'échec de la requête effectuée
+	      else {$_SESSION['Message']='Votre requête '.$_SESSION['Requ'].' dans la table '.$_SESSION['Tab'].' a échoué !!!';} 
+	 
+	    }
+
+	//----- Si l'utilisateur ne dispose pas des droits requis, on l'avertit de la situation
+	//----- Dans l'absolu, cela ne peut pas arriver puisque l'utilisateur a accès à un menu construit 
+	//----- à partir des commandes sur lesquelles il possède des droits utilisateur
+	//----- de ce fait, il n'a pas accès aux commandes qui ne lui sont pas autorisées...
+	else {$_SESSION['Message']='Vous ne possédez pas les droits nécessaires pour la '.$_SESSION['Requ'];
+              $_SESSION['Message'].= ' des données de la table '.$_SESSION['Tab'];
+	      }
+
+//----- Fermeture de la connexion et retour à la page d'accueil de l'application
+$_SESSION['Operation']="Accueil";
+mysql_close($connectID);
+header('Location: '.$_SERVER['PHP_SELF'].'?Operation=Accueil');
+
+?>
+
+
+
+

@@ -1,0 +1,9 @@
+
+Function getOS() As String
+    Dim OS
+    For Each OS In GetObject("winmgmts:").InstancesOf("Win32_OperatingSystem")
+        getOS = OS.Caption
+    Next OS
+    Set OS = Nothing
+End Function
+

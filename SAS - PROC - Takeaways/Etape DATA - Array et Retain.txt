@@ -1,0 +1,9 @@
+DATA Work.Stats;
+	SET WORK.REALISATION;
+		Array H{24} H0-H23;
+		Retain H0-H23 0;
+		Heure = hour(timepart(DebutInter));
+			Do Index=0 to DIM(H);
+				IF Index = Heure Then H(index+1)= H(index+1)+ 1;
+			End;
+RUN;

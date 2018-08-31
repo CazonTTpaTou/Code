@@ -1,0 +1,199 @@
+/* --- Début du code de "macro variable". --- */
+%let var= P1;
+%let periode=6;
+
+/* --- Fin du code de "macro variable". --- */
+
+/* --- Début du code de "Calcul des Heures ouvrées". --- */
+
+data temp_&var. / view=temp_&var.;
+set DS_SQC.VUE_SAS_CHGT_ECRANS_SERIG;
+if  Soci_t_= "PV Alliance" then do;
+	nb_tour=intck("dtday",Chg_Ecran_Date_Heure_Montage, Chg_Ecran_Date_Heure_D_Montage);
+
+	do i=0 to nb_tour;
+		date_cour=datepart(Chg_Ecran_Date_Heure_Montage + i*(24*3600));
+		output;
+	end;
+end;
+else output;
+run;
+
+
+proc sql;
+create view temp2_&var. as
+select t1.*, t2.Heure_Travail, t2.Heure_debut, t2.heure_fin
+from temp_&var. as t1 left join RE_PROC.CALENDRIER as t2 on (date_cour=jour)
+order by date_cour
+;
+quit;
+
+
+data temp3_&var. / view=temp3_&var.;
+set temp2_&var.;
+format duree_vie_ecran time.;
+/*if a then do;*/
+if Soci_t_= "PV Alliance" then do;
+	/* si jour non travaillé  */
+	if Heure_travail = 0 then duree_vie_ecran=0;
+	else do;
+		/* CAS 1 : si heure de montage et démontage le même jour */
+		if date_cour=datepart(Chg_Ecran_Date_Heure_Montage) 
+		and date_cour=datepart(Chg_Ecran_Date_Heure_D_Montage)  then do;
+			/* si heure de montage avant heure de début */
+			if timepart(Chg_Ecran_Date_Heure_Montage) < Heure_debut
+			and timepart(Chg_Ecran_Date_Heure_D_Montage) > Heure_debut
+			and Heure_travail ne 24
+			then Chg_Ecran_Date_Heure_Montage2=DHMS(datepart(Chg_Ecran_Date_Heure_Montage),24 - Heure_travail,0,0);
+			else Chg_Ecran_Date_Heure_Montage2=Chg_Ecran_Date_Heure_Montage;
+
+			/* si heure de démontage après heure de fin */
+			if timepart(Chg_Ecran_Date_Heure_D_Montage) > Heure_Fin
+			and timepart(Chg_Ecran_Date_Heure_Montage) < Heure_Fin
+			and Heure_travail ne 24
+			then Chg_Ecran_Date_Heure_Montage2=DHMS(datepart(Chg_Ecran_Date_Heure_D_Montage),Heure_travail,0,0);
+			else Chg_Ecran_Date_Heure_D_Montage2=Chg_Ecran_Date_Heure_D_Montage;
+
+			duree_vie_ecran=Chg_Ecran_Date_Heure_D_Montage2 - Chg_Ecran_Date_Heure_Montage2; 
+		 end;
+		 else do;
+		 		 duree_vie_ecran=Heure_travail*3600;
+		 		/* traitement pour date de montage */
+				if date_cour=datepart(Chg_Ecran_Date_Heure_Montage) then do;
+					if timepart(Chg_Ecran_Date_Heure_Montage) < Heure_debut 
+					and Heure_travail ne 24
+					then duree_vie_ecran=Heure_travail*3600; 
+					else  if timepart(Chg_Ecran_Date_Heure_Montage) < Heure_fin 
+						  then duree_vie_ecran=Heure_fin-timepart(Chg_Ecran_Date_Heure_Montage);
+						  else  if timepart(Chg_Ecran_Date_Heure_Montage) > Heure_fin 
+						  		and Heure_travail ne 24 
+								then duree_vie_ecran=0;
+
+								else duree_vie_ecran=timepart(Chg_Ecran_Date_Heure_Montage)- Heure_debut;
+				end;
+				/* traitement pour date de démontage */
+				else if  date_cour=datepart(Chg_Ecran_Date_Heure_D_Montage) then do;
+					if timepart(Chg_Ecran_Date_Heure_D_Montage) > Heure_fin
+					and Heure_travail ne 24
+					then duree_vie_ecran=Heure_travail*3600;
+					else if timepart(Chg_Ecran_Date_Heure_D_Montage) > Heure_debut and Heure_travail ne 24
+						then duree_vie_ecran=timepart(Chg_Ecran_Date_Heure_D_Montage)- heure_debut; 
+						else if Heure_travail ne 24 then duree_vie_ecran=0;
+							 else duree_vie_ecran=timepart(Chg_Ecran_Date_Heure_D_Montage);
+				end;
+		end;
+	end;
+end;
+else duree_vie_ecran=input(Chg_Ecran_Dur_e_Vie_Litterale,time.);
+run;
+
+
+proc sql;
+create view Duree_vie_ecran_&var. as
+select t1.Chg_Ecran_Num_ro_S_rie, Chg_Ecran_Date_Heure_Montage, Chg_Ecran_Date_Heure_D_Montage, SUM(duree_vie_ecran) format=time.  as duree_vie_ecran
+
+from temp3_&var. as t1
+group by Chg_Ecran_Num_ro_S_rie, Chg_Ecran_Date_Heure_Montage, Chg_Ecran_Date_Heure_D_Montage
+;
+quit;
+/* --- Fin du code de "Calcul des Heures ouvrées". --- */
+
+/* --- Début du code de "Durée vie de l'écran". --- */
+
+PROC SQL ;
+CREATE table RE_PROC.TABLE_CONSOMMATION_ECRAN_&var.
+AS
+SELECT 
+		DISTINCT
+		 t1.Soci_t_ AS Soci_t_ Label = "Société"
+		,t1.Equipement AS Equipement Label = "Equipement"
+		,t1.Station AS Station Label = "Station"
+		,t1.Chg_Ecran_Num_ro_S_rie AS Chg_Ecran_Num_ro_S_rie Label = "Changement Ecran Numero"
+		,t1.Chg_Ecran_Jour_Montage AS Chg_Ecran_Jour_Montage Label = "Mesure Jour"
+		
+		,t1.Chg_Ecran_Date_Heure_Montage AS Chg_Ecran_Date_Heure_Montage Label = "Changement Ecran Heure montage début  durée de vie"
+		,t1.Chg_Ecran_Date_Heure_D_montage AS Chg_Ecran_Date_Heure_D_montage Label = "Changement Ecran Heure démontage fin de durée de vie"
+		,t1.Chg_Ecran_Dur_e_Vie AS Chg_Ecran_Dur_e_Vie Label = "Durée de vie informatique en minutes"
+		,t1.Chg_Ecran_Dur_e_Vie_Litterale AS Chg_Ecran_Dur_e_Vie_Litterale Label = "Durée de vie informatique"
+		
+		,put(MAX(duree_vie_ecran),time10.) format=$10.  as Chg_Ecran_Dur_e_Vie_Ouv Label = "Durée de vie en heures ouvrées"
+
+		,t1.Chg_Ecran_Motif AS Chg_Ecran_Motif Label = "Changement écran motif"
+		,t1.Chg_Ecran_Observation AS Chg_Ecran_Observation Label = "Observation : intervention réglage"
+		
+		,SUM(t3.SeriQteEntree)+400 
+		  AS SeriQteEntree Label = "Nombre de cellules en entrée"
+
+		, SUM(t3.SeriQteSortie)+400 AS SeriQteSortie Label = "Nombre de cellules produites"
+
+		, SUM(t3.SeriQteEntree - t3.SeriQteSortie)
+		  AS RejetSeri Label = "Nombre de rejet cellules"
+	/*	,COUNT(t3.Lot) AS Nbre_Lots Label="Nombre de lots"*/
+	
+	FROM
+
+	DS_ODS.ODS_SQC_VUE_CHGT_ECRANS_SERIG AS T1,
+	DTM_PRO.DTM_PRO_TRAC_CEL_TRIEES AS T2,
+	DTM_PRO.DTM_PRO_TBO_PVA AS T3,
+	DUREE_VIE_ECRAN_&var. as T5
+
+	where t1.Chg_Ecran_Num_ro_S_rie = t2.Cel_Seri_Ecran_&var._No_serie
+	and t1.Chg_Ecran_Date_Heure_Montage <= t2.Cel_Seri_date_heure_entree
+	and t1.Chg_Ecran_Date_Heure_D_Montage >= t2.Cel_Seri_date_heure_entree
+	and t2.Cel_Lot = t3.Lot
+	and t1.Chg_Ecran_Num_ro_S_rie = t5.Chg_Ecran_Num_ro_S_rie
+	and t1.Chg_Ecran_Date_Heure_montage = t5.Chg_Ecran_Date_Heure_montage
+	and t1.Chg_Ecran_Date_Heure_D_montage = t5.Chg_Ecran_Date_Heure_D_montage
+	and intck("dtmonth",t1.Chg_Ecran_Date_Heure_montage,datetime())<=&periode.
+
+	and t3.Etape = "06. Sérigraphie"
+	and upcase(t1.Station) Contains "&var." 
+	
+
+GROUP BY t1.Chg_Ecran_Num_ro_S_rie, t1.Chg_Ecran_Date_Heure_montage,  t1.Chg_Ecran_Date_Heure_D_montage
+ORDER BY t1.Chg_Ecran_Date_Heure_Montage;
+QUIT;
+
+
+ods html style=HtmlBlue;
+
+proc report data=RE_PROC.TABLE_CONSOMMATION_ECRAN_&var. nowd;
+columns soci_t_ 
+		Equipement 
+		Station 
+		Chg_Ecran_Num_ro_S_rie 
+		Chg_Ecran_Jour_Montage 
+		Chg_Ecran_Date_Heure_Montage
+		Chg_Ecran_Date_Heure_D_montage
+		Chg_Ecran_Dur_e_Vie
+		Chg_Ecran_Dur_e_Vie_Litterale
+		Chg_Ecran_Dur_e_Vie_Ouv
+		Chg_Ecran_Motif
+		Chg_Ecran_Observation
+		SeriQteEntree
+		SeriQteSortie
+		RejetSeri;
+define soci_t_ / display ;
+define Equipement / display ; 
+define Station / display ; 
+define Chg_Ecran_Num_ro_S_rie  / display ; 
+define Chg_Ecran_Jour_Montage / display ; 
+define Chg_Ecran_Date_Heure_Montage / display ; 
+define Chg_Ecran_Date_Heure_D_montage / display ;  
+define Chg_Ecran_Dur_e_Vie  / display ; 
+define Chg_Ecran_Dur_e_Vie_Litterale  / display ; 
+define Chg_Ecran_Dur_e_Vie_Ouv  / display ; 
+define Chg_Ecran_Motif  / display ; 
+define Chg_Ecran_Observation / display ; 
+define SeriQteEntree  / display ; 
+define SeriQteSortie / display ; 
+define RejetSeri  / display ; 
+define Nbre_Lots  / display ; 
+/*compute Ligne;
+if Ligne="Bleue" then call define (_row_,'style','style=[background=lightblue]');
+if Ligne="Rouge" then call define (_row_,'style','style=[background=lightred]');
+endcomp;*/
+run;
+
+ods html close;
+/* --- Fin du code de "Durée vie de l'écran". --- */

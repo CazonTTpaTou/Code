@@ -1,0 +1,11 @@
+proc sort data=Failure3;
+   by Stage;
+run;
+
+ods graphics off;
+title 'Pareto Effect of Furnace Tube';
+proc pareto data=Failure3;
+   vbar Cause / freq  = Counts
+                angle = -60;
+   by Stage;
+run;

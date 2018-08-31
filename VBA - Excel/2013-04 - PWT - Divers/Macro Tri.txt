@@ -1,0 +1,483 @@
+Sub tri()
+'
+' Tri Macro
+'
+' Touche de raccourci du clavier: Ctrl+m
+'
+' Ouverture fichier log PASAN
+Application.ScreenUpdating = False
+
+' delete graph
+'
+    If ActiveSheet.ChartObjects.Count > O Then
+    ActiveSheet.ChartObjects(ActiveSheet.ChartObjects.Count).Delete
+    End If
+
+' effacer contenu Corrélation pour éviter ralentissement
+
+Range("I9:L13").Select
+Selection.ClearContents
+
+' Ouverture fichier log PASAN avec boucle pour recherche dans chacun des repertoires tri pasan
+
+Dim tri As String, Date1 As String, Nomfich2 As String, Nomfich3 As String, Nomfich4 As String, Nomfich5 As String, Nomfichref As String
+Date1 = Range("B2").Value
+tri = Range("B3").Value
+
+Nomfich2 = "U:\Bases_de_donnees\Machines\TRIs-PASAN\PASAN-C02\Fichiers-Journaliers\" & "Tri2_" & Date1 & ".csv"
+Nomfich3 = "U:\Bases_de_donnees\Machines\TRIs-PASAN\PASAN-C03\Fichiers-Journaliers\" & "Tri3_" & Date1 & ".csv"
+Nomfich4 = "S:\machines\tri\PASAN-C04\_mesures\Fichiers-Journaliers\" & "Tri4_" & Date1 & ".csv"
+Nomfich5 = "S:\machines\tri\PASAN-PVA01\_mesures\Fichiers-Journaliers\" & "TriPVA1_" & Date1 & ".csv"
+Nomfichref = "U:\Bases_de_donnees\Machines\TRIs-PASAN\PASAN-CREF\Fichiers-Journaliers\" & "SimRef_" & Date1 & ".csv"
+
+If Date1 = "" Then
+MsgBox ("Renseigner la date")
+End If
+
+If tri = "" Then
+MsgBox ("Renseigner le nom du Tri")
+End If
+    
+If tri = "2" Then
+If Dir(Nomfich2) = "" Then
+MsgBox ("Fichier inexistant")
+Exit Sub
+End If
+ChDir "U:\Bases_de_donnees\Machines\TRIs-PASAN\PASAN-C02\Fichiers-Journaliers\"
+Workbooks.OpenText Filename:=Nomfich2
+Windows("Tri2_" & Date1 & ".csv").Activate
+Cells.Select
+Selection.Copy
+Windows("Extract_Lot_Day_v0.xlsm").Activate
+Sheets("Détails").Select
+    Cells.Select
+    ActiveSheet.Paste
+Columns("A:A").Select
+    Selection.TextToColumns Destination:=Range("A1"), DataType:=xlDelimited, _
+        TextQualifier:=xlDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True, _
+        Semicolon:=False, Comma:=False, Space:=False, Other:=False, FieldInfo _
+        :=Array(Array(1, 1), Array(2, 1)), DecimalSeparator:=".", TrailingMinusNumbers _
+        :=True
+Rows("1:26").Select
+    Selection.Delete Shift:=xlUp
+    Rows("2:6").Select
+    Selection.Delete Shift:=xlUp
+    Sheets("Bilan").Select
+    Range("B6").Value = 2
+    Workbooks("Tri2_" & Date1 & ".csv").Close savechanges = False
+Sheets("Détails").Select
+    Range("B2").Select
+    Selection.Copy
+    Sheets("Bilan").Select
+    Range("B4").Select
+    ActiveSheet.Paste
+    Sheets("Détails").Select
+    Range("C2").Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    Sheets("Bilan").Select
+    Range("B5").Select
+    ActiveSheet.Paste
+    
+    Range("B4:B5").Select
+    With Selection
+        .HorizontalAlignment = xlCenter
+        .VerticalAlignment = xlBottom
+        .WrapText = False
+        .Orientation = 0
+        .AddIndent = False
+        .IndentLevel = 0
+        .ShrinkToFit = False
+        .ReadingOrder = xlContext
+        .MergeCells = False
+    End With
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    Selection.Borders(xlInsideVertical).LineStyle = xlNone
+    With Selection.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    
+ElseIf tri = "3" Then
+If Dir(Nomfich3) = "" Then
+MsgBox ("Fichier inexistant")
+Exit Sub
+End If
+ChDir "U:\Bases_de_donnees\Machines\TRIs-PASAN\PASAN-C03\Fichiers-Journaliers\"
+Workbooks.OpenText Filename:=Nomfich3
+Windows("Tri3_" & Date1 & ".csv").Activate
+Cells.Select
+Selection.Copy
+Windows("Extract_Lot_Day_v0.xlsm").Activate
+Sheets("Détails").Select
+    Cells.Select
+    ActiveSheet.Paste
+Columns("A:A").Select
+    Selection.TextToColumns Destination:=Range("A1"), DataType:=xlDelimited, _
+        TextQualifier:=xlDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True, _
+        Semicolon:=False, Comma:=False, Space:=False, Other:=False, FieldInfo _
+        :=Array(Array(1, 1), Array(2, 1)), DecimalSeparator:=".", TrailingMinusNumbers _
+        :=True
+Rows("1:26").Select
+    Selection.Delete Shift:=xlUp
+    Rows("2:6").Select
+    Selection.Delete Shift:=xlUp
+    Sheets("Bilan").Select
+    Range("B6").Value = 3
+    Workbooks("Tri3_" & Date1 & ".csv").Close savechanges = False
+Sheets("Détails").Select
+    Range("B2").Select
+    Selection.Copy
+    Sheets("Bilan").Select
+    Range("B4").Select
+    ActiveSheet.Paste
+    Sheets("Détails").Select
+    Range("C2").Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    Sheets("Bilan").Select
+    Range("B5").Select
+    ActiveSheet.Paste
+    
+    Range("B4:B5").Select
+    With Selection
+        .HorizontalAlignment = xlCenter
+        .VerticalAlignment = xlBottom
+        .WrapText = False
+        .Orientation = 0
+        .AddIndent = False
+        .IndentLevel = 0
+        .ShrinkToFit = False
+        .ReadingOrder = xlContext
+        .MergeCells = False
+    End With
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    Selection.Borders(xlInsideVertical).LineStyle = xlNone
+    With Selection.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    
+ElseIf tri = "4" Then
+If Dir(Nomfich4) = "" Then
+MsgBox ("Fichier inexistant")
+Exit Sub
+End If
+ChDir "S:\machines\tri\PASAN-C04\_mesures\Fichiers-Journaliers\"
+Workbooks.OpenText Filename:=Nomfich4
+Windows("Tri4_" & Date1 & ".csv").Activate
+Cells.Select
+Selection.Copy
+Windows("Extract_Lot_Day_v0.xlsm").Activate
+Sheets("Détails").Select
+    Cells.Select
+    ActiveSheet.Paste
+Columns("A:A").Select
+    Selection.TextToColumns Destination:=Range("A1"), DataType:=xlDelimited, _
+        TextQualifier:=xlDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True, _
+        Semicolon:=False, Comma:=False, Space:=False, Other:=False, FieldInfo _
+        :=Array(Array(1, 1), Array(2, 1)), DecimalSeparator:=".", TrailingMinusNumbers _
+        :=True
+Rows("1:26").Select
+    Selection.Delete Shift:=xlUp
+    Rows("2:6").Select
+    Selection.Delete Shift:=xlUp
+    Sheets("Bilan").Select
+    Range("B6").Value = 4
+    Workbooks("Tri4_" & Date1 & ".csv").Close savechanges = False
+Sheets("Détails").Select
+    Range("B2").Select
+    Selection.Copy
+    Sheets("Bilan").Select
+    Range("B4").Select
+    ActiveSheet.Paste
+    Sheets("Détails").Select
+    Range("C2").Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    Sheets("Bilan").Select
+    Range("B5").Select
+    ActiveSheet.Paste
+    
+    Range("B4:B5").Select
+    With Selection
+        .HorizontalAlignment = xlCenter
+        .VerticalAlignment = xlBottom
+        .WrapText = False
+        .Orientation = 0
+        .AddIndent = False
+        .IndentLevel = 0
+        .ShrinkToFit = False
+        .ReadingOrder = xlContext
+        .MergeCells = False
+    End With
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    Selection.Borders(xlInsideVertical).LineStyle = xlNone
+    With Selection.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+
+ElseIf tri = "PVA" Then
+If Dir(Nomfich5) = "" Then
+MsgBox ("Fichier inexistant")
+Exit Sub
+End If
+ChDir "S:\machines\tri\PASAN-PVA01\_mesures\Fichiers-Journaliers\"
+Workbooks.OpenText Filename:=Nomfich5
+Windows("TriPVA1_" & Date1 & ".csv").Activate
+Cells.Select
+Selection.Copy
+Windows("Extract_Lot_Day_v0.xlsm").Activate
+Sheets("Détails").Select
+    Cells.Select
+    ActiveSheet.Paste
+Columns("A:A").Select
+    Selection.TextToColumns Destination:=Range("A1"), DataType:=xlDelimited, _
+        TextQualifier:=xlDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True, _
+        Semicolon:=False, Comma:=False, Space:=False, Other:=False, FieldInfo _
+        :=Array(Array(1, 1), Array(2, 1)), DecimalSeparator:=".", TrailingMinusNumbers _
+        :=True
+Rows("1:26").Select
+    Selection.Delete Shift:=xlUp
+    Rows("2:6").Select
+    Selection.Delete Shift:=xlUp
+    Sheets("Bilan").Select
+    Range("B6").Value = "PVA"
+    Workbooks("TriPVA1_" & Date1 & ".csv").Close savechanges = False
+Sheets("Détails").Select
+    Range("B2").Select
+    Selection.Copy
+    Sheets("Bilan").Select
+    Range("B4").Select
+    ActiveSheet.Paste
+    Sheets("Détails").Select
+    Range("C2").Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    Sheets("Bilan").Select
+    Range("B5").Select
+    ActiveSheet.Paste
+    
+    Range("B4:B5").Select
+    With Selection
+        .HorizontalAlignment = xlCenter
+        .VerticalAlignment = xlBottom
+        .WrapText = False
+        .Orientation = 0
+        .AddIndent = False
+        .IndentLevel = 0
+        .ShrinkToFit = False
+        .ReadingOrder = xlContext
+        .MergeCells = False
+    End With
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    Selection.Borders(xlInsideVertical).LineStyle = xlNone
+    With Selection.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+
+ElseIf tri = "SIMREF" Then
+If Dir(Nomfichref) = "" Then
+MsgBox ("Fichier inexistant")
+Exit Sub
+End If
+ChDir "U:\Bases_de_donnees\Machines\TRIs-PASAN\PASAN-CREF\Fichiers-Journaliers\"
+Workbooks.OpenText Filename:=Nomfichref
+Windows("SimRef_" & Date1 & ".csv").Activate
+Cells.Select
+Selection.Copy
+Windows("Extract_Lot_Day_v0.xlsm").Activate
+Sheets("Détails").Select
+    Cells.Select
+    ActiveSheet.Paste
+Columns("A:A").Select
+    Selection.TextToColumns Destination:=Range("A1"), DataType:=xlDelimited, _
+        TextQualifier:=xlDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True, _
+        Semicolon:=False, Comma:=False, Space:=False, Other:=False, FieldInfo _
+        :=Array(Array(1, 1), Array(2, 1)), DecimalSeparator:=".", TrailingMinusNumbers _
+        :=True
+Rows("1:26").Select
+    Selection.Delete Shift:=xlUp
+    Rows("2:6").Select
+    Selection.Delete Shift:=xlUp
+    Sheets("Bilan").Select
+    Range("B6").Value = "simulateur"
+    Workbooks("SimRef_" & Date1 & ".csv").Close savechanges = False
+Sheets("Détails").Select
+    Range("B2").Select
+    Selection.Copy
+    Sheets("Bilan").Select
+    Range("B4").Select
+    ActiveSheet.Paste
+    Sheets("Détails").Select
+    Range("C2").Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    Sheets("Bilan").Select
+    Range("B5").Select
+    ActiveSheet.Paste
+    
+    Range("B4:B5").Select
+    With Selection
+        .HorizontalAlignment = xlCenter
+        .VerticalAlignment = xlBottom
+        .WrapText = False
+        .Orientation = 0
+        .AddIndent = False
+        .IndentLevel = 0
+        .ShrinkToFit = False
+        .ReadingOrder = xlContext
+        .MergeCells = False
+    End With
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    Selection.Borders(xlInsideVertical).LineStyle = xlNone
+    With Selection.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+
+
+Else
+MsgBox ("Fichier inexistant")
+End If
+Application.ScreenUpdating = True
+
+End Sub
+

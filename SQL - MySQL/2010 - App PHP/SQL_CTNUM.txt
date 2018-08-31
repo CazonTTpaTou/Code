@@ -1,0 +1,146 @@
+-- phpMyAdmin SQL Dump
+-- version 3.2.1
+-- http://www.phpmyadmin.net
+--
+-- Serveur: localhost
+-- Généré le : Lun 12 Juillet 2010 à 20:23
+-- Version du serveur: 5.1.37
+-- Version de PHP: 5.3.0
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+--
+-- Base de données: `ctnum`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `catalogue`
+--
+
+CREATE TABLE IF NOT EXISTS `catalogue` (
+  `num_cat` smallint(4) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(50) DEFAULT NULL,
+  `date_debut` date DEFAULT NULL,
+  `date_fin` date DEFAULT NULL,
+  PRIMARY KEY (`num_cat`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `clients`
+--
+
+CREATE TABLE IF NOT EXISTS `clients` (
+  `numero` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `Qualite` varchar(15) DEFAULT NULL,
+  `Nom` varchar(30) DEFAULT NULL,
+  `Prenom` varchar(30) DEFAULT NULL,
+  `Adresse_1` varchar(30) DEFAULT NULL,
+  `Adresse_2` varchar(30) DEFAULT NULL,
+  `Code_Postal` varchar(5) DEFAULT NULL,
+  `Ville` varchar(30) DEFAULT NULL,
+  `Date_Etat` varchar(30) DEFAULT NULL,
+  `NPAI` varchar(15) DEFAULT NULL,
+  `Nature_Client` varchar(15) DEFAULT NULL,
+  `fichiers` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`numero`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19587 ;
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `com`
+--
+CREATE TABLE IF NOT EXISTS `com` (
+`date` timestamp
+,`id_commande` smallint(6)
+,`id_client` smallint(6) unsigned
+,`qualite` varchar(15)
+,`nom` varchar(30)
+,`prenom` varchar(30)
+,`adresse_1` varchar(30)
+,`adresse_2` varchar(30)
+,`code_postal` varchar(5)
+,`ville` varchar(30)
+,`id_livre` smallint(4) unsigned
+,`auteur` varchar(50)
+,`titre` varchar(100)
+,`prix` decimal(6,2)
+,`Port` decimal(6,2)
+,`quant` smallint(5)
+);
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `commande`
+--
+
+CREATE TABLE IF NOT EXISTS `commande` (
+  `numero_com` smallint(6) NOT NULL AUTO_INCREMENT,
+  `Numero_Client` smallint(6) DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `port` decimal(6,2) DEFAULT '0.00',
+  `catalogue` smallint(4) DEFAULT '1',
+  PRIMARY KEY (`numero_com`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2939 ;
+
+--
+-- Déclencheurs `commande`
+--
+DROP TRIGGER IF EXISTS `ctnum`.`DEL_lig`;
+DELIMITER //
+CREATE TRIGGER `ctnum`.`DEL_lig` AFTER DELETE ON `ctnum`.`commande`
+ FOR EACH ROW delete from ligne_commande where old.numero_com=ligne_commande.numero_com
+//
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `ligne_commande`
+--
+
+CREATE TABLE IF NOT EXISTS `ligne_commande` (
+  `Numero_com` smallint(6) DEFAULT NULL,
+  `numero_livre` smallint(4) DEFAULT NULL,
+  `quantite` smallint(5) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Déclencheurs `ligne_commande`
+--
+DROP TRIGGER IF EXISTS `ctnum`.`MAJ_stock`;
+DELIMITER //
+CREATE TRIGGER `ctnum`.`MAJ_stock` AFTER INSERT ON `ctnum`.`ligne_commande`
+ FOR EACH ROW update livres set livres.stock=livres.stock+new.quantite where new.numero_livre=livres.numero
+//
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `livres`
+--
+
+CREATE TABLE IF NOT EXISTS `livres` (
+  `numero` smallint(4) unsigned NOT NULL AUTO_INCREMENT,
+  `Auteur` varchar(50) DEFAULT NULL,
+  `Titre` varchar(100) DEFAULT NULL,
+  `Prix` decimal(6,2) DEFAULT NULL,
+  `Pages` int(11) DEFAULT NULL,
+  `ISBN` varchar(30) DEFAULT NULL,
+  `stock` smallint(5) unsigned DEFAULT '0',
+  PRIMARY KEY (`numero`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=341 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `com`
+--
+DROP TABLE IF EXISTS `com`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `com` AS select `c`.`date` AS `date`,`c`.`numero_com` AS `id_commande`,`cl`.`numero` AS `id_client`,`cl`.`Qualite` AS `qualite`,`cl`.`Nom` AS `nom`,`cl`.`Prenom` AS `prenom`,`cl`.`Adresse_1` AS `adresse_1`,`cl`.`Adresse_2` AS `adresse_2`,`cl`.`Code_Postal` AS `code_postal`,`cl`.`Ville` AS `ville`,`li`.`numero` AS `id_livre`,`li`.`Auteur` AS `auteur`,`li`.`Titre` AS `titre`,`li`.`Prix` AS `prix`,`c`.`port` AS `Port`,`lig`.`quantite` AS `quant` from (((`commande` `c` join `clients` `cl` on((`cl`.`numero` = `c`.`Numero_Client`))) join `ligne_commande` `lig` on((`lig`.`Numero_com` = `c`.`numero_com`))) join `livres` `li` on((`li`.`numero` = `lig`.`numero_livre`)));

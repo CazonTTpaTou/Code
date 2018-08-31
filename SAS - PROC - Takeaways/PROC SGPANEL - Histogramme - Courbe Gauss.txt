@@ -1,0 +1,6 @@
+
+proc sgpanel data=Stats.data_hennecke_2_mois;
+panelby Ass_Sci_Equipement;
+	density BOW/type=normal;
+	histogram BOW;
+run;

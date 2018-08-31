@@ -1,0 +1,9 @@
+IF ( 'Taux_Mono'n BetweenInclusive('Multi_Inf'p, 'Multi_Sup'p) )
+RETURN 'Multi'
+ELSE ( 
+  IF ( 'Taux_Mono'n BetweenInclusive('Multi_Inf'p, 'Mono_Sup'p) )
+  RETURN 'Mono'
+  ELSE ( 
+    IF ( 'Taux_Mono'n BetweenInclusive('Full_Mono_Inf'p, 'Full_Mono_sup'p) )
+    RETURN 'Full Mono'
+    ELSE 'Autre' ) )

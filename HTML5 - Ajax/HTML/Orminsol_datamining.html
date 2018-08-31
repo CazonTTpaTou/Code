@@ -1,0 +1,82 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<link rel="stylesheet" type="text/css" href="./Presentation.css"></link>
+<script src="fonctions_JS.js" type="text/javascript"></script>
+<title>Orminsol - Datamining</title>
+</head>
+
+<body class="Rouge" >
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Irminsul_DataMining.php">Version en PDF</a></p>
+<H1><div><span class="Titre2">▼ MISE EN PLACE D'UN OUTIL DE DATAMINING ▼</span></div></H1>
+<p class="TexteI"><img src="../Pictures/Click_Fam_3.JPG"/></p>
+</br>
+
+<table class="sommaire">
+  <tr><td>
+  <center><span class="titre_sommaire">► Sommaire ◄</span><center>
+<ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="/HTML/Orminsol.html" title="Se rendre à cette section...">Présentation de la société.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section2" title="Se rendre à cette section...">Explication de la mission.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section3" title="Se rendre à cette section...">Présentation de l'application.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section4" title="Se rendre à cette section...">Environnement de développement.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section5" title="Se rendre à cette section...">Logique de l'algorithme.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Conclusion" title="Se rendre à cette section...">Conclusion.</li></a>
+</ol>
+</td></tr></table></br>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section2"></a>
+<p class="Texte">L'un des impératifs de la société Orminsol était de composer des catalogues homogènes qui proposent à ses clients le plus de références possibles qui correspondent au mieux à leurs attentes et autres centres d'intérêt. Pour cerner ces attentes, il était donc nécessaire de creuser la logique d'achat des clients commandant des références sur le catalogue de vente par correspondance.</p>
+<p class="Texte">Une des façons de cerner et de comprendre les logiques d'achat de la clientèle était de déterminer les règles d'association des différentes références commandées. Cette opération consistait à repérer les références de livres qui revenaient régulièrement parmi les commandes de clients, ayant déjà commandé un livre particulier.</p>
+<p class="Texte">Une fois ces règles d'association cernées, il devenait plus aisé d'élaborer une offre commerciale répondant plus précisément aux attentes de la clientèle et de proposer des offres marketing adaptées (promotions, vente de lots, bundles). Voici une illustration graphique du principe de la règle d'association :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Sup_10.JPG"/></p>
+<p class="Texte">Par exemple, il y avait de fortes chances d'obtenir une règle d'association entre un livre de mathématiques d'exercices et le livre proposant les corrigés des mêmes exercices, d'où l'intérêt de proposer une offre promotionnelle sur l'achat de ces deux références.</p>
+<p class="Texte">C'est pourquoi, nous fut confiée la mission de mettre en place sous Excel un outil de datamining permettant de déterminer les règles d'association entre les références achetées par les clients d'Orminsol lors de leurs commandes précédentes.</p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section3"></a>
+<p class="Texte">L'interface graphique de cet outil de datamining se présentait sous la forme suivante :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Datamining_8.JPG"/></p>
+<div class="Paragraphe">
+<ul type="square" class="Paragraphe1">
+<li class="Paragraphe2">Le nombre de commandes était le nombre de factures soumis à l'algorithme de l'application.</li>
+<li class="Paragraphe2">Le support minimal était le nombre minimum de fois qu'une référence devait apparaître.</li>
+<li class="Paragraphe2">Le seuil de confiance était le ratio minimum pour qu'une règle d'association soit valide.</li>
+</ol>
+</div>
+<p class="Texte">Les données des précédents achats étaient converties en ligne de texte brut et les références d'achat en entier simple, et ce afin de faciliter le travail de l'algorithme (le VBA Excel n'offrant pas des performances de calcul exceptionnelles).</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Datamining_1.JPG"/></p>
+<p class="Texte">Par exemple, lors de la commande n°6, le client avait acheté les références de livre n° 3 et n° 6 (qui correspondaient respectivement à un livre d'histoire et un livre d'archéologie).</p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section4"></a>
+<p class="Texte">Cette application était développée sous Excel avec des modules programmés en Visual Basic :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Datamining_3.JPG"/></p>
+<p class="Texte">Les modules programmés faisaient notamment appel à des fonctions récursives pour toutes les opérations de scan des données de commande, afin d'économiser les ressources processeur (d'autant que le volume de données à fouiller était parfois conséquent).</p>
+<p class="Texte">Voici un aperçu d'une de ces fonctions récursives (calqué sur le modèle de la recherche dichotomique) :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Datamining_5.JPG"/></p>
+<p class="Texte">Au final, l'applicatif fournissait les résultats des règles d'association trouvées (surlignées en jaune) :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Datamining_2.JPG"/></p>
+<p class="Texte">Par exemple, la règle 2 -->1 (se lisant 2 induit 1), signifiait que le client, qui aurait commandé la référence 2, aurait dans 75% des cas également acheté le livre de référence 1 (l'achat de la référence 2 entraînant avec une probabilité supérieure à un seuil minimum de confiance l'achat de la référence 1).</p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section5"></a>
+<p class="Texte">Cette application utilisait l'algorithme dit A-priori dont voici le squelette du pseudo-code :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Datamining_6.JPG"/></p>
+<p class="Texte">Il s'ordonnançait selon la logique d'enchaînement suivante, alternant de la base des achats et dénombrement des combinaisons d'association possibles d'achats de produits :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Datamining_7.JPG"/></p>
+<p class="Texte">Le scénario de l'algorithme A-priori était séquentiel et linéaire. Voilà un exemple de déroulement de quelques boucles de l'algorithme mis en place, à partir d'un exemple factice, afin d'en montrer la logique de fonctionnement :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Datamining_4.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Conclusion"></a>
+<p class="Texte">Une fois mise en production, cet applicatif donna de très bon résultats concernant les règles d'association mises à jour. Il apparut très rapidement que les acheteurs de certains titres faisaient systèmatiquement l'acquisition des mêmes livres lors de leurs achats suivants. Une fois ces règles d'association intégrée dans le processus de décision marketing, des promotions commerciales particulièrement judicieuses purent être mises en place. </p>
+<p class="Texte">Par ailleurs, la mise en page des catalogues papier des mailing put être optimisée, en rassemblant dans les mêmes pages les livres liés par des règles d'association communes. Cet outil de datamining permit donc incontestablement d'accroître la rentabilité de l'activité de vente à distance de l'entreprise... </p> 
+</br>
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Irminsul_DataMining.php">Version en PDF</a></p>
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+</br>
+</body>
+</html>

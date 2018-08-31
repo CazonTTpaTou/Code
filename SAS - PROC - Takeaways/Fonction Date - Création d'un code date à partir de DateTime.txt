@@ -1,0 +1,3 @@
+Year(DatePart(T1.Time))*10000
++Month(DatePart(T1.Time))*100
++Day(DatePart(T1.Time))*1

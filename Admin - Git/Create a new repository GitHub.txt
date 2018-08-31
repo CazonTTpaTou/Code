@@ -1,0 +1,14 @@
+echo "# DataQuest" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/monneryf/DataQuest.git
+git push -u origin master
+
+
+
+######################### Désactiver les avertissements de fin de ligne CRLF
+core.autocrlf
+
+######################### Paramétrer les caractères fin de ligne LF pour être compatible Mac / Linux
+$ git config --global core.autocrlf true

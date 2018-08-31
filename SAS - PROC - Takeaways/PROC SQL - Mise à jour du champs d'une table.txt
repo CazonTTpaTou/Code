@@ -1,0 +1,3 @@
+PROC SQL;
+UPDATE RE_Cel.V_Lots_Filtre_Parametres
+SET Nombre_Mois = &N_Mois;

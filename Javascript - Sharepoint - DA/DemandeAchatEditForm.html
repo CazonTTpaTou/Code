@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="http://intranet.photowatt.local/SupplyChain/DA/WebParts/jquery-ui.min.css" />
+    <link rel="stylesheet" href="http://intranet.photowatt.local/SupplyChain/DA/WebParts/DemandeAchats/DemandeAchatNewEditForm.css" />
+    <script src="http://intranet.photowatt.local/SupplyChain/DA/WebParts/jquery-2.2.3.min.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/DA/WebParts/SPWFormV3.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/DA/WebParts/DemandeAchats/DemandeAchatNewEditForm.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/DA/WebParts/jquery-ui.min.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/DA/WebParts/jquery.ui.datepicker-fr.js"></script>          
+</head>
+
+<body>
+
+<style type="text/css">
+  .ms-formtable
+  {display:none;}
+</style>
+
+<!--SECTION RUBAN-->
+    <div>
+    <table>
+	    <tr>
+	    <td><input type="button" style="border-radius:12px 0 12px 0;background: #478bf9;border:none;color:#fff;font:bold 12px Verdana;padding:6px 6px 6px 6px;" onclick="getLastDAs.call(oLastDAs);" value="Afficher les dernières demandes"/></td>
+	    <td style="width:100px;"></td>
+            <td><select id="listeDAs"></select></td>
+            <td style="width:100px;"></td>
+	    <td><input type="button" style="border-radius:12px 0 12px 0;background: #57D53B;border:none;color:#fff;font:bold 12px Verdana;padding:6px 6px 6px 6px;" onclick="copySelectedDA()" value="Copier la demande sélectionnée"/></td>
+	    </tr>
+    </table>
+    </div>
+<br/><br/>
+
+<div id="formLog2" style="color:red"></div>
+
+<!--SECTION ENTETE-->
+    <table style="width: 83%; border-width:1px;Border-style:dotted;border-color:black;border-radius:7px;" class="da-formtitle">
+            <tr>
+                <td class="da-formtitlecol1" style="width: 250px;padding:15px;"><img src="http://intranet.photowatt.local/SupplyChain/DA/WebParts/DemandeAchats/Photowatt_LogoCouleur.png" /></td>
+                <td class="da-formtitlecol2" rowspan="2"><h2 style="text-align:center;"><span style="font:bold 50px Verdana;color: #478bf9;text-decoration: none;text-shadow: 0 -2px 0 #222222;">DEMANDE</span>
+                                                                                        <span style="font:bold 50px Verdana;color: #57D53B;text-decoration: none;text-shadow: 0 -2px 0 #222222;">D&#39;ACHATS</span></h2></td>
+                <td>Numéro*:</td>
+                <td style="padding:15px;"><span class="SPWCustomForm" data-displayname="Numero demande" style="background:grey;"></span></td>
+            </tr>
+            <tr>
+                <td class="da-formtitlecol1" style="text-align:center;font:bold 25px Verdana;color: black;">EDF ENR PWT</td>
+                <td>Date*:</td>
+                <td style="padding:15px;"><span class="SPWCustomForm" data-displayname="Date" style="background:grey;"></span></td>
+            </tr>
+	        <tr>                
+                <td Colspan="2" Align="center" style="padding:15px;"><a href="http://intranet.photowatt.local/qualite/SitePages/Procedures_Accueil.aspx" target="_blank"><i>Selon la procédure Achats P05-01 disponible sous la GED Qualité</i></a></td>
+                <td Colspan="2" Align="center" style="padding:15px;"><i>* Remplissage automatique lors de la validation</i></td>
+            </tr>
+    </table>
+<br/><br/>
+
+<!--SECTION DEMANDEUR-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#478bf9;color:#fff;width:200px;border-radius:2px;border:none;" value="DEMANDEUR"/>
+    <table class="da-bloc-bleu">
+	<tr>	
+            <td style="padding:10px;"><Label class="Libelle">Direction:</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Direction" data-source="PrimaryChoice,DirectionService,Title" data-attrib="mandatory"></span></td>
+            <td style="padding:10px;"><Label class="Libelle">Demandeur:</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Demandeur" data-attrib="mandatory,currentUser" data-type="personne"></span></td>
+        </tr>
+        <tr>
+            <td style="padding:10px;"><Label class="Libelle">Service:</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Service" data-source="SecondaryChoice,DirectionService,Direction,Service" data-attrib="mandatory"></span></td>
+            <td style="padding:10px;"><Label class="Libelle">Responsable service affectation:</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="RespServiceAffectation" data-attrib="mandatory" data-type="personne"></span></td>            
+           
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td style="padding:10px;"><Label class="Libelle">Directeur service affectation:</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="RespDirectionService"></span></td>
+        </tr>
+    </table>
+<br/>
+
+<!--SECTION DESCRIPTION DE L'ACHAT-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#57D53B;color:#fff;width:200px;border-radius:2px;border:none;" value="DESCRIPTION DE L'ACHAT"/>
+    <br/>
+        <table class="da-bloc-vert">
+            <tr>
+                <td style="padding:10px;"><Label class="Libelle">Nature de la dépense :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Nature depense" data-source="PrimaryChoice,Nature Depense,Title" data-attrib="mandatory" id="ListeD"></span></td>
+            </tr>
+            <tr>
+                <td style="padding:10px;"><Label class="Libelle">Imputation analytique :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Imputation analytique" data-source="PrimaryChoice,Imputation Analytique,Title" data-attrib="mandatory"></span></td>
+            </tr>
+            <tr>
+                <td style="padding:10px;width: 200px;"><Label class="Libelle">Numéro de compte:</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Numero Compte" style="color:black;background-color:color:white;background-color:#77B5FE;"></span></td>
+            </tr>
+        </table>
+<br/>
+
+<!--SECTION MOTIF DEMANDE-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#478bf9;color:#fff;width:200px;border-radius:2px;border:none;" value="MOTIF DE LA DEMANDE"/>
+    <br/>
+        <table class="da-bloc-bleu">
+            <tr>
+                <td style="padding:10px;"><span class="SPWCustomForm" data-displayname="Motif demande"></span></td>
+            </tr>
+        </table>
+<br/>
+
+    
+<!--SECTION PIECES JOINTES-->
+<input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#57D53B;color:#fff;width:200px;border-radius:2px;border:none;" value="PIECES JOINTES"/>
+<br/>
+    <table class="da-bloc-vert">
+        <tr> <!-- Première ligne -->
+            <td style="padding:10px; width=190px; valign=top;" class="ms-formlabel"><div><Label class="Libelle">Documents justificatifs (CDC, devis, plans):</Label></div></td>
+            <td valign="top" class="ms-formbody" id="attachmentsOnClient" style="width: 434px"><span dir="ltr"><input type="file" name="fileupload0"  id="onetidIOFile" size="56" title="Name">              </input></span></td>
+            <td width="100px" valign="top" class="ms-formbody"><input name="FileAttachButton" type="button" value="Ajouter" onclick="OkAttach(); displayFileAttachMessage(false);" style="width: 6em; height: auto" /><span id="idSpace"></span></td>
+            <td><div id="FileAttachMessage"style="display: none; color:red;"><strong>&lt;--Cliquer sur le bouton pour insérer le document</strong></div></td>
+        </tr>
+            <tr id="idAttachmentsRow" style="display: none;"></tr>
+    </table>
+<br/>
+
+<!--SECTION FOURNISSEUR-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#478bf9;color:#fff;width:200px;border-radius:2px;border:none;" value="FOURNISSEUR SOUHAITE"/>
+    <br/>
+        <table class="da-bloc-bleu">
+            <tr>                
+                <td style="padding:10px;"><Label class="Libelle">Nom :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="FournNom" data-attrib="mandatory"></span></td>
+                <td><Label class="Libelle">Contact :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="FournContact"></span></td>
+            </tr>
+            <tr>
+                
+	    </tr>
+            <tr>
+                <td style="padding:10px;"><Label class="Libelle">Téléphone :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="FournTelephone"></span></td>
+                <td><Label class="Libelle">Email :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="FournMail"></span></td>
+            </tr>
+            <tr>
+		<td style="padding:10px;"><span class="SPWCustomForm" data-displayname="FournNonReference"></span></td> 
+	        <td><Label class="Libelle">Recours à ce fournisseur impératif</Label></td>		               
+           </tr>
+        </table>
+        <table id="detailFournisseurLigne1" style="width:83%;">
+        <tr>                
+		<td style="padding:10px;"><Label class="Libelle">Motif justifiant le recours à ce fournisseur : </Label></td>
+                <td><span class="SPWCustomForm" data-displayname="FournMotif"></span></td>
+	    </tr>            
+        </table>
+<br/>
+
+<!--SECTION DETAIL DE LA DEMANDE-->
+<input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#d34836;color:#fff;width:200px;border-radius:2px;border:none;" value="DETAIL DEMANDE"/>
+<br/>
+    <table class="SPWChildTable" style="width:83%;border-top: 4px solid #d34836;" id="DetailDA" data-listName="Demande Achats Detail" data-headerId="DetailDAHeader" data-lineId="DetailDALigne" data-keyFieldName="Numero_x0020_demande" data-guidFieldName="GuidDemande">
+    <tr id="DetailDAHeader">
+	    <th data-colId="Indice">Indice</th>
+            <th data-inputSize="75" data-colId="Designation" data-fieldName="Designation" data-type="texte" data-attrib="tooltip">Désignation</th>
+	    <th data-inputSize="15" data-colId="Reference" data-fieldName="Reference" data-type="texte" data-attrib="tooltip">Référence</th>
+            <th data-inputSize="5" data-colId="Qte" data-fieldName="Quantite" data-type="nombre">Qté</th>
+	    <th data-colId="Unite" data-fieldName="Unite" data-source="PrimaryChoice,Unite,Title" data-attrib="mandatory">Unité</th>	   
+	    <th data-inputSize="8" data-colId="PU" data-fieldName="Prix_x0020_unitaire_x0020_HT" data-type="nombre">Prix Unitaire H.T</th>
+	    <th data-inputSize="10" data-colId="DateLiv" data-fieldName="Date_x0020_livraison_x0020_souha" data-type="date" data-attrib="mandatory">Date de livraison</th>
+    	    <th data-colId="PT">Prix Total</th>
+	    <th width="5%" data-colId="Suppr" data-type="button"></th>
+    </tr>
+    </table>
+
+    <table>
+        <tr>
+             <td><i>Cliquer sur le bouton suivant pour ajouter une nouvelle ligne de commande:</i></td>
+	     <td><button style="border:none;padding:6px 0 6px 0;border-radius:8px;background:#d34836;font:bold 13px Arial;color:#fff;" type="button" onclick="addChildLine();">+ Ajouter</button></td>
+	</tr>
+    </table>
+ <br/>
+    <table>
+	<tr>
+            <td><strong>Total :</strong></td>
+            <td><span class="SPWCustomForm" data-displayname="sTotal"></span></td>
+            <td><strong>Devise :</strong></td>
+            <td><span class="SPWCustomForm" data-displayname="Devise" data-source="PrimaryChoice,Devise,Title" data-attrib="mandatory"></span></td>
+        </tr>
+    </table>
+<br/>
+
+<!-- SECTION - ACHATS 
+<input type="button" style="padding: 6px 0 6px 0; font: Bold 13px Arial; background: #478bf9; color: #fff; width: 200px; border-radius: 2px; border: none; " value="SECTION ACHATS" />    
+    <table class="da-bloc-bleu">	
+        <tr>
+		<td style="padding:10px;width: 200px;"><Label class="Libelle">Suivi demande assuré par:</Label></td>
+		<td><span class="SPWCustomForm" data-displayname="Gestionnaire"></td>
+        </tr>    
+        <tr>
+		<td style="padding:10px;width: 200px;"><Label class="Libelle">Acheteur en charge:</Label></td>
+		<td><span class="SPWCustomForm" data-displayname="Acheteur" data-type="personne"></td>
+        </tr>   
+    </table>
+<br/>
+<br/>
+-->
+
+<!-- SECTION - COMMENTAIRES -->
+<input type="button" style="padding: 6px 0 6px 0; font: Bold 13px Arial; background: #57D53B; color: #fff; width: 200px; border-radius: 2px; border: none; " value="COMMENTAIRES" />    
+    <table class="da-bloc-vert">	
+        <tr>
+		<td style="padding:10px;"><span class="SPWCustomForm" data-displayname="Commentaires DA"></span></td>
+        </tr>            
+    </table>
+
+<!-- SECTION - CORRECTION DU FORMULAIRE-->
+    <table>
+        <tr>
+            <td colspan="2"><div id="formLog" style="color:red"></div></td>
+        </tr>
+    </table>
+<br/>
+
+</body>
+</html>
+

@@ -1,0 +1,41 @@
+
+DATA STATS.DATA_TRI_BOX_PLOT (keep=Date_Heure Date_Tri_Degrade Origine Recette Serial FF Voc Isc Rend);
+/*SET WORK.ECHANTILLON;*/
+SET WORK.QUERY_FOR_DATA_LOGS_TRI;
+
+Jour=Weekday(DatePart('Date_Heure'n));
+
+Semaine = IFN ( Weekday(DatePart('Date_Heure'n)) = 1,
+          Week(DatePart('Date_Heure'n)),
+          Week(DatePart('Date_Heure'n))+1);
+
+Date_Tri = mdy(month(datepart('Date_Heure'n)),day(datepart('Date_Heure'n)),year(datepart('Date_Heure'n)));
+
+Date_Jour =IFC( Day('Date_Tri'n) < 10,
+                'J0' || put(Day('Date_Tri'n), BEST1.),
+                'J' || put(Day('Date_Tri'n), BEST2.));
+
+Date_Semaine = IFC ( Semaine < 10,
+               cats('S0',Semaine),
+               cats('S',Semaine));
+
+Date_Mois = IFC ( month('Date_Tri'n) < 10,
+            cats('M0',month(Date_Tri)),
+            cats('M',month(Date_Tri)));
+
+Date_A = Year(Date_Tri);
+Date_AM = cats(Date_A, '-',Date_Mois);
+Date_AMS=cats(Date_AM, cats('-',Date_Semaine));
+Date_AMSD=cats(cats(Date_AMS,'-'),Date_Jour);
+
+Date_Tri_Degrade = IFC ( ( Year(Date_Tri) = Year(Date()) ) 
+                           AND ( Semaine = Semaine_Courante ),
+                   'Date_AMSD'n,                    
+                        IFC ( ( Year('Date_Tri'n) = Year(Date()) ) 
+                                AND ( Month('Date_Tri'n) = Month(Date()) ),
+                        'Date_AMS'n,                        
+                               IFC ( Year('Date_Tri'n) = Year(Date()), 
+                               'Date_AM'n,
+                               'Date_A'n ) ));
+RUN;
+

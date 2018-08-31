@@ -1,0 +1,188 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="WebServiceJQuery.Default" %>
+<!--
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    
+    <script src="js/jquery-3.2.1.min.js"></script>
+
+     <script type="text/javascript">
+         var nombre;
+         var tab = new Array;
+         var Type;
+         var Url;
+         var Data;
+         var ContentType;
+         var DataType;
+         var ProcessData;
+         //Generic function to call AXMX/WCF  Service        
+         function CallService() {
+             $.ajax({
+                 type: Type, //GET or POST or PUT or DELETE verb
+                 url: Url, // Location of the service
+                 data: Data, //Data sent to server
+                 contentType: ContentType, // content type sent to server
+                 dataType: DataType, //Expected data format from server
+                 processdata: ProcessData, //True or False
+                 success: function (msg) {//On Successfull service call
+                     ServiceSucceeded(msg);
+                 },
+                 error: ServiceFailed// When Service call fails
+             });
+         }
+
+         function ServiceFailed(result) {
+             alert('Service call failed: ' + result.status + '' + result.statusText);
+             Type = null; Url = null; Data = null; ContentType = null; DataType = null; ProcessData = null;
+         }
+
+         function WCFJSON() {
+             var uesrid = "1";
+             Type = "POST";
+             Url = "Service.svc/GetData";
+             //Data = '{"Id": "' + uesrid + '"}';
+             ContentType = "application/json; charset=utf-8";
+             DataType = "json"; ProcessData = true;
+             CallService();
+         }
+
+         function ServiceSucceeded(result) {
+
+             if ((DataType == "json") && (typeof result != 'undefined')) {
+
+                 alert(result.d);
+             }
+                /* var i = -1;
+                 nombre = 0;
+                 var newArr = result.d;
+
+                 while (newArr.length > 0) {
+
+                     if ((typeof newArr.pop() != 'undefined') || (typeof newArr.pop() != null)) {
+                         i++;
+                         if (!isNaN(parseFloat(newArr.pop()))) {
+                                 tab[i] = parseFloat(newArr.pop());
+                                 document.write(tab[i] + "<br/>");
+                                 nombre++;
+                         }
+                     }
+                 }
+                 document.write("Nombre de valeurs : " + nombre)
+                 }*/
+         }        
+
+         function ServiceFailed(xhr) {
+             alert(xhr.responseText);
+             if (xhr.responseText) {
+                 var err = xhr.responseText;
+                 if (err)
+                     error(err);
+                 else
+                     error({ Message: "Unknown server error." })
+             }
+             return;
+         }
+
+         $(document).ready(
+         function () {
+             WCFJSON();
+         }
+         );
+
+         function dateReviver(key, value) {
+             var a;
+             if (typeof value === 'string') {
+                 a = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);
+                 if (a) {
+                     return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4],
+                                     +a[5], +a[6]));
+                 }
+             }
+             return value;
+         };
+
+    </script>
+</head>
+
+
+<body>
+    <form id="form1" runat="server">
+    <div>
+    
+    </div>
+    </form>
+</body>
+</html>
+-->
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Data.Odbc;
+using System.Web.Script.Serialization;
+
+namespace Connection_ODBC
+{
+    public class Datas
+    {
+        public static String[] RetrieveDatas()
+        {
+            OdbcConnection connection = new OdbcConnection("DSN=PostgreSQL35W-32bits");
+            connection.Open();
+            System.Console.WriteLine("State: " + connection.State.ToString());
+
+            string query = "SELECT \"TimeStamp_Flash\",\"Voc\" FROM results";
+            OdbcCommand command = new OdbcCommand(query, connection);
+
+            // Execute the SQL command and return a reader for navigating the results.
+            OdbcDataReader reader = command.ExecuteReader();
+
+            int ligne = -1;
+            List<Mesuress> mesure = new List<Mesuress>();
+
+            String[] Tableau = new String[100];
+
+            while (reader.Read() == true)
+            {
+                ligne++;
+                DateTime dateM = reader.GetDateTime(0);
+                double? voc = null;
+                
+                if (!(reader.IsDBNull(reader.GetOrdinal(reader.GetName(1)))))
+                {
+                    try { voc = reader.GetDouble(1); }
+                    catch (Exception) { }
+                }
+                //Tableau[ligne,0] = dateM.ToString();
+                Tableau[ligne] = voc.ToString().Replace(",",".");
+
+                /*Mesure mes = new Mesure();
+                mes.Numero = ligne;
+                mes.DateHeure = dateM;
+                mes.VOC = voc;
+                mesure.Add(mes);*/
+            }
+
+            reader.Close();
+            connection.Close();
+            //string[] json = mesure.ToArray();
+            var json = new JavaScriptSerializer().Serialize(Tableau);            
+            return Tableau; 
+        }
+    }
+}
+
+public class Mesuress
+{
+    public int Numero { get; set; }
+    public DateTime DateHeure { get; set; }
+    public double? VOC { get; set; }
+}
+
+
+

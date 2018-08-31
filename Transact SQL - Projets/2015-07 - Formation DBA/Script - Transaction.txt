@@ -1,0 +1,9 @@
+USE tempdb
+GO
+CREATE TABLE temp (texte varchar( 50 ))
+INSERT INTO temp (texte) VALUES ('ne bougez pas, j''arrive !')
+BEGIN TRANSACTION
+SELECT texte
+FROM temp WITH(holdlock, rowlock);
+Commit;
+

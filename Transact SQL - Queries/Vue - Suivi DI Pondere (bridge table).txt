@@ -1,0 +1,24 @@
+CREATE VIEW SAS_Table_Faits_Suivi_DI_Pondere
+AS
+SELECT 
+
+		CONVERT(Varchar(8),ST.Code_Intervention)
+		+ '-' 
+		+ CONVERT(Varchar(8),
+							ROW_NUMBER() 
+							OVER(PARTITION BY ST.CODE_INTERVENTION ORDER BY ST.CODE_INTERVENTION)) 
+												AS SurrogateKey,
+		1.00/
+			(COUNT(ST.Code_Intervention) 
+							OVER (PARTITION BY ST.Code_Intervention))
+												AS Poids,
+		ST.* 
+		
+	FROM dbo.SAS_Table_Faits_Suivi_Domaine as ST
+
+	--ORDER BY SurrogateKey
+
+GO
+
+
+

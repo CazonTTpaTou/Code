@@ -1,0 +1,34 @@
+http://www.carlprothman.net/Default.aspx?tabid=87#OLEDBProviderForSQLServer
+
+Private Sub Command2_Click()
+
+Dim oConn As ADODB.Connection
+Dim RS_Devis As New ADODB.Recordset
+
+Dim myDatabaseName, strSQL As String
+
+On Error GoTo GestionErreur
+
+Set oConn = New ADODB.Connection
+
+myDatabaseName = "GMAO_DEV_8"
+
+oConn.Open "Provider=sqloledb;" & _
+           "Data Source=(local);" & _
+           "Initial Catalog=" & myDatabaseName & ";" & _
+            "Integrated Security=SSPI"
+
+strSQL = "exec Insertion_2 500"
+
+oConn.Execute strSQL
+
+RS_Devis.Open "Select dbo.CompteEquip(2)", oConn, adOpenStatic, adLockReadOnly
+MsgBox RS_Devis.Fields(0).Value
+
+Exit Sub
+
+GestionErreur:
+
+MsgBox Err.Description
+
+End Sub

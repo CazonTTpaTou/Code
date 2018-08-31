@@ -1,0 +1,6 @@
+PROC SGPLOT data=Training.MULTIVARIEE_COURANT;
+hBox Rend / category=Serial;
+Y2axis grid values=(0 to 10 by 0.5) label="Variable utilisée : rendement électrique";
+Xaxis grid;
+RUN;
+

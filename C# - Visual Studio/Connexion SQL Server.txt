@@ -1,0 +1,116 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+using System.Data.SqlClient; // indique l'emploi des classes du fournisseur SQL Server
+using System.Diagnostics;
+using System.Data;
+using System.Data.Common;
+
+namespace ADO_LINQ_CONSOLE
+{
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+
+            string cs;
+
+            // utilise la sécurité intégrée pour accéder à la base banca gérée par le serveur localhost
+            cs = @"data source=(local)\SQLEXPRESS;initial catalog=GMAO_DB;integrated security=true";
+
+            // utilise la sécurité SQL pour accéder à la base banca gérée par le serveur localhost
+
+
+            #region contrôle de la connexion avec instruction using
+            using (SqlConnection scx = new SqlConnection(cs))
+            {
+                scx.Open();
+
+                string query = "SELECT * FROM Compteur";
+                SqlCommand sql = new SqlCommand();
+                sql.Connection = scx;
+                sql.CommandText = query;
+                sql.CommandType = System.Data.CommandType.Text;
+                SqlDataReader reader = sql.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    int idc;
+                    string titulaire;
+
+                    idc = reader.GetInt32(reader.GetOrdinal("idCompteur"));
+                    titulaire = (string)reader["libelle"];
+                    Console.WriteLine(idc + " - " + titulaire);
+                }
+                reader.Close();
+
+            }
+            #endregion
+            
+            DataTable providers = DbProviderFactories.GetFactoryClasses();
+
+            int mc = 3; // afficher le nom et la description de chaque fournisseur
+            for (int c = 0;c < mc;c++)
+                { Console.Write("{0}\t|", providers.Columns[c].ColumnName); }
+            Console.WriteLine("\n---------------------------------------");
+
+            for (int p = 0;p<providers.Rows.Count;p++)
+            {
+                for (int c = 0; c < mc; c++)
+                { Console.Write("{0}\t|", providers.Rows[p][c]); }
+                Console.WriteLine();
+            }
+
+            #region "utiliser une fabrique"
+            // instancier une fabrique pour SQL Server
+            DbProviderFactory factory = DbProviderFactories.GetFactory("System.Data.SqlClient");
+
+            // créer une connexion à partir de la fabrique
+            DbConnection cx = factory.CreateConnection();
+
+            // définir une chaine de connexion en rapport avec le fournisseur
+            cx.ConnectionString = @"data source=(local)\SQLEXPRESS;initial catalog=GMAO_DB;integrated security=true";
+            try 
+            {
+                // créer une commande
+                DbCommand sql2 = factory.CreateCommand();
+                
+                sql2.CommandText = "select * from Intervenant";
+
+                cx.Open();
+
+                sql2.Connection = cx;
+
+                DbDataReader reader2 = sql2.ExecuteReader();
+
+                while (reader2.Read())
+                {
+                    int idInter;
+                    string Nom;
+                    string Prenom;
+
+                    idInter = reader2.GetInt32(reader2.GetOrdinal("idIntervenant"));
+                    Nom = (string)reader2["Nom"];
+                    Prenom = (string)reader2["Prenom"];
+
+                    Console.WriteLine(idInter + " - " + Nom + " - " + Prenom);
+                }
+                reader2.Close();
+                cx.Close();
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message);
+            }
+
+            #endregion
+
+        }
+    }
+}
+
+    
+    

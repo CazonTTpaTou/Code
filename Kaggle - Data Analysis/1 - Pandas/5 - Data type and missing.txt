@@ -1,0 +1,43 @@
+####################################################################################
+Exercise 1: What is the data type of the points column in the dataset?
+####################################################################################
+
+reviews.points.dtype
+
+####################################################################################
+Exercise 2: Create a Series from entries in the price column, but convert the entries to strings. Hint: strings are str in native Python.
+####################################################################################
+
+reviews.price.astype(str)
+
+####################################################################################
+**Exercise 3**: Wines are something missing prices. How often does this occur? Generate a `Series`that, for each review in the dataset, states whether the wine reviewed has a null `price`.
+####################################################################################
+
+reviews.price.isnull().sum()
+
+price_missing = reviews.price.fillna('Without Price')
+
+reviews.price.isnull()
+
+####################################################################################
+Exercise 4: What are the most common wine-producing regions? Create a Series counting the number of times each value occurs in the region_1 field. This field is often missing data, so replace missing values with Unknown. Sort in descending order. Your output should look something like this:
+####################################################################################
+
+reviews.region_1.fillna('Unknown').value_counts()
+
+####################################################################################
+**Exercise 5**: A neat property of boolean data types, like the ones created by the `isnull()` method, is that `False` gets treated as 0 and `True` as 1 when performing math on the values. Thus, the `sum()` of a list of boolean values will return how many times `True` appears in that list.
+####################################################################################
+
+liste_col={}
+for col in reviews.columns:
+    liste_col[col]= reviews[col].isnull().sum()
+
+liste_column = pd.Series(liste_col)
+liste_column
+
+reviews.isnull().sum()
+
+
+

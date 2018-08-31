@@ -1,0 +1,20 @@
+Use GMAO_REC
+GO
+
+UPDATE Realisation
+SET idTypeIntervention = 6
+ 	
+	FROM Realisation 
+	
+		 INNER JOIN Intervention
+			ON Realisation.idIntervention = Intervention.idIntervention
+			
+		 INNER JOIN Demande
+			ON Intervention.idDemande = Demande.idDemande
+
+		WHERE 
+			idUrgence = 1
+			AND idTypeIntervention = 2
+			
+GO
+

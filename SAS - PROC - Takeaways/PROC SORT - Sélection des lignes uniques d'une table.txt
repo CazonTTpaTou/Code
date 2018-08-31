@@ -1,0 +1,11 @@
+PROC sort data= SQC_DEV.T_LOT_CELL_INLINE
+	OUT = WORK.NonDoublon
+	DUPOUT= Work.Doublon
+
+NODUPKEY;
+BY _ALL_;
+
+RUN;
+
+
+	

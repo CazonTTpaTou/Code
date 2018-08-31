@@ -1,0 +1,231 @@
+proc printto log="C:\Users\pwsasdev\Desktop\Logs.txt" new;
+run;
+
+%macro ImportsFile(Adresse,Rep);
+
+	%let Paths = %sysfunc(cat(&Adresse, &Rep));
+	%put --> Adresse : &Paths;
+
+			data Name_File (keep=Nom_Fichier);
+
+			length Nom_Fichier $200;
+
+			fich = filename ('Liste',"&Paths");
+
+			fichier = dopen('Liste');
+			nbfile = dnum(fichier);
+
+			do i=1 to nbfile by 1;
+			     Nom_Fichier = dread(fichier,i);
+                
+			     output;
+				
+			end;
+
+			rc=dclose(fichier);
+
+			run;
+
+%mend;
+
+%macro Transtype();
+
+%do i=1 %to &compteur;
+
+	%let Bounder = "&Source.&&unc&i";
+	%put --> Bounder : &Bounder;
+
+	%let Exoder = "&Cible.&&fsn&i"; 
+    %put --> Exoder : &Exoder;
+    
+	%let Scorer = %sysfunc(index(&&fsn&i,_));
+	%let Starter = %eval(&Scorer+2);
+	%let TitleTable = %sysfunc(substr(&&fsn&i,&Starter,12));
+
+    %put NomFichier --> &&fsn&i;
+	%put Scorer --> &Scorer;
+	%put Starter --> &Starter;
+	%put TitleTable --> &TitleTable;
+
+data _null_;
+
+	infile &Bounder recfm=n ; 
+    file   &Exoder recfm=n;
+
+    input c $char1.;       
+    if c = '23'x then put '5F'x;
+
+    else put c $char1.;
+run;
+
+       proc import datafile=&Exoder
+                                  out=Work.&TitleTable
+                                  dbms=dlm replace;
+                      			  delimiter=",";                                   
+                                  getnames=yes;            
+                                  GUESSINGROWS=32767;
+                        run;
+
+%Ajouter(&TitleTable.,Aurora);
+
+%end;
+
+%mend;
+
+%macro CreateTable();
+data WORK.aurora;                                         
+
+     LENGTH
+                               Batch_ID                       8
+                               _Batch_Name                 $ 15
+                               _Wafer_ID                   $ 11
+                               _Measurement_Timestamp        8
+                               _Device_SN                   8
+                               _Rsh_min                          8
+                               _Rsh_max                          8
+                               _Rsh_avg                          8
+                               _Rsh_SD                     8
+                               _Furnace_Name               $ 9
+                               _Tube_Name                  $ 6
+                               _Carrier_Name              $ 7
+                               _Batch_Position             8
+                               _Orientation                $ 11
+                               _Recipe_Name                $ 7
+                               _Recipe_Version             8
+                               ___of_Samples               8 ;
+
+    FORMAT
+
+                             Batch_ID               BEST5.
+                             _Batch_Name                 $CHAR15.
+                             _Wafer_ID                  $CHAR11.
+                              _Measurement_Timestamp     DATETIME23.
+                             _Device_SN                 BEST8.
+                             _Rsh_min                   BEST4.
+                             _Rsh_max                   BEST5.
+                             _Rsh_avg                    BEST4.
+                             _Rsh_SD                    BEST4.
+                             _Furnace_Name               $CHAR9.
+                             _Tube_Name               $CHAR6.
+                             _Carrier_Name              $CHAR7.
+                             _Batch_Position             BEST3.
+                             _Orientation               $CHAR11.
+                             _Recipe_Name               $CHAR7.
+                             _Recipe_Version             BEST2.
+                             ___of_Samples                BEST2. ;
+
+run; 
+%mend;
+
+%macro Ajouter(Entree,Sortie);
+proc append base=work.&Sortie 
+     data=work.&Entree force;   
+run; 
+%mend;
+
+
+%macro convertHexa(Path,Directory,Name);
+  %let PathFile = %bquote(')%sysfunc(cat(&Path, &Name, .csv))%bquote(');
+  %let NameNew = %sysfunc(cat(&Name,N));
+  /*%let PathNew = %bquote(')%sysfunc(cat(&Path,&Directory,\,&NameNew,.csv))%bquote(');*/
+  %let PathNew = %bquote(')%sysfunc(cat(&Directory, &NameNew, .csv))%bquote(');
+
+%put --> PathFile: &PathFile;
+%put --> PathNew: &PathNew;
+
+data _null_;
+  infile "&PathFile" recfm=n ; 
+  file   "&PathNew" recfm=n;
+
+  input c $char1.;       
+  if c = '23'x then put '5F'x;
+
+  else put c $char1.;
+run;
+
+%mend;
+
+%macro import;
+
+             %do i=1 %to &Compteur;
+       			
+%put ---> chemin : &&fsn&i;
+%put ---> nom : &&dsn&i;
+
+                proc import datafile="&&chemin&i"
+                                  out=Work.&&dsn&i
+                                  dbms=dlm replace;
+                      			  delimiter=",";                                   
+                                  getnames=yes;            
+                                  GUESSINGROWS=32767;
+                        run;
+
+
+%end;
+%mend import;
+
+%ImportsFile(\\office\donnees_machines\Cellules\ILOT1\Lytox\,Aurora\);
+
+data _null_;
+
+	length Nom_Fichier $200;
+	SET Name_File;
+
+	call symputx('chemin',Nom_Fichier);
+	%put --> Chemin : &chemin;
+
+	%let Source = %sysfunc(cat(\\office\donnees_machines\Cellules\ILOT1\Lytox\Aurora\,&chemin,\));
+	%put --> Source : &Source;
+
+    %let Cible = %sysfunc(cat(C:\Users\pwsasdev\Desktop\Files\New,\));
+	%put --> Cible : &Cible;
+
+RUN;
+
+%ImportsFile(\\office\donnees_machines\Cellules\ILOT1\Lytox\Aurora\,&chemin);
+
+data _null_;
+
+    length Nom_Fichier $200;
+	SET Name_File;
+
+
+	call symputx(cats('unc',_n_),Nom_Fichier);                                                                             
+
+    call symputx(cats('fsn',_n_),compress(scan(Nom_Fichier,-1,'-')));	
+
+    call symputx('compteur',_n_); 
+
+    %put --> Chemin : &unc5;
+	%put --> DSN : &fsn5;	
+    %put --> Compteur : &compteur; 
+	
+RUN;
+
+%createTable();
+
+%Transtype();
+
+PROC SQL;
+   CREATE TABLE RE_PROC.DATA_LOGS_LYTOX_R2(label="DATA_LOGS_LYTOX_R2") AS 
+   SELECT t1.Batch_ID, 
+          t1._Batch_Name AS Batch_Name, 
+          t1._Wafer_ID AS Wafer_ID, 
+          t1._Measurement_Timestamp AS Measurement_Timestamp, 
+          t1._Device_SN AS Device_SN, 
+          t1._Rsh_min AS Rsh_min, 
+          t1._Rsh_max AS Rsh_max, 
+          t1._Rsh_avg AS Rsh_avg, 
+          t1._Rsh_SD AS Rsh_SD, 
+          t1._Furnace_Name AS Furnace_Name, 
+          t1._Tube_Name AS Tube_Name, 
+          t1._Carrier_Name AS Carrier_Name, 
+          t1._Batch_Position AS Batch_Position, 
+          t1._Orientation AS Orientation, 
+          t1._Recipe_Name AS Recipe_Name, 
+          t1._Recipe_Version AS Recipe_Version, 
+          t1.___of_Samples AS _of_Samples
+      FROM WORK.AURORA t1
+      WHERE t1.Batch_ID is not missing;
+QUIT;
+

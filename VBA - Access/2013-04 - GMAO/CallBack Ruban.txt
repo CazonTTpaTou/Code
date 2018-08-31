@@ -1,0 +1,99 @@
+'Callback for Filtrer1 getEnabled
+Sub Aut_Filtrer1(control As IRibbonControl, ByRef returnedVal)
+returnedVal = true
+End Sub
+
+'Callback for Filtrer1 onAction
+Sub Action_Filtrer1(control As IRibbonControl)
+End Sub
+
+'Callback for Filtrer2 getEnabled
+Sub Aut_Filtrer2(control As IRibbonControl, ByRef returnedVal)
+returnedVal = true
+End Sub
+
+'Callback for Filtrer2 onAction
+Sub Action_Filtrer2(control As IRibbonControl)
+End Sub
+
+'Callback for Filtrer3 getEnabled
+Sub Aut_Filtrer3(control As IRibbonControl, ByRef returnedVal)
+returnedVal = true
+End Sub
+
+'Callback for Filtrer3 onAction
+Sub Action_Filtrer3(control As IRibbonControl)
+End Sub
+
+'Callback for GestionFiltre1 getEnabled
+Sub Aut_GestionFiltre1(control As IRibbonControl, ByRef returnedVal)
+returnedVal = false
+End Sub
+
+'Callback for GestionFiltre1 onAction
+Sub Action_GestionFiltre1(control As IRibbonControl)
+End Sub
+
+'Callback for GestionFiltre2 getEnabled
+Sub Aut_GestionFiltre2(control As IRibbonControl, ByRef returnedVal)
+returnedVal = false
+End Sub
+
+'Callback for GestionFiltre2 onAction
+Sub Action_GestionFiltre2(control As IRibbonControl)
+End Sub
+
+'Callback for GestionFiltre3 getEnabled
+Sub Aut_GestionFiltre3(control As IRibbonControl, ByRef returnedVal)
+returnedVal = false
+End Sub
+
+'Callback for GestionFiltre3 onAction
+Sub Action_GestionFiltre3(control As IRibbonControl)
+End Sub
+
+'Callback for Trier1 getEnabled
+Sub Aut_Trier1(control As IRibbonControl, ByRef returnedVal)
+returnedVal = true
+End Sub
+
+'Callback for Trier1 onAction
+Sub Action_Trier1(control As IRibbonControl)
+End Sub
+
+'Callback for Trier2 getEnabled
+Sub Aut_Trier2(control As IRibbonControl, ByRef returnedVal)
+returnedVal = true
+End Sub
+
+'Callback for Trier2 onAction
+Sub Action_Trier2(control As IRibbonControl)
+End Sub
+
+'Callback for GestionTri1 getEnabled
+Sub Aut_GestionTri1(control As IRibbonControl, ByRef returnedVal)
+returnedVal = false
+End Sub
+
+'Callback for GestionTri1 onAction
+Sub Action_GestionTri1(control As IRibbonControl)
+End Sub
+
+'Callback for GestionTri2 getEnabled
+Sub Aut_GestionTri2(control As IRibbonControl, ByRef returnedVal)
+returnedVal = false
+End Sub
+
+'Callback for GestionTri2 onAction
+Sub Action_GestionTri2(control As IRibbonControl)
+End Sub
+
+'Callback for GestionTri3 getEnabled
+Sub Aut_GestionTri3(control As IRibbonControl, ByRef returnedVal)
+returnedVal = false
+End Sub
+
+'Callback for GestionTri3 onAction
+Sub Action_GestionTri3(control As IRibbonControl)
+End Sub
+

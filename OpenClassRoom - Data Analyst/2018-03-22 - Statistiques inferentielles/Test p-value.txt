@@ -1,0 +1,44 @@
+Question 1:
+
+2-sample test for equality of proportions with continuity correction
+
+data:  x <- c(arg1, arg2) out of n <- c(arg1 + arg2, arg1 + arg2)
+X-squared = 775.148, df = 1, p-value < 2.2e-16
+alternative hypothesis: greater
+95 percent confidence interval:
+ 0.02095874 1.00000000
+sample estimates:
+   prop 1    prop 2 
+0.5111378 0.4888622 
+
+
+
+
+Question 2:
+
+Etant donnée que (p-value < 2.2e-16) on rejete H0
+
+
+
+Question 3:
+
+La matrice des effectifs est affichée sur la console R.
+>mat
+
+        Total Hommes Femmes
+Cas 0: 781167 399284 381883
+Cas 1:    100     51     49
+Cas 2:   1000    511    489
+Cas 3:  10000   5111   4889
+
+
+Question 4:
+
+Cas 0: 	p-value < 2.2e-16
+Cas 1:  p-value = 0.4438 
+Cas 2:  p-value = 0.1738 
+Cas 3:	p-value = 0.0008878
+
+Seul des grands effectif (année 2014 et cas n=10000) permette de rejeter 
+l'hypothèse d’équiprobabilité des naissances femmes-hommes au niveau de test 5%.
+

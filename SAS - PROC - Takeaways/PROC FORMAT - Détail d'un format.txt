@@ -1,0 +1,3 @@
+proc format lib=formats.formats fmtlib;
+   select $Fmt_Fournisseur;
+run;

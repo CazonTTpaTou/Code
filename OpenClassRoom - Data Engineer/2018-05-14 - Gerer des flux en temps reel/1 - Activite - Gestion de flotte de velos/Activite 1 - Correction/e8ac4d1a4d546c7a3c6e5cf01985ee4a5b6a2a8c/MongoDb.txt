@@ -1,0 +1,10 @@
+1)C:\Applications\mongodb-win32-x86_64-3.4.7\bin\mongoimport.exe  --db tourPedia --collection paris C:\DonneesMongo\tour-Pedia_paris.json\tourPedia_paris.json
+2)db.paris.find({ "category" : "accommodation","services" :"blanchisserie"})
+3)db.paris.find({ "category" : "accommodation"},{"location.address":1})
+4)db.paris.find({"reviews" : {$elemMatch : {"language" : "en","rating" : {$gte :3} }}},{"reviews" : 1});
+5)varGroup = { $group : {"_id" : "$category", "total" : {$sum : 1} } };
+db.paris.aggregate( [varGroup] );
+6)varUnwind = {$unwind : "$services"}
+  varMatch = { $match : { "category":"accommodation"} };
+  varGroup = { $group : {"_id" : "$services", "total" : {$sum : 1} } };
+  db.paris.aggregate( [ varMatch, varUnwind, varGroup] );

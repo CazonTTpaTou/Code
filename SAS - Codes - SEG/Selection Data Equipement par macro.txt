@@ -1,0 +1,46 @@
+DATA Work.Liste_Arret_SSE (keep=Code_Emplacement);
+SET Work.LISTE_ARRET_COMPLET;
+IF (substr(reverse(trim(Code_Emplacement)),1,1) NE '0') Then Output; 														  
+RUN;
+
+PROC SORT data=Work.Liste_Arret_SSE Out=Work.Liste_SSE Nodupkey;
+BY Code_Emplacement;
+RUN;
+
+%Macro Selection(Emplacement,TableDest);
+	%let Code ="&Emplacement.";
+	%put --> Code : &Code;
+	DATA &TableDest;
+	SET Work.LISTE_ARRET_COMPLET;
+	IF Code_Emplacement = &Code Then Output;
+	RUN;
+%mend;
+
+DATA _NULL_;
+SET Work.liste_SSE end=last;
+	Call Symputx(cats('Table_',_N_),cats('Work.Table_',_N_));
+	Call Symputx(cats('Code_Equip_',_n_),Code_Emplacement);
+    if last then call symputx('nobs',_n_);	
+	/*%Selection(&Code_Equip.,_N_);*/
+	/*%PackingIntervall(&Code_Equip.);*/
+RUN;
+
+%macro TableGeneration();
+
+%do i=1 %to 5;/*&nobs;
+	/*%put ---> Table : &&Table_&i;
+	%put ---> Path : "&&Code_Equip_&i";*/
+	%Selection(&&Code_Equip_&i.,&&Table_&i.);
+%end;
+%mend;
+
+%TableGeneration();
+
+
+
+
+
+
+
+
+

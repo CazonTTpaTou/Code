@@ -1,0 +1,1 @@
+( TreatAs(_Number_, 'DateCommande'n) - TreatAs(_Number_, 'Cree'n) ) / ( 60 * 60 * 24 )

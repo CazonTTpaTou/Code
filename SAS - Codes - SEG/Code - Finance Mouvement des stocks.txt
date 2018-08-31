@@ -1,0 +1,39 @@
+PROC SQL;
+CREATE TABLE STATS.MOUVEMENT_STOCK
+AS
+	SELECT 
+	ttdinv700300.t_item AS 'Code_article'n, 
+	ttiitm001300.t_dsca AS 'Description'n, 
+	ttdinv700300.t_cwar AS 'Magasin'n, 
+	ttdinv700300.t_trdt AS 'Date du mouvement'n, 
+	ttiitm001300.t_citg AS 'Grp_Article'n, 
+	ttiitm001300.t_csgs AS 'Grp_Stat_Vente'n, 
+	ttdinv700300.t_orno AS 'Ordre'n, 
+	ttdinv700300.t_quan AS 'Quantité'n, 
+	ttiitm001300.t_cuni AS 'UQ Stock'n, 
+	ttdinv700300.t_logn AS 'User ID'n, 
+	ttdinv700300.t_koor AS 'Type Mvt'n, 
+	ttdinv700300.t_kost AS 'Type Transac.'n,
+	ttdinv700300.t_trdt AS 'Date'n,
+	ttiitm001300.t_item AS 'Item'n,
+	ttiitm001300.t_cwar AS 'Magasin Affectation'n,
+	ttdinv700300.t_koor AS 't_koor'n,
+	ttdinv700300.t_kost AS 't_kost'n,
+	Datetime() format=Datetime23. AS 'Date_Actualisation'n
+
+	FROM DS_BAAN.ttdinv700300 AS ttdinv700300, DS_BAAN.ttiitm001300 AS ttiitm001300
+	WHERE ttiitm001300.t_item = ttdinv700300.t_item 
+    AND (datepart(ttdinv700300.t_trdt) >= INTNX('month',date(),-24))
+    /*AND ((ttdinv700300.t_trdt>=? And ttdinv700300.t_trdt<=?) 
+	AND (ttiitm001300.t_item>=? And ttiitm001300.t_item<=?) 
+	AND (ttiitm001300.t_citg>=? And ttiitm001300.t_citg<=?) 
+	AND (ttdinv700300.t_cwar>=? And ttdinv700300.t_cwar<=?) 
+	AND (ttdinv700300.t_koor>=? And ttdinv700300.t_koor<=?) 
+	AND (ttdinv700300.t_kost>=? And ttdinv700300.t_kost<=?))
+	ORDER BY ttiitm001300.t_csgs, ttdinv700300.t_item, ttdinv700300.t_trdt DESC, ttdinv700300.t_cwar*/
+;
+RUN;
+
+
+
+

@@ -1,0 +1,25 @@
+CREATE VIEW [dbo].[Vue_Filtre_Intervention]
+AS
+SELECT     dbo.Intervention.idIntervention, dbo.Intervention.DateCreation AS Date, dbo.TypeDemande.idTypeDemande, dbo.Demande.EstRonde, 
+                      EtatIntervention_1.Libelle AS Etat, dbo.Priorite.Libelle AS Priorité, dbo.Secteur.Libelle AS Secteur, dbo.GD_utilisateur.login, 
+                      dbo.Equipement.Libelle AS Equipement, dbo.Demande.Description, dbo.Service.Libelle AS Service, EtatIntervention_1.idCouleur, 
+                      dbo.Demande.idUrgence, dbo.Intervention.idService, dbo.Demande.idDemande, dbo.EtatIntervention.idEtat, dbo.UAP.idUAP, dbo.Priorite.idPriorite, 
+                      dbo.Secteur.idSecteur, dbo.Equipement.idEquipement, dbo.Demande.idDemandeur, dbo.Intervention.idDetail, 
+                      dbo.DegreUrgence.Libelle AS [Degré Urgence], dbo.Priorite.Ordre AS OrdrePriorite, dbo.Secteur.Ordre AS OrdreSecteur, 
+                      dbo.Equipement.Ordre AS OrdreEquipement, dbo.Service.Ordre AS OrdreService, dbo.Intervention.DateCloture, 
+                      EtatIntervention_1.Ordre AS OrdreEtat
+FROM         dbo.Service RIGHT OUTER JOIN
+                      dbo.UAP INNER JOIN
+                      dbo.Demande INNER JOIN
+                      dbo.Intervention ON dbo.Demande.idDemande = dbo.Intervention.idDemande INNER JOIN
+                      dbo.Equipement ON dbo.Demande.idEquipement = dbo.Equipement.idEquipement INNER JOIN
+                      dbo.Secteur ON dbo.Demande.idSecteur = dbo.Secteur.idSecteur INNER JOIN
+                      dbo.EtatIntervention ON dbo.Intervention.idEtat = dbo.EtatIntervention.idEtat INNER JOIN
+                      dbo.GD_utilisateur ON dbo.Demande.idDemandeur = dbo.GD_utilisateur.idUtilisateur INNER JOIN
+                      dbo.TypeDemande ON dbo.Demande.idTypeDemande = dbo.TypeDemande.idTypeDemande ON dbo.UAP.idUAP = dbo.Demande.idUAP INNER JOIN
+                      dbo.DegreUrgence ON dbo.Demande.idUrgence = dbo.DegreUrgence.idUrgence INNER JOIN
+                      dbo.Priorite ON dbo.DegreUrgence.idPriorite = dbo.Priorite.idPriorite ON dbo.Service.idService = dbo.Intervention.idService LEFT OUTER JOIN
+                      dbo.EtatIntervention AS EtatIntervention_1 ON dbo.Intervention.idDetail = EtatIntervention_1.idEtat
+
+GO
+

@@ -1,0 +1,377 @@
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------	
+CREATE VIEW Vue_Reporting_Efficacite_Preventif
+AS
+SELECT 
+	   FP.idFichePreventive as Numero_FP,
+	   Typ.Libelle as Type_Maintenance,
+	   FP.Description as Description_FP,
+	   coalesce(Dem.DatePrevision,Dem.date) as Date_Previsionnelle,
+	   Dem.Date as Date_Creation,
+	   Inter.DateCloture as Date_Cloture,
+	   CAST(DATEDIFF(HOUR, Dem.Date, Inter.DateCloture)/24.00 AS DECIMAL(18,2)) as Duree_Maintenance,
+   	   CAST(DATEDIFF(HOUR, coalesce(Dem.DatePrevision,Dem.date), Dem.Date)/24.00 AS DECIMAL(18,2)) as Ecart_Previsionnel,	   
+	   SSE.Libelle as Sous_Equipements,
+	   Equ.Libelle as Equipements,
+	   Proce.Libelle as Procédés,
+	   Sect.Libelle as Secteurs,
+	   UAP.Libelle as Unités,
+	   CAST(DATENAME(year, Dem.Date) AS int) as année
+	  ,CAST(DATENAME(QUARTER, Dem.Date) AS INT) as Trimestre
+      ,DATENAME(MONTH, Dem.Date) as Mois
+      ,CAST(DATENAME(WEEK, Dem.Date) AS INT) as Semaine    
+      ,CAST(DATENAME(dayofyear, Dem.Date)AS INT) as JourAnnee
+      ,DATENAME(weekday, Dem.Date) as JourSemaine
+      ,CAST(DATENAME(day, Dem.Date) AS INT) as Jour
+	   
+	FROM 
+	FichePreventive  as FP
+	inner join Demande as Dem
+		on FP.idFichePreventive = Dem.idFichePreventive
+	inner join TypePlanification as Typ
+		on FP.idTypePlanification = Typ.idPlanification
+	inner join Intervention as Inter
+		on Dem.idDemande = Inter.idDemande
+	inner join Equipement as Equ
+		on FP.idEquipement = Equ.idEquipement
+	inner join Procede as proce
+		on Equ.idProcede = proce.idProcede
+	inner join Secteur as Sect
+		on proce.idSecteur = Sect.idSecteur
+	inner join UAP
+		on Sect.idUAP = UAP.idUAP
+	left outer join SousEnsemble as SSE
+		on FP.idSousEnsemble = SSE.idSousEnsemble
+
+WHERE (not (Inter.DateCloture is null)) 
+	   and (not (Inter.DateCloture =0) )
+
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------		
+
+CREATE VIEW Vue_Reporting_Couverture_Maintenance
+AS
+SELECT  
+
+	   FP.idFichePreventive as Numero_FP,
+	   Typ.Libelle as Type_Maintenance,
+	   FP.Description as Description_FP,
+	   
+	   SSE.Libelle as Sous_Equipements,
+	   Equ.Libelle as Equipements,   
+	   Proce.Libelle as Procédés,
+	   Sect.Libelle as Secteurs,
+	   UAP.Libelle as Unités
+	   
+	FROM 
+	FichePreventive  as FP
+	inner join TypePlanification as Typ
+	on FP.idTypePlanification = Typ.idPlanification
+	inner join Equipement as Equ
+		on FP.idEquipement = Equ.idEquipement
+	inner join Procede as proce
+		on Equ.idProcede = proce.idProcede
+	inner join Secteur as Sect
+		on proce.idSecteur = Sect.idSecteur
+	inner join UAP
+		on Sect.idUAP = UAP.idUAP
+	left outer join SousEnsemble as SSE
+		on FP.idSousEnsemble = SSE.idSousEnsemble
+
+-----------------------------------------------------------------------------------------------------------------	
+-----------------------------------------------------------------------------------------------------------------			
+		
+/****** Object:  View [dbo].[Vue_Reporting_Suivi_DI]    Script Date: 08/23/2013 14:09:49 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+ALTER VIEW [dbo].[Vue_Reporting_Suivi_DI]
+AS
+SELECT     
+			dbo.Intervention.idIntervention AS [N°], 
+			dbo.Intervention.DateCreation AS [Date Heure], 
+			DATEDIFF(DAY, dbo.Intervention.DateCreation, 
+			GETDATE()) AS [Nb j], 		
+			CASE WHEN dbo.demande.idFichePreventive > 0 
+				THEN 'Oui' 
+				ELSE 'Non' END AS Prev, 
+				
+			dbo.EtatIntervention.Libelle AS Etat, 
+			dbo.UAP.Libelle AS Unité, 
+			dbo.Secteur.Libelle AS Secteur, 
+			dbo.Procede.Libelle AS Procédé, 
+			dbo.Equipement.Libelle AS Equipement, 
+			dbo.SousEnsemble.Libelle AS [Sous-équipement], 
+			dbo.GD_utilisateur.login AS Demandeur, 
+			dbo.Service.Libelle AS Service, 
+			dbo.Demande.Description AS [Descr du problème], 
+			dbo.DegreUrgence.Libelle AS [Degré d'urgence], 
+			dbo.Priorite.Libelle AS Priorité,
+			rea.Domaine AS Domaine,
+			TyIn.Libelle AS Type_Intervention,
+			
+			CASE WHEN coalesce(Typ.idPlanification,0) = 0
+						THEN 'Curatif'
+					 WHEN coalesce(Typ.idPlanification,0) = 1
+						THEN 'Préventif conditionnel'
+					 ELSE 'Préventif systématique'
+				END AS Type_Maintenance,
+				
+			CASE WHEN Coalesce(Typ.idPlanification,0) = 0 
+						THEN 'Curatif' 
+					 ELSE Typ.libelle 
+				END AS Type_Maintenance_detail, 
+
+			CASE WHEN coalesce(rea.DebutInter,0) = 0
+				THEN 0
+				ELSE DATEDIFF(MI,rea.DebutInter,coalesce(rea.FinInter,getDate()))/60.00
+				END AS Temps_Intervention,
+				
+			CASE WHEN coalesce(rea.DebutArret,0) = 0
+				THEN 0
+				ELSE DATEDIFF(MI,rea.DebutArret,coalesce(rea.FinArret,getDate()))/60.00
+				END AS Temps_Arret,
+				
+			CAST(DATENAME(year, Intervention.DateCreation) AS int) as année
+					,CAST(DATENAME(QUARTER, Intervention.DateCreation) AS INT) as Trimestre
+					,DATENAME(MONTH, Intervention.DateCreation) as Mois
+					,CAST(DATENAME(WEEK, Intervention.DateCreation) AS INT) as Semaine    
+					,CAST(DATENAME(dayofyear, Intervention.DateCreation)AS INT) as JourAnnee
+					,DATENAME(weekday, Intervention.DateCreation) as JourSemaine
+					,CAST(DATENAME(day, Intervention.DateCreation) AS INT) as Jour
+		                      
+FROM         
+			dbo.Intervention INNER JOIN
+			dbo.Demande ON dbo.Intervention.idDemande = dbo.Demande.idDemande INNER JOIN
+            dbo.Priorite ON dbo.Demande.idPriorite = dbo.Priorite.idPriorite INNER JOIN
+            dbo.Secteur ON dbo.Demande.idSecteur = dbo.Secteur.idSecteur INNER JOIN
+            dbo.Equipement ON dbo.Demande.idEquipement = dbo.Equipement.idEquipement AND dbo.Secteur.idSecteur = dbo.Equipement.idSecteur INNER JOIN
+            dbo.GD_utilisateur ON dbo.Demande.idDemandeur = dbo.GD_utilisateur.idUtilisateur INNER JOIN
+            dbo.DegreUrgence ON dbo.Demande.idUrgence = dbo.DegreUrgence.idUrgence INNER JOIN
+            dbo.EtatIntervention ON dbo.Intervention.idDetail = dbo.EtatIntervention.idEtat INNER JOIN
+            dbo.UAP ON dbo.Demande.idUAP = dbo.UAP.idUAP LEFT OUTER JOIN
+            dbo.SousEnsemble ON dbo.Demande.idSousEnsemble = dbo.SousEnsemble.idSousEnsemble LEFT OUTER JOIN
+            dbo.Procede ON dbo.Demande.idPiece = dbo.Procede.idProcede LEFT OUTER JOIN
+            dbo.Service ON dbo.Intervention.idService = dbo.Service.idService
+
+			left outer join Realisation as rea on Intervention.idIntervention = rea.idIntervention
+			left outer join TypeIntervention as TyIn on TyIn.idTypeIntervention = rea.idTypeIntervention
+			left outer join FichePreventive as FP on Demande.idFichePreventive = FP.idFichePreventive
+			left outer join TypePlanification as typ on typ.idPlanification = FP.idTypePlanification
+					  
+
+GO
+  
+			
+-----------------------------------------------------------------------------------------------------------------	
+-----------------------------------------------------------------------------------------------------------------
+
+/****** Object:  View [dbo].[Vue_reporting_suivi_actions]    Script Date: 08/23/2013 14:32:32 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER VIEW [dbo].[Vue_reporting_suivi_actions]
+AS
+SELECT				  dbo.Intervention.idIntervention AS [N°], 
+					  dbo.Intervention.DateCreation AS [Date Heure], 
+					  dbo.Demande.idFichePreventive AS [Fiche préventive], 
+					  CASE WHEN coalesce(dbo.demande.idFichePreventive,0) > 0 
+								THEN 'Préventive' 
+								ELSE 'Curative' 
+								END AS Type_Maintenance, 
+                      dbo.EtatIntervention.Libelle AS Etat, 
+                      dbo.GD_utilisateur.login AS Demandeur, 
+                      dbo.Demande.Description AS [Descr du problème], 
+                      dbo.UAP.Libelle AS Unité, 
+                      dbo.Secteur.Libelle AS Secteur, 
+                      dbo.Procede.Libelle AS Procédé, 
+                      dbo.Equipement.Libelle AS Equipement, 
+                      dbo.SousEnsemble.Libelle AS [Sous-ensemble], 
+                      dbo.Priorite.Libelle as [Priorité],
+                      dbo.DegreUrgence.Libelle AS [Degré d'urgence], 
+                      dbo.Action.Numero AS [N° action], 
+                      dbo.Action.Libelle AS Action, 
+                      dbo.Action.Observation AS Observations,
+                      Action.Intervenants As Intervenant, 
+                      CASE WHEN dbo.Action.EstRealise = - 1 THEN 'Oui' ELSE 'Non' END AS [Est réalisée], 
+                      dbo.Compteur.Libelle AS Compteur, 
+                      dbo.Action.ValeurCompteur AS Valeur,
+                      CAST(DATENAME(year, Intervention.DateCreation) AS int) as année
+					,CAST(DATENAME(QUARTER, Intervention.DateCreation) AS INT) as Trimestre
+					,DATENAME(MONTH, Intervention.DateCreation) as Mois
+					,CAST(DATENAME(WEEK, Intervention.DateCreation) AS INT) as Semaine    
+					,CAST(DATENAME(dayofyear, Intervention.DateCreation)AS INT) as JourAnnee
+					,DATENAME(weekday, Intervention.DateCreation) as JourSemaine
+					,CAST(DATENAME(day, Intervention.DateCreation) AS INT) as Jour
+                      
+FROM         dbo.UAP INNER JOIN
+                      dbo.Intervention INNER JOIN
+                      dbo.Demande INNER JOIN
+                      dbo.Secteur ON dbo.Demande.idSecteur = dbo.Secteur.idSecteur INNER JOIN
+                      dbo.DegreUrgence ON dbo.Demande.idUrgence = dbo.DegreUrgence.idUrgence INNER JOIN
+                      dbo.Priorite ON dbo.Demande.idPriorite = dbo.Priorite.idPriorite INNER JOIN
+                      dbo.GD_utilisateur ON dbo.Demande.idDemandeur = dbo.GD_utilisateur.idUtilisateur INNER JOIN
+                      dbo.Equipement ON dbo.Demande.idEquipement = dbo.Equipement.idEquipement AND dbo.Secteur.idSecteur = dbo.Equipement.idSecteur ON 
+                      dbo.Intervention.idDemande = dbo.Demande.idDemande INNER JOIN
+                      dbo.EtatIntervention ON dbo.Intervention.idDetail = dbo.EtatIntervention.idEtat ON dbo.UAP.idUAP = dbo.Demande.idUAP LEFT OUTER JOIN
+                      dbo.Procede ON dbo.Demande.idPiece = dbo.Procede.idProcede LEFT OUTER JOIN
+                      dbo.SousEnsemble ON dbo.Equipement.idEquipement = dbo.SousEnsemble.idEquipement AND 
+                      dbo.Demande.idSousEnsemble = dbo.SousEnsemble.idSousEnsemble LEFT OUTER JOIN
+                      dbo.Action ON dbo.Intervention.idIntervention = dbo.Action.idIntervention LEFT OUTER JOIN
+                      dbo.Compteur ON dbo.Action.idCompteur = dbo.Compteur.idCompteur
+WHERE     (dbo.Intervention.idIntervention IS NOT NULL)
+
+GO
+
+-----------------------------------------------------------------------------------------------------------------	
+-----------------------------------------------------------------------------------------------------------------
+
+/****** Object:  View [dbo].[Vue_reporting_suivi_temps]    Script Date: 08/23/2013 15:15:13 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE VIEW [dbo].[Vue_reporting_suivi_temps]
+AS
+SELECT    dbo.Intervention.idIntervention AS [N°], 
+		  dbo.Intervention.DateCreation AS [Date Heure], 
+		  dbo.Demande.idFichePreventive AS [Fiche préventive], 
+          dbo.EtatIntervention.Libelle AS Etat, 
+          dbo.Demande.Description AS [Desc du problème], 
+          dbo.GD_utilisateur.login AS Demandeur, 
+          dbo.UAP.Libelle AS Unité, 
+          dbo.Secteur.Libelle AS Secteur, 
+          dbo.Procede.Libelle AS Procédé, 
+          dbo.Equipement.Libelle AS Equipement, 
+          dbo.SousEnsemble.Libelle AS [Sous-équipement], 
+          dbo.DegreUrgence.Libelle AS [Degré d'urgence], 
+          dbo.Intervenant.NomCourt AS Intervenant, 
+          dbo.ActiviteIntervenant.TempsPasse AS [Temps passé h],
+          CAST(DATENAME(year, Intervention.DateCreation) AS int) as année
+		 ,CAST(DATENAME(QUARTER, Intervention.DateCreation) AS INT) as Trimestre
+		 ,DATENAME(MONTH, Intervention.DateCreation) as Mois
+		 ,CAST(DATENAME(WEEK, Intervention.DateCreation) AS INT) as Semaine    
+		 ,CAST(DATENAME(dayofyear, Intervention.DateCreation)AS INT) as JourAnnee
+		 ,DATENAME(weekday, Intervention.DateCreation) as JourSemaine
+		 ,CAST(DATENAME(day, Intervention.DateCreation) AS INT) as Jour
+                      
+FROM         dbo.Intervention INNER JOIN
+                      dbo.Demande INNER JOIN
+                      dbo.Secteur ON dbo.Demande.idSecteur = dbo.Secteur.idSecteur INNER JOIN
+                      dbo.DegreUrgence ON dbo.Demande.idUrgence = dbo.DegreUrgence.idUrgence INNER JOIN
+                      dbo.GD_utilisateur ON dbo.Demande.idDemandeur = dbo.GD_utilisateur.idUtilisateur INNER JOIN
+                      dbo.Equipement ON dbo.Demande.idEquipement = dbo.Equipement.idEquipement AND dbo.Secteur.idSecteur = dbo.Equipement.idSecteur ON 
+                      dbo.Intervention.idDemande = dbo.Demande.idDemande INNER JOIN
+                      dbo.EtatIntervention ON dbo.Intervention.idDetail = dbo.EtatIntervention.idEtat INNER JOIN
+                      dbo.UAP ON dbo.Demande.idUAP = dbo.UAP.idUAP LEFT OUTER JOIN
+                      dbo.Procede ON dbo.Demande.idPiece = dbo.Procede.idProcede LEFT OUTER JOIN
+                      dbo.Intervenant INNER JOIN
+                      dbo.ActiviteIntervenant ON dbo.Intervenant.idIntervenant = dbo.ActiviteIntervenant.idIntervenant ON 
+                      dbo.Intervention.idIntervention = dbo.ActiviteIntervenant.idIntervention LEFT OUTER JOIN
+                      dbo.SousEnsemble ON dbo.Equipement.idEquipement = dbo.SousEnsemble.idEquipement AND 
+                      dbo.Demande.idSousEnsemble = dbo.SousEnsemble.idSousEnsemble
+WHERE     (dbo.Intervention.idIntervention IS NOT NULL)
+
+GO
+
+-----------------------------------------------------------------------------------------------------------------	
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+
+CREATE view Vue_Reporting_Releve_Compteur
+AS
+--------------------------------------------------------------------
+-- Déterminer les dates antérieures de relevé par fenêtrage 
+--------------------------------------------------------------------
+WITH DateAnterieure 
+AS
+(SELECT 
+		Rel1.idCompteur,
+		Rel1.DateReleve as D1,
+		Rel2.DateReleve as D2
+
+	FROM
+
+			(SELECT
+			idCompteur,DateReleve,ROW_NUMBER() 
+			Over(Partition by idCompteur order by DateReleve) AS Num
+			FROM ReleveCompteur) as Rel1
+
+			INNER JOIN 
+
+			(SELECT		 
+			idCompteur,DateReleve,ROW_NUMBER() 
+			Over(Partition by idCompteur order by DateReleve) AS Num
+			FROM ReleveCompteur) as Rel2
+			
+			ON Rel1.idCompteur = Rel2.idCompteur
+			AND Rel1.Num-1 = Rel2.Num )
+---------------------------------------------------------------------
+SELECT 
+		Cpt.Libelle as [Intitulé compteur],
+		Cpt.Unite as [Unité du compteur],
+		Cpt.ValeurMax as [Plafond du compteur],
+		FP.ValeurSeuil   as [Valeur seuil du compteur],
+		FP.Description [Intitulé du préventif],
+		Eq.Libelle as [Equipement],
+		proce.Libelle as [Procédé],
+		Sect.Libelle as [Secteur],
+		UAP.Libelle as [Unité],
+		SSE.Libelle as [Sous-équipement],
+		
+		Rel.ValeurReleve as [Valeur du relevé],
+		Rel.Consommation as [Consommation],
+		Rel.DerniereValeur as [Dernière valeur relevée],
+		Rel.ConsoDerPreventif as [Conso depuis dern préventif],
+
+		 CAST(DATENAME(year, Rel.DateReleve) AS int) as année
+		,CAST(DATENAME(QUARTER, Rel.DateReleve) AS INT) as Trimestre
+		,DATENAME(MONTH, Rel.DateReleve) as Mois
+		,CAST(DATENAME(WEEK, Rel.DateReleve) AS INT) as Semaine    
+		,CAST(DATENAME(dayofyear, Rel.DateReleve)AS INT) as JourAnnee
+		,DATENAME(weekday, Rel.DateReleve) as JourSemaine
+		,CAST(DATENAME(day, Rel.DateReleve) AS INT) as Jour,		
+		
+		Rel.DateReleve as [Date du relevé],
+		--ANT.D1 as [Date du dernier relevé],
+		ANT.D2 as [Date de l'avant dernier relevé]
+		
+	FROM 
+		ReleveCompteur as Rel
+		Left outer join
+		DateAnterieure as ANT
+		on Rel.idCompteur = ANT.idCompteur
+		AND Rel.DateReleve = ANT.D1
+		
+		inner join Compteur as Cpt
+		on Rel.idCompteur = Cpt.idCompteur
+		inner join FichePreventive as FP
+		on FP.idCompteur = Cpt.idCompteur
+		
+		inner join Equipement as Eq
+		on Eq.idEquipement = FP.idEquipement
+		inner join Procede as proce
+		on Eq.idProcede = proce.idProcede
+		inner join Secteur as Sect
+		on proce.idSecteur = Sect.idSecteur
+		inner join UAP
+		on Sect.idUAP = UAP.idUAP
+		Left outer join SousEnsemble as SSE
+		on FP.idSousEnsemble = SSE.idSousEnsemble
+	
+-----------------------------------------------------------------------------------------------------------------	
+-----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------		
+
+
+
+

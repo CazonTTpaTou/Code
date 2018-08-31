@@ -1,0 +1,315 @@
+Function Ajoutere(Detect As Date, Zone As String, Num_E As Variant)
+
+Dim id, lig As Integer
+
+On Error GoTo GestionErreur
+
+Call DeProtection
+
+Worksheets("Suivi").Select
+id = ActiveSheet.Range("B9").value + 1
+
+ActiveSheet.Range("B9").value = id
+lig = id + 10
+numb = Initiale & "-" & Day(Date) & Right(0 & Month(Date), 2) & Right(Year(Date), 2) & "-" & 1000 + id
+
+Cells(lig, 2).value = numb
+Cells(lig, 3).value = Detect
+Cells(lig, 4).value = Zone
+Cells(lig, 5).value = Num_E
+
+Cells(lig, 6).value = "/"
+Cells(lig, 7).value = "/"
+Cells(lig, 8).value = "/"
+Cells(lig, 9).value = "/"
+Cells(lig, 15).value = "FAUX"
+Cells(lig, 17).value = id
+Cells(lig, 1).Select
+
+Call Tracker((id), "Création", 0, numb & " - " & Detect & " - " & Zone & " - " & Num_E, "")
+
+Call Protection
+
+Ajouter = 1
+Exit Function
+
+GestionErreur:
+'MsgBox Err.Description & Err.HelpContext
+Ajouter = 0
+
+
+End Function
+
+Function Modifiere(Col As Integer, NewValue As Variant)
+
+On Error GoTo GestionErreur
+
+If (EstModifiable) Then
+
+Call DeProtection
+
+ancient = Cells(ActiveCell.Row, Col + 1).value
+Cells(ActiveCell.Row, Col + 1).value = NewValue
+Cells(ActiveCell.Row, 1).Select
+
+Call Protection
+
+Call Tracker(ActiveCell.Row - 10, "Modification", Col, NewValue, ancient)
+
+Modifier = 1
+Exit Function
+
+Else: MsgBox ("L'anomalie est verrouillée et ne peut donc pas être modifiée !!!")
+End If
+
+GestionErreur:
+Modifier = 0
+
+End Function
+
+Function Supprimere()
+   
+On Error GoTo GestionErreur
+   
+If (EstModifiable) Then
+   
+Call DeProtection
+
+Cells(ActiveCell.Row, 3).value = "Supprimé"
+Cells(ActiveCell.Row, 4).value = "Supprimé"
+Cells(ActiveCell.Row, 5).value = "Supprimé"
+Cells(ActiveCell.Row, 6).value = "Supprimé"
+Cells(ActiveCell.Row, 7).value = "Supprimé"
+Cells(ActiveCell.Row, 8).value = "Supprimé"
+Cells(ActiveCell.Row, 9).value = "Supprimé"
+Cells(ActiveCell.Row, 10).value = Date
+Cells(ActiveCell.Row, 15).value = "VRAI"
+Cells(ActiveCell.Row, 1).Select
+
+Supprimer = 1
+
+Call Protection
+
+Call Tracker(ActiveCell.Row - 10, "Suppression", 0, "", "")
+
+
+Exit Function
+
+Else: MsgBox ("L'anomalie est déjà verrouillée et ne peut pas être supprimée !!! ")
+End If
+
+GestionErreur:
+Supprimer = 0
+
+End Function
+
+Function Cloturere()
+
+On Error GoTo GestionErreur
+
+ancient = Cells(ActiveCell.Row, 10).value
+
+If (EstVerrouille() = 1) Then
+    MsgBox ("L'anomalie n° " & Cells(ActiveCell.Row, 2) & " est verrouillée - Vous ne pouvez pas la clôturer !!! ")
+    tampon = 0
+Else:
+    If (EstCloture() = 1) Then
+    MsgBox ("L'anomalie n° " & Cells(ActiveCell.Row, 2) & " a déjà été clôturée !!! ")
+    tampon = 0
+    Else:
+        If (EstVerrouille() + EstCloture()) = 0 Then
+            Call DeProtection
+            Cells(ActiveCell.Row, 10).value = Date
+            Cells(ActiveCell.Row, 1).Select
+            MsgBox ("L'anomalie n° " & Cells(ActiveCell.Row, 2) & " a été clôturée !!!")
+            tampon = 1
+            Call Protection
+            Call Tracker(ActiveCell.Row - 10, "Clôture", 9, Date, ancient)
+            tampon = 1
+        End If
+    End If
+End If
+
+Cloturer = tampon
+
+Exit Function
+
+GestionErreur:
+Cloturer = 0
+
+End Function
+
+Function DeCloturere()
+
+On Error GoTo GestionErreur
+
+ancient = Cells(ActiveCell.Row, 10).value
+
+If (EstVerrouille() = 1) Then
+    MsgBox ("L'anomalie n° " & Cells(ActiveCell.Row, 2) & " est verrouillée - Vous ne pouvez pas la déclôturer !!! ")
+    tampon = 0
+Else:
+    If (EstCloture() = 0) Then
+    MsgBox ("L'anomalie n° " & Cells(ActiveCell.Row, 2) & " n'est pas clôturée !!! ")
+    tampon = 0
+    Else:
+        If (EstVerrouille() = 0) Or (EstCloture() = 1) Then
+            Call DeProtection
+            Cells(ActiveCell.Row, 10).value = ""
+            Cells(ActiveCell.Row, 1).Select
+            MsgBox ("L'anomalie n° " & Cells(ActiveCell.Row, 2) & " a été déclôturée !!!")
+            tampon = 1
+            Call Protection
+            Call Tracker(ActiveCell.Row - 10, "Déclôturer", 9, "", ancient)
+            tampon = 1
+        End If
+    End If
+End If
+
+DeCloturer = tampon
+
+Exit Function
+
+GestionErreur:
+DeCloturer = 0
+
+End Function
+
+Function Verrouillere()
+
+On Error GoTo GestionErreur
+
+If (EstVerrouille() = 1) Then
+    MsgBox ("L'anomalie n° " & Cells(ActiveCell.Row, 2) & " est déjà verrouillée !!! ")
+    tampon = 0
+Else:
+            Call DeProtection
+            ancient = Cells(ActiveCell.Row, 15).value
+            Cells(ActiveCell.Row, 15).value = "VRAI"
+            Call Pictogramme
+            Cells(ActiveCell.Row, 1).Select
+            MsgBox ("L'anomalie n° " & Cells(ActiveCell.Row, 2) & " a été verrouillée !!!")
+            tampon = 1
+            Call Protection
+            Call Tracker(ActiveCell.Row - 10, "Verrouiller", 10, "VRAI", ancient)
+End If
+
+Verrouiller = tampon
+
+Exit Function
+
+GestionErreur:
+Verrouiller = 0
+
+End Function
+
+Function DeVerrouillere()
+
+On Error GoTo GestionErreur
+
+If (EstVerrouille() = 0) Then
+    MsgBox ("L'anomalie n° " & Cells(ActiveCell.Row, 2) & " n'est pas verrouillée !!! ")
+    tampon = 0
+Else:
+            Call DeProtection
+            ancient = Cells(ActiveCell.Row, 15).value
+            Cells(ActiveCell.Row, 15).value = "FAUX"
+            Cells(ActiveCell.Row, 12).ClearContents
+            Cells(ActiveCell.Row, 1).Select
+            MsgBox ("L'anomalie n° " & Cells(ActiveCell.Row, 2) & " a été déverrouillée !!!")
+            tampon = 1
+            Call Protection
+            Call Tracker(ActiveCell.Row - 10, "Déverrouiller", 10, "FAUX", ancient)
+End If
+
+DeVerrouiller = tampon
+
+Exit Function
+
+GestionErreur:
+DeVerrouiller = 0
+
+End Function
+
+Function EstModifiable()
+
+If (EstSupprime() + EstVerrouille()) = 0 Then
+    tampon = 1
+Else: tampon = 0
+End If
+
+EstModifiable = tampon
+
+End Function
+
+Function EstSupprime()
+
+If Cells(ActiveCell.Row, 3).value = "Supprimé" Then
+    tampon = 1
+Else: tampon = 0
+End If
+
+EstSupprime = tampon
+
+End Function
+
+Function EstVerrouille()
+
+If UCase(Trim(Cells(ActiveCell.Row, 15).value)) = "VRAI" Then
+    tampon = 1
+Else: tampon = 0
+End If
+
+EstVerrouille = tampon
+
+End Function
+
+Function EstCloture()
+
+If Cells(ActiveCell.Row, 10) = "" Or Cells(ActiveCell.Row, 10) = "/" Then
+    tampon = 0
+Else: tampon = 1
+End If
+
+EstCloture = tampon
+
+End Function
+
+Function Initiale()
+
+Dim Nom As String
+
+Nom = Application.UserName
+Initiale = Left(Nom, 1) & Mid(Nom, InStrRev(Nom, " ") + 1, 1)
+
+End Function
+
+Function Increment()
+
+Increment = Cells(9, 2).value
+
+End Function
+
+Sub Tracker(ByVal id As Integer, Action As String, Column As Integer, value As Variant, ancientValue As Variant)
+
+Worksheets("JLog").Visible = True
+Worksheets("JLog").Select
+
+ActiveSheet.Range("A3").Select
+Selection.End(xlDown).Select
+Indice = ActiveCell.Row
+
+Cells(Indice + 1, 1).value = Application.UserName
+Cells(Indice + 1, 2).value = id
+Cells(Indice + 1, 3).value = Action
+Cells(Indice + 1, 4).value = Date
+Cells(Indice + 1, 5).value = Time
+Cells(Indice + 1, 6).value = Column
+Cells(Indice + 1, 7).value = value
+Cells(Indice + 1, 8).value = ancientValue
+
+Worksheets("JLog").Visible = False
+
+Worksheets("Suivi").Select
+
+End Sub

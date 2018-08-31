@@ -1,0 +1,73 @@
+PVA
+
+SELECT V_LOTS.Societe, V_LOTS.Lot, V_LOTS.Groupe, V_LOTS.Format, 
+V_LOTS.Forme, V_LOTS.Materiau, V_LOTS.Polarite, V_LOTS.Grade, 
+V_LOTS.Fournisseur, V_LOTS.OF1, V_LOTS."Mep Qte Entr", 
+V_LOTS."Mep Qte Sort", 
+V_LOTS."Mep Rej Total", 
+V_LOTS."Textu Qte Entr", 
+V_LOTS."Textu Qte Sort"+V_Lots."Textu Vente Qte" AS [Textu Qte Sort], 
+V_LOTS."Textu Rej Total", V_LOTS."Diff Qte Entr", 
+V_LOTS."Diff Qte Sort" + V_Lots."Diff Vente Qte" AS [Diff Qte Sort],  
+V_LOTS."Diff Rej Total", V_LOTS."Desox Equipement", 
+V_LOTS."Desox Qte Entr", 
+V_LOTS."Desox Qte Sort" + V_Lots."Desox Vente Qte" AS [Desox Qte Sort], 
+V_LOTS."Desox Rej Total", V_LOTS."Pecvd Date Poste", 
+V_LOTS."Pecvd Poste", V_LOTS."Pecvd Equipe", 
+V_LOTS."Pecvd Date Heure Entr", V_LOTS."Pecvd Date Heure Sort", 
+V_LOTS."Pecvd Date Sort", 
+V_LOTS."Pecvd Qte Entr", 
+V_LOTS."Pecvd Qte Sort"+V_Lots."Pecvd Vente Qte" AS [Pecvd Qte Sort], 
+V_LOTS."Pecvd Rej Total",
+idAtelierInitial,idAtelierFinal,
+V_Lots."Desox Vente Qte",
+V_Lots."Diff Vente Qte",
+V_Lots."Pecvd Vente Qte",
+V_Lots."Seri Vente Qte",
+V_Lots."Textu Vente Qte"
+
+FROM SQC_DB.dbo.V_LOTS V_LOTS
+WHERE (V_LOTS.Groupe='non') AND (V_LOTS."Pecvd Date Poste">=getdate()-60) AND (V_LOTS."Pecvd Date Heure Sort" Is Not Null)
+
+PHOTOWATT
+
+SELECT 
+
+V_LOTS."Textu Qte Sort"+V_Lots."Textu Vente Qte" AS [Textu Qte Sort],
+V_LOTS.[Diff Rej Total], 
+V_LOTS."Diff Qte Sort" + V_Lots."Diff Vente Qte" AS [Diff Qte Sort],  
+V_LOTS.[Desox Rej Total], 
+V_LOTS."Desox Qte Sort" + V_Lots."Desox Vente Qte" AS [Desox Qte Sort],
+V_LOTS.[Pecvd Rej Total],
+V_LOTS."Pecvd Qte Sort"+V_Lots."Pecvd Vente Qte" AS [Pecvd Qte Sort], 
+
+V_LOTS.Societe, V_LOTS.Lot, V_LOTS.[Desox Equipement], 
+V_LOTS.Materiau, V_LOTS.[Seri Qte Entr], V_LOTS.[Seri Qte Sort], 
+V_LOTS.[Seri Rej Total], V_LOTS.[Tri Date Poste], V_LOTS.[Tri Poste], 
+V_LOTS.[Tri Equipe], V_LOTS.[Tri Date Heure Entr], V_LOTS.[Tri Date Heure Sort], 
+V_LOTS.[Tri Date Sort], V_LOTS.[Tri Qte Entr], V_LOTS.[Tri Qte Sort], V_LOTS.[Tri Rej Total], 
+V_LOTS.[Tri Qte Ecart], V_LOTS.[Tri Qte Al], V_LOTS.[Tri Qte Ak], V_LOTS.[Tri Qte Aj], V_LOTS.[Tri Qte Ai], 
+V_LOTS.[Tri Qte Ah], V_LOTS.[Tri Qte Ag], V_LOTS.[Tri Qte Af], V_LOTS.[Tri Qte Ae], V_LOTS.[Tri Qte Ad], 
+V_LOTS.[Tri Qte Ac], V_LOTS.[Tri Qte Ab], V_LOTS.[Tri Qte Aa], V_LOTS.[Tri Qte A0], V_LOTS.[Tri Qte A1L], 
+V_LOTS.[Tri Qte M], V_LOTS.[Tri Qte Eme], V_LOTS.[Tri Qte Rsh], V_LOTS.[Tri Qte 22_0], V_LOTS.[Tri Qte 21_8], 
+V_LOTS.[Tri Qte 21_6], V_LOTS.[Tri Qte 21_4], V_LOTS.[Tri Qte 21_2], V_LOTS.[Tri Qte 21_0], V_LOTS.[Tri Qte 20_8], 
+V_LOTS.[Tri Qte 20_6], V_LOTS.[Tri Qte 20_4], V_LOTS.[Tri Qte 20_2], V_LOTS.[Tri Qte 20_0], V_LOTS.[Tri Qte 19_8], V_LOTS.[Tri Qte 19_6], V_LOTS.[Tri Qte 19_4], V_LOTS.[Tri Qte 19_2], V_LOTS.[Tri Qte 19_0], V_LOTS.[Tri Qte 18_8], V_LOTS.[Tri Qte 18_6], V_LOTS.[Tri Qte 18_4], V_LOTS.[Tri Qte 18_2], V_LOTS.[Tri Qte 18_0], V_LOTS.[Tri Qte L-18_0], V_LOTS.[Tri Qte 17_8], V_LOTS.[Tri Qte 17_6], V_LOTS.[Tri Qte 17_4], V_LOTS.[Tri Qte 17_2], V_LOTS.[Tri Qte 17_0], V_LOTS.[Tri Qte L-17_0], V_LOTS.[Tri Qte 16_8], V_LOTS.[Tri Qte 16_6], V_LOTS.[Tri Qte 16_4], V_LOTS.[Tri Qte 16_2], V_LOTS.[Tri Qte 16_0], V_LOTS.[Tri Qte L-16_0], V_LOTS.[Tri Qte 15_8], V_LOTS.[Tri Qte 15_6], V_LOTS.[Tri Qte L-15_6], V_LOTS.[Tri Qte 15_4], V_LOTS.[Tri Qte 15_2], V_LOTS.[Tri Qte 15_0], V_LOTS.[Tri Qte 14_8], V_LOTS.[Tri Qte 14_6], V_LOTS.[Tri Qte 14_4], V_LOTS.[Tri Qte 14_2], V_LOTS.[Tri Qte 14_0], V_LOTS.[Tri Qte L-14_0], V_LOTS.[Tri Qte 13_8], V_LOTS.[Tri Qte 13_6], V_LOTS.[Tri Qte L-13_6], V_LOTS.[Tri Qte 13_4], V_LOTS.[Tri Qte 13_2], V_LOTS.[Tri Qte 13_0], V_LOTS.[Tri Qte 12_8], V_LOTS.[Tri Qte 12_6], V_LOTS.[Tri Qte 12_4], V_LOTS.[Tri Qte 12_2], V_LOTS.[Tri Qte 12_0], V_LOTS.[Tri Qte L-12_0], V_LOTS.[Tri Qte L-11_6],[Tri Qte Idk]
+      ,V_LOTS.[Tri Qte Div],V_LOTS.[Tri Qte L-12_2],V_LOTS.[Tri Qte L-12_4],V_LOTS.[Tri Qte L-12_6],V_LOTS.[Tri Qte L-12_8]
+      ,V_LOTS.[Tri Qte L-13_0],V_LOTS.[Tri Qte L-13_2],V_LOTS.[Tri Qte L-13_4],V_LOTS.[Tri Qte L-13_8]
+      ,V_LOTS.[Tri Qte L-14_2],V_LOTS.[Tri Qte L-14_4],V_LOTS.[Tri Qte L-14_6],V_LOTS.[Tri Qte L-14_8]
+      ,V_LOTS.[Tri Qte L-15_0],V_LOTS.[Tri Qte L-15_2],V_LOTS.[Tri Qte L-15_4],V_LOTS.[Tri Qte L-15_8]
+      ,V_LOTS.[Tri Qte L-16_2],V_LOTS.[Tri Qte L-16_4],V_LOTS.[Tri Qte L-16_6],V_LOTS.[Tri Qte L-16_8]
+      ,V_LOTS.[Tri Qte L-17_2],V_LOTS.[Tri Qte L-17_4],V_LOTS.[Tri Qte L-17_6],V_LOTS.[Tri Qte L-17_8]
+      ,V_LOTS.[Tri Qte L-18_2],V_LOTS.[Tri Qte L-18_4],V_LOTS.[Tri Qte L-18_6],V_LOTS.[Tri Qte L-18_8]
+      ,V_LOTS.[Tri Qte L-19_0],V_LOTS.[Tri Qte L-19_2],V_LOTS.[Tri Qte L-19_4],V_LOTS.[Tri Qte L-19_6]
+      ,V_LOTS.[Tri Qte L-19_8],V_LOTS.[Tri Qte L-20_0],V_LOTS.[Tri Qte L-20_2]
+      ,idAtelierInitial,idAtelierFinal
+,V_LOTS."Desox Equipement", V_LOTS."Desox Qte Entr", V_LOTS."Desox Qte Sort", V_LOTS."Desox Rej Total", V_LOTS."Pecvd Date Poste", V_LOTS."Pecvd Poste", V_LOTS."Pecvd Equipe", V_LOTS."Pecvd Date Heure Entr", V_LOTS."Pecvd Date Heure Sort", V_LOTS."Pecvd Date Sort", V_LOTS."Pecvd Qte Entr", V_LOTS."Pecvd Qte Sort", V_LOTS."Pecvd Rej Total",
+V_Lots."Desox Vente Qte",
+V_Lots."Diff Vente Qte",
+V_Lots."Pecvd Vente Qte",
+V_Lots."Seri Vente Qte",
+V_Lots."Textu Vente Qte"
+FROM SQC_DB.dbo.V_LOTS V_LOTS
+
+WHERE (V_LOTS.[Tri Date Poste]>=getdate()-60) AND (V_LOTS.[Tri Date Heure Sort] Is Not Null)

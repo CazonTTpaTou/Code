@@ -1,0 +1,76 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm4.aspx.cs" Inherits="WebApplication2.WebForm4" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        
+        <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" DataKeyNames="idUAP"
+                      DataSourceID="SqlDataSource1">
+            <Columns>
+                <asp:BoundField DataField="idUAP" HeaderText="idUAP" InsertVisible="False" ReadOnly="True" SortExpression="idUAP" />
+                <asp:BoundField DataField="Libelle" HeaderText="Libelle" SortExpression="Libelle" />
+            </Columns>
+        </asp:GridView>
+
+        <br />&nbsp;<br />
+        
+        <asp:Button ID="Button1" runat="server" Text="Recharger" /><br />
+
+        <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label><br />
+
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+            ConnectionString="<%$ ConnectionStrings:GMAO_Simple %>"
+            EnableCaching="True" 
+            OnSelecting="SqlDataSource1_Selecting" 
+            SelectCommand="SELECT idUAP,Libelle FROM dbo.UAP"
+	        SqlCacheDependency="CommandNotification">
+         </asp:SqlDataSource>
+    
+    </div>
+    </form>
+</body>
+</html>
+
+
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Configuration;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Data;
+
+namespace WebApplication2
+{
+    public partial class WebForm4 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            string cs = ConfigurationManager.ConnectionStrings["GMAO_Simple"].ConnectionString;
+            //string cs = @"data source=(local)\SQLEXPRESS;initial catalog=GMAO_DB;integrated security=true";
+            System.Data.SqlClient.SqlDependency.Start(cs);
+        }
+
+        protected void SqlDataSource1_Selecting(object sender, SqlDataSourceSelectingEventArgs e)
+        {
+            Label1.Text = "Rechargement des données à " + DateTime.Now.ToLongTimeString();
+        }
+    }
+}
+

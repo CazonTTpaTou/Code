@@ -1,0 +1,64 @@
+Option Compare Database
+
+Private Sub CodeERP_Exit(Cancel As Integer)
+' Vérification des conditions de remplissage des champs du formulaire de saisie
+
+Dim Condition1, Condition2 As Boolean
+    
+    Condition1 = Vide(Me.Name, _
+                      Me.ActiveControl.Name)
+                      
+    Condition2 = Doublon(Me.RecordSource, Me.ActiveControl.Name, Me.Name, _
+                        Me.ActiveControl.Name, _
+                        LookId(Me.RecordSource))
+                        
+    Cancel = Condition1 Or Condition2
+                     
+End Sub
+
+Private Sub Form_AfterInsert()
+' On demande à l'utilisateur s'il désire ajouter un nouvel enregistrement
+' pour savoir quel enregistrement du formulaire pointer
+
+Dim Choix As Integer
+
+Choix = MsgBox(Message_nouvel_enregistrement, vbYesNo)
+
+    If Choix = vbNo Then
+        DoCmd.GoToRecord , , acPrevious
+        DoCmd.GoToRecord , , acLast
+    End If
+
+End Sub
+
+Private Sub Form_Load()
+' A l'ouverture du formulaire on sélectionne le dernier enregistrement courant
+    DoCmd.GoToRecord , , acLast
+End Sub
+
+Private Sub Libelle_Exit(Cancel As Integer)
+' Vérification des conditions de remplissage des champs du formulaire de saisie
+Dim Condition1, Condition2 As Boolean
+
+Condition1 = Vide(Me.Name, _
+                      Me.ActiveControl.Name)
+                      
+    Condition2 = Doublon(Me.RecordSource, Me.ActiveControl.Name, Me.Name, _
+                        Me.ActiveControl.Name, _
+                        LookId(Me.RecordSource))
+                        
+    Cancel = Condition1 Or Condition2
+
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+

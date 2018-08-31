@@ -1,0 +1,76 @@
+'EPAISSEUR
+
+Private Sub Cmd_Afficher_Click()
+
+Application.ScreenUpdating = False
+
+    Dim Maxi As Integer
+    Dim Mini As Integer
+    Dim i As Integer
+    Dim dernligne As Long
+ 
+    On Error Resume Next 'si aucun n'a été cliqué !
+ 
+    With User_epaisseur
+ 
+        Mini = Switch(OptionButton1 = True, 140, OptionButton2 = True, 160, OptionButton3 = True, 180)
+        Maxi = Switch(OptionButton4 = True, 220, OptionButton5 = True, 240, OptionButton6 = True, 260)
+ 
+    End With
+   
+    Sheets("Données").Select
+   
+   'attention range "B" uniquement
+    dernligne = Range("V" & Rows.Count).End(xlUp).Row
+    
+    Range("BD2").Select
+    ActiveCell.FormulaR1C1 = "=IF(OR(RC[-35]<" & Mini & " ,RC[-35]>" & Maxi & "),1,0)"
+    Selection.AutoFill Destination:=Range("BD2:BD" & dernligne)
+    'Selection.FillDown
+    
+    'actualise le TCD et revient sur la feuille graphique
+    Sheets("TCDSC246").Select
+    ActiveSheet.PivotTables("Tableau croisé dynamique1").PivotCache.Refresh
+    
+    Application.ScreenUpdating = True
+    Sheets("SC246").Select
+   
+   
+End Sub
+
+
+Private Sub Cmd_Effacer_Click()
+
+Application.ScreenUpdating = False
+
+Dim dernligne As Long
+
+OptionButton1 = False
+OptionButton2 = False
+OptionButton3 = False
+OptionButton4 = False
+OptionButton5 = False
+OptionButton6 = False
+
+Sheets("Données").Select
+
+dernligne = Range("V" & Rows.Count).End(xlUp).Row
+
+
+Range("BD2").Select
+ActiveCell.FormulaR1C1 = "0"
+'Selection.AutoFill Destination:=Range("CA" & dernligne & ")
+Selection.AutoFill Destination:=Range("BD2:BD" & dernligne)
+'Selection.FillDown
+
+'actualise le TCD et revient sur la feuille graphique
+Sheets("TCDSC246").Select
+ActiveSheet.PivotTables("Tableau croisé dynamique1").PivotCache.Refresh
+
+Application.ScreenUpdating = True
+Sheets("SC246").Select
+
+End Sub
+
+
+

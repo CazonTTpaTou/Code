@@ -1,0 +1,6 @@
+http://SRV-SP-REC:38300
+
+http://srv-sp-rec.photowatt.local:81/sites/Formation/
+
+stsadm -o import -url http://srv-sp-rec.photowatt.local:81/sites/Formation/ -filename C:\Temp\Nouveau_dossier\Temp.cmp
+ 

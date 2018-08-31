@@ -1,0 +1,33 @@
+Axis1
+     STYLE=1
+     WIDTH=1
+     MINOR=NONE
+
+
+;
+Axis2
+     STYLE=1
+     WIDTH=1
+
+
+;
+TITLE;
+TITLE1 "Histogramme";
+FOOTNOTE;
+FOOTNOTE1 "Reporting SAS GMAO généré le %TRIM(%QSYSFUNC(DATE(), NLDATE20.)) à %TRIM(%SYSFUNC(TIME(), TIME.))";
+PROC GCHART DATA=WORK.SORTTempTableSorted
+;
+     VBAR 
+      Type_Defaut
+/
+     SUMVAR=Ratio_Defaut
+     CLIPREF
+FRAME TYPE=SUM
+     COUTLINE=BLACK
+     RAXIS=AXIS1
+     MAXIS=AXIS2
+;
+/* -------------------------------------------------------------------
+   Fin du code de la tâche.
+   ------------------------------------------------------------------- */
+RUN; QUIT;

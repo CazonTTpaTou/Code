@@ -1,0 +1,107 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<link rel="stylesheet" type="text/css" href="Presentation.css"></link>
+<script src="fonctions_JS.js" type="text/javascript"></script>
+<title>Orminsol - Modélisation</title>
+</head>
+
+<body class="Jaune" >
+<p class="Paragraphe1"><a class="Retour" href="/index.html">►  RETOUR AU CV ◄</a></p>
+<p class="Paragraphe1"><a class="PDF" href="../PHP/Irminsul_Modelisation.php">Version en PDF</a></p>
+<H1><div><span class="Titre2"> ▼ MODÉLISATION DES PRÉVISIONS ▼ </br> DE CHIFFRE D'AFFAIRE </span></div></H1>
+<p class="TexteI"><img src="../Pictures/Click_Fam_1.JPG"/></p>
+</br>
+
+<table class="sommaire">
+  <tr><td>
+  <center><span class="titre_sommaire">► Sommaire ◄</span><center>
+<ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="/HTML/Orminsol.html" title="Se rendre à cette section...">Présentation de la société.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section2" title="Se rendre à cette section...">Explication de la mission.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section3" title="Se rendre à cette section...">Paramètres de la modélisation.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section4" title="Se rendre à cette section...">Exemple d'une régression simple.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section5" title="Se rendre à cette section...">Exemple d'une régression multiple.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Conclusion" title="Se rendre à cette section...">Conclusion.</li></a>
+</ol>
+</td></tr></table></br>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section2"></a>
+<p class="Texte">Afin de pouvoir établir les budgets des investissements effectués dans les opérations de prospection par mailing postal, il était primordial de pouvoir réaliser des prévisions de chiffre d'affaires.</p>
+<p class="Texte">Avant d'investir 50 000 € dans un mailing postal, les dirigeants de la société souhaitait donc avoir des éléments d'aide à la décision pour confirmer leur choix de prospection. Parmi ces indicateurs d'aide à la décision, la prévision du chiffre d'affaire espéré était une donnée importante. Car, si la prévision s'avérait inférieure au montant de l'investissement envisagé, l'opération était généralement ajournée. </p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section3"></a>
+<p class="Texte">Nous avions donc ainsi recours à la modélisation par régression linéaire, voire parfois par régression logistique, pour effectuer des prévisions du chiffre d'affaire d'un mailing. Dans un premier temps, il était nécessaire de regrouper les données des précédents mailings (les données chiffrées présentées sont fictives): </p>
+<p class="TexteI"><img src="../Pictures/Irminsul_modelisation.JPG"/></p>
+<p class="Texte">Les différents paramètres étaient les suivants :</p>
+<div class="Paragraphe">
+<ul type="circle" class="Paragraphe1">
+<li class="Paragraphe2"><span class="Paragraphe2S">Envoi</span> : nombre de catalogues envoyés,</li>
+<li class="Paragraphe2"><span class="Paragraphe2S">Promotions</span> : montant des promotions accordées,</li>
+<li class="Paragraphe2"><span class="Paragraphe2S">Nouveautés</span> : Nombre de nouvelles références dans le catalogue,</li>
+<li class="Paragraphe2"><span class="Paragraphe2S">Fête</span> : Proximité d'une fête commerciale (noël, fête des mères...),</li>
+<li class="Paragraphe2"><span class="Paragraphe2S">Prospect</span> : nombre de nouvelles adresses des fichiers de prospection.</li>
+</ul>
+</div>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section4"></a>
+<p class="Texte">Dans un premier temps, on considérait un régression simple entre le facteur envoi (le plus important en terme de volume) et la variable à expliquer Chiffre d'affaire. Le nuage de données se présentait sous la forme suivante :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_modelisation_1.JPG"/></p>
+<p class="Texte">A partir du logiciel R, une régression linéaire était effectuée :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_modelisation_3.JPG"/></p>
+<p class="Texte">Les résultats obtenus étaient les suivants :</p>
+<div class="Paragraphe">
+<ul type="circle" class="Paragraphe1">
+<li class="Paragraphe2">La constante estimée est de 9391.</li>
+<li class="Paragraphe2">La pente estimée est de 2.836.</li>
+<li class="Paragraphe2">Le test de la constante est inférieure à 5%, donc elle doit apparaître dans le modèle.</li>
+<li class="Paragraphe2">Le test de significativité de la pente est inférieur à 5%, donc elle doit apparaître dans le modèle.</li>
+<li class="Paragraphe2">Le modèle linéaire est donc de la forme : CA = 93910 + 2,8386 x Envoi</li>
+<li class="Paragraphe2">La valeur du R squared de 0,6457 corrobore l'intuition de la relation linéaire entre les 2 variables.</li>
+</ul>
+</div>
+<p class="Texte">La droite de régression avait donc la forme suivante :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_modelisation_2.JPG"/></p>
+<p class="Texte">Ainsi pour un envoi de mailing à 35 000 exemplaires, on pourrait  estimer une prévision de chiffre d'affaires à environ :</p>
+<p><div><span class="Evidence">Chiffre Affaire  = 35000 * 2.8386 + 93910 = 193 261 € </span></p></div>
+<p class="Texte">Sachant que l'envoi de 35 000 catalogues a un coût de 175 000 € (prix de 5 € unitaire), la prévision de chiffre d'affaire laisse espérer un bénéfice de 18 261 €, donc l'envoi du mailing peut être envisagé avec sérénité.</p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section5"></a>
+<p class="Texte">Cependant, la régression linéaire était trop simpliste car plusieurs critères étaient à prendre en compte dans l'évolution des précédents chiffres d'affaire. De ce fait, il fallait avoir recours à la régression multiple (l'alternative étant la régression PLS – Partial Least Square – qui a recours à la maximisation de la covariance, lorsque le nombre de variables explicatives devenaient très important).</p>
+<p class="Texte">Le lancement d'une opération de régression multiple sous R donnait le résultat suivant :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_modelisation_4.JPG"/></p>
+<p class="Texte">Les résultats obtenus étaient les suivants :</p>
+<div class="Paragraphe">
+<ul type="circle" class="Paragraphe1">
+<li class="Paragraphe2">La constante estimée était de 25 800.</li>
+<li class="Paragraphe2">Le coefficient de la variable Envoi était de 2.919.</li>
+<li class="Paragraphe2">Le coefficient de la variable Promotions était de 5.502</li>
+<li class="Paragraphe2">Le coefficient de la variable Nouveautés était de 2.354.</li>
+<li class="Paragraphe2">Le coefficient de la variable Fête était de 12 290.</li>
+<li class="Paragraphe2">Le coefficient de la variable Prospect était de 0,185.</li>
+<li class="Paragraphe2">Les tests de significativité supérieur à 5% faisaient apparaître que les variables Promotions, Nouveautés et Prospects n'étaient pas indispensables dans le modèle.</li>
+<li class="Paragraphe2">Les tests de significativité inférieurs à 5% faisaient apparaître que les variables Fête et Envoi  n'étaient pas complètement indispensables dans le modèle multiple.</li>
+<li class="Paragraphe2">La valeur du R squared de 0,8188 corroborait l'intuition d'une forte relation linéaire entre les 5 variables.</li>
+</ul>
+</div>
+<div class="Paragraphe">
+<ul type="square" class="Paragraphe1">
+<li class="Paragraphe2"><span class="Paragraphe2S">Le modèle linéaire était donc de la forme suivante</span> :</li>
+</ul>
+</div>
+<p><div><span class="Evidence">CA = 25800 + 2,9 x Envoi + 5,5 x Promotions + 2,3 x Nouveautés + 12290 x Fête + 0,185 x Fête</span></div></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Conclusion"></a>
+<p class="Texte">En définitive, les modélisations construites constituaient une aide à la décision précieuse, permettant de rationnaliser les différentes prises de choix, que devait opérer la direction de l'entreprise en situation d'incertitude...</p>
+</br>
+
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Irminsul_Modelisation.php">Version en PDF</a></p>
+<p class="Paragraphe1"><a class="Retour" href="/index.html">►   RETOUR AU CV ◄</a></p>
+</br>
+</body>
+</html>

@@ -1,0 +1,25 @@
+%let Date_Debut = '18JUN2017'd;
+%let Date_Fin = '19JUN2017'd;
+
+/*%let Date_Debut = dhms('18JUN2017',0,0,0);
+%let Date_Fin = dhms('19JUN2017',0,0,0);
+
+%let Date_Debut = '2017-06-18 00:00:00.000000';
+%let Date_Fin = '2017-06-19 00:00:00.000000';*/
+
+LIBNAME VALIBLA SASIOLA  TAG=HPS  PORT=10011 HOST="srv-sasva.photowatt.local"  SIGNER="https://sas.photowatt.com:443/SASLASRAuthorization" ;
+
+options metapass="sasadmPHOTOWATT@2015" metaport=8561 metaprotocol=bridge metarepository="Foundation" metaserver="srv-sasva.photowatt.local" metauser="sasadm@saspw";
+ 
+/*PROC SQL;
+SELECT * FROM VALIBLA.DTM_LOGS_TRI
+Where Date_Heure between input("&Date_Debut",date23.) and input("&Date_Fin",date23.);*/
+DATA Work.Tampon;
+SET VALIBLA.DTM_LOGS_TRI;
+IF datepart(Date_Heure) >= &Date_Debut and datepart(Date_Heure) <= &Date_Fin Then Output;
+RUN;
+
+PROC SQL;
+SELECT * FROM Work.TAMPON;
+RUN;
+

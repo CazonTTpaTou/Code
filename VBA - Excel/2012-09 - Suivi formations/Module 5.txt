@@ -1,0 +1,280 @@
+'-----------------------------------------------------------------------------------------------
+
+Public Master_Users As Boolean
+Public Afficher_Gestion_Verrou As Boolean
+Public Aff_Menu_Tracking As Boolean
+
+' ---------------------------------- Onglet Affichage ---------------------------------------
+
+'Callback for G11 onAction
+Sub Affichage_Anom_Clot(control As IRibbonControl)
+
+Dim a, i, Debut, fin, final As Integer
+Dim corps, adresse As String
+
+final = 200
+i = 6
+
+Call Deproteger
+
+        Do While (i <= final)
+            If (Cells(i, 16).value = False) Then
+            a = i
+            Debut = i
+            fin = i
+                Do While (Cells(a + 1, 16).value = False) And (a <= final)
+                    a = a + 1
+                    fin = a
+                Loop
+            corps = Debut & ":" & fin
+            adresse = adresse & "," & corps
+            i = a
+            End If
+            i = i + 1
+        Loop
+
+adresse = Right(adresse, Len(adresse) - 1)
+'MsgBox (adresse)
+Range(adresse).Select
+Selection.EntireRow.Hidden = True
+
+Call Proteger
+
+End Sub
+
+'Callback for G12 onAction
+Sub Affichage_Anom_DeClot(control As IRibbonControl)
+
+Dim a, i, Debut, fin, final As Integer
+Dim corps, adresse As String
+
+final = 200
+i = 6
+
+Call Deproteger
+
+        Do While (i <= final)
+            If (Cells(i, 16).value = True) Then
+            a = i
+            Debut = i
+            fin = i
+                Do While (Cells(a + 1, 16).value = True) And (a <= final)
+                    a = a + 1
+                    fin = a
+                Loop
+            corps = Debut & ":" & fin
+            adresse = adresse & "," & corps
+            i = a
+            End If
+            i = i + 1
+        Loop
+
+adresse = Right(adresse, Len(adresse) - 1)
+'MsgBox (adresse)
+Range(adresse).Select
+Selection.EntireRow.Hidden = True
+
+Call Proteger
+
+End Sub
+
+'Callback for G13 onAction
+Sub Affichage_Anom_Verr(control As IRibbonControl)
+
+Dim a, i, Debut, fin, final As Integer
+Dim corps, adresse As String
+
+Call Deproteger
+
+final = 200
+i = 6
+'MsgBox ("Date 1 : " & DateSerial(Year(Cells(i, 26).value), Month(Cells(i, 26).value), 1) & "Date 2 : " & DateSerial(Year(Date), Month(Date), Day(Date)))
+'MsgBox (DateSerial(Year(Cells(i, 26).value), Month(Cells(i, 26).value), 1) > DateSerial(Year(Date), Month(Date), Day(Date)))
+
+        Do While (i <= final)
+            If (DateSerial(Year(Cells(i, 26).value), Month(Cells(i, 26).value), 1) > DateSerial(Year(Date), Month(Date), Day(Date))) _
+                Or (Cells(i, 16).value = False) Then
+            a = i
+            Debut = i
+            fin = i
+                Do While ((DateSerial(Year(Cells(a + 1, 26).value), Month(Cells(a + 1, 26).value), 1) > DateSerial(Year(Date), Month(Date), Day(Date))) _
+                    Or (Cells(a, 16).value = False)) And (a <= final)
+                    a = a + 1
+                    fin = a
+                Loop
+            corps = Debut & ":" & fin
+            adresse = adresse & "," & corps
+            i = a
+            End If
+            i = i + 1
+        Loop
+
+adresse = Right(adresse, Len(adresse) - 1)
+'MsgBox (adresse)
+Range(adresse).Select
+Selection.EntireRow.Hidden = True
+    
+Call Proteger
+
+End Sub
+
+'Callback for G14 onAction
+Sub Affichage_Anom_DeVerr(control As IRibbonControl)
+Dim a, i, Debut, fin, final As Integer
+Dim corps, adresse As String
+
+Call Deproteger
+
+final = 200
+i = 6
+
+        Do While (i <= final)
+            If (Year(Cells(i, 26).value) <> Year(Date)) Or (Cells(i, 16).value <> True) Then
+            a = i
+            Debut = i
+            fin = i
+                Do While ((Year(Cells(a + 1, 26).value) <> Year(Date)) Or (Cells(a + 1, 16).value <> True)) _
+                And (a <= final)
+                    a = a + 1
+                    fin = a
+                Loop
+            corps = Debut & ":" & fin
+            adresse = adresse & "," & corps
+            i = a
+            End If
+            i = i + 1
+        Loop
+
+adresse = Right(adresse, Len(adresse) - 1)
+'MsgBox (adresse)
+Range(adresse).Select
+Selection.EntireRow.Hidden = True
+
+Call Proteger
+
+End Sub
+
+'Callback for G15 onAction
+Sub Tout_Afficher(control As IRibbonControl)
+
+Call Deproteger
+
+        adresse = "6:200"
+        Rows(adresse).Select
+        Selection.EntireRow.Hidden = False
+        Cells(6, 2).Select
+        
+Call Proteger
+        
+End Sub
+
+' ---------------------------------- Onglet Verrou ---------------------------------------
+
+'Callback for H1 getLabel
+Sub Label_Verrou(control As IRibbonControl, ByRef returnedVal)
+returnedVal = "Gestion des verrous sur l'anomalie n° " & Cells(ActiveCell.Row, 2)
+End Sub
+
+'Callback for H11 getEnabled
+Sub Master_User(control As IRibbonControl, ByRef returnedVal)
+returnedVal = Master_Users
+End Sub
+
+'Callback for H11 onAction
+Sub Verrouiller_Anom(control As IRibbonControl)
+    MsgBox Verrouille()
+End Sub
+
+'Callback for H12 onAction
+Sub Deverrouiller_Anom(control As IRibbonControl)
+    MsgBox DeVerrouille()
+End Sub
+
+'Callback for H13 onAction
+Sub Annule_Gestion_Verrou(control As IRibbonControl)
+    Afficher_Gestion_Verrou = False
+    MonRuban.Invalidate
+    Call Activer
+End Sub
+
+'Callback for H1 getVisible
+Sub Affiche_Gestion_Verrou(control As IRibbonControl, ByRef returnedVal)
+    returnedVal = Afficher_Gestion_Verrou
+End Sub
+
+'Callback for H0 onAction
+Sub Affichage_Gestion_Verrou(control As IRibbonControl)
+    Call Desactiver
+    Afficher_Gestion_Verrou = True
+    MonRuban.Invalidate
+End Sub
+
+' ---------------------------------- Onglet Tracking ---------------------------------------
+
+'Callback for I1 getVisible
+Sub Menu_Tracking(control As IRibbonControl, ByRef returnedVal)
+returnedVal = Aff_Menu_Tracking
+End Sub
+
+'Callback for I11 onAction
+Sub Aff_Tracking_Anom(control As IRibbonControl)
+Call Desactiver
+Aff_Menu_Tracking = False
+MonRuban.Invalidate
+End Sub
+
+'Callback for I12 onAction
+Sub Export_Log(control As IRibbonControl)
+    MsgBox Export()
+End Sub
+
+'Callback for I2 getLabel
+Sub Label_Tracking(control As IRibbonControl, ByRef returnedVal)
+returnedVal = "Génération du tracking de l'anomalie n° " & Cells(ActiveCell.Row, 2)
+End Sub
+
+'Callback for I2 getVisible
+Sub Aff_Tracking(control As IRibbonControl, ByRef returnedVal)
+    returnedVal = Not (Aff_Menu_Tracking)
+End Sub
+
+'Callback for I21 onAction
+Sub Tracking_Anom(control As IRibbonControl)
+    tampon = Tracking(ActiveCell.Row - 10, Cells(ActiveCell.Row, 2))
+End Sub
+
+'Callback for I22 onAction
+Sub Annule_Tracking(control As IRibbonControl)
+    Aff_Menu_Tracking = True
+    MonRuban.Invalidate
+    Call Activer
+End Sub
+
+' ---------------------------------- Onglet Statistiques ---------------------------------------
+
+'Callback for I22 onAction
+Sub Statistiques(control As IRibbonControl)
+    tampon = Stats()
+End Sub
+
+' ---------------------------------- Onglet Administration ---------------------------------------
+
+'Callback for K11 onAction
+Sub Afficher_Droits(control As IRibbonControl)
+    Worksheets("Users").Visible = True
+    Worksheets("Users").Select
+    Call Deproteger
+    Range("A1").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.End(xlDown).Select
+End Sub
+
+'Callback for K12 onAction
+Sub Masquer_Droits(control As IRibbonControl)
+    Call Proteger
+    Worksheets("Users").Visible = False
+    Worksheets("Suivi").Select
+End Sub
+
+
+

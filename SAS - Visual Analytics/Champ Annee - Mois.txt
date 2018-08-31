@@ -1,0 +1,2 @@
+Concatenate(Format(Year(DatePart('Ling Dem Date Poste'n)), 'BEST4.'), 
+Concatenate('-', Format(Month(DatePart('Ling Dem Date Poste'n)), 'BEST2.')))

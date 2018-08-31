@@ -1,0 +1,286 @@
+--------------------------------------------------------------------------------
+---- Code dans le formulaire
+
+Private Sub CodeERP_Exit(Cancel As Integer)
+' Vérification des conditions de remplissage des champs du formulaire de saisie
+
+Dim Condition1, Condition2 As Boolean
+    
+    Condition1 = Vide(Me.Name, _
+                      Me.ActiveControl.Name)
+                      
+    Condition2 = Doublon(Me.RecordSource, Me.ActiveControl.Name, Me.Name, _
+                        Me.ActiveControl.Name, _
+                        LookId(Me.RecordSource))
+                        
+    Cancel = Condition1 Or Condition2
+                     
+End Sub
+
+-------------------------------------------------------------------------------
+----- Code dans le module VBA FR_checker
+
+Option Compare Database
+
+Public Function Vide(ByVal frm As String, _
+                     ByVal ctl As String) _
+                     As Boolean
+'--------------------------------------------------------------------
+' On vérifie que l'utilisateur a bien saisi une valeur dans le champ
+
+Dim Valeur_Saisie As Variant
+Dim Formulaire As Form
+Dim Controle As Control
+
+Set Formulaire = Forms(frm)
+Set Controle = Formulaire.Controls(ctl)
+
+Valeur_Saisie = Controle.Text
+
+Vide = False
+
+' ---------------------------------------------------------------------
+' Si la valeur est nulle, on affiche un message d'erreur
+
+If IsNull(Valeur_Saisie) _
+   Or (Valeur_Saisie = "") Then
+    
+      MsgBox Message_valeur_vide
+      Vide = True
+      
+End If
+
+Set Formulaire = Nothing
+Set Controle = Nothing
+
+End Function
+
+
+Public Function Doublon(ByVal Table As String, ByVal Champ As String, ByVal frm As String, _
+                        ByVal ctl As String, ByVal id As String) _
+                        As Boolean
+
+Dim Valeur_Saisie, Valeur_id As Variant
+Dim ChampQuote, idQuote, CritereCh, CritereId As String
+Dim Formulaire As Form
+Dim Controle, ControleId As Control
+
+Set Formulaire = Forms(frm)
+Set Controle = Formulaire.Controls(ctl)
+Set ControleId = Formulaire.Controls(id)
+
+Valeur_Saisie = Controle.Text
+Valeur_id = ControleId.value
+
+ChampQuote = "[" & Champ & "]"
+idQuote = "[" & id & "]"
+CritereCh = ChampQuote & "='" & Nz(Valeur_Saisie, "") & "'"
+CritereId = idQuote & "=" & Nz(Valeur_id, "")
+
+Doublon = False
+
+'-----------------------------------------------------------------------
+' Si la valeur est nulle, il ne peut y avoir de doublon de cette valeur
+
+If IsNull(Valeur_Saisie) _
+   Or (Valeur_Saisie = "") Then
+    
+      Set Formulaire = Nothing
+      Set Controle = Nothing
+      Exit Function
+      
+End If
+
+'-----------------------------------------------------------------------
+' Si la valeur existe déjà dans le champ, on affiche un message d'erreur
+'-----------------------------------------------------------------------
+' Si l'id est nulle c'est qu'il s'agit d'une création de ligne
+
+If IsNull(Valeur_id) Then
+    
+    If Not IsNull(DLookup( _
+                    ChampQuote, _
+                    Table, _
+                    CritereCh)) Then
+        
+                    MsgBox Valeur_Saisie _
+                            & Message_doublon_BDD_part1 _
+                            & Message_doublon_BDD_part2
+                            
+                    Doublon = True
+    End If
+    
+' ---------------------------------------------------------------------
+' Si l'id est non nulle c'est qu'il s'agit d'une modification de ligne
+    Else
+        
+        If (Valeur_Saisie <> Nz(DLookup( _
+                    ChampQuote, _
+                    Table, _
+                    CritereId), "")) _
+        And Not IsNull(DLookup( _
+                    ChampQuote, _
+                    Table, _
+                    CritereChamp)) Then
+                    
+                    MsgBox Valeur_Saisie _
+                        & Message_doublon_BDD_part1 _
+                        & Message_doublon_BDD_part2
+
+                    Doublon = True
+        End If
+    End If
+
+Set Formulaire = Nothing
+Set Controle = Nothing
+
+End Function
+
+
+'---------------------------------------------------------------------
+' Fonction pour faire des recherches dans le tableau de structure des tables
+Public Function LookId(ByVal NomTable As String) As String
+    Dim lig As Integer
+    
+LookId = "N\A"
+
+Call InitStructureTable
+
+    For lig = LBound(StructureTable, 1) To UBound(StructureTable, 1)
+        If StructureTable(lig, 1) = NomTable Then
+            LookId = StructureTable(lig, 2)
+            Exit For
+        End If
+    Next lig
+    
+End Function
+
+
+'-----------------------------------------------------------------------
+' Déclaration des constantes dans le module DE_constante
+
+Option Compare Database
+
+' Message pour les valeurs vide des champs de formulaire de paramétrage
+Public Const Message_valeur_vide = "Vous devez impérativement rentrer une valeur dans ce champ."
+
+' Message pour les doublons dans les champs de formulaire de paramétrage
+Public Const Message_doublon_BDD_part1 = " existe déjà dans la base de données" & vbCr
+Public Const Message_doublon_BDD_part2 = "Veuillez saisir une nouvelle valeur."
+
+
+'-------------------------------------------------------------------------
+' Déclaration du table StructureTable dans le module DE_Tableau
+
+Option Compare Database
+
+'------------------------------------------------
+' Déclaration de la structure des tables utilisées pour l'application
+' afin de pouvoir faciliter certains traitements de contrôle
+
+Public StructureTable(1 To 46, 1 To 2) As String
+
+'-------------------------------------------------
+' Initialisation des noms de table
+
+Public Sub InitStructureTable()
+
+StructureTable(1, 1) = "Action"
+StructureTable(2, 1) = "ActionIntervenant"
+StructureTable(3, 1) = "ActionPreventive"
+StructureTable(4, 1) = "Activite"
+StructureTable(5, 1) = "ActiviteIntervenant"
+StructureTable(6, 1) = "CategorieEquip"
+StructureTable(7, 1) = "Compteur"
+StructureTable(8, 1) = "ContactFourn"
+StructureTable(9, 1) = "CouleurPolice"
+StructureTable(10, 1) = "DegreUrgence"
+StructureTable(11, 1) = "Demande"
+StructureTable(12, 1) = "DependanceEquipSSEnsem"
+StructureTable(13, 1) = "Domaine"
+StructureTable(14, 1) = "Equipement"
+StructureTable(15, 1) = "EtatIntervention"
+StructureTable(16, 1) = "FichePreventive"
+StructureTable(17, 1) = "FiltreFichePrev"
+StructureTable(18, 1) = "FiltreIntervention"
+StructureTable(19, 1) = "Fournisseur"
+StructureTable(20, 1) = "GD_droit"
+StructureTable(21, 1) = "GD_droit_groupe"
+StructureTable(22, 1) = "GD_Droit_Menu"
+StructureTable(23, 1) = "GD_Droit_SousMenu"
+StructureTable(24, 1) = "GD_droit_utilisateur"
+StructureTable(25, 1) = "GD_groupe"
+StructureTable(26, 1) = "GD_utilisateur"
+StructureTable(27, 1) = "GD_utilisateur_groupe"
+StructureTable(28, 1) = "Intervenant"
+StructureTable(29, 1) = "Intervention"
+StructureTable(30, 1) = "ModeleEquip"
+StructureTable(31, 1) = "ParamGeneraux"
+StructureTable(32, 1) = "Piece"
+StructureTable(33, 1) = "PieceJointe"
+StructureTable(34, 1) = "Priorite"
+StructureTable(35, 1) = "PriseEnCompte"
+StructureTable(36, 1) = "Realisation"
+StructureTable(37, 1) = "Secteur"
+StructureTable(38, 1) = "Service"
+StructureTable(39, 1) = "SourceDemande"
+StructureTable(40, 1) = "SousEnsemble"
+StructureTable(41, 1) = "TypeDemande"
+StructureTable(42, 1) = "TypeIntervention"
+StructureTable(43, 1) = "TypePJ"
+StructureTable(44, 1) = "TypePlanification"
+StructureTable(45, 1) = "UAP"
+StructureTable(46, 1) = "UtilisateurService"
+
+'--------------------------------------------
+' Initialisations des champs d'Id
+StructureTable(1, 2) = "idAction"
+StructureTable(2, 2) = "idActionIntervenant"
+StructureTable(3, 2) = "idActionPrev"
+StructureTable(4, 2) = "idActivite"
+StructureTable(5, 2) = "idActiviteIntervenant"
+StructureTable(6, 2) = "idCatEquip"
+StructureTable(7, 2) = "idCompteur"
+StructureTable(8, 2) = "idContactFourn"
+StructureTable(9, 2) = "idCouleur"
+StructureTable(10, 2) = "idUrgence"
+StructureTable(11, 2) = "idDemande"
+StructureTable(12, 2) = "idDependanceEquipSSEnsem"
+StructureTable(13, 2) = "idDomaine"
+StructureTable(14, 2) = "idEquipement"
+StructureTable(15, 2) = "idEtat"
+StructureTable(16, 2) = "idFichePreventive"
+StructureTable(17, 2) = "idFiltrePrev"
+StructureTable(18, 2) = "idFiltreInter"
+StructureTable(19, 2) = "idFournisseur"
+StructureTable(20, 2) = "idDroit"
+StructureTable(21, 2) = "idGD_droit_groupe"
+StructureTable(22, 2) = "idMenu"
+StructureTable(23, 2) = "idSousMenu"
+StructureTable(24, 2) = "idGD_droit_utilisateur"
+StructureTable(25, 2) = "idGroupe"
+StructureTable(26, 2) = "idUtilisateur"
+StructureTable(27, 2) = "idGD_utilisateur_groupe"
+StructureTable(28, 2) = "idIntervenant"
+StructureTable(29, 2) = "idIntervention"
+StructureTable(30, 2) = "idModeleEquipe"
+StructureTable(31, 2) = "idParametre"
+StructureTable(32, 2) = "idPiece"
+StructureTable(33, 2) = "idPJ"
+StructureTable(34, 2) = "idPriorite"
+StructureTable(35, 2) = "idPEC"
+StructureTable(36, 2) = "idRealisation"
+StructureTable(37, 2) = "idSecteur"
+StructureTable(38, 2) = "idService"
+StructureTable(39, 2) = "idSourceDemande"
+StructureTable(40, 2) = "idSousEnsemble"
+StructureTable(41, 2) = "idTypeDemande"
+StructureTable(42, 2) = "idTypeIntervention"
+StructureTable(43, 2) = "idTypePJ"
+StructureTable(44, 2) = "idPlanification"
+StructureTable(45, 2) = "idUAP"
+StructureTable(46, 2) = "idUtilisateurService"
+
+End Sub
+
+

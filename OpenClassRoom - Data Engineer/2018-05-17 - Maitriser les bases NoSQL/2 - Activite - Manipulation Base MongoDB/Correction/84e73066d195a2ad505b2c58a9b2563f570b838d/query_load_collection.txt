@@ -1,0 +1,82 @@
+/* Preambule: on remarque avec la commande suivante:
+db.getCollection('resto_paris').aggregate([{$group:{"_id":"$location.city", "total":{$sum:1}}}])
+que plus de 4300 lieux de cette base de données concernent une autre ville que Paris (Londres, Rome et "null"). */
+
+
+/*  Query 1: Importez le jeu de données tour-pedia.json dans une base de données “tourPedia” avec une collection “paris” */
+
+mongoimport -d tourPedia -c paris /home/arnaud/Downloads/tour-Pedia_paris/tourPedia_paris.json
+
+
+
+/*  Query 2: Filtrez les lieux par type “accommodation” et service “blanchisserie” */
+
+db.getCollection('resto_paris').find({
+	"category":"accommodation", 
+	"services" :"blanchisserie"
+})
+
+
+
+/*  Query 3: Projetez les adresses des lieux de type "accommodation" */
+
+db.getCollection('resto_paris').find({
+	"category":"accommodation"
+}, 
+{
+	"location.address":1
+})
+
+
+
+/*  Query 4: Filtrez les listes de commentaires (reviews) des lieux, pour lesquelles au moins un commentaire (reviews) est écrit en anglais (en) et a une note (rating) supérieure à 3 (attention, LE commentaire en anglais doit avoir un rang de 3 ou plus)*/
+
+db.getCollection('resto_paris').find({
+    "reviews": {
+        $elemMatch: {
+            "rating" : {$gt : 2},
+            "language" : "en"     
+        }
+    }
+})
+
+
+
+/*  Query 5:  Groupez les lieux par catégorie et comptez les */
+
+db.getCollection('resto_paris').aggregate([{
+	$group:{"_id":"$category", "total": {$sum:1}}
+}, 
+{
+	$sort:{"total":-1}
+}])
+
+
+
+/*  Query 6: Créez un pipeline d’agrégation pour les lieux de catégorie "accommodation", et donnez le nombre de lieux par valeur de "services" */
+
+db.getCollection('resto_paris').aggregate([{
+	$match:{"category":"accommodation"}
+}, 
+{
+	$group:{"_id":"$services", "total": {$sum:1}}
+}, 
+{
+	$sort:{"total":-1}
+}])
+
+/* si la requête consiste à compter le nombre de lieux en séparant les champs dans "services", voici la commande appropriée */
+
+db.getCollection('resto_paris').aggregate([{
+	$match:{"category":"accommodation"}
+}, 
+{       
+        $unwind:"$services"
+},
+{
+	$group:{"_id":"$services", "total": {$sum:1}}
+}, 
+{
+	$sort:{"total":-1}
+}])
+

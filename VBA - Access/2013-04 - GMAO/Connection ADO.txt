@@ -1,0 +1,72 @@
+Private Sub Form_Load()
+
+Dim cn As ADODB.Connection
+Dim RS_Devis As New ADODB.Recordset
+Dim strSQL As String
+Dim result As Integer
+
+Set cn = CurrentProject.Connection
+'MsgBox cn.ConnectionString
+
+strSQL = "select distinct Libelle from dbo_realisation"
+
+RS_Devis.Open strSQL, cn, adOpenStatic, adLockReadOnly
+'MsgBox RS_Devis.RecordCount
+
+RS_Devis.MoveLast
+'MsgBox RS_Devis.Fields("Libelle").Value
+
+strSQL = "Select max(idRealisation) as maxi from dbo_realisation"
+RS_Devis.Close
+
+RS_Devis.Open strSQL, cn, adOpenStatic, adLockReadOnly
+'MsgBox RS_Devis.Fields("maxi").Value
+
+strSQL = "INSERT INTO dbo_realisation (idIntervention,idEquipement,Libelle)" _
+         & " VALUES(45,4,'L''alligator')"
+
+cn.Execute strSQL, result
+'MsgBox "Resultat : " & result
+
+RS_Devis.Close
+
+'RS_Devis.Open "MaxTps,2", cn, adOpenStatic, adLockReadOnly, adCmdStoredProc
+
+'MsgBox RS_Devis.Fields(0).Value
+
+'cn.Execute "Exec MaxTps,2"
+
+RS_Devis.Open "Select * from CompteEquip", cn, adOpenStatic, adLockReadOnly
+
+Set cn = Nothing
+
+End Sub
+
+
+Option Compare Database
+
+Private Sub Command4_Click()
+
+Dim cn As ADODB.Connection
+Dim RS_Devis As New ADODB.Recordset
+Dim strSQL As String
+Dim result As Integer
+
+ Dim Conn1 As ADODB.Connection
+   Dim Cmd1 As ADODB.Command
+   Dim Rs1 As ADODB.Recordset
+
+
+Set cn = CurrentProject.Connection
+
+Set Cmd1 = New ADODB.Command
+   Cmd1.ActiveConnection = cn
+   Cmd1.CommandText = "MaxTps"
+   Cmd1.CommandType = adCmdStoredProc
+   Cmd1.Parameters.Refresh
+   Cmd1.Parameters(0).Value = 2
+   Set Rs1 = Cmd1.Execute()
+
+End Sub
+
+

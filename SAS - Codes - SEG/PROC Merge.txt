@@ -1,0 +1,12 @@
+PROC SORT Data=DS_SQC.T_LOT_Assemblage Out=Work.T_Lot_A_trie;BY idLot;
+RUN;
+PROC SORT Data=DS_SQC.TC_LOT_Assemblage Out=Work.TC_Lot_A_Trie;BY idLot;
+RUN;
+DATA Work.Difference_T_Not_TC; 
+MERGE Work.T_Lot_A_trie(IN=Dans_T_Lot)
+      Work.TC_Lot_A_Trie (IN=Dans_TC_Lot); 
+BY idLot; 
+IF Not Dans_TC_Lot AND  Dans_T_Lot THEN OUTPUT;
+RUN;
+
+

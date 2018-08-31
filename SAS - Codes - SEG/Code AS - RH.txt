@@ -1,0 +1,417 @@
+*  Begin EG generated code (do not edit this line);
+*
+*  Application stockée enregistrée par
+*  Enterprise Guide Stored Process Manager v4.1
+*
+*  ====================================================================
+*  Nom de l'application stockée :Horoquartz - Synthèse des heures travaillées et d'absence
+*  ====================================================================
+*
+*  Dictionnaire des paramètres de l'application stockée :
+*  ____________________________________
+*  DATE_DEBUT
+*       Type : Date
+*      Groupe :  > Général
+*      Libellé :Date de début
+*       Attr: Visible, Modifiable, Obligatoire
+*      Par défaut :1Oct2012
+*       Desc. :Date de début de période sélectionnée
+*  ____________________________________
+*  DATE_FIN
+*       Type : Date
+*      Groupe :  > Général
+*      Libellé :Date de fin
+*       Attr: Visible, Modifiable, Obligatoire
+*      Par défaut :2Oct2012
+*       Desc. :Date de fin de période sélectionnée
+*  ____________________________________
+*;
+
+
+*ProcessBody;
+
+%global DATE_DEBUT
+        DATE_FIN;
+
+%STPBEGIN;
+
+%LET _EGCHARTWIDTH=640;
+%LET _EGCHARTHEIGHT=480;
+
+LIBNAME DS_TEMPT ODBC  DATASRC=Temptation  SCHEMA=dbo  USER=SASSQL  PASSWORD="{sas001}c0BzLXNxbDIwMDg=" ;;
+
+*  End EG generated code (do not edit this line);
+
+/* --- Début des fonctions de macros partagées. --- */
+
+/* Conditionally delete a table or view, if it exists          */
+/* If the member does not exist, then no action is performed   */
+%macro _eg_conditional_dropds(dsname);
+	%IF %SYSFUNC(EXIST(&dsname)) %THEN %DO;
+		PROC SQL;
+			DROP TABLE &dsname;
+		QUIT;
+	%END;
+	%IF %SYSFUNC(EXIST(&dsname,VIEW)) %THEN %DO;
+		PROC SQL;
+			DROP VIEW &dsname;
+		QUIT;
+	%END;
+%mend _eg_conditional_dropds;
+%macro _eg_inParam( PARM=, TYPE=S );
+  %local q;
+  %if %QUPCASE(&TYPE) eq S or %QUPCASE(&TYPE) eq STRING %then
+    %let q=%str(%");
+  %else
+    %let q=;
+  
+  %local z;
+  %let z=0;
+  %if not %symexist(&PARM) %then %do;
+    ""
+  %end;
+  %else %if not %symexist(&PARM&z) or "&&&PARM&Z" = "" %then %do;
+    %if "&&&PARM" = "" and "&TYPE" = "N" %then %do; . %end;
+    %else %do;
+      %unquote(&q)&&&PARM%unquote(&q)
+    %end;
+  %end;
+  %else %do;
+     %do i=1 %to &&&PARM&z; %if &i > 1 %then %do; , %end; 
+       %unquote(&q)&&&PARM&i%unquote(&q) %end; 
+  %end;
+%mend;
+/* --- Fin des fonctions de macros partagées. --- */
+
+/* --- Début du code de "Horoquartz - Synthèse des heures travaillées et d'absence". --- */
+/* --- Problème : Impossible d'exprimer la tâche en code SAS. --- */
+/* --- Fin du code de "Horoquartz - Synthèse des heures travaillées et d'absence". --- */
+
+/* --- Début du code de "Horoquartz - Liste des heures travaillées". --- */
+/* --- Problème : Impossible d'exprimer la tâche en code SAS. --- */
+/* --- Fin du code de "Horoquartz - Liste des heures travaillées". --- */
+
+/* --- Début du code de "Horoquartz - Liste des heures d'absence". --- */
+/* --- Problème : Impossible d'exprimer la tâche en code SAS. --- */
+/* --- Fin du code de "Horoquartz - Liste des heures d'absence". --- */
+
+/* --- Début du code de "Informat des paramètres dates". --- */
+/* 	Ce code SAS sans impact dans le flux de processus Enterprise Guide.
+	Il sert à l'application stockée pour transformer par un informat les paramètres de type date.
+	Les dates sont en effet passé"s avec des " lors de la création automatique de l'application stockée depuis Enterprise Guide. 
+	La présence du dans le flux de processus évite de le reécrire manuellement dans l'application stockée. 
+*/
+
+%let Date_debut= %sysfunc(inputn(&Date_debut, date9.)) ;
+%let Date_fin = %sysfunc(inputn(&Date_fin, date9.)) ;
+
+/* --- Fin du code de "Informat des paramètres dates". --- */
+
+/* --- Début du code de "Requête ext. employés". --- */
+%_eg_conditional_dropds(WORK.TEMPTATION_EMPLOYES);
+
+PROC SQL;
+ CREATE TABLE WORK.TEMPTATION_EMPLOYES AS SELECT hopempl.MATRI label="Matricule" AS Matricule,
+	 hopempl.NOMPRE label="Nom prénom" AS Nom_prenom,
+	 (CASE WHEN "1" = hopempl.EMSEXE THEN "H" WHEN "2" = hopempl.EMSEXE THEN "F" ELSE "?" END) label="Sexe" AS Sexe,
+	 (CASE WHEN hopempl.EMINTER = '1' THEN 'Intérim' ELSE 'EDF ENR PWT' END) label="Catégorie" AS Categorie,
+	 (DATEPART(hopempl.DATOUV)) FORMAT=DDMMYY8.0 label="Date d'ouverture" AS Date_ouverture,
+	 (CASE WHEN hopempl.DATCLO < 0 THEN . ELSE DATEPART(hopempl.DATCLO) END) FORMAT=DDMMYY8.0 label="Date de clôture" AS Date_cloture,
+	 hopempl.HORSECT label="Section horaire" AS Section_horaire,
+	 hopsech.LIBELLE label="Libellé section horaire" AS Libelle_section_horaire,
+	 hopempl.SECTION label="Section d'origine" AS Section_origine,
+	 hopsect.LIBELLE label="Libellé section d'origine" AS Libelle_section_origine 
+ FROM DS_TEMPT.hopempl AS hopempl 
+	  LEFT JOIN DS_TEMPT.hopsech AS hopsech ON (hopempl.HORSECT = hopsech.HORSECT) 
+	    LEFT JOIN DS_TEMPT.hopsect AS hopsect ON (hopempl.SECTION = hopsect.SECTION);
+QUIT;
+
+/* --- Fin du code de "Requête ext. employés". --- */
+
+/* --- Début du code de "Requête ext. heures travaillées". --- */
+%_eg_conditional_dropds(WORK.DETAIL_HEURES_TRAVAILLEES);
+
+PROC SQL;
+ CREATE TABLE WORK.DETAIL_HEURES_TRAVAILLEES AS SELECT hophjou.MATRI label="Matricule" AS Matricule,
+	 TEMPTATION_EMPLOYES.Nom_prenom AS Nom_prenom,
+	 (DATEPART(hophjou.DAT)) FORMAT=DDMMYY8.0 label="Date" AS Date,
+	 (int(hophjou.HJPOIN) /60) label="Heures badgées" AS Heures_badgees,
+	 (int(hophjou.HJPOIN) *60) FORMAT=TIME5.0 label="Heures mn badgées" AS Heures_mn_badgees,
+	 (int(hophjou.HJTHEO) /60) label="Heures théoriques" AS Heures_theoriques,
+	 (int(hophjou.HJTHEO) *60) FORMAT=TIME5.0 label="Heures mn théoriques" AS Heures_mn_theoriques,
+	 (int(hophjou.CBPAUSE) /60) label="Heures de pause" AS Heures_pause,
+	 (int(hophjou.CBPAUSE) *60) FORMAT=TIME5.0 label="Heures mn de pause" AS Heures_mn_pause,
+	 (CASE 
+WHEN int(hophjou.HJPOIN) > 0 THEN (int(hophjou.HJPOIN)- int(hophjou.CBPAUSE) ) /60 
+ELSE CASE WHEN int(hophjou.HJTHEO) - int(hophjou.HJABS) > 0 THEN (int(hophjou.HJTHEO) - int(hophjou.HJABS)) /60 ELSE 0 END END) label="Heures travaillées" AS Heures_travaillees,
+	 (CASE 
+WHEN int(hophjou.HJPOIN) > 0 THEN (int(hophjou.HJPOIN)- int(hophjou.CBPAUSE) ) *60 
+ELSE CASE WHEN int(hophjou.HJTHEO) - int(hophjou.HJABS) > 0 THEN (int(hophjou.HJTHEO) - int(hophjou.HJABS)) *60 ELSE 0 END END) FORMAT=TIME5.0 label="Heures mn travaillées" AS Heures_mn_travaillees,
+	 (YEAR(DATEPART(hophjou.DAT))) label="Année" AS Annee,
+	 ('Q'||PUT(QTR(DATEPART(hophjou.DAT)),
+	 1.)) label="Trimestre" AS Trimestre,
+	 (MONTH(DATEPART(hophjou.DAT))) label="Num. mois" AS Num_mois,
+	 (DATEPART(hophjou.DAT)) FORMAT=FRSDFMN9. label="Mois" AS Mois,
+	 hophjou.NUMSEM label="Num. semaine" AS Num_semaine,
+	 hophjou.JOUR label="Num. jour" AS Num_jour,
+	 (( CASE WHEN "1" = hophjou.JOUR THEN "Lundi" WHEN "2" = hophjou.JOUR THEN "Mardi" WHEN "3" = hophjou.JOUR THEN "Mercredi" WHEN "4" = hophjou.JOUR THEN "Jeudi" WHEN "5" = hophjou.JOUR THEN "Vendredi" WHEN "6" = hophjou.JOUR THEN "Samedi" WHEN "7" =
+ hophjou.JOUR THEN "Dimanche" ELSE hophjou.JOUR END )) label="Jour" AS Jour,
+	 hophjou.HORCODE label="Code horaire" AS Code_horaire,
+	 hophora.LIBELLE label="Libellé code horaire" AS Libelle_code_horaire,
+	 TEMPTATION_EMPLOYES.Sexe AS Sexe,
+	 TEMPTATION_EMPLOYES.Categorie AS Categorie,
+	 TEMPTATION_EMPLOYES.Date_ouverture AS Date_ouverture,
+	 TEMPTATION_EMPLOYES.Date_cloture AS Date_cloture,
+	 TEMPTATION_EMPLOYES.Section_horaire AS Section_horaire,
+	 TEMPTATION_EMPLOYES.Libelle_section_horaire AS Libelle_section_horaire,
+	 TEMPTATION_EMPLOYES.Section_origine AS Section_origine,
+	 TEMPTATION_EMPLOYES.Libelle_section_origine AS Libelle_section_origine,
+	 (&Date_debut) FORMAT=DDMMYY8.0 label="Date de début" AS Date_debut,
+	 (&Date_fin) FORMAT=DDMMYY8.0 label="Date de fin" AS Date_fin 
+ FROM DS_TEMPT.hophjou AS hophjou 
+	  LEFT JOIN DS_TEMPT.hophora AS hophora ON (hophjou.HORCODE = hophora.HORCODE) 
+	    LEFT JOIN WORK.TEMPTATION_EMPLOYES AS TEMPTATION_EMPLOYES ON (hophjou.MATRI = TEMPTATION_EMPLOYES.Matricule)
+ WHERE CALCULATED Date >= &Date_debut AND CALCULATED Date <= &Date_fin
+ ORDER BY hophjou.MATRI, hophjou.DAT DESCENDING;
+QUIT;
+
+/* --- Fin du code de "Requête ext. heures travaillées". --- */
+
+/* --- Début du code de "Synthèse heures travaillées". --- */
+%macro _SASTASK_DROPDS(dsname);
+	%IF %SYSFUNC(EXIST(&dsname)) %THEN %DO;
+		DROP TABLE &dsname;
+	%END;
+	%IF %SYSFUNC(EXIST(&dsname, VIEW)) %THEN %DO;
+		DROP VIEW &dsname;
+	%END;
+%mend _SASTASK_DROPDS;
+
+%LET _EGCHARTWIDTH=0;
+%LET _EGCHARTHEIGHT=0;
+TITLE;
+TITLE1 "HOROQUARTZ";
+TITLE2 "Synthèse des heures travaillées - sans temps de pause";
+TITLE3 "Période du %SYSFUNC(PUTN(&Date_debut, DDMMYY8.)) au %SYSFUNC(PUTN(&Date_fin, DDMMYY8.))";
+FOOTNOTE;
+FOOTNOTE1 "Généré le %SYSFUNC(DATE(), DDMMYY8.) à %SYSFUNC(TIME(), TIME6.)";
+FOOTNOTE3 "(1) Les données HOROQUARTZ ont un historique de 125 j.";
+/* -------------------------------------------------------------------
+   Code généré par une tâche SAS
+
+   Généré le : jeudi 4 octobre 2012 à 16:48:19
+   Par tâche : Synthèse heures travaillées
+
+   Données en entrée : WORK.DETAIL_HEURES_TRAVAILLEES
+   Serveur :  SASMain
+   ------------------------------------------------------------------- */
+
+PROC SQL;
+%_SASTASK_DROPDS(WORK.SORTTempTableSorted);
+QUIT;
+
+
+/* -------------------------------------------------------------------
+   Exécuter la procédure TABULATE
+   ------------------------------------------------------------------- */
+PROC TABULATE
+DATA=WORK.DETAIL_HEURES_TRAVAILLEES
+	
+	;
+	VAR Heures_theoriques Heures_travaillees;
+	CLASS Annee /	ORDER=FORMATTED MISSING;
+	CLASS Trimestre /	ORDER=UNFORMATTED MISSING;
+	CLASS Mois /	ORDER=UNFORMATTED MISSING;
+	CLASS Section_horaire /	ORDER=FORMATTED MISSING;
+	CLASS Libelle_section_horaire /	ORDER=DATA MISSING;
+	CLASS Categorie /	ORDER=DATA MISSING;
+	CLASS Sexe /	ORDER=DATA MISSING;
+	TABLE /* Dimension de ligne */
+ALL={LABEL='Total' STYLE={FONT_WEIGHT=BOLD FONT_STYLE=ROMAN FOREGROUND=#000000 BACKGROUND=#FFFFFF}}*{STYLE={FONT_WEIGHT=BOLD FONT_STYLE=ROMAN VJUST=MIDDLE}},
+/* Dimension de colonne */
+Heures_travaillees={LABEL=''}*
+  Sum={LABEL=''}*
+    Annee={LABEL=''}*
+      Trimestre={LABEL=''}*(
+        Mois={LABEL=''}*(
+		  Sexe={LABEL=''}*(
+          Categorie={LABEL=''} 
+          ALL={LABEL='Total'}*{STYLE={FONT_WEIGHT=BOLD FONT_STYLE=ROMAN BACKGROUND=#F8F8F8 VJUST=MIDDLE}}) 
+        ALL={LABEL='Total'}*{STYLE={BACKGROUND=#EFEFEF VJUST=MIDDLE}}))
+/* Options de la table */
+/ BOX={LABEL='Heures travaillées (en centième)'} 		;
+	;
+
+RUN;
+/* -------------------------------------------------------------------
+   Fin du code de la tâche.
+   ------------------------------------------------------------------- */
+RUN; QUIT;
+PROC SQL;
+%_SASTASK_DROPDS(WORK.SORTTempTableSorted);
+QUIT;
+
+TITLE; FOOTNOTE;
+
+/* --- Fin du code de "Synthèse heures travaillées". --- */
+
+/* --- Début du code de "Requête ext. employés". --- */
+%_eg_conditional_dropds(WORK.TEMPTATION_EMPLOYES);
+
+PROC SQL;
+ CREATE TABLE WORK.TEMPTATION_EMPLOYES AS SELECT hopempl.MATRI label="Matricule" AS Matricule,
+	 hopempl.NOMPRE label="Nom prénom" AS Nom_prenom,
+	 (CASE WHEN "1" = hopempl.EMSEXE THEN "H" WHEN "2" = hopempl.EMSEXE THEN "F" ELSE "?" END) label="Sexe" AS Sexe,
+	 (CASE WHEN hopempl.EMINTER = '1' THEN 'Intérim' ELSE 'EDF ENR PWT' END) label="Catégorie" AS Categorie,
+	 (DATEPART(hopempl.DATOUV)) FORMAT=DDMMYY8.0 label="Date d'ouverture" AS Date_ouverture,
+	 (CASE WHEN hopempl.DATCLO < 0 THEN . ELSE DATEPART(hopempl.DATCLO) END) FORMAT=DDMMYY8.0 label="Date de clôture" AS Date_cloture,
+	 hopempl.HORSECT label="Section horaire" AS Section_horaire,
+	 hopsech.LIBELLE label="Libellé section horaire" AS Libelle_section_horaire,
+	 hopempl.SECTION label="Section d'origine" AS Section_origine,
+	 hopsect.LIBELLE label="Libellé section d'origine" AS Libelle_section_origine 
+ FROM DS_TEMPT.hopempl AS hopempl 
+	  LEFT JOIN DS_TEMPT.hopsech AS hopsech ON (hopempl.HORSECT = hopsech.HORSECT) 
+	    LEFT JOIN DS_TEMPT.hopsect AS hopsect ON (hopempl.SECTION = hopsect.SECTION);
+QUIT;
+
+/* --- Fin du code de "Requête ext. employés". --- */
+
+/* --- Début du code de "Requête ext. heures travaillées". --- */
+%_eg_conditional_dropds(WORK.DETAIL_HEURES_TRAVAILLEES_2);
+
+PROC SQL;
+ CREATE TABLE WORK.DETAIL_HEURES_TRAVAILLEES_2 AS SELECT hophjou.MATRI label="Matricule" AS Matricule,
+	 TEMPTATION_EMPLOYES.Nom_prenom AS Nom_prenom,
+	 (DATEPART(hophjou.DAT)) FORMAT=DDMMYY8.0 label="Date" AS Date,
+	 (int(hophjou.HJPOIN) /60) label="Heures badgées" AS Heures_badgees,
+	 (int(hophjou.HJPOIN) *60) FORMAT=TIME5.0 label="Heures mn badgées" AS Heures_mn_badgees,
+	 (int(hophjou.HJTHEO) /60) label="Heures théoriques" AS Heures_theoriques,
+	 (int(hophjou.HJTHEO) *60) FORMAT=TIME5.0 label="Heures mn théoriques" AS Heures_mn_theoriques,
+	 (int(hophjou.CBPAUSE) /60) label="Heures de pause" AS Heures_pause,
+
+	 (int(hophjou.CBPAUSE) *60) FORMAT=TIME5.0 label="Heures mn de pause" AS Heures_mn_pause,
+	 (CASE 
+WHEN int(hophjou.HJPOIN) > 0 THEN (int(hophjou.HJPOIN) ) /60 
+ELSE CASE WHEN int(hophjou.HJTHEO) - int(hophjou.HJABS) > 0 THEN (int(hophjou.HJTHEO) - int(hophjou.HJABS)) /60 ELSE 0 END END) label="Heures travaillées" AS Heures_travaillees,
+	 (CASE 
+WHEN int(hophjou.HJPOIN) > 0 THEN (int(hophjou.HJPOIN) ) *60 
+ELSE CASE WHEN int(hophjou.HJTHEO) - int(hophjou.HJABS) > 0 THEN (int(hophjou.HJTHEO) - int(hophjou.HJABS)) *60 ELSE 0 END END) FORMAT=TIME5.0 label="Heures mn travaillées" AS Heures_mn_travaillees,
+	 (YEAR(DATEPART(hophjou.DAT))) label="Année" AS Annee,
+	 ('Q'||PUT(QTR(DATEPART(hophjou.DAT)),
+	 1.)) label="Trimestre" AS Trimestre,
+	 (MONTH(DATEPART(hophjou.DAT))) label="Num. mois" AS Num_mois,
+	 (DATEPART(hophjou.DAT)) FORMAT=FRSDFMN9. label="Mois" AS Mois,
+	 hophjou.NUMSEM label="Num. semaine" AS Num_semaine,
+	 hophjou.JOUR label="Num. jour" AS Num_jour,
+	 (( CASE WHEN "1" = hophjou.JOUR THEN "Lundi" WHEN "2" = hophjou.JOUR THEN "Mardi" WHEN "3" = hophjou.JOUR THEN "Mercredi" WHEN "4" = hophjou.JOUR THEN "Jeudi" WHEN "5" = hophjou.JOUR THEN "Vendredi" WHEN "6" = hophjou.JOUR THEN "Samedi" WHEN "7" =
+ hophjou.JOUR THEN "Dimanche" ELSE hophjou.JOUR END )) label="Jour" AS Jour,
+	 hophjou.HORCODE label="Code horaire" AS Code_horaire,
+	 hophora.LIBELLE label="Libellé code horaire" AS Libelle_code_horaire,
+	 TEMPTATION_EMPLOYES.Sexe AS Sexe,
+	 TEMPTATION_EMPLOYES.Categorie AS Categorie,
+	 TEMPTATION_EMPLOYES.Date_ouverture AS Date_ouverture,
+	 TEMPTATION_EMPLOYES.Date_cloture AS Date_cloture,
+	 TEMPTATION_EMPLOYES.Section_horaire AS Section_horaire,
+	 TEMPTATION_EMPLOYES.Libelle_section_horaire AS Libelle_section_horaire,
+	 TEMPTATION_EMPLOYES.Section_origine AS Section_origine,
+	 TEMPTATION_EMPLOYES.Libelle_section_origine AS Libelle_section_origine,
+	 (&Date_debut) FORMAT=DDMMYY8.0 label="Date de début" AS Date_debut,
+	 (&Date_fin) FORMAT=DDMMYY8.0 label="Date de fin" AS Date_fin 
+ FROM DS_TEMPT.hophjou AS hophjou 
+	  LEFT JOIN DS_TEMPT.hophora AS hophora ON (hophjou.HORCODE = hophora.HORCODE) 
+	    LEFT JOIN WORK.TEMPTATION_EMPLOYES AS TEMPTATION_EMPLOYES ON (hophjou.MATRI = TEMPTATION_EMPLOYES.Matricule)
+ WHERE CALCULATED Date >= &Date_debut AND CALCULATED Date <= &Date_fin
+ ORDER BY hophjou.MATRI, hophjou.DAT DESCENDING;
+QUIT;
+
+/* --- Fin du code de "Requête ext. heures travaillées". --- */
+
+/* --- Début du code de "Synthèse heures travaillées". --- */
+%macro _SASTASK_DROPDS(dsname);
+	%IF %SYSFUNC(EXIST(&dsname)) %THEN %DO;
+
+		DROP TABLE &dsname;
+	%END;
+	%IF %SYSFUNC(EXIST(&dsname, VIEW)) %THEN %DO;
+		DROP VIEW &dsname;
+	%END;
+%mend _SASTASK_DROPDS;
+
+%LET _EGCHARTWIDTH=0;
+%LET _EGCHARTHEIGHT=0;
+TITLE;
+TITLE1 "HOROQUARTZ";
+TITLE2 "Synthèse des heures travaillées - avec temps de pause";
+TITLE3 "Période du %SYSFUNC(PUTN(&Date_debut, DDMMYY8.)) au %SYSFUNC(PUTN(&Date_fin, DDMMYY8.))";
+FOOTNOTE;
+FOOTNOTE1 "Généré le %SYSFUNC(DATE(), DDMMYY8.) à %SYSFUNC(TIME(), TIME6.)";
+FOOTNOTE3 "(1) Les données HOROQUARTZ ont un historique de 125 j.";
+/* -------------------------------------------------------------------
+   Code généré par une tâche SAS
+
+   Généré le : jeudi 4 octobre 2012 à 16:48:19
+   Par tâche : Synthèse heures travaillées
+
+   Données en entrée : WORK.DETAIL_HEURES_TRAVAILLEES
+   Serveur :  SASMain
+   ------------------------------------------------------------------- */
+
+PROC SQL;
+%_SASTASK_DROPDS(WORK.SORTTempTableSorted);
+QUIT;
+
+
+/* -------------------------------------------------------------------
+   Exécuter la procédure TABULATE
+   ------------------------------------------------------------------- */
+PROC TABULATE
+DATA=WORK.DETAIL_HEURES_TRAVAILLEES_2
+	
+	;
+	VAR Heures_theoriques Heures_travaillees;
+	CLASS Annee /	ORDER=FORMATTED MISSING;
+	CLASS Trimestre /	ORDER=UNFORMATTED MISSING;
+	CLASS Mois /	ORDER=UNFORMATTED MISSING;
+	CLASS Section_horaire /	ORDER=FORMATTED MISSING;
+	CLASS Libelle_section_horaire /	ORDER=DATA MISSING;
+	CLASS Categorie /	ORDER=DATA MISSING;
+	CLASS Sexe /	ORDER=DATA MISSING;
+	TABLE /* Dimension de ligne */
+ALL={LABEL='Total' STYLE={FONT_WEIGHT=BOLD FONT_STYLE=ROMAN FOREGROUND=#000000 BACKGROUND=#FFFFFF}}*{STYLE={FONT_WEIGHT=BOLD FONT_STYLE=ROMAN VJUST=MIDDLE}},
+/* Dimension de colonne */
+Heures_travaillees={LABEL=''}*
+  Sum={LABEL=''}*
+    Annee={LABEL=''}*
+      Trimestre={LABEL=''}*(
+        Mois={LABEL=''}*(
+		  Sexe={LABEL=''}*(
+          Categorie={LABEL=''} 
+          ALL={LABEL='Total'}*{STYLE={FONT_WEIGHT=BOLD FONT_STYLE=ROMAN BACKGROUND=#F8F8F8 VJUST=MIDDLE}}) 
+        ALL={LABEL='Total'}*{STYLE={BACKGROUND=#EFEFEF VJUST=MIDDLE}}))
+/* Options de la table */
+/ BOX={LABEL='Heures travaillées (en centième)'} 		;
+	;
+
+RUN;
+/* -------------------------------------------------------------------
+   Fin du code de la tâche.
+   ------------------------------------------------------------------- */
+RUN; QUIT;
+PROC SQL;
+%_SASTASK_DROPDS(WORK.SORTTempTableSorted);
+QUIT;
+
+TITLE; FOOTNOTE;
+
+/* --- Fin du code de "Synthèse heures travaillées". --- */
+
+/* --- Début du code de "Requête ext. heures d'absence". --- */
+%_eg_conditional_dropds(WORK.DETAIL_HEURES_TRAVAILLEES_2);
+
+/* --- Fin du code de "Synthèse des heures d'absence". --- */
+
+*  Begin EG generated code (do not edit this line);
+*';*";*/;run;
+%STPEND;
+
+*  End EG generated code (do not edit this line);

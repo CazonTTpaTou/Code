@@ -1,0 +1,3 @@
+Tri_Date_Heure_Sort <> . 
+AND 
+DATEPART(Tri_Date_Poste) >= INTNX('month', DATE(), -1) 

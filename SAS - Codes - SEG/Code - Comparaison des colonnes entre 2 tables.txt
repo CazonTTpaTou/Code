@@ -1,0 +1,14 @@
+PROC CONTENTS Data=Stats.Analyse_Production_Monolke_2 out=Work.contenu_1;
+RUN;
+
+DATA Work.Contenu_1_Col (keep=Name);
+SET Work.Contenu_1;
+RUN;
+
+PROC CONTENTS Data=Stats.User_Analyse_Monolike out=Work.contenu_2;
+RUN;
+
+DATA Work.Contenu_2_Col (keep=Name);
+SET Work.Contenu_2;
+RUN;
+

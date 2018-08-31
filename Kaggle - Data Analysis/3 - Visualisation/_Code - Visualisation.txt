@@ -1,0 +1,294 @@
+########################################################################################################################
+Univariate plotting with pandas
+########################################################################################################################
+
+reviews['province'].value_counts().head(10).plot.bar()
+(reviews['province'].value_counts().head(10) / len(reviews)).plot.bar()
+
+reviews['points'].value_counts().sort_index().plot.bar()
+reviews['points'].value_counts().sort_index().plot.line()
+
+reviews['points'].value_counts().sort_index().plot.area()
+
+reviews[reviews['price'] < 200]['price'].plot.hist()
+reviews['price'].plot.hist()
+
+### Unsquish the pie.
+
+import matplotlib.pyplot as plt
+plt.gca().set_aspect('equal')
+reviews['province'].value_counts().head(10).plot.pie()
+
+########################################################################################################################
+Bivariate plotting with pandas
+########################################################################################################################
+
+reviews[reviews['price'] < 100].sample(100).plot.scatter(x='price', y='points')
+reviews[reviews['price'] < 100].plot.scatter(x='price', y='points')
+
+reviews[reviews['price'] < 100].plot.hexbin(x='price', y='points', gridsize=15)
+
+wine_counts.plot.area()
+
+wine_counts.plot.line()
+
+pokemon_stats_legendary = pokemon.groupby(['Legendary', 'Generation']).mean()[['Attack', 'Defense']]
+pokemon_stats_legendary.plot.bar(stacked=True)
+
+pokemon_stats_by_generation = pokemon.groupby('Generation').mean()[['HP', 'Attack', 'Defense', 'Sp. Atk', 'Sp. Def', 'Speed']]
+pokemon_stats_by_generation.plot.line()
+
+########################################################################################################################
+Plotting with seaborn
+########################################################################################################################
+
+import seaborn as sns
+
+sns.countplot(reviews['points'])
+
+sns.kdeplot(reviews.query('price < 200').price)
+
+reviews[reviews['price'] < 200]['price'].value_counts().sort_index().plot.line()
+
+sns.kdeplot(reviews[reviews['price'] < 200].loc[:, ['price', 'points']].dropna().sample(5000))
+
+sns.distplot(reviews['points'], bins=10, kde=False)
+
+sns.jointplot(x='price', y='points', data=reviews[reviews['price'] < 100])
+
+sns.jointplot(x='price', y='points', data=reviews[reviews['price'] < 100], kind='hex', 
+              gridsize=20)
+
+df = reviews[reviews.variety.isin(reviews.variety.value_counts().head(5).index)]
+sns.boxplot(
+    x='variety',
+    y='points',
+    data=df)
+
+sns.violinplot(
+    x='variety',
+    y='points',
+    data=reviews[reviews.variety.isin(reviews.variety.value_counts()[:5].index)]
+)
+
+########################################################################################################################
+Faceting with seaborn
+########################################################################################################################
+
+df = footballers[footballers['Position'].isin(['ST', 'GK'])]
+g = sns.FacetGrid(df, col="Position")
+
+g.map(sns.kdeplot, "Overall")
+
+df = footballers
+
+g = sns.FacetGrid(df, col="Position", col_wrap=6)
+g.map(sns.kdeplot, "Overall")
+
+df = footballers[footballers['Position'].isin(['ST', 'GK'])]
+df = df[df['Club'].isin(['Real Madrid CF', 'FC Barcelona', 'Atlético Madrid'])]
+
+g = sns.FacetGrid(df, row="Position", col="Club")
+g.map(sns.violinplot, "Overall")
+
+df = footballers[footballers['Position'].isin(['ST', 'GK'])]
+df = df[df['Club'].isin(['Real Madrid CF', 'FC Barcelona', 'Atlético Madrid'])]
+
+g = sns.FacetGrid(df, row="Position", col="Club", 
+                  row_order=['GK', 'ST'],
+                  col_order=['Atlético Madrid', 'FC Barcelona', 'Real Madrid CF'])
+g.map(sns.violinplot, "Overall")
+
+sns.pairplot(footballers[['Overall', 'Potential', 'Value']])
+
+########################################################################################################################
+Multivariate plotting 
+########################################################################################################################
+
+sns.lmplot(x='Value', y='Overall', hue='Position', 
+           data=footballers.loc[footballers['Position'].isin(['ST', 'RW', 'LW'])], 
+           fit_reg=False)
+
+sns.lmplot(x='Value', y='Overall', markers=['o', 'x', '*'], hue='Position',
+           data=footballers.loc[footballers['Position'].isin(['ST', 'RW', 'LW'])],
+           fit_reg=False
+          )
+
+--------------------------------------------------------------------
+
+f = (footballers
+         .loc[footballers['Position'].isin(['ST', 'GK'])]
+         .loc[:, ['Value', 'Overall', 'Aggression', 'Position']]
+    )
+f = f[f["Overall"] >= 80]
+f = f[f["Overall"] < 85]
+f['Aggression'] = f['Aggression'].astype(float)
+
+sns.boxplot(x="Overall", y="Aggression", hue='Position', data=f)
+
+--------------------------------------------------------------------
+
+f = (
+    footballers.loc[:, ['Acceleration', 'Aggression', 'Agility', 'Balance', 'Ball control']]
+        .applymap(lambda v: int(v) if str.isdecimal(v) else np.nan)
+        .dropna()
+).corr()
+
+sns.heatmap(f, annot=True)
+
+--------------------------------------------------------------------
+
+f = (
+    footballers.iloc[:, 12:17]
+        .loc[footballers['Position'].isin(['ST', 'GK'])]
+        .applymap(lambda v: int(v) if str.isdecimal(v) else np.nan)
+        .dropna()
+)
+f['Position'] = footballers['Position']
+f = f.sample(200)
+
+parallel_coordinates(f, 'Position')
+
+--------------------------------------------------------------------
+
+########################################################################################################################
+Introduction to plotly 
+########################################################################################################################
+
+from plotly.offline import init_notebook_mode, iplot
+init_notebook_mode(connected=True)
+
+import plotly.graph_objs as go
+iplot([go.Scatter(x=reviews.head(1000)['points'], y=reviews.head(1000)['price'], mode='markers')])
+
+--------------------------------------------------------------------
+
+iplot([go.Histogram2dContour(x=reviews.head(500)['points'], 
+                             y=reviews.head(500)['price'], 
+                             contours=go.Contours(coloring='heatmap')),
+       go.Scatter(x=reviews.head(1000)['points'], y=reviews.head(1000)['price'], mode='markers')])
+
+--------------------------------------------------------------------
+
+df = reviews.assign(n=0).groupby(['points', 'price'])['n'].count().reset_index()
+df = df[df["price"] < 100]
+v = df.pivot(index='price', columns='points', values='n').fillna(0).values.tolist()
+
+iplot([go.Surface(z=v)])
+
+--------------------------------------------------------------------
+
+df = reviews['country'].replace("US", "United States").value_counts()
+
+iplot([go.Choropleth(
+    locationmode='country names',
+    locations=df.index.values,
+    text=df.index,
+    z=df.values
+)])
+
+########################################################################################################################
+Grammar of graphics with plotnine
+########################################################################################################################
+
+from plotnine import *
+
+top_wines = reviews[reviews['variety'].isin(reviews['variety'].value_counts().head(5).index)]
+
+df = top_wines.head(1000).dropna()
+
+(ggplot(df)
+ + aes('points', 'price')
+ + geom_point())
+
+--------------------------------------------------------------------
+
+df = top_wines.head(1000).dropna()
+
+(
+    ggplot(df)
+        + aes('points', 'price')
+        + geom_point()
+        + stat_smooth()
+
+--------------------------------------------------------------------
+
+df = top_wines.head(1000).dropna()
+
+(
+    ggplot(df)
+        + geom_point()
+        + aes(color='points')
+        + aes('points', 'price')
+        + stat_smooth()
+)
+
+--------------------------------------------------------------------
+
+df = top_wines.head(1000).dropna()
+
+(ggplot(df)
+     + aes('points', 'price')
+     + aes(color='points')
+     + geom_point()
+     + stat_smooth()
+     + facet_wrap('~variety')
+
+--------------------------------------------------------------------
+
+(ggplot(top_wines)
+     + aes('points')
+     + geom_bar()
+)
+
+--------------------------------------------------------------------
+
+(ggplot(top_wines)
+     + aes('points', 'variety')
+     + geom_bin2d(bins=20)
+)
+
+--------------------------------------------------------------------
+
+(ggplot(top_wines)
+         + aes('points', 'variety')
+         + geom_bin2d(bins=20)
+         + coord_fixed(ratio=1)
+         + ggtitle("Top Five Most Common Wine Variety Points Awarded")
+)
+
+--------------------------------------------------------------------
+
+(
+    ggplot(pokemon, aes('Attack'))
+        + geom_histogram(bins=20)
+) + facet_wrap('~Generation')
+
+--------------------------------------------------------------------
+
+########################################################################################################################
+Time series plotting
+########################################################################################################################
+
+stocks = pd.read_csv("../input/nyse/prices.csv", parse_dates=['date'])
+stocks = stocks[stocks['symbol'] == "GOOG"].set_index('date')
+stocks.head()
+
+shelter_outcomes['date_of_birth'].value_counts().sort_values().plot.line()
+
+shelter_outcomes['date_of_birth'].value_counts().resample('Y').sum().plot.line()
+
+stocks['volume'].resample('Y').mean().plot.bar()
+
+--------------------------------------------------------------------
+
+from pandas.plotting import lag_plot
+
+lag_plot(stocks['volume'].sample(250))
+
+--------------------------------------------------------------------
+
+from pandas.plotting import autocorrelation_plot
+
+autocorrelation_plot(stocks['volume'])
+

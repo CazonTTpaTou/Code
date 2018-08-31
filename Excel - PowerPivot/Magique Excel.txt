@@ -1,0 +1,631 @@
+Transformer format nombre en texte :
+
+ESTTEXTE(A98) = FAUX
+A97 =A98 & ""
+ESTTEXTE(A97) = VRAI
+
+Transformer format texte en nombre:
+
+Copier 0
+Faire un collage spécial addition sur la zone au format texte
+La zone est désormais au format nombre
+
+Calcul d'un nombre d'occurrences:
+
+=NBCAR(A10)-NBCAR(SUBSTITUE(MINUSCULE(A10);"e";""))
+
+Afficher l'heure courante:
+
+=TEMPS(
+HEURE(MAINTENANT()-AUJOURDHUI());
+MINUTE(MAINTENANT()-AUJOURDHUI());
+SECONDE(MAINTENANT()-AUJOURDHUI()))
+
+Code Ansi d'un caractère:
+
+=Code("B") = 66
+=Code(" ") = 32
+=Car(10) = saut de ligne
+=Car(51) = 3
+
+Fonctions textuelles:
+
+=Cherche("e";texte) ne fait pas la différence entre majuscule et minuscule
+=Trouve("e";texte) fait la différence entre majuscule et minuscule
+=Stxt(texte;position;longueur)
+=rept(texte;nombre) répète un texte x nombre de fois
+=Nompropre(texte) met une majuscule à chaque 1ère lettre
+=suprespace(texte) supprime les espaces en fin de texte
+=Exact(texte1;texte2) vérifie si deux textes sont identiques en différenciant majus et minus
+=substitue(texte;"o";"ei) remplace les o de texte par ei
+=remplacer(texte;2;1;"ei") remplace termes à partir du caractère n°2 sur 1 caractère par "ei"
+
+Fonctions de transformation:
+
+=T(B23) transforme un argument en texte et les nombres en espace
+=N(B23) transforme un argument en nombre t du texte en 0
+=cnum(B23) renvoie erreur en cas d'argument texte
+=type(B23) renvoie un entier qui indique un type de données 
+=type.erreur(B23) renvoie un entier qui indique un type d'erreurs
+=Esterr(valeur) boolean indiquant si il s'agit d'une erreur
+=Estref(valeur) boolean indiquant si il s'agit d'une référence
+=Estnontexte(valeur) indique s'il s'agit de non texte
+=Estvide(B23) indique si B23 est vide
+=Estlogique(B23) indique si b23 est un boolean
+=Estna(B23) indique si B23 est égal à #NA
+=Esttexte(B23) indique si B23 est de format Texte
+=Estnum(B23) indique si B23 est de format numérique
+=Signe(B23) si B23 >0 1 0 si =0 <0 sinon
+
+Estvide() renvoie Faux si cellule contient "" mais Nbvide la considère comme vide.
+
+Fonctions de choix:
+
+=Choisir(3;"A";"B";"C") renvoie "C"
+={OU(EXACT(E31;A17:A23))} renvoie VRAI si la valeur de E31 se trouve dans A17:A23
+=BDSOMME(A:C;"Valeur";E6:F7) renvoie la somme de la colonne Valeur dont les conditions des colonnes A et B correspondent bien aux critères E6:F7
+
+Fonctions d'arrondi:
+
+=Ctxt(B23) affiche B23 avec 3 chiffres après la virgule (pour rétablir au format nombre, multiplier par 1)
+=TEXTE(E31;"##0,00") affiche E31 en nombre à 2 décimales
+=Franc(E31) renvoie E31 au format monétaire (avec symbole €)
+=USDOLLAR(E31) renvoie E31 au format monétaire (avec symbole € si paramétré)
+=pair(B23) renvoie l'entier pair égal ou supérieur
+=impair(B23) renvoie l'entier impair égal ou supérieur
+=plancher(B23;0.05) renvoie le nombre au 0.05 inférieur
+=plafond(B23;0.05) renvoie le nombre au 0.05 supérieur
+
+Fonctions de recherche:
+
+Recherche(valeur_cherchée;vecteur_recherche;vecteur_résultat)
+Equiv(valeur_cherchée;tableau_recherche;type)
+Recherchev(valeur;tableau;colonne;type)
+Rechercheh(valeur;tableau;colonne;type)
+Bdlire(A:C;"Valeur";E10:F11) renvoie l'argument de la colonne valeur remplissant les conditions colonne A et B = critères E10:F11
+
+Fonctions de renvoi à une zone:
+
+=Decaler(référence;ligne;colonne;hauteur;largeur)
+=zones(A1:B2;C5:D6) renvoie le nombre de zones
+=lignes(B1:B23) renvoie 23
+=colonnes(B1:C23) renvoie 2
+=adresse(20;30) renvoie $AD$20
+=adresse(ligne();colonne()) renvoie l'adresse de la cellule courante
+=Transpose({"A"."B";"C"."D"}) transpose la matrice
+=Indirect("A" & 9) renvoie la référence A9
+
+Fonctions Mathématiques:
+
+=exp(1) renvoie 2.718 (e^1) avec e le nombre d'Euler = 2.718
+=exp(2) renvoie 7.389 (e^2)
+=ln(exp(2)) renvoie 2 (logarithme népérien de base e)
+=log10(100) renvoie 2 (logarithme d'un nombre de base 10)
+=log(3^5;3) renvoie 5 (logarithme d'un nombre de base quelconque)
+=puissance(3;4) renvoie 3^4
+=Produit(2;3;4) renvoie 2*3*4
+=racine(2) renvoie 2^(1/2)
+=MOD(5;3) renvoie 2 le reste entier de la division 5 par 3
+
+Fonction de position:
+
+=Petite.valeur(matrice;k)
+=Grande.valeur(matrice;k)
+=Rang(nombre;matrice;ordre)
+=Rang.pourcentage renvoie le rang relatif de la valeur et non pas son rang absolu
+	Rang.pourcentage(matrice;valeur) = (Rang(valeur;matrice;1)-1)/(nb(matrice)-1)
+=Centile(matrice;rang du centile) le rang du centile doit ê en %
+=Centile(matrice;rang.pourcentage(matrice;valeur)) = valeur
+=Quartile(matrice;3) renvoie le 3ème quartile (ler quart de la 2ème moitié de la médiane)
+=Mediane(Matrice) renvoie la valeur située au milieu d'une suite de données
+=Quartile(matrice;1)=Centile(Matrice;25%)
+=Mode(Matrice) renvoie la valeur la plus récurrente (erreur si valeurs toutes uniques)
+=Moyenne(Matrice)
+=Moyenne.geometrique(Matrice)
+=Moyenne.harmonique(Matrice)
+=Moyenne.reduite(Matrice) renvoie la moyenne d'une série de données dont les valeurs aux extrémités ne sont pas prises en compte
+=MoyenneA / MinA / MaxA les valeurs logiques sont interprétées comme des chiffres
+
+Fonction de dispersion: 
+
+=Ecart/moyen(Matrice) valeur absolue des écarts
+=VarP(Matrice) variance de matrice comme ensemble complet
+=Var(Matrice) variance de matrice comme échantillon de l'ensemble
+=Somme.carres.ecarts renvoie la variance multiplié par le nombre de valeurs
+=Ecartypep renvoie l'écart type de la population
+
+=Frequence(données;{6.9}) partage les données en intervalles (classes de fréquence) [0-6[, [6;9[ et [9 et +[ et renvoie pour chaque classe la fréquence associée.
+
+=Covariance(matrice) renvoie la variance entre deux séries de données (utilisé pour les modèles d'évaluation des marchés financiers Capital Asset Pricing Model)
+	={Moyenne((DonnéesA-moyenne(DonnéesA)*(DonnéesB-moyenne(DonnéesB))))}
+
+
+
+
+Fonction de régression:
+
+Covariance(A;B) = Coefficient.correlation(A;B)*Ecartypep(A)*Ecartypep(B)
+
+Erreur.type.XY(A;B) Plus la dépendance des valeurs est forte, plus la valeur est petite
+
+Lorsque le rapport entre variable n'est plus linéaire mais exponentielle, les fonctions DroiteReg et Tendance sont remplacés par Logreg et Croissance.
+
+Fonctions combinatoires:
+
+Combin(4;2) =6
+Nombre de possibilités pour ordonner par 2 des éléments appartenant à un ensemble de 4 éléments (Cnk).
+
+Permutation(4;2)=12
+Nombre de possibilités pour ordonner par 2 des éléments appartenant à un ensemble de 4 éléments avec des variations sans répétition (AB et BA sont considérés comme deux possibilités différentes) (Ank).
+
+4^2 = 16
+Nombre de possibilités pour ordonner par 2 des éléments appartenant à un ensemble de 4 éléments avec des variations avec répétition (AA et BB sont considérés comme des  possibilités)
+
+Fact(4) = 24
+Factorielle de 4: 4! = 4*3*2*1 = 24
+
+Fonctions de distribution statistique:
+
+Loi.Normale(x;espérance;écart_type;cumulative)
+Probabilité d'une valeur x à l'intérieur d'un évènement distribué normalement pour lequel la moyenne mathématique de toutes les valeurs et l'écart type sont connus
+Loi.Normale.Inverse(probabilité;espérance;écart_type)
+Déduit la valeur x à partir de la probabilité cumulée.
+
+Loi.weilbull (la vitesse du vent est distribuée selon la loi de Weibull)
+Loi.Hypergeometrique (peut calculer la probabilité de x bons numéros au Loto)
+Loi.beta
+Loi.binomiale
+Loi.khideux
+Loi.exponentielle
+Loi.F
+Loi.Gamma
+Loi.Lognormale
+Loi.Student
+Loi.Poisson
+
+Coefficient.asymetrie({1;2;3;3;4;4;4;4;5})=-0.8
+Donne des précisions sur la symétrie d'une distribution (dans le cas de variables aléatoires normalement distribués, elle renvoie une valeur proche de 0, puisque la distribution normale est parfaitement symétrique).
+
+Kurtosis permet de déterminer si la distribution d'une série de données est plutôt pointue ou plutôt plate.
+={KURTOSIS(LOI.NORMALE.INVERSE(LIGNE(1:10000)/10001;7;10))}
+=-0.0195764334382798
+={KURTOSIS(LOI.NORMALE.INVERSE(LIGNE(1:10000)/10001;7;1))}
+=-0.0195764334825
+Malgré des écarts types différents, les Kurtosis des deux courbes sont proches.
+
+=Centree.reduite(x;espérance;écart_type)
+Transforme une valeur x définie grâce à Loi.normale.inverse en une valeur qui est le x de la distribution normale standard en lui soustrayant l'espérance et en divisant le résultat par l'écart type.
+
+=Loi.binomiale(2;4;0.5;0) = 0.375
+La probabilité d'obtenir deux fois pile en lançant une pièce 4 fois est de 0.375
+=Combin(4;2)*0.5^4 = 0.375
+
+=Loi.binomiale(2;4;0.5;1) = 0.6875
+La probalité cumulée que P(X<=2) = 0.6875
+Le dernier argument 0 ou 1 détermine si la fonction est cumulative ou pas.
+
+=Critere.loi.binomiale(4;0.5;0.6875) = 2
+Retourne l'inverse de la loi binomiale.
+
+=tronque(alea()*2)
+Le résultat est 0 ou 1 avec une probabilité de 0.5 (équivalent du pile ou face)
+
+Fonctions d'intérêts composés.
+
+=JOURS360(E18;E19)
+Retourne le nombre de jours entre la date de début E18 et date de fin E19 en considérant des mois de 30 jours
+JOURS360($E$18;$E$19+JOUR($E$19+1))-(JOUR($E$19+1)=1) corrige l'anomalie du 28/02 met ne marche que sur les fins de mois.
+
+L'annuité constante se compose d'une part d'amortissement toujours grandissante et d'une part d'intérêt toujours plus petite. 
+
+VA et VAN déterminent la valeur actuelle du plan de paiement après l'établissement du terme, du taux d'intérêt et de la valeur résiduelle. 
+TRI et TAUX déterminent le taux d'intérêt (taux de rendement) du plan de paiement quand tous les paiements de valeur actuelle, d'annuité et de valeur finale sont établis.
+VPM calcule l'annuité à partir de valeur actuelle, du taux d'intérêt, du nombre de périodes et de la valeur résiduelle.
+VC renvoie la valeur capitalisée quand la valeur actuelle, le taux d'intérêt, l'annuité et le terme sont prédéterminés.
+
+Les fonctions Princper et Intper morcellent l'annuité en parts d'amortissement et d'intérêt. 
+
+TRIM modifie le taux d'intérêt interne pour une série de cash-flows en fonction du coût de l'investissement et de l'intérêt sur le réinvestissement des liquidités.
+
+=TRIM({-1000;-106;1000;400};0,06;0,05)
+6% est le taux d'intérêt d'emprunt (cash flow négatif)
+5% est le taux de rendement (cash flow positif)
+TRIM calcule d'abord tous les cash flows négatifs avec l'intérêt débiteur au t0
+{-1000;-100} = -1100
+TRIM calcule ensuite tous les cash flows positifs avec l'intérêt créditeur au t3
+{1050;400} = 1450
+TRIM = (1450/1100)^(1/3)-1 = 9.65%
+
+La fonction ISPMT calcule les intérêts d'un emprunt remboursé de façon régulière (amortissement fixe, intérêts; annuités non fixes). Principalement utilisé pour les professionnels.
+
+Les fonctions d'amortissement.
+
+Amortissement = (coût d'acquisition – valeur résiduelle) / durée de vie
+
+Amorlin: amortissement linéaire d'un bien
+SYD: amortissement dégressif tel que différence d'un remboursement sur le précédent est toujours le même.
+VDB: amortissement géométriquement dégressif à taux double, chaque annuité diminue par rapport à la précédente (déterminé grâce à un facteur) tant qu'elle reste supérieure à l'amortissement linéaire, avant que celui-ci ne prenne le relais (changement optionnel de méthode).
+DDB: Idem à VDB sans changement optionnel de méthode, de ce fait il y a toujours à la fin un reliquat.
+
+Fonctions matricielles.
+
+Produitmat: produit de deux matrices.
+Nécessite que le nombre de colonne de Matrice 1 = nombre de lignes de matrice 2.
+Renvoie une matrice avec même nombre de lignes que matrice 1 et même nombre de colonne que la matrice 2.
+
+Inversemat: Renvoie l'inverse d'une matrice.
+Nécessite une matrice carrée.
+
+Determat: Renvoie le déterminant d'une matrice.
+Nécessite une matrice carrée.
+
+Somme.carres : forme le carrés de chaque valeur d'une matrice et additionne ensuite les carrés.
+
+Somme.Prod: multiplie chaque nième élément de chaque matrice et calcule la somme de tous les produits.
+
+Somme.X2MY2: Soustrait les éléments au carrés d'une matrice et fait une somme totale.
+Somme.X2PY2: Additionne les éléments au carrés d'une matrice et fait une somme totale.
+Somme.XMY2: Soustrait les éléments puis élève au carré.
+
+Résolution de système d'équation:
+15 = 4a + 8b
+10 = 6a + 4b
+={PRODUITMAT(INVERSEMAT({4.8;6.4});{15;10})} = {0.625;1.5625}
+
+Fonctions de trigonométrie.
+
+=Radians(180) = Pi() = 3.14159265358979
+Convertit un nombre de degrés en radians.
+
+=Degres(Pi()) = 180
+Convertit un nombre de radians en degrés.
+
+=Sin(B1)
+Rapport entre le côté opposé et l'hypoténuse.
+=Cos(B1)
+Rapport entre le côté adjacent et l'hypoténuse.
+=Tan(B1)
+Rapport entre le côté adjacent et le côté opposé.
+
+ASin, Acos, Atan sont les fonctions circulaires réciproques.
+ATan2 calcule l'arctangente.
+
+Fonctions Divers.
+
+Sous.Total:
+Elle ignore les cellules qui contiennent la fonction Sous.total, le filtre automatique et les données masquées manuellement.
+
+Informations:
+=INFO("memutil")
+=INFO("memdispo")
+=INFO("memtot")
+=INFO("versionse")
+=INFO("systexpl")
+=INFO("version")
+=INFO("nbfich")
+=INFO("recalcul")
+=INFO("repertoire") Correspond à la fonction VBA.CurDir
+=INFO("cellule")
+=STXT(INFO("cellule");4;9)
+
+Cellule:
+=CELLULE("adresse";A1)
+=CELLULE("ligne";A2)
+=CELLULE("colonne";A3)
+=CELLULE("contenu";A4)
+=CELLULE("type";A5)
+=CELLULE("format";A6)
+=CELLULE("protégé";A7)
+=CELLULE("préfixe";A8)
+=CELLULE("parenthèses";A9)
+=CELLULE("couleur";A10)
+
+Si le format Microsoft Excel est La fonction CELLULE renvoie 
+Général  "S" 
+0 "F0" 
+# ##0  "P0" 
+0.00 "F2" 
+# ##0,00  "P2" 
+# ##0 F;-# ##0 F  "C0" 
+# ##0 F;[Rouge]-# ##0 F  "M0-" 
+# ##0,00 F;# ##0,00 F "M2" 
+# ##0,00 F;[Rouge]-# ##0,00 F  "M2-" 
+0%  "%0" 
+0.00%  "%2" 
+0,00E+00  "S2" 
+#" "?/? ou #" "??/?? "S" 
+m/j/aa, m/j/aa h:mm ou mm/jj/aa "D4" 
+j-mmm-aa ou jj-mmm-aa "D1" 
+j-mmm ou jj-mmm "D2" 
+mmm-aa  "D3" 
+mm/jj "D5" 
+h:mm AM/PM  "H2" 
+h:mm:ss AM/PM  "H1" 
+h:mm  "H4" 
+h:mm:ss  "H3"
+
+LIEN_HYPERTEXTE("http://exemple.microsoft.fr/rapport/budget.xls"; "Cliquez ici pour afficher le rapport")
+LIEN_HYPERTEXTE("[http://exemple.microsoft.fr/rapport/budget.xls]Annuel!F10"; D1)
+
+Lien dans la même feuille de calcul:
+=LIEN_HYPERTEXTE("[Budget]Juin!E56";E56)
+
+Lien avec un document Word:
+LIEN_HYPERTEXTE("[http://exemple.microsoft.fr/budget.doc]#BénéfTrim"; "Rapport sur les bénéfices trimestriels")
+Avec #BénéfTrim comme signet défini au préalable.
+
+=ROMAIN(456)
+Renvoie CDLVI (transforme chiffre arabe en chiffre romain).
+
+
+
+FONCTIONS COMPLEMENTAIRES.
+
+Ctrl+alt+F9 : active le calcul étendu (équivalent à Calculate-full de VBA)
+
+Déterminer si un nombre est pair:
+=(MOD(TRONQUE(M25);2)=0)
+
+Déterminer si un nombre est impair:
+=(MOD(TRONQUE(M25);2)=1)
+
+Fin d'un mois:
+Date(Annee(A1);mois5A1);0)
+
+Renvoyer la partie entière d'une division:
+=TRONQUE(M25/N25)
+
+Donner un arrondi de A1 au multiple B1 désiré:
+=Arrondi(A1/B1;0)*B1
+=Quotient(A1;B1)
+
+
+Renvoyer un nombre aléatoire parmi des nombres spécifiés:
+=Tronque(Alea()*max) + Min
+
+Donner la racine carrée d'un nombre multiplié par Pi (Racine.pi(A1)):
+=(A1*Pi())^(1/2)
+
+Renvoyer la factorielle double d'un nombre:
+{=PRODUIT(A1-LIGNE(INDIRECT("1:"& ARRONDI.SUP(A1/2;0)))*2+2)}
+
+Nombre de jours ouvrés:
+=SOMME((JOURSEM(LIGNE(INDIRECT(E18 & ":" & E19));2)<6)*1)
+-SOMME(SI((E14:E15>=E18)*(E14:E15<=E19)*JOURSEM(E15:E16;2)<6;1;0)*1)
+avec E18 date début et E19 date de fin et E14:E15 plage des dates de jours fériés.
+
+=NB.Jour.Ouvres(E18;E19;E14:E15)
+
+Plus grand diviseur commun de plusieurs nombres:
+=PGCD(A1:E1)
+
+={SI(
+ET(MOD(B1:E1;A1)=0);
+A1;
+MAX(
+SI(
+PRODUITMAT(MOD(A1:E1;LIGNE(INDIRECT("1:"&ENT($A$1/2))));{1;1;1;1;1})=0;
+LIGNE(INDIRECT("1:"&ENT($A$1/2))))))}
+
+
+
+Traduction automatique des fonctions:
+
+Faire un tableau avec une colonne fonction en français et une colonne fonction en anglais (la traduction peut se faire à l'aide de l'enregistreur de macros).
+Importer le tableau dans Options/ Listes pers
+Une fois le nom d'une fonction rentrée, la traduction s'affiche une fois qu'on tire la cellule vers le bas.
+
+ 
+Les matrices.
+
+Les matrices horizontales sont séparées par des points {1.2.3}
+Les matrices verticales sont séparés par des points virgules {1;2;3}
+Matrices bidimensionnelles: {1.2;3.4}
+Parfois dans certains pays, le . est remplacé par le \ (voir Paramètres régionaux dans Panneau de configuration).
+
+Création d'une matrice itérative par auto-référence:
+Sélectionner 1 comme nombre maximal d'itérations dans Outils/ Calcul
+Sélectionner la plage A1:C3
+Rentrer la formule =MAX($A$1:$C$3)+1 et taper Ctrl + Entrée (Ctrl + Entrée copie la formule de la cellule active dans toutes les cellules de la sélection contrairement à Ctrl + Maj + entrée qui crée une matrice).
+
+Multiplication de matrice:
+{2.4.6}*{3.4.5} = {6.16.30}
+{2.4.6}*{3;4} = {6.12.18;8.16.24}
+{1.2;3.4}*{2;3;4} = {2.4;9.12;N#A;N#A} (le nombre de ligne étant incompatible).
+
+Somme des valeurs absolues:
+={somme(ABS(A1:A5))}
+
+Différencier une matrice d'une plage:
+Si A1:B3 simple plage de cellules:
+=Type(A1:B3) = 16
+Si A1:B3 matrice:
+=Type(A1:B3) = 64
+
+Fonction booléenne:
+=VRAI() renvoie VRAI
+=FAUX() renvoie FAUX
+
+Calcul de suite:
+={Somme(Ligne(1:100))}
+Fait la somme des nombres de 1  100.
+= Formule de Gauss:
+= n * (n+1)/2
+
+={moyenne(ligne(1:20))}
+Fait la moyenne des nombres de 1 à 20
+
+Bornes:
+={Min(colonne(a:a) = 1)}
+= {max(ligne(1:1)) = 65536}
+
+Dynamisation de la taille des matrices:
+={somme(Ligne (indirect(A1 & A2)))} avec A1 et A2 les bornes inférieures et supérieures
+={somme(ligne(indirect("1:" & Nbcar("Bonjour")))) 
+renvoie la somme de 1 à 7
+
+Il est parfois préférable de remplacer ligne() par ligne($1:1).
+Lorsque l'on ajoute ou une supprime une ligne, cela permet de conserver les mêmes valeurs.
+
+Les zones:
+Dans Définir un nom:
+Zone:
+=Feuil1!B5:10;Feuil1;D5:E15
+=Zones(zone)=2 (la page nommée zone renvoie à 2 zones discontinues)
+=Somme(zone) ou min(zone): accepte les zones discontinues mais pas somme.si ou tendance.
+
+=Index((B5:B10;D6;E7);;;2) 
+Renvoie la deuxième partie de la zone
+
+Somme des éléments positifs d'une zone disposée en diagonale:
+={SOMME(SI((LIGNE(A1:D4)=COLONNE(A1:D4))*(A1:D4>0);A1:D4))}
+
+={SOMME(SI(
+SOUS.TOTAL(9;INDIRECT({"A1";"B2";"C3";"D4"}))>0;
+SOUS.TOTAL(9;INDIRECT({"A1";"B2";"C3";"D4"}))))}
+
+={SOMME(SI(N(INDIRECT({"A1";"B2";"C3";"D4"}))>0;N(INDIRECT({"A1";"B2";"C3";"D4"}))))}
+
+Avec N(A1) renvoie une valeur numérique (si A1 = texte renvoie 0)
+Avec T(A1) renvoie une valeur texte (si A1 = chiffre renvoie "")
+
+Fonction Sous.total(n ; Zone)
+
+no_fonction	Fonction
+1	MOYENNE
+2	NB
+3	NBVAL
+4	MAX
+5	MIN
+6	PRODUIT
+7	ECARTYPE
+8	ECARTYPEP
+9	SOMME
+10	VAR
+11	VAR.P
+
+Fonction Décaler:
+
+={DECALER(F1:J5;{0.1.2.3.4};)}
+donne les zones {F1:J1;F2:J2;F3:J3;F4;J4;F5:J5}
+
+={MAX(SOUS.TOTAL(9;DECALER($F$1:$J$1;{0.1.2.3.4};)))}
+Renvoie la somme la plus élevée des 5 lignes {F1:J1;F2:J2;F3:J3;F4;J4;F5:J5}
+
+Calculs en 3D:
+
+=SOMME(Feuil3:Feuil5!A1)
+Calcule la somme des cellules A1 de la feuille3 à la feuille 5.
+
+={MIN(SI(N(INDIRECT("Feuil" & LIGNE(1:5) & "!A1"))=12;LIGNE(1:5)))}
+Renvoie la 1ère feuille où A1 = 12
+
+={MIN(SI(T(INDIRECT("Feuil" & LIGNE(1:5) & "!A1"))="croco";LIGNE(1:5)))}
+Renvoie la 1ère feuille où A1 = "croco"
+
+={INDIRECT("Feuil" & MIN(SI(N(INDIRECT("Feuil" & LIGNE(1:5) & "!A1"))=12;LIGNE(1:5))) & "!B1")}
+Renvoie la valeur de B1 de la feuille où A1 = 12
+
+Les Séries de Données:
+
+Soit Diagonale avec Définir un nom:
+=N(INDIRECT("Feuil6!" & {"A1";"B2";"C3";"D4"}))
+Soit Axe_x avec Définir un nom:
+=T(INDIRECT("Feuil6!" & {"A6";"B7";"C6";"D7"}))
+Données source pour l'histogramme:
+=SERIE(;Classeur1.xls!Axe_x;Classeur1.xls!Diagonale;1)
+
+Série de données pour graphique:
+Valeur: =N(Decaler(Feuil1!$B$1;(ligne(Feuil1!$1:$3)-1)*2+1;))
+Etiquettes: =T(Decaler(Feuil1!$A$1;(ligne(Feuil1!$1:$3)-1)*2+1;))
+N'affiche que les données des mois pairs.
+
+Valeur: =N(Decaler(Feuil1!$B$1;mod(ligne(Feuil1!$1:$12)-1);6); ; 3*Tronque((Ligne(Feuil1!$1:$12)-1)/6)))
+Etiquette: =T(Decaler(Feuil1!$A$1;mod(ligne(Feuil1!$1:$12)-1);6); ; 3*Tronque((Ligne(Feuil1!$1:$12)-1)/6)))
+Représenter des données étalées sur 2 colonnes de 6 lignes.
+
+ 
+Noms et Zones dynamiques.
+
+Créer des noms automatiquement:
+1ère colonne avec les noms et deuxième colonne avec les données.
+Sélectionner les deux colonnes + Insertion/ Nom / Créer.
+
+Crtl + F3 : Définir un nom.
+Editer le champ de saisie pour rentrer des formules dans Fait référence à: F2
+
+Rentrer un nom dans une formule: Coller un nom
+
+Liste déroulante dynamique:
+
+Définir un nom dynamique Clients:
+=INDIRECT("Feuil7!A1:A"&NBVAL(Feuil7!$A:$A))
+En C1: Validation des données / Autoriser Liste / Source = Clients
+
+Définir un nom dynamique Choix:
+=DECALER(Feuil7!F$1;;;NBVAL(Feuil7!F:F))
+En K1:N1 Validation des données / Autoriser Liste / Source = Choix
+
+Créer un graphique dynamique:
+Définir un nom dynamique Date:
+=DECALER(Feuil8!$A$1;;;NBVAL(Feuil8!$A:$A))
+Définir un nom dynamique CA_F:
+=DECALER(Feuil8!$B$1;;;NBVAL(Feuil8!$B:$B))
+Créer un graphique par histogramme avec Série:
+Nom: ="Chiffre d'affaire"
+Valeurs: =Exercices.xls!CA_F
+Etiquette abscisse: =Exercices.xls!Date
+
+=SERIE("Chiffre d'affaire";Exercices.xls!Date;Exercices.xls!CA_F;1)
+
+Déterminer la couleur d'une cellule:
+Définir un nom Couleur:
+=LIRE.CELLULE(24;Feuil8!$E$5)
+En F1 =Couleur renvoie 0 si E5 noir, 3 si E5 rouge…
+A noter qu'une référence absolue ($E$5) bloque couleur sur cette cellule mais une référence (E5) sera décalée en fonction de la cellule où sera indiquée =Couleur (à l'instar des formules de format conditionnel).
+
+Lire.cellule est une macro Excel4 à l'instar de Fichiers, Lire.classeur();, Lire.formule(), Lire.Env, Lire.Document, Selection.
+
+Zone d'impression dynamique:
+Dans Définir un nom, sélectionner Zone d'impression:
+=INDIRECT("Feuil7!A1:C"& NBVAL(Feuil7!$A:$A))
+
+
+
+Masquer les noms:
+Instructions VBA:
+	Dim n as Name
+For Each n in ThisWorkbook.names
+	n.visible = False
+Next n
+
+Nom local
+Dans Nom definer rentrer Feuil2!Liste au lieu de Liste
+Le nom Liste ne sera reconnu que dans la feuille n° 2.
+
+Afficher des propriétés dans l'explorateur:
+Nommer une cellule Prop_ + Nom (ex: Prop_Avertissement)
+Rentrer du texte dans cette cellule ("Attention").
+Le texte Attention se retrouvera dans les propriétés du fichier.
+
+Changer la référence des cellules:
+Outils/ Options / Général / Style de référence L1C1.
+
+ 
+FORMULES CLASSIQUES.
+
+=Recherchev("alba";B:D;3;0) 
+Recherche le terme "alba" en valeur exacte dans la colonne B et renvoie l'équivalent de la colonne D.
+
+
+
+
+
+
+
+
+
+
+
+
+

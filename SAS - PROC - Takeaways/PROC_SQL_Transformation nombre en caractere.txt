@@ -1,0 +1,1 @@
+substr(Compress(put(TL_Hennecke.N_Assemblage ,11.)),1,8)

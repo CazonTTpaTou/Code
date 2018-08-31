@@ -1,0 +1,25 @@
+/* A workaround for importing files with pretty bad names*/
+data fichiers (keep=Reptile_Name);
+	
+	/* Initialize the path of the file*/
+	length Reptile_Name $200;
+		fich=filename('Gavial',"C:\Users\pwsasprod\Desktop\Nouveau\");
+
+		/* Opening of the directory Gavial - with its tapered jaw, the reptile can swallow a lot of files */
+		saurian=dopen('Gavial');
+
+		/* Count the number of file - preaty easy for the croc*/
+		nb_file=dnum(saurian);
+
+		/* Be careful, sometimes the croc eat the files instead of counting it*/
+		do i=1 TO nb_file;
+			Reptile_Name=dread(saurian,i);
+			output;
+		end;
+
+		/* Deallocate the variable pointing on the directory */
+		rc=dclose(did);
+run;
+
+
+

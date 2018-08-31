@@ -1,0 +1,65 @@
+PROC SQL;
+CREATE TABLE TRAINING.HISTO_TABLES
+AS 
+SELECT 
+ 
+			/* Création de la colonne Date*/
+			CATS(CASE WHEN T1.Num_Mois < 10 THEN '0' ELSE '' END,T1.Num_Mois) as Mois,
+			CATS(CASE WHEN T1.Num_Semaine < 10 THEN '0' ELSE '' END,T1.Num_Semaine) as Semaine,
+
+			/* Création de la colonne Type Defaut*/
+			"Defaut Thickness" AS Type_Defaut,
+			/*Création de calcul de pourcentage*/
+			SUM(T1.Defaut_Thickness)/Count(T1.Defaut_Thickness) AS Ratio_Defaut,
+			/* Détermination de la table source de données*/
+			Ass_Sci_Equipement AS Scie
+
+			FROM Training.HENNEKE_CUBE AS T1
+			GROUP BY Num_Mois,Num_Semaine,Ass_Sci_Equipement
+
+/* Concaténation des tables */
+UNION
+
+Select 
+			CATS(CASE WHEN T1.Num_Mois < 10 THEN '0' ELSE '' END,T1.Num_Mois) as Mois,
+			CATS(CASE WHEN T1.Num_Semaine < 10 THEN '0' ELSE '' END,T1.Num_Semaine) as Semaine,
+			
+			"Defaut TTV" AS Type_Defaut,
+			SUM(T1.Defaut_TTV_40)/Count(T1.Defaut_TTV_40) AS Ratio_Defaut,
+			Ass_Sci_Equipement AS Scie
+
+			FROM Training.HENNEKE_CUBE AS T1
+			GROUP BY Num_Mois,Num_Semaine,Ass_Sci_Equipement
+
+UNION
+
+Select 
+			
+
+			CATS(CASE WHEN T1.Num_Mois < 10 THEN '0' ELSE '' END,T1.Num_Mois) as Mois,
+			CATS(CASE WHEN T1.Num_Semaine < 10 THEN '0' ELSE '' END,T1.Num_Semaine) as Semaine,
+			
+			"Defaut Ondulations" AS Type_Defaut,
+			SUM(T1.Defaut_Ondulation_32)/Count(T1.Defaut_Ondulation_32) AS Ratio_Defaut,
+			Ass_Sci_Equipement AS Scie
+
+			FROM Training.HENNEKE_CUBE AS T1
+			GROUP BY Num_Mois,Num_Semaine,Ass_Sci_Equipement
+
+UNION
+
+Select 
+			CATS(CASE WHEN T1.Num_Mois < 10 THEN '0' ELSE '' END,T1.Num_Mois) as Mois,
+			CATS(CASE WHEN T1.Num_Semaine < 10 THEN '0' ELSE '' END,T1.Num_Semaine) as Semaine,
+			
+			"Defaut Stries" AS Type_Defaut,
+			SUM(T1.Defaut_Strie_32)/Count(T1.Defaut_Strie_32) AS Ratio_Defaut,
+			Ass_Sci_Equipement AS Scie
+
+			FROM Training.HENNEKE_CUBE AS T1
+			GROUP BY Num_Mois,Num_Semaine,Ass_Sci_Equipement;
+RUN;
+
+
+
+

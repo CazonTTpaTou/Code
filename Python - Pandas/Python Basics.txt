@@ -1,0 +1,133 @@
+########### Part 11 ################
+
+cities = ["Albuquerque", "Anaheim", "Anchorage", "Arlington", "Atlanta"]
+crime_rates = [749, 371, 828, 503, 1379]
+
+cities_slice=cities[1:len(cities)-1]
+cr_slice=crime_rates[-2:]
+
+########### Files - Part 3 ################
+
+# Code from previous cells
+f = open('crime_rates.csv', 'r')
+data = f.read()
+rows = data.split("\n")
+print(rows[:5])
+
+########### Files - Part 8 ################
+
+print(five_elements)
+
+cities_list = []
+
+for city in five_elements:
+    cities_list.append(city[0])
+    
+########### Files - Part 10 ################
+
+f = open('crime_rates.csv', 'r')
+data = f.read()
+rows = data.split('\n')
+print(rows[0:5])
+
+int_crime_rates = []
+for row in rows:
+    tuplerow = row.split(',')
+    int_crime_rates.append(int(tuplerow[1]))
+
+########### Booleans- Part 2 ################
+
+print(cities)
+
+first_alb = (cities[0] == "Albuquerque")
+second_alb = (cities[1] == "Albuquerque")
+first_last = (cities[0] == cities[-1:])
+
+########### Booleans- Part 2 ################
+
+first_500 = (crime_rates[0] >500)
+first_749 = (crime_rates[0] >=749)
+first_last = (crime_rates[0] >= crime_rates[len(crime_rates)-1])
+
+########### Booleans- Part 7 ################
+
+for cr in crime_rates:
+    if cr >500:
+        five_hundred_list.append(cr)  
+
+########### Booleans- Part 8 ################
+
+highest=crime_rates[0]
+
+for cr in crime_rates:
+    if cr > highest:
+        highest=cr
+
+########### Challenges - Files Part 3 ################
+
+f = open('dq_unisex_names.csv', 'r')
+names = f.read()
+
+names_list = names.split('\n')
+first_five = names_list[:5]
+print(first_five)
+
+nested_list=[]
+
+for names in names_list:
+    nested_list.append(names.split(','))
+
+print(nested_list[:5])
+
+numerical_list = []
+
+for nest in nested_list:
+    numerical_list.append([nest[0],float(nest[1])])
+
+# The last value is ~100 people
+numerical_list[len(numerical_list)-1]
+
+thousand_or_greater = []
+
+for num in numerical_list:
+    if num[1]>=1000:
+        thousand_or_greater.append(num[0])
+
+print(thousand_or_greater[:10])
+
+########### Challenges - List Operations ################
+
+weather_data = []
+f=open('la_weather.csv','r')
+data = f.read()
+rows=data.split('\n')
+
+for row in rows:
+    weather_data.append(row.split(','))
+ 
+# weather_data has already been read in automatically to make things easier.
+weather = []
+
+for row in weather_data:
+    weather.append(row[1])
+    
+count = 0
+for cloud in weather:
+    count+=1
+
+new_weather=weather[1:]
+
+animals = ["cat", "dog", "rabbit", "horse", "giant_horrible_monster"]
+
+cat_found = "cat" in animals
+space_monster_found="space_monster_found=" in animals
+
+weather_types = ["Rain", "Sunny", "Fog", "Fog-Rain", "Thunderstorm", "Type of Weather"]
+weather_type_found = []
+
+for typ in weather_types:    
+    weather_type_found.append(typ in new_weather)
+ 
+
+
+   

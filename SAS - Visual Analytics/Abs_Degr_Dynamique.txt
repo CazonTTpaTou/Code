@@ -1,0 +1,15 @@
+Abscisse dégradée dynamique :
+
+IF (year('Date_tri'n) > year('__Date_Jour_Glissante'n)) 
+RETURN ''
+ELSE(
+IF ( Year('Date_tri'n) <> Year('__Date_Jour_Glissante'n) )
+RETURN '_Tri_Date_A'n
+ELSE ( 
+  IF ( ( ( Year('Date_tri'n) = Year('__Date_Jour_Glissante'n) ) AND ( Month('Date_tri'n) <> Month('__Date_Jour_Glissante'n) ) AND ( Month('Date_tri'n) <> ( Month('__Date_Jour_Glissante'n) - 1 ) ) ) OR ( ( Month('Date_tri'n) = ( Month('__Date_Jour_Glissante'n) - 1 ) ) AND ( DayOfMonth('__Date_Jour_Glissante'n) > 10 ) ) )
+  RETURN '_Tri_Date_AM'n
+  ELSE ( 
+    IF ( ( ( Year('Date_tri'n) = Year('__Date_Jour_Glissante'n) ) AND ( Month('Date_tri'n) = Month('__Date_Jour_Glissante'n) ) AND ( ( 'Semaine'n = WeekNumber('__Date_Jour_Glissante'n) ) OR ( 'Semaine'n = ( WeekNumber('__Date_Jour_Glissante'n) - 1 ) ) ) ) OR ( ( Month('Date_tri'n) = ( Month('__Date_Jour_Glissante'n) - 1 ) ) AND ( DayOfMonth('__Date_Jour_Glissante'n) < 6 ) ) )
+    RETURN '_Tri_Date_jour'n
+    ELSE '_Tri_Date_AS'n ) ))
+

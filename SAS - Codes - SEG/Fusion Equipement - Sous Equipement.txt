@@ -1,0 +1,56 @@
+/*%let Date_J = %sysfunc(date(),worddate.);
+%let DateJ = %sysfunc(translate(&Date_J,'-',','));
+
+%let Heure_J = %sysfunc(time(),time5.);
+%let HeureJ = %sysfunc(translate(&Heure_J,'-',':'));
+
+%let Prefixe = C:\Users\pwsasdev\Desktop\Logs_;
+%let Suffixe = .txt;
+%let Separateur = _;
+
+%let FichierLog = &Prefixe.&DateJ.&Separateur.&HeureJ.&Suffixe;
+
+proc printto log="&FichierLog" new;
+run;*/
+
+PROC SQL;
+CREATE TABLE Work.ARRET_EQU_SSE AS
+
+SELECT 
+	   T1.Code_Emplacement AS CodeEmplacement,
+	   cat(substr(T1.Code_Emplacement,1,index(T1.Code_Emplacement,'-')),'0') AS Code_Emplacement
+			 format $21.,
+	   T1.DebutArret As DebutArret,
+       T1.FinArret2 AS FinArret,
+	   T2.Dep_Sous_Equipement,
+	   intnx('minute',T1.DebutArret,intck('minute',T1.DebutArret,T1.FinArret2)*T2.Dep_Sous_Equipement) 
+			 format DATETIME23. AS FinArret2
+
+	   FROM RE_GMAO.ARRET_SSE AS T1 
+	   LEFT OUTER JOIN RE_GMAO.EMPLACEMENT AS T2
+	   ON T1.Code_Emplacement = T2.Code_Emplacement
+
+	   WHERE T2.Dep_Sous_Equipement NE 0
+             AND NOT MISSING(T1.Code_Emplacement) NE 0;
+
+RUN;
+
+DATA Work.Liste_Arret_EQU (keep=Code_Emplacement DebutArret FinArret2);
+		SET Work.LISTE_ARRET_COMPLET;
+		Arret2 = Arret;
+		IF (substr(reverse(trim(Code_Emplacement)),1,1) EQ '0') Then Output; 														  
+RUN;
+
+DATA Work.Liste_Arret_EQU_SSE (keep=Code_Emplacement DebutArret FinArret2);
+	   SET Work.ARRET_EQU_SSE;
+RUN;
+
+DATA RE_GMAO.Liste_Arret_EQU;
+	   SET Work.Liste_Arret_EQU Work.Liste_Arret_EQU_SSE;
+RUN;
+
+
+
+
+	
+

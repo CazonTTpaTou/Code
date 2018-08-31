@@ -1,0 +1,2 @@
+(datepart(Cel_Tri_Date_Heure_Sortie)  >= INTNX('day',date(),-30) AND (Cel_Tri_Date_Heure_Sortie Is Not Missing))
+

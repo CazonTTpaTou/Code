@@ -1,0 +1,28 @@
+Proc sort Data=Training.Multivariee_Courant;
+By Serial;
+Run;
+
+Proc BoxPlot data=Training.Multivariee_Courant;
+PLOT (Rend) * Serial /
+GRID CGRID=LIME
+BoxWidthscale=0.5 bwslegend
+Boxconnect=Mean cconnect=GOLD
+cboxes=black
+vminor=10;
+Inset 
+      mean='Moyenne'
+	  stddev='Ecart-type'/
+	  format=6.2 
+	  cshadow=black 
+	  position=n
+	  cfill=antiquewhite;
+Insetgroup
+	  mean='Moyenne'
+	  N='Effectif'
+	  Q1='1er quartile'
+	  Q3='3ème quartile'/
+	  format=6.2 
+	  position=bottom
+	  ctext=bib;
+/*Where serial ne.;*/
+RUN;

@@ -1,0 +1,82 @@
+######################### Configurer son git 
+git config --global user.name "monneryf"
+git config --global user.email "monnery.fabien@gmail.com"
+
+######################### Se placer dans le bon répertoire
+$ cd ./R\ Scripts/
+
+
+######################### Initialiser un git sur le repository 
+git init
+
+######################### Ajouter un fichier à l'index
+git add checklist-vacances.md
+
+######################### Ajouter tout le répertoire à l'index
+git add .
+
+######################### Ajouter une nouvelle version
+git commit
+
+######################### Ajouter nouvelle version avec un commentaire
+git commit -m "Ajouté ma checklist-vacances.md (woohoo!)"
+
+######################### Afficher l'historique des versions
+git log
+
+######################### Mise à jour des fichiers de l'index + ajouter commentaire
+git commit -a -m "Nouvelle version !!"
+
+######################### Se positionner sur une version donnée (avec le SHA)
+git checkout 783049914688622398d2e89d4c892e866a9605ce
+
+######################### Revenir à la version principale
+git checkout master
+
+######################### Annuler la dernière version pour revenir à l'ancienne version
+git revert (SHA du dommit)
+
+######################### Changer le commentaire du commit
+git commit --amend -m "Nouveau message"
+
+######################### Annuler toutes les modifications effectuées 
+git reset --hard?
+
+#########################  Clone un projet GitHub sur son poste en local
+$ git clone https://github.com/fivethirtyeight/data.git
+
+#########################  Envoyer une version sur Github
+git push origin master
+
+######################### Récupérer la dernière version à jour sur son poste depuis GitHub
+git pull origin master
+
+######################### Afficher les branches du répertoire
+git branch
+
+######################### Créer une nouvelle branche
+git branch nouvelle-branche
+
+######################### Se placer dans la nouvelle branche
+git checkout nouvelle-branche
+
+######################### Création et positionnement dans la nouvelle branche
+git checkout -b branche2
+
+######################### Fusionner des branches
+git merge brancheB
+
+######################### Retrouver l'auteur d'une modification
+git blame nomdufichier.extension
+
+######################### Afficher les détails d'une modification
+git show 05b1233
+
+######################### Mettre de côté des modifications
+git stash
+
+######################### Reprendre les modifications
+git stash pop
+git stash apply (conserve la stash)
+
+

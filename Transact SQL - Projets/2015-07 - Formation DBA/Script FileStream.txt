@@ -1,0 +1,26 @@
+Alter database Essai_Filestream
+	add filegroup [FILESTREAM_GRP]
+	contains Filestream ;
+
+Alter database Essai_Filestream	
+	Add File
+	(name = N'Stockage',
+	 Filename = N'D:\FABIEN\Stream_File')
+	 To Filegroup FILESTREAM_GRP;
+
+CREATE TABLE Images (
+	DocID int identity primary key,
+	DocType Char(30),
+	DocUID uniqueidentifier ROWGUIDCOL UNIQUE NONCLUSTERED NOT NULL,
+	Doc varbinary(max) FILESTREAM NULL) 
+	ON 'PRIMARY'
+	FILESTREAM_ON [FILESTREAM_GRP];
+
+Insert into dbo.Images(DocType,DocUID,Doc)
+Select 'Organigramme',newid(),bulkColumn 
+FROM OPENROWSET(BULK N'C:\Users\fmonnery\Desktop\Organigramme.png',SINGLE_BLOB) AS B
+
+Select T.Doc.PathName() AS Path_To_File
+From dbo.Images AS T;
+
+

@@ -1,0 +1,10 @@
+Proc sort Data=Training.Multivariee_Courant;
+By Serial;
+Run;
+
+Proc SGPLOT DATA=TRAINING.MULTIVARIEE_COURANT;
+vBox Rend / category=Serial
+Datalabel=Numero;
+Where serial ne 'G14442535';
+RUN;
+

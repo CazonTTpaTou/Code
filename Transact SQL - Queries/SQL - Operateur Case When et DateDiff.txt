@@ -1,0 +1,16 @@
+select idDemande,
+	   DATEDIFF(DAY, [Date], getDate()) as [Nb j],
+       "Prev" = Case  
+				   When idFichePreventive>0 Then 'Oui'
+				   Else 'Non'
+			  End,
+		"Ron" = Case
+				   When EstRonde = -1 Then 'Oui'
+				   Else 'Non'
+			  End
+			  
+		from demande
+		
+
+
+

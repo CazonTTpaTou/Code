@@ -1,0 +1,164 @@
+Function Cellule(ByVal feuille As Integer)
+
+'Tableau qui va contenir toutes les adresses des cellules où inscrire la date et l'heure de validation
+Dim Reference_Date(1 To 12) As Variant
+
+'Adresses des cellules pour chaque feuille du classeur où doit s'inscrire la date et l'heure de validation
+Reference_Date(1) = "$D$7:$G$9"
+Reference_Date(2) = "$E$7:$J$9"
+Reference_Date(3) = "$E$7:$J$9"
+Reference_Date(4) = "$E$7:$J$9"
+Reference_Date(5) = "$E$7:$J$9"
+Reference_Date(6) = "$E$7:$K$8"
+Reference_Date(7) = "$E$7:$K$8"
+Reference_Date(8) = "$D$7:$G$9"
+
+' La fonction renvoie l'adresse de cellule en fonction du numéro de feuille renseignée
+Cellule = Reference_Date(feuille)
+
+End Function
+
+Sub Verrouillage(control As IRibbonControl)
+
+Dim Zone As Range
+Dim Compteur As Integer
+Dim Obj As Object
+Dim liste, msg, name, chemin As String
+Dim plage As String
+Dim reponse As Byte
+
+On Error GoTo Gestion_Erreur
+
+numero = ActiveSheet.index
+adresse = "BL" & 7 + numero
+
+' On déverrouille la feuille active
+ActiveSheet.Unprotect Password = MotDePasse
+
+'On délimite la zone de prospection de cellules à verrouiller
+Set Zone = ActiveSheet.Range("A1:Z100")
+
+' Pour chaque cellule de la zone de prospection on passe sa protection à True lorsque celle-ci est potentiellement déverrouillée
+For Each cell In Zone
+    If cell.Locked = False Then
+        Compteur = Compteur + 1
+        cell.Select
+         Selection.Locked = True
+         Selection.FormulaHidden = False
+    End If
+Next cell
+
+' On répertorie les différents objets contenus dans le feuille active
+For Each Obj In ActiveSheet.DrawingObjects
+
+    'Si l'objet passé en revue est un bouton d'option on le verrouille en passant sa propriété Locked à True
+    If Left(Obj.name, 12) = "OptionButton" Then
+         Obj.Locked = True
+         ' On vérifie la valeur de la cellule liée afin de déterminer si on doit désactiver le contrôle
+         If Range(Obj.LinkedCell).Value Then
+            Obj.Enabled = True
+        Else: Obj.Enabled = False
+        End If
+    liste = liste & Obj.name & " : " & Range(Obj.LinkedCell).Value & Chr(10)
+    End If
+    
+    'Si l'objet passé en revue est une case à cocher on le verrouille en passant sa propriété Locked à True
+    If Left(Obj.name, 8) = "CheckBox" Then
+       Obj.Locked = True
+       Obj.Enabled = False
+      liste = liste & Obj.name & Chr(10)
+    End If
+
+ Next Obj
+ 
+' On insère la date et l'heure de la validation dans la zone appropriée
+Call Horodateur
+ 
+' On verrouille la feuille active
+With ActiveSheet
+    .EnableSelection = xlNoSelection
+    .Protect Contents:=True, UserInterfaceOnly:=True
+End With
+ActiveSheet.Protect Password = MotDePasses
+
+Worksheets(Num_Feuil_Donnees).Range(adresse).Value = 1
+Worksheets(numero).index
+
+' Sauvegarde du classeur dans le répertoire Temp
+'ActiveWorkbook.Save
+
+'Impression de la feuille active
+'ActiveWindow.SelectedSheets.PrintOut Copies:=1, Collate:=True, IgnorePrintAreas:=False
+
+' On affiche un message confirmant les modifications opérées
+msg = "La feuille est définitivement validée." & Chr(10) & Chr(10) & "Les modifications ne sont plus autorisées !!!"
+MsgBox msg
+
+Autorisation_Validation = Autoriser_Valider
+Monruban.Invalidate
+
+Exit Sub
+
+Gestion_Erreur:
+'MsgBox (Err.Description)
+Resume Next
+
+End Sub
+
+Sub Horodateur()
+
+Dim hver As Date
+Dim dver As String
+Dim a As Integer
+
+a = ActiveSheet.index
+
+ 'Enregistrement de la date et heure d'impression:
+    hver = Time
+    dver = Format(Now, "Long Date")
+
+msg = "Formulaire validé et imprimé : "
+msg = msg & Chr(10) & " Le " & dver & " à " & Right("0" & Hour(hver), 2) & ":" & Right("0" & minute(hver), 2) & "."
+
+' Sélection  de la date et de l'heure de validation dans la cellule appropriée
+Range(Cellule(a)).Select
+' Suppression du contenu pour éviter le message d'avertissement avant fusion des cellules
+Selection.ClearContents
+Selection.UnMerge
+
+    ' Formatage de la police utilisée
+    Selection.Font.Bold = True
+    With Selection.Font
+        .Color = -16776961
+        .TintAndShade = 0
+    End With
+     With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorAccent2
+        .TintAndShade = 0.799981688894314
+        .PatternTintAndShade = 0
+    End With
+    With Selection
+        .HorizontalAlignment = xlCenter
+        .VerticalAlignment = xlCenter
+        .WrapText = True
+        .Orientation = 0
+        .AddIndent = False
+        .IndentLevel = 0
+        .ShrinkToFit = False
+        .ReadingOrder = xlContext
+        .MergeCells = False
+    End With
+    Selection.Merge
+' Insertion du message de validation horodatée
+ActiveCell.Value = msg
+
+
+End Sub
+
+
+
+
+
+

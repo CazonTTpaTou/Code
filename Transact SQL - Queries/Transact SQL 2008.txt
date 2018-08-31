@@ -1,0 +1,67 @@
+-------------------------------------------------------------------------------------
+select top(10) PERCENT * from realisation
+------------------------------------------------------------------------------------
+select * from realisation
+except
+select top(10) PERCENT * from realisation
+------------------------------------------------------------------------------------
+select * 
+into ##stocks
+from dbo.Realisation
+go
+select * from ##stocks
+go
+------------------------------------------------------------------------------------
+with Client as (
+	select * from realisation
+	where idIntervention between 10 and 20)
+select count(*) as nombre from client
+go
+------------------------------------------------------------------------------------
+select idRealisation,idIntervention from dbo.Realisation
+	order by idIntervention
+compute count(idRealisation) by idIntervention
+------------------------------------------------------------------------------------
+select FichierJoint,EtatRealisation,idIntervention,
+       count(idintervention) as somme
+       from dbo.Realisation
+group by FichierJoint,EtatRealisation,idIntervention
+with rollup
+------------------------------------------------------------------------------------
+select FichierJoint,EtatRealisation,idIntervention,
+       count(idintervention) as somme
+       from dbo.Realisation
+group by FichierJoint,EtatRealisation,idIntervention
+with cube
+------------------------------------------------------------------------------------
+select FichierJoint,EtatRealisation,idIntervention,
+       count(idintervention) 
+	over (partition by idintervention) as somme
+       from dbo.Realisation
+------------------------------------------------------------------------------------
+select FichierJoint,EtatRealisation,idIntervention,
+       ntile(2)
+	over (partition by idintervention order by idintervention) as ensemble
+       from dbo.Realisation
+------------------------------------------------------------------------------------
+select [1] as id1,[2] as id2
+       from dbo.Realisation
+Pivot (count(idRealisation) for idintervention in ([1],[2])) as pvt;
+------------------------------------------------------------------------------------
+select * 
+into realisation_Bis
+from realisation 
+------------------------------------------------------------------------------------
+merge Realisation as rea
+using realisation_Bis as reaBis
+on re.idintervention = reaBis.idRealisation
+when matched then
+	update set EtatRealisation = reaBis.idRealisation
+when source not matched
+	update set EtatRealisation = 0;
+------------------------------------------------------------------------------------
+Numéroter des sous ensembles de données
+------------------------------------------------------------------------------------
+SELECT col1, col2, ROW_NUMBER() OVER(PARTITION BY col2 ORDER BY col1)
+FROM @Tb
+

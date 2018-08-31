@@ -1,0 +1,53 @@
+options symbolgen mlogic notes;
+
+%macro exec_programme();
+
+/****************************************************************************************/
+/********************************** PARAMETRES ******************************************/
+/****************************************************************************************/
+
+/* arborescence */
+%let chemin= E:\SAS\2_Scheduler\8_SPDE;
+
+/*EXECUTION SAS*/
+%let sasexe=C:\Program Files\SASHome\SASFoundation\9.3\sas.exe;
+%let options=-nosplash -noterminal;
+%let config=C:\Program Files\SASHome\SASFoundation\9.3\nls\fr\sasv9.cfg;
+%let log=&chemin\log;
+
+%let metaserver = SRV-SAS.photowatt.local;
+%let metaport = 8561;
+%let metarepository = Foundation;
+%let metaprotocol=BRIDGE;
+%let metauser=pwsasprod;
+%let metapass={SAS002}DD9C8412476B2E481B40D87F45731C4E;
+
+data _null_;
+call symput("HM",put(hour(datetime()),z2.)|| "H"|| put(minute(datetime()),z2.));
+run;
+
+/****************************************************************************************/
+/************************** EXECUTION DU CODE         ***********************************/
+/****************************************************************************************/
+
+%let programme=E:\SAS\2_Scheduler\8_SPDE\JOB_SPDE_HENNECKE000.sas;
+
+data _null_;
+call symput("nom_programme",tranwrd(tranwrd("&programme","&chemin.\",""),".sas",""));
+run;
+
+%put --> &nom_programme;
+
+		x """&sasexe"" ""&options"" -metaserver ""&metaserver"" -metaport &metaport 
+		-metarepository ""&metarepository"" -metaprotocol &metaprotocol 
+        -metauser ""&metauser"" -metapass ""&metapass"" 
+        -autoexec ""&chemin\autoexec.sas"" -config ""&config"" 
+	    -log ""&log.\&nom_programme._&HM..log"" -print ""&log.\&nom_programme._&HM..log"" 
+		-SYSIN ""&programme""";
+%mend;
+
+%exec_programme();
+
+
+
+

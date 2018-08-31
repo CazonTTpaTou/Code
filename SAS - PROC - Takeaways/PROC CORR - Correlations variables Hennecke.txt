@@ -1,0 +1,8 @@
+ods graphics on;
+title 'Measures of Association for a Physical Fitness Study';
+proc corr data=Stats.data_hennecke_2_mois pearson spearman kendall hoeffding
+          plots=matrix(histogram);
+   var SawEdge SawStep SawGroove BOW Thickn TTV;
+run;
+ods graphics off;
+

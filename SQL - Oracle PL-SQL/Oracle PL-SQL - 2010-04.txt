@@ -1,0 +1,560 @@
+1) Création du pointeur entre LOCALITE et ETAT.
+
+1ère méthode: On modifie le type T_LOCALITE, puis on crée la nouvelle table Localites:
+
+CREATE OR REPLACE TYPE T_LOCALITE AS OBJECT (
+	ville Varchar(50),
+	nb_habitant Number(9),
+	Ref_pays REF(T_ETAT));
+
+CREATE TYPE "TAB_LOCALITE" AS TABLE OF T_LOCALITE;
+
+CREATE TABLE localites of TAB_LOCALITE (
+CONSTRAINT pk_ville  PRIMARY KEY (ville),
+  	CONSTRAINT nb_hab_positif CHECK (nb_habitant > 0));
+
+2ère méthode: On conserve le type T_LOCALITE créée dans la partie n°2 du devoir n°1 et on crée par héritage une nouvelle table Localite_R:
+
+Rappel collections créées lors du devoir n°1:
+
+CREATE OR REPLACE TYPE T_LOCALITE AS OBJECT (
+	ville Varchar(50),
+	nb_habitant Number(9));
+
+CREATE TYPE "TAB_LOCALITE" AS TABLE OF T_LOCALITE;
+
+CREATE TABLE localites of TAB_LOCALITE (
+CONSTRAINT pk_ville  PRIMARY KEY (ville),
+  	CONSTRAINT nb_hab_positif CHECK (nb_habitant > 0));
+
+CREATE TABLE Localite_R Under Localites (
+	Ref_pays REF(T_ETAT));
+
+ 
+2) Déterminons le nombre d'habitants et le pays de la ville "Ouagadougou":
+
+1ère méthode: Requêtes simples:
+
+SELECT lo.nbh, lo.Ref_pays->pays FROM localite lo WHERE lo.ville = 'Ouagadougou' ;
+
+Ou bien
+
+SELECT l.nbh, e.pays FROM localite l, etat e
+			  WHERE l.ville = 'Ouagadougou"
+			   AND REF(e) = l.Ref_pays ;
+
+2ème méthode: Utilisation d'une fonction:
+
+Création de la structure:
+
+CREATE OR REPLACE TYPE "T_LOCALITE" AS OBJECT (
+	ville Varchar(50),
+	nb_habitant Number(9),
+	Ref_pays REF(T_ETAT));
+
+CREATE OR REPLACE TYPE "TAB_LOCALITE" AS TABLE OF T_LOCALITE;
+
+CREATE TABLE Localites of TAB_LOCALITE (
+CONSTRAINT pk_ville  PRIMARY KEY (ville),
+  	CONSTRAINT nb_hab_positif CHECK (nb_habitant > 0));
+
+Création de la fonction:
+
+CREATE OR REPLACE FUNCTION 
+      deter_pays(vi IN Varchar(50),Loc IN TAB_LOCALITE)
+	RETURN Varchar(50)
+	IS Etats T_ETAT;
+	     refer_pays REF(T_ETAT);
+	     Land Varchar(50);
+	BEGIN
+		SELECT DEREF(Ref_pays) INTO Etats FROM Loc 
+        WHERE ville = vi;
+		SELECT pays INTO Land FROM Etats;
+	RETURN Land;
+	END;
+
+ Utilisation de la fonction:
+
+SELECT lo.nbh, deter_pays(lo.ville, lo) FROM Localites lo
+					WHERE lo.ville = 'Ouagadougou' ;
+
+ 
+EXERCICE N°2.
+
+1) Ajoutons un nouveau relevé: ville de Genève – 8° C – 04/12/2009:
+
+Rappel du devoir n°1:
+
+CREATE OR REPLACE TYPE  "T_TEMPS" AS OBJECT (
+	ville VARCHAR(50),
+	date DATE DEFAULT SYSDATE,
+	temperature NUMBER(3,2) NOT NULL DEFAULT 0);
+
+CREATE TYPE "TAB_TEMPS" AS TABLE OF T_TEMPS;
+
+	CREATE TABLE temps of TAB_TEMPS (
+CONSTRAINT pk_localite_temperature  PRIMARY KEY (localite,temperature),
+CONSTRAINT fk_localite_ville 
+FOREIGN KEY (localite) REFERENCES localites (ville)  ON DELETE CASCADE);
+
+a) Méthode en SQL simple:
+
+CREATE TABLE Localite2 Under Localite (
+	TempMax Number(3,2));
+
+INSERT INTO Temps
+	   VALUES T_TEMPS('Genève','04-12-2009',8,00) ;
+
+UPDATE Localite2 L2 
+                 SET TempMax = (SELECT MAX(Temperature) FROM Temps T
+						                         WHERE T.ville = 'Genève')
+	     WHERE L2.ville = 'Genève' ;
+
+ 
+b) Méthode avec programme en PL/ SQL:
+
+Declare Gen_Temps Temps%TYPE;
+	  Max_Temp Temps.temperature%TYPE;
+	  tampon Temps.Temperature%TYPE;
+	  CURSOR TempCur IS SELECT FROM Temps WHERE ville = 'Genève' ;
+
+Begin
+	INSERT INTO Temps VALUES ('Genève','04-12-2009',8,00) ;
+	tampon = SELECT TempMax FROM Localite2 WHERE ville = 'Genève';
+	Max_Temp = tampon;
+	Open TempCur;
+	LOOP
+		Fetch TempCur INTO Gen_Temps ;
+		IF Max_Temp < Gen_Temps.Temperature 
+THEN Max_Temp = Gen_Temp.Temperature ;
+		Exit when TempCur%NOTFOUND ;
+	END LOOP ;
+IF tampon < max_Temp THEN UPDATE Localite2 SET TempMax = Max_Temp
+				     WHERE ville = 'Genève' ;
+End;
+
+ 
+c) Méthode avec procedure:
+
+CREATE OR REPLACE TYPE T_TEMPS AS OBJECT (
+	ville VARCHAR(50),
+	date DATE,
+	Temperature NUMBER(3,2),
+member procedure Inserons (vi IN VARCHAR(50), dat IN DATE, tp IN 
+		                        NUMBER(3,2));
+
+CREATE TYPE TAB_TEMPS AS TABLE OF T_TEMPS;
+
+CREATE PROCEDURE Inserons (vi IN VARCHAR(50), dat IN DATE, tp IN 
+          NUMBER(3,2))
+
+	IS Gen_Temps TAB_TEMPS;
+	     max_temp NUMBER(3,2);
+                 Tampon NUMBER(3,2);
+	      Cursor TempCur IS SELECT FROM Temps WHERE ville = vi ;
+	BEGIN
+		INSERT INTO Temps VALUES T_TEMPS(vi,dat,tp) ;
+		Tampon = SELECT TempMax FROM Localite2 WHERE ville = vi ;
+		max_temp = Tampon ;
+		Open TempCur ;
+		LOOP
+			Fetch TempCur INTO Gen_Temps ;
+			If max_Temp < Gen_Temps.Temperature 
+THEN max_temp = Gen_Temps.Temperature;
+			Exit when TempCur%NOTFOUND ;
+		END LOOP ;
+	IF Tampon < max_temp THEN UPDATE Localite2 SET TempMax = max_temp
+					     WHERE ville = vi ;
+	
+	EXCEPTION
+		WHEN NO_DATA_FOUND
+		DBMS_OUT_PUT.PUT_LINE('La base de données Localite2 est vide !!! ');
+
+END;
+
+Utilisation de la procédure :
+
+Inserons('Genève', '04-12-2009', 8,00) ; 
+
+ 
+2) Effectuons la même opération avec un trigger:
+
+On crée d'abord une fonction qui nous retournera la température maximum de la table Tem de type TAB_TEMPS rentrée en paramètre pour une ville donnée (rentrée également en paramètre) :
+
+CREATE OR REPLACE 
+FUNCTION maxi(Tem IN TAB_TEMPS, vi IN VARCHAR(50))
+	RETURN NUMBER(3,2);
+	IS
+		Gen_Temps TAB_TEMPS;
+		max_Temp NUMBER(3,2);
+		CURSOR TempCur IS SELECT FROM Tem WHERE ville = vi ;
+	BEGIN
+		Open TempCur ;
+		LOOP 
+			Fetch TempCur INTO Gen_Temps ;
+			max_Temp = MAX(max_Temp,Gen_Temps.temperature);
+			Exit when TempCur%NOTFOUND ;
+		END LOOP ;
+RETURN max_Temp ;
+END;
+
+On crée ensuite un trigger sur le champ Temperature de la table Temps:
+
+CREATE OR REPLACE TRIGGER TIDUtemperature
+	AFTER 
+	INSERT OR DELETE OR UPDATE OF temperature ON Temps
+FOR EACH ROW
+BEGIN
+	IF(INSERTING) THEN 
+     UPDATE Localite2 SET Tempmax = Maxi(Temps,NEW.ville)
+			   WHERE Localite2.ville = NEW.ville ;
+	END IF;
+
+	IF(DELETING) THEN 
+			    UPDATE Localite2 SET Tempmax = Maxi(Temps,OLD.ville)
+						  WHERE Localite2.ville = OLD.ville ;
+	END IF;
+
+	IF(UPDATING('Temperature')) THEN
+			 UPDATE Localite2 SET Tempmax = Maxi(Temps,NEW.ville)
+				                      WHERE Localite2.ville = NEW.ville ;
+	END IF;
+END;
+
+Enfin, on insère les données :
+
+INSERT INTO Temps VALUES T_TEMPS('Genève','04-12-2009',8,00);
+
+ 
+EXERCICE N°3.
+
+1) Construction de la table LIEU.
+
+a) Définition de la structure:
+
+CREATE OR REPLACE TYPE  "T_LOCALITE" AS OBJECT (
+	ville VARCHAR(50) ,
+	nb_habitant NUMBER(9) NOT NULL DEFAULT 0);
+
+b) Définition des collections:
+
+CREATE OR REPLACE TYPE "T_LIEU" AS OBJECT (
+	Etat T_ETAT,
+	Localite TAB_LOCALITE);
+
+c) Implémentation et instanciation de la table LIEU:
+
+CREATE TABLE LIEU OF T_LIEU
+(CONSTRAINT pk_lieu  PRIMARY KEY (Etat.pays))
+	CONSTRAINT superficie_positive2 CHECK (Etat.superficie > 0),
+CONSTRAINT pk_ville2  Unique_Ville UNIQUE (LesLocalites.ville),
+  	CONSTRAINT nb_hab2_positif CHECK (LesLocalites.nb_habitant > 0))
+
+	NESTED TABLE Localite STORE AS LesLocalites;
+
+ 
+2) Insertion des données.
+
+1ère méthode: Utilisation de pointeurs et des tables Etat et Localite de l'exercice n° 1.
+
+Insertion des données dans la table Etat :
+
+INSERT INTO ETAT 
+VALUES T_ETAT (France,500 000) ;
+			     
+INSERT INTO ETAT 
+VALUES T_ETAT (Suisse,10 500) ;
+
+INSERT INTO ETAT 
+VALUES T_ETAT (Vénézuéla, 435 000) ;		        
+
+INSERT INTO ETAT 
+VALUES T_ETAT (Burkina Faso, 150 000) ;
+
+a) Insertion des données par le biais d'un programme PL/ SQL:
+
+Declare
+	Refer_pays REF(T_ETAT) ;
+Begin
+	SELECT REF(e) INTO refer_pays FROM ETAT e WHERE e.pays = 'France' ;
+	INSERT INTO Localite VALUES T_LOCALITE('Paris',6000,refer_pays));
+
+	SELECT REF(e) INTO refer_pays FROM ETAT e WHERE e.pays = 'France' ;
+	INSERT INTO Localite VALUES T_LOCALITE('Strasbourg',250,refer_pays));
+
+	SELECT REF(e) INTO refer_pays FROM ETAT e WHERE e.pays = 'France' ;
+	INSERT INTO Localite VALUES T_LOCALITE('Toulouse',300,refer_pays));
+
+	SELECT REF(e) INTO refer_pays FROM ETAT e WHERE e.pays = 'Suisse' ;
+	INSERT INTO Localite VALUES T_LOCALITE('Genève',320,refer_pays));
+
+	SELECT REF(e) INTO refer_pays FROM ETAT e WHERE e.pays = 'Suisse' ;
+	INSERT INTO Localite VALUES T_LOCALITE('Zurich',175,refer_pays));
+
+	SELECT REF(e) INTO refer_pays FROM ETAT e WHERE e.pays = 'Vénézuela' ;
+	INSERT INTO Localite VALUES T_LOCALITE('Caracas',4000,refer_pays));
+
+SELECT REF(e) INTO refer_pays FROM ETAT e where e.pays = 'Burkina Faso' ;
+	INSERT INTO Localite VALUES T_LOCALITE('Ouagadougou',5000,refer_pays));
+
+	SELECT REF(e) INTO refer_pays FROM ETAT e where e.pays = 'Burkina Faso' ;
+	INSERT into Localite VALUES T_LOCALITE('Bobo Dioulasso',1250,refer_pays));
+
+End;
+
+
+b) Insertion des données par le biais d'une procédure:
+
+Création de la procédure:
+
+CREATE OR REPLACE T_LOCALITE AS OBJECT (
+	ville VARCHAR(50),
+	nb_habitant NUMBER(9),
+	Ref_pays REF(T_ETAT),
+
+	Member procedure insertion (vi IN VARCHAR(50),nb_habitant IN NUMBER(9),
+E_pays IN VARCHAR(50))) ;
+
+CREATE PROCEDURE insertion (vi IN VARCHAR(50),nb_habitant IN NUMBER(9),
+E_pays IN VARCHAR(50))
+
+	IS refer_pays REF(T_ETAT) ;
+Begin
+	SELECT REF(e) INTO refer_pays FROM ETAT e WHERE e.pays = E_pays ;
+	INSERT INTO Localite VALUES T_LOCALITE(vi,nb_habitant,refer_pays) ;
+End;
+
+Utilisation de la procédure:
+
+insertion('Paris',6000,'France');
+insertion('Strasbourg',250,'France');
+insertion('Genève',320,'Suisse');
+insertion('Zurich',175,'Suisse');
+insertion('Caracas',4000,'Vénézuela');
+insertion('Ouagadougou',5000,'Burkina Faso');
+insertion('Bobo Dioulasso',1250,'Burkina Faso');
+
+Cette solution a l'avantage d'être un peu plus rapide.
+
+
+ 
+2ème méthode: Utilisation de la table LIEU et de la table imbriquée Localite :
+
+INSERT INTO LIEU 
+VALUES T_ETAT (France,500 000),
+			     TAB_LOCALITE());
+
+INSERT INTO LIEU 
+VALUES T_ETAT (Suisse,10 500),
+	     TAB_LOCALITE());
+
+INSERT INTO LIEU 
+VALUES T_ETAT (Vénézuéla, 435 000),			        
+                 TAB_LOCALITE());
+
+INSERT INTO LIEU 
+VALUES T_ETAT (Burkina Faso, 150 000),
+	     TAB_LOCALITE());
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etat.pays = 'France') 
+  VALUES (T_LOCALITE (Paris, 6000));
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etat.pays = 'France') 
+	              VALUES (T_LOCALITE (Strasbourg, 250));
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etat.pays = 'France') 
+                         VALUES (T_LOCALITE (Toulouse, 300));
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etats.pays = 'Suisse') 
+                         VALUES (T_LOCALITE (Genève, 320));
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etats.pays = 'Suisse') 
+	              VALUES (T_LOCALITE (Zürich, 175));
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etat.pays = 'Vénézuela') 
+                          VALUES( T_LOCALITE (Caracas, 4000));
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etat.pays = 'Burkina Faso') VALUES 
+(T_LOCALITE (Ouagadougou, 320));
+
+INSERT INTO TABLE (SELECT Localite FROM LIEU L Where L.Etat.pays = 'Burkina Faso') VALUES 
+           (T_LOCALITE (Bobo Dioulasso, 175));
+
+
+
+
+ 
+EXERCICE N° 4.
+
+1) Suppression du pays Burkina Faso dans la table Etat:
+
+ 
+On remarque que la colonne Ref_pays de la table localité pointe désormais un objet inexistant. En effet, la référence OID9 de l'objet, correspondant au pays 'Burkina Faso' a été supprimé et n'existe donc plus.
+
+C'est l'inconvénient d'une jointure par pointeur. En effet, si l'on utilise une clé étrangère avec l'option ON DELETE CASCADE, ce genre de mésaventure ne peut pas arriver, puisque la suppression du pays Burkina Faso aurait entraîné la suppression des villes Ouagadougou et Bobo Dioulasso.
+
+2) Est-il possible d'afficher le pays de la ville Ouagadougou ???
+
+Non, car le champ Ref_pays de la ligne Ouagadougou dans la table Localite cible un objet inexistant et ne pointe donc vers aucun objet. 
+
+La requête définie dans l'exercice n°1 qui nous permettait d'afficher le pays d'une ville retournera donc un résultat vide:
+
+SELECT l.nbh, e.pays FROM localite l, etat e
+			  WHERE l.ville = 'Ouagadougou"
+			   AND REF(e) = l.Ref_pays ;
+
+Le champ l.Ref_pays ciblant un objet inexistant sur la ligne de la table localite correspondant à l.ville= 'Ouagadougou', la requête va donc chercher les données pour lesquelles REF(e) est égal à une référence qui n'existe plus. Or REF(e) référençant l'oid d'un objet, si cette oid n'existe pas, la condition REF(e)=l.Ref_pays ne pourra pas être vérifiée. Donc, la requête retournera un ensemble vide. On ne peut donc pas afficher le pays de la ville Ouagadougou…
+
+Toutefois, il existerait une méthode détournée (et tirée par les cheveux), qui consisterait à partir du principe, que la suppression du pays Burkina Faso dans la table Etat est un accident et qu'on garde en mémoire, que si un champ Ref_pays est vide, c'est qu'il appartient à une ville pointant anciennement vers l'objet tuple Burkina Faso (on considère qu'il n'y a pas eu d'autres suppressions accidentelles).
+
+On utilise alors le paquetage UTF_REF, qui permet de manipuler les références.
+
+DECLARE 
+      varRefPays REF T_ETAT;
+      varPays T_ETAT;
+      pasdObjet EXCEPTION;
+      PRAGMA EXCEPTION_INIT(pasdObjet,-21700);
+BEGIN
+       SELECT Ref_pays INTO varRefPays FROM localite WHERE ville = 'Ouagadougou' ;
+       UTL_REF.SELECT_OBJECT(varRefPays,varPays);
+        DBMS_OUTPUT_LINE(varPays.pays);
+EXCEPTION
+        WHEN pasdObjet THEN
+                     DBMS_OUTPUT.PUT_LINE('Burkina Faso');
+END;
+
+Bien entendu, cette méthode tient du bricolage et n'a rien d'orthodoxe.
+ 
+3) Triggers indiquant les références obsolètes:
+
+Méthode n° 1: On utilise un trigger avant suppression:
+
+D'abord on crée une fonction compteur qui va comptabiliser le nombre de lignes dont le champ Ref_pays pointe vers le tuple de type Etat qui va être supprimé:
+
+CREATE OR REPLACE 
+FUNCTION compteur(Loc IN TAB_LOCALITE, pa IN VARCHAR(50))
+	RETURN NUMBER(5);
+	IS
+		Loca TAB_LOCALITE;
+		nombre NUMBER(3,2);
+		CURSOR TempCur IS SELECT FROM Loc 
+  WHERE Loc.Ref_pays->pays = pa ;
+	BEGIN
+		Nombre=0;
+		Open TempCur ;
+		LOOP 
+			Fetch TempCur INTO Loca;
+		   	nombre++;
+			Exit when TempCur%NOTFOUND ;
+		END LOOP ;
+RETURN nombre ;
+END;
+
+On crée ensuite un trigger sur le tuple de la table Etat qui se déclenchera avant que l'opération de suppression soit effective.  
+
+CREATE OR REPLACE TRIGGER TIDEtat
+	BEFORE 
+	DELETE ON Etat
+FOR EACH ROW
+BEGIN
+		IF(DELETING) THEN 
+DBMS_OUTPUT.PUT_LINE('Nombre de references devenues obsolètes');
+DBMS_OUTPUT.PUT_LINE(compteur(localites,OLD.pays)  ;
+		END IF;
+END;
+
+
+
+
+
+
+
+
+
+
+
+Méthode n° 2: On utilise l'opérateur DANGLING:
+
+D'abord on crée une fonction compteur_DANG qui va comptabiliser le nombre de lignes dont le champ Ref_pays pointe vers un objet inexistant:
+
+CREATE OR REPLACE 
+FUNCTION compteur_DANG(Loc IN TAB_LOCALITE)
+	RETURN NUMBER(5);
+	IS
+		Loca TAB_LOCALITE;
+		nombre NUMBER(3,2);
+		CURSOR TempCur IS SELECT FROM Loc 
+  WHERE Loc.Ref_pays IS DANGLING ;
+	BEGIN
+		Nombre=0;
+		Open TempCur ;
+		LOOP 
+			Fetch TempCur INTO Loca;
+		   	nombre++;
+			Exit when TempCur%NOTFOUND ;
+		END LOOP ;
+RETURN nombre ;
+END;
+
+On déclare trois variables: l'une qui va contenir le nombre de références obsolètes avant l'opération de suppression, l'autre qui va contenir le nombre de références obsolètes après l'opération de suppression, et la troisième qui sera la différence des deux premières:
+
+DECLARE 	
+	var_nb_obsolete_before NUMBER(5);
+	var_nb_obsolete_after NUMBER(5);
+var_nb_obsolete NUMBER(5);
+
+BEGIN
+	var_nb_obsolete_after = COMPTEUR_DANG(localites) ;
+	var_nb_obsolete = var_nb_obsolete_after - var_nb_obsolete_before ;
+DBMS_OUTPUT.PUT_LINE('Nombre de references devenues obsolètes');
+DBMS_OUTPUT.PUT_LINE(var_nb_obsolete);
+END;
+
+On crée ensuite un trigger sur le tuple de la table Etat qui se déclenchera avant que l'opération de suppression soit effective.  
+
+CREATE OR REPLACE TRIGGER TIDEtat
+	BEFORE DELETE ON Etat FOR EACH ROW
+BEGIN 
+var_nb_obsolete_before  = compteur_DANG(localites)  ;
+END;
+
+Cette méthode utilisant l'opérateur DANGLING est toutefois un peu plus longue.
+Méthode n° 3: Méthode utilisant un trigger après suppression et l'opérateur DANGLING: 
+
+ CREATE OR REPLACE TRIGGER TIDEtat
+	AFTER 
+	DELETE ON Etat
+FOR EACH ROW
+
+BEGIN
+DBMS_OUTPUT.PUT_LINE('Nombre de références devenues obsolètes :');
+
+		SELECT COUNT(*) "Nb_Références" FROM localites l 
+WHERE l.Ref_pays IS DANGLING
+AND l.Ref_pays = REF(OLD) ;
+                                                 
+END;
+
+La méthode n° 3 paraît la plus courte et la plus adaptée.
+ 
+4) Modification du trigger pour remplacer par NULL toute référence obsolète :
+
+ 
+CREATE OR REPLACE TRIGGER TIDEtat
+	AFTER 
+	DELETE ON Etat
+FOR EACH ROW
+
+BEGIN
+DBMS_OUTPUT.PUT_LINE('Nombre de références devenues obsolètes :');
+
+		SELECT COUNT(*) "Nb_Références" FROM localites l 
+WHERE l.Ref_pays IS DANGLING
+AND l.Ref_pays = REF(OLD) ;
+ 
+UPDATE localites l SET l.Ref_Pays IS NULL
+	         WHERE l.Ref_Pays IS DANGLING ;
+
+END;
+
+

@@ -1,0 +1,92 @@
+Option Compare Database
+
+
+Public Sub FR_DI_Factory(ByVal frm As String)
+
+Dim Section As Collection
+Dim formulaire As Form
+Dim NumEtatIntervention, sectionActive As Integer
+Dim flag As Boolean
+
+Set formulaire = Forms(frm)
+
+NumEtatIntervention = Forms(formulaire.Name).Controls("idEtat")
+sectionActive = NumEtatIntervention + 2
+
+For Each sfr In Forms(formulaire.Name).Controls
+    If TypeOf sfr Is SubForm Then
+        If Section Is Nothing Then
+            Set Section = New Collection
+        End If
+        Section.Add sfr
+    End If
+Next sfr
+
+'For a = 1 To Section.Count
+'    MsgBox Section(a)
+'Next a
+For Each Sect In Section
+    value = Sect.Controls("Etat")
+    
+If sectionActive > Section.Count Then
+    sectionActive = Section.Count
+End If
+
+For i = 1 To Section.Count
+            
+            If i = 1 Or i = 2 Then
+                    'For Each ctrl In formulaire.Form(Section.Item(i)).Controls
+                    For Each ctrl In Section.Item(i).Controls
+                        If (ctrl.ControlType = acComboBox) _
+                            Or (ctrl.ControlType = acTextBox) _
+                            Or (ctrl.ControlType = acButton) Then
+                                ctrl.Enabled = False
+                        End If
+                    Next ctrl
+            End If
+                
+            If i = 3 Or i = 4 Or i = 5 Then
+                For Each ctrl In Section(i).Controls
+                    If (ctrl.ControlType = acComboBox) Then
+                        Call DI_DLMaker(Nz(ctrl.Name, ""), _
+                                        formulaire.Name, Section.Item(i).Name)
+                     End If
+                Next ctrl
+            End If
+                    
+            If i <> sectionActive Then
+                For Each ctrl In Section(i).Controls
+                    If (ctrl.ControlType = acCommandButton) Then
+                        ctrl.Enabled = False
+                    End If
+                Next ctrl
+            End If
+            
+            If i <= sectionActive Then
+                Section.Item(i).Visible = True
+            Else
+                Section.Item(i).Visible = False
+            End If
+        
+        End If
+    
+Next i
+  
+End Sub
+
+Public Sub DICaption()
+
+Dim strOA As String
+Dim Etat As Integer
+
+'strOA = Nz(Me.OpenArgs, "")
+
+'  If Not IsNull(strOA) Then
+    
+'    Me.Caption = strOA
+    
+End If
+
+
+End Sub
+

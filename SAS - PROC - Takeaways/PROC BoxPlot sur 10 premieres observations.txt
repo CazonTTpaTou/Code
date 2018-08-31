@@ -1,0 +1,3 @@
+PROC boxplot DATA=Training.Application_stockee (obs=10.0);
+     PLOT bow * n_import/ VAXIS=AXIS1 HAXIS=AXIS2;
+RUN; QUIT;

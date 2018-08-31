@@ -1,0 +1,114 @@
+Sub Création_fichiers()
+
+Dim Tableau(1 To 100) As String
+Dim Tableau2(1 To 100) As String
+
+Dim Feuille As Worksheet
+Dim a As Integer
+Dim nom As String
+
+a = 1
+
+Windows("CDI filiales 31_12_08 V2.xls").Activate
+Worksheets(1).Select
+
+For Each Feuille In ActiveWorkbook.Worksheets
+    
+    Tableau(a) = "E:\Dossier clients\Sncm\2008\4 - IFC Filiales\2 - BD\" & Feuille.Name & ".xls"
+    Tableau2(a) = Feuille.Name & ".xls"
+    
+    a = a + 1
+
+Next Feuille
+
+Worksheets(1).Select
+
+a = 1
+
+For Each Feuille In Workbooks("CDI filiales 31_12_08 V2.xls").Worksheets
+
+    
+    Workbooks("CDI filiales 31_12_08 V2.xls").Activate
+    
+    
+        nom = Tableau(a)
+        Workbooks.Add
+        ActiveWorkbook.SaveAs Filename:=nom
+        Workbooks("CDI filiales 31_12_08 V2.xls").Activate
+        Feuille.Copy Before:=Workbooks(Tableau2(a)).Sheets(1)
+        Workbooks(Tableau2(a)).Sheets(1).Name = "Source"
+        Workbooks(Tableau2(a)).Close (True)
+        
+    a = a + 1
+    
+Next Feuille
+
+
+
+End Sub
+
+Sub Insertion_lignes()
+'
+' Macro1 Macro
+' Macro enregistrée le 08/03/2008 par Fabien
+'
+
+'
+    Dim a, b, c, d As Integer
+    
+    a = 1
+    b = 1
+        
+    Do While a <= 100
+    
+    If ActiveCell.Value <> Empty Then
+        Application.CutCopyMode = False
+        Selection.EntireRow.Insert
+        ActiveCell.Offset(2, 0).Select
+    End If
+    
+    If ActiveCell.Value = Empty Then ActiveCell.Offset(1, 0).Select
+    
+    
+    
+         a = a + 1
+         
+         Loop
+    
+  
+   
+    
+    
+End Sub
+ 
+Sub ligne()
+
+Dim tableau(1 To 10000, 1 To 3) As String
+Dim a, b, c As Integer
+
+a = 1
+b = 1
+
+Worksheets(5).Select
+
+For b = 1 To 3
+    For a = 1 To 1000
+        tableau(a, b) = Cells(a, b).Value
+    Next a
+Next b
+
+Worksheets.Add
+c = 0
+For a = 1 To 1000
+    For b = 1 To 3
+        c = c + 1
+        Cells(c, 1).Value = tableau(a, b)
+    Next b
+c = c + 1
+Next a
+    
+        
+
+
+End Sub
+

@@ -1,0 +1,241 @@
+------------------------------------------------------------------------------
+Conversion en XML brut
+
+select * from dbo.Realisation
+for XML Auto,Type
+-------------------------------------------------------------------------------
+Conversion en XML bien formé
+
+select * from dbo.Realisation
+for XML Path('Realisation'),Type
+
+-------------------------------------------------------------------------------
+Création d'une fonction scalaire
+
+CREATE FUNCTION dbo.CompteEquip(@idEquip int) returns int 
+WITH EXECUTE AS CALLER
+as
+begin
+declare @valeur int;
+select @valeur = count(*) from realisation 
+where idEquipement = @idEquip;
+return(@valeur)
+end;
+
+go
+
+select dbo.CompteEquip(5) as Nombre5;
+-------------------------------------------------------------------------------
+Commandes Transact SQL d'une BDD
+
+sqlserverdump
+-------------------------------------------------------------------------------
+Créer un point de terminaison pour Web service
+
+CREATE ENDPOINT Equip
+State = started
+as http(PATH='/equip',AUTHENTICATION=(INTEGRATED),PORTS=(CLEAR),SITE='Test')
+FOR SOAP (
+	WEBMETHOD 'CompteEquipement'(
+	name='GMAO_DEV_8.dbo.CompteEquipement',
+	schema=standard),
+	WSDL=Default,
+	Schema=Standard,
+	Database='GMAO_Dev_8',
+	NameSpace='http://tempUri.org'
+);
+GO
+-------------------------------------------------------------------------------
+Créer un Table value Parameter
+
+create type tEquip as table(
+	numero int,
+	nom nvarchar(30));
+go
+-------------------------------------------------------------------------------
+Utiliser le type Hiérarchie
+
+create table Hierarchie(
+id int identity(1,1),
+position hierarchyId,
+nom nvarchar(80));
+
+Rajouter les contraintes de hiérarchie
+
+alter table Hierarchie
+add constraint pk_id primary key (id);
+create index equipement_position
+on Hierarchie(position)
+alter table Hierarchie
+add niveau as position.getLevel();
+create index equipement_niveau
+on Hierarchie(niveau,position);
+
+Créer une hiérarchie d'équipement
+
+insert into Hierarchie(position,nom) values(hierarchyId::GetRoot(),'UAP');
+declare @sommet hierarchyId;
+select @sommet = hierarchyId::GetRoot() from Hierarchie;
+declare @niveau_inf hierarchyId
+select @niveau_inf=@sommet.GetDescendant(null,null);
+insert into Hierarchie(position,nom) values(@niveau_inf,'Secteur');
+insert into Hierarchie(position,nom) values(@niveau_inf.GetDescendant(null,null),'Procédé');
+-------------------------------------------------------------------------------
+Définir du code CLR géré dans SQL Server
+
+C:\Documents and Settings\Fabien Monnery>sqlcmd
+1> exec sp_configure 'CLR_Enabled','1';
+2> go
+Configuration option 'clr enabled' changed from 0 to 1. Run the RECONFIGURE statement to install.
+1> reconfigure with override;
+2> go
+1>
+
+Lancer un SQL Server Project depuis Visual Studio
+
+-------------------------------------------------------------------------------
+Créer un champ d'horodatage
+
+	[Timer] [timestamp] NULL,
+
+-------------------------------------------------------------------------------
+Créer un champ d'identification unique
+
+alter table realisation
+	add uid uniqueidentifier null,
+
+insert into realisation(idintervention,uid)
+values (150,newid())
+
+
+-------------------------------------------------------------------------------
+Contraintes de valeurs sur un champ
+
+civilite char(4) check (civilite in ('Mlle','Mme','M.'))
+
+
+-------------------------------------------------------------------------------
+Sélectionner les premières lignes 
+
+select top(3) with ties idRealisation,debutArret
+from realisation
+order by 2 desc;
+
+
+-------------------------------------------------------------------------------
+Détailler les opérations d'agrégation
+
+select idEquipement,libelle,tpsArret
+from realisation
+order by idEquipement
+compute sum(TpsArret) by idEquipement;
+
+-------------------------------------------------------------------------------
+Multiplier les combinaisons d'une opération d'agrégation
+
+select idEquipement,Libelle,EtatRealisation,sum(TpsArret)
+from realisation
+group by idEquipement,Libelle,EtatRealisation
+with rollup;
+
+select idEquipement,Libelle,EtatRealisation,sum(TpsArret)
+from realisation
+group by idEquipement,Libelle,EtatRealisation
+with cube;
+
+-------------------------------------------------------------------------------
+Intégrer les résultats d'une opération d'agrégation sans opérateur d'agrégat
+
+select idEquipement,Libelle,EtatRealisation,count(TpsArret)
+over (partition by idEquipement,Libelle,EtatRealisation)
+from realisation;
+
+-------------------------------------------------------------------------------
+Diviser des ensembles d'agrégation en sous-ensembles
+
+select idEquipement,Libelle,EtatRealisation,
+ntile(5)
+over (partition by idEquipement,Libelle,EtatRealisation order by idEquipement) as Ensemble
+from realisation;
+
+-------------------------------------------------------------------------------
+Diviser des ensembles d'agrégation en sous-ensembles dynamiques
+
+declare @nombre int;
+select @nombre = count(distinct idEquipement) from realisation;
+
+select idEquipement,Libelle,EtatRealisation,
+ntile(@nombre)
+over (partition by idEquipement,Libelle,EtatRealisation order by idEquipement) as Ensemble
+from realisation;
+
+-------------------------------------------------------------------------------
+Indiquer le nombre total de différentes occurences d'une colonne
+
+select idEquipement,Libelle,EtatRealisation,
+(select count(distinct idEquipement) as detail from realisation) as nombre
+from realisation;
+
+-------------------------------------------------------------------------------
+Transformer des lignes en colonne
+
+select EtatRealisation,[H19] as "Equ1",[HC21] as "Equ2",[JK26] as "Equ3"
+FROM Realisation
+Pivot (sum(TpsArret) FOR Libelle in ([H19],[HC21],[JK26])) as pvt;
+go
+
+
+-------------------------------------------------------------------------------
+Transaction et point de controle
+
+Begin Tran MAJ
+
+update realisation
+set tpsArret = 2000
+where idRealisation = 15
+
+Save Tran P1
+
+update realisation
+set tpsArret = 3000
+where idRealisation = 15
+
+----- Annulation augmentation de 3000
+rollback tran P1
+
+----- Validation augmentation de 2000
+commit tran MAJ
+
+
+-------------------------------------------------------------------------------
+Créer une fonction qui retourne une table
+
+create function TpsArret_Nonnul()
+returns table
+as
+return (select * from realisation where not(tpsArret is null))
+go
+
+-------------------------------------------------------------------------------
+Mettre en relation une table et une fonction table
+
+select rea.idrealisation from realisation as rea
+cross apply
+TpsArret_Nonnul() as Tp
+where rea.idrealisation = Tp.idrealisation
+
+-------------------------------------------------------------------------------
+Utiliser une fonction de type scalaire
+
+select distinct rea.idEquipement,dbo.CompteEquip(rea.idRealisation)
+ from realisation as rea
+
+
+-------------------------------------------------------------------------------
+Changer de contexte
+
+EXECUTE AS User = 'Guest';
+
+REVERT;
+
+

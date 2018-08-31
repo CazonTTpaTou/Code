@@ -1,0 +1,47 @@
+data dict;
+   length name $16;
+   input name $;
+   datalines;
+09/45/2012-00:12 
+09/45/2017-00:13
+08/45/2012-00:14
+09/41/2012-00:15
+09/47/2019-00:16
+;
+run;
+
+Data New_Text (keep=name Date Dateheure);
+LENGTH       
+        Date 8
+        DateHeure   8;
+    
+    FORMAT
+        Date DATETIME18.
+        DateHeure DATETIME18.;
+
+    INFORMAT
+        Date DATETIME18.
+        DateHeure DATETIME18.; 
+Set dict;
+PosJour=index(name,'/');
+Jour=substr(name,1,PosJour-1);
+PosMois=index(substr(name,1,PosJour),'/');
+Mois=substr(name,PosJour+1,Posmois+1-(PosJour-1));
+Annee=substr(name,PosJour+PosMois+1,4);
+PosHeure=index(name,':');
+Heure=substr(name,PosHeure-2,2);
+Minute=substr(name,PosHeure+1,2);
+Num_Jour=input(Jour,2.);
+Num_Mois=input(Mois,2.);
+Num_Annee=input(Annee,4.);
+Num_Heure=input(Heure,2.);
+Num_Minute=input(Minute,2.);
+Date=mdy(Num_Jour,Num_Jour,Num_Annee);
+DateHeure=dhms(date,Num_Heure,Num_Minute,0);
+Run;
+
+/*scan(name,-1,‘_’)
+
+x=substr(var,length(var)-2,3); 
+
+y=index(name,’/’);*/

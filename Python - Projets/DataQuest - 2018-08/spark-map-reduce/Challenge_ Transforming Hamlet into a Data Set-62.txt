@@ -1,0 +1,41 @@
+## 2. Extract Line Numbers ##
+
+raw_hamlet = sc.textFile("hamlet.txt")
+split_hamlet = raw_hamlet.map(lambda line: line.split('\t'))
+split_hamlet.take(5)
+
+def extract_number(row):
+    word = row[0]
+    position = word.find('@')+1
+    row[0] = word[position:]
+    return row
+
+hamlet_with_ids = split_hamlet.map(lambda line : extract_number(line))
+
+hamlet_with_ids.take(5)
+
+
+
+
+## 3. Remove Blank Values ##
+
+hamlet_with_ids.take(5)
+
+real_text = hamlet_with_ids.filter(lambda line: len(line) > 1)
+
+hamlet_text_only = real_text.map(lambda line: [l for l in line if l != ''])
+
+hamlet_text_only.take(10)
+
+
+
+
+## 4. Remove Pipe Characters ##
+
+hamlet_text_only.take(10)
+
+clean_hamlet = hamlet_text_only.map(lambda line : [x.replace('|','') for x in line if len(x.replace('|',''))>0])
+
+clean_hamlet.take(10)
+
+

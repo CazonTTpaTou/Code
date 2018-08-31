@@ -1,0 +1,11 @@
+ALTER SCHEMA S_PUB
+TRANSFER 
+[dbo].[DUAL]
+
+ALTER SCHEMA S_PUB
+TRANSFER 
+[dbo].[T_NUM]
+
+select * from S_PUB.T_NUM;
+select * from S_PUB.DUAL;
+

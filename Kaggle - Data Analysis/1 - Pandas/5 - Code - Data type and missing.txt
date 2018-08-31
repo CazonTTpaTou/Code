@@ -1,0 +1,38 @@
+#######################################
+######### Code Data type and missing
+#######################################
+
+reviews.price.dtype
+
+reviews.dtypes
+
+reviews.index.dtype
+
+############################# Transtyper une colonne #############################
+
+reviews.points.astype('float64')
+
+############################# Lister ligne avec une colonne nulle #############################
+
+reviews[reviews.country.isnull()]
+
+############################# Remplacer les valeurs nulles #############################
+
+reviews.region_2.fillna("Unknown")
+
+############################# Remplacer les valeurs nulles par la valeur précédente #############################
+
+reviews.fillna(method='bfill')
+
+############################# Remplacer les valeurs nulles par la valeur suivante #############################
+
+reviews.fillna(method='ffill')
+
+############################# Remplacer une valeur par une autre #############################
+
+reviews.taster_twitter_handle.replace("@kerinokeefe", "@kerino")
+
+
+
+
+

@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="http://intranet.photowatt.local/SupplyChain/CER/WebParts/jquery-ui.min.css" />
+    <link rel="stylesheet" href="http://intranet.photowatt.local/SupplyChain/CER/WebParts/DemandeAchats/DemandeAchatNewEditForm.css" />
+    <script src="http://intranet.photowatt.local/SupplyChain/CER/WebParts/jquery-2.2.3.min.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/CER/WebParts/SPWFormV3.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/CER/WebParts/DemandeAchats/DemandeAchatDisplay.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/CER/WebParts/jquery-ui.min.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/CER/WebParts/jquery.ui.datepicker-fr.js"></script>
+
+    <script>  $(function () { $("#tabs").tabs(); });</script>    
+</head>
+
+<body>
+
+    <style type="text/css">
+        .ms-formtable {
+            display: none;
+        }
+    </style>
+
+<!--SECTION RUBAN-->
+    <div>
+    <table>
+	    <tr>
+	    <td class="da-formtitlecol1" style="width: 250px;padding:15px;"><img src="http://intranet.photowatt.local/SupplyChain/DA/WebParts/DemandeAchats/Photowatt_LogoCouleur.png" /></td>	    
+	    </tr>
+    </table>
+    </div>
+<br/><br/>
+
+<div id="formLog2" style="color:red"></div>
+
+<!--SECTION ENTETE-->
+    <table style="width: 83%; border-width:1px;Border-style:dotted;border-color:black;border-radius:7px;" class="da-formtitle">
+            <tr>
+                <td class="da-formtitlecol2" colspan="2" rowspan="2"><h2 style="text-align:center;"><span style="font:bold 40px Verdana;color: #000000;text-decoration: none;text-shadow: 0 -2px 0 #222222;">DEMANDE</span>
+                                                                                        <span style="font:bold 40px Verdana;color: #000000;text-decoration: none;text-shadow: 0 -2px 0 #222222;">INVESTISSEMENT</span></h2></td>
+                <td><u>N° CER :<u/></td>
+                <td style="padding:15px;"><span class="SPWCustomForm" data-displayname="Numero demande"></span></td>
+            </tr>
+            <tr>                
+                <td><u>Date CER :<u/></td>
+                <td style="padding:15px;"><span class="SPWCustomForm" data-displayname="Date"></span></td>
+            </tr>
+	    <tr>
+		<td colspan="2" align="center" style="padding:15px;"><a href="http://intranet.photowatt.local/qualite/SitePages/Procedures_Accueil.aspx" target="_blank"><i>Selon la procédure Achats P05-01 disponible sous la GED Qualité</i></a></td>
+        	<td><u>Statut CER :</u></td>
+        	<td colspan="1" align="left" style="padding:15px;"><i><span class="SPWCustomForm" data-displayname="Statut" style="font-weight:bold;background:#d34836;color:#fff;"></span></i></td>
+	    </tr>
+    </table>
+<br/><br/>
+
+<!--SECTION DESCRIPTION CER-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#000000;color:#FFFFFF;width:200px;border-radius:2px;border:none;" value="DESCRIPTION CER"/>
+    <br/>
+        <table class="da-bloc-vert">
+	    
+            <tr>
+		<td style="padding:10px;"><Label class="Libelle">Description et justification de l'investissement :</Label></td>
+		<td style="padding:10px;"><span class="SPWCustomForm" data-displayname="Motif demande"></span></td>
+            </tr>
+	    <tr>
+		<td style="padding:10px;"><Label class="Libelle">Libellé à retenir pour fichier d’immos FA7* :</Label></td>
+                <td style="padding:10px;"><span class="SPWCustomForm" data-displayname="Libelle FASSET" data-attrib="mandatory"></span></td>            	
+            </tr> 
+	    <tr>
+                <td style="padding:10px;"><i>* Maximum de 60 caractères…</i></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>           
+        </table>
+<br/>
+
+<!--SECTION IMMOBILISATIONS-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#000000;color:#FFFFFF;width:300px;border-radius:2px;border:none;" value="RATTACHEMENT OU REMPLACEMENT"/>
+    <br/>
+        <table class="da-bloc-vert">
+	    <tr>
+		<td style="padding:10px;"><Label class="Libelle">Rattachement immobilisation existante :</Label></td>
+		<td style="padding:10px;"><span class="SPWCustomForm" data-displayname="RattachementImmoExist"></span></td>
+		<td style="padding:10px;"><Label class="Libelle">Remplacement immobilisation existante :</Label></td>
+		<td style="padding:10px;"><span class="SPWCustomForm" data-displayname="RemplacementImmoExist"></span></td>
+	    </tr>
+            <tr>		
+	    	<td style="padding:10px;"><Label class="Libelle">Libellé immobilisation concernée :</Label></td>
+		<td style="padding:10px;"><span class="SPWCustomForm" data-displayname="LibelleImmoRattachement"></span></td>
+	        <td style="padding:10px;"><Label class="Libelle">Numéro CER concernée :</Label></td>
+	        <td style="padding:10px;"><span class="SPWCustomForm" data-displayname="Numero CER Reference"></span></td>
+	    </tr>         
+        </table>
+<br/>
+
+<!--SECTION BUDGET-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#000000;color:#FFFFFF;width:200px;border-radius:2px;border:none;" value="BUDGET"/>
+    <br/>
+    <table class="da-bloc-bleu">	
+	<tr><td style="padding:10px;"><b>Accord de délégation préalable EDF ENR obligatoire si le montant est supérieur à 50k€ (direction)</b></td></tr> 
+    </table>          
+    <table class="da-bloc-bleu">
+	<tr>
+            <td style="padding:10px;"><Label class="Libelle">Code budget :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Code budget"></span></td>   
+            <td style="padding:10px;"><Label class="Libelle">Inclus au budget :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Inclus au budget"></span></td>                    
+        </tr>
+	<tr>
+	    <td style="padding:10px;"><Label class="Libelle">Libellé du budget :</Label></td>
+	    <td><span class="SPWCustomForm" data-displayname="Nom Projet" data-attrib="mandatory"></span></td>             	    
+	    <td style="padding:10px;"><Label class="Libelle">Imputation analytique :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Imputation analytique" data-source="PrimaryChoice,Imputation Analytique,Title" data-attrib="mandatory"></span></td>            
+        </tr>
+	<tr>
+	    <td style="padding:10px;"><Label class="Libelle">Emplacement géographique :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="EmplacementGeo" data-attrib="mandatory"></span></td>
+            <td></td>                
+            <td></td>
+	</tr>
+     </table>
+<br/>     
+
+    
+<!--SECTION FOURNISSEUR-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#000000;color:#FFFFFF;width:300px;border-radius:2px;border:none;" value="FOURNISSEUR ET INFOS DE LIVRAISON"/>
+    <br/>
+        <table class="da-bloc-bleu">
+            <tr>                
+                <td style="padding:10px;"><Label class="Libelle">Fournisseur :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="FournNom" data-attrib="mandatory"></span></td>
+                <td></td>
+                <td></td>
+            </tr> 
+	    <tr>	
+	        <td style="padding:10px;"><Label class="Libelle">Adresse livraison :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Adresse de livraison" data-attrib="mandatory"></span></td>
+	        <td style="padding:10px;"><Label class="Libelle">Date de livraison prévue :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="DateLivraisonPrevue" data-attrib="mandatory"></span></td> 
+	    </tr>  
+	    <tr>  
+                <td style="padding:10px;"><Label class="Libelle">Caution bancaire :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Caution_Bancaire"></span></td> 
+                <td style="padding:10px;"><Label class="Libelle">Conditions paiement particulières*</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Conditions_Paiement"></span></td>          		                     
+            </tr>          
+	    <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><i>* Acomptes, échéancier particulier…</i></td>
+            </tr>                     
+        </table>
+<br/>
+
+
+<!--SECTION PIECES JOINTES-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#000000;color:#FFFFFF;width:500px;border-radius:2px;border:none;" value="OFFRES - DEVIS INITIAUX ET RENEGOCIES, PLAN, CAHIER DES CHARGES... "/>
+    <br/>
+    <table class="da-bloc-vert">
+        <tr id="idAttachmentsRow" style="display: none;">
+            <td style="padding:10px;width: 200px;"><label class="Libelle">Documents associés :</label></td>
+        </tr>
+    </table>
+    <table>
+	    <tr>
+		<td style="padding:10px;"><Label class="Libelle">Nombre de devis :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Nombre_Devis"></span></td>
+                <td style="padding:10px;"><Label class="Libelle">Moyenne des offres initiales :</Label></td>                
+                <td><span class="SPWCustomForm" data-displayname="Moyenne_Offre"></span></td>
+            </tr>
+    </table>
+    <table class="da-bloc-vert">
+	    <tr>
+		<td style="padding:10px;"><Label class="Libelle"><u>Pour offre retenue :</u></Label></td>
+		<td></td>
+		<td style="padding:10px;"><Label class="Libelle">Devise : </Label></td>
+		<td style="padding:10px;"><strong><u><span class="SPWCustomForm" data-displayname="Devise_Bis"></span></u></strong></td>
+	    </tr>
+            <tr>                
+                <td style="padding:10px;"><Label class="Libelle">Prix avant négociation :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Prix avant négociation"></span></td>
+                <td style="padding:10px;"><Label class="Libelle">Prix après négociation :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Prix après négociation"></span></td>
+            </tr> 
+	    <tr>
+		<td style="padding:10px;"><Label class="Libelle">Gains obtenus après négociations :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Gain_Negociation"></span></td>
+		<td style="padding:10px;"><Label class="Libelle">Soit un ratio de : </Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Ratio_Gain_Negociation"></span></td>
+            </tr>
+            <tr>
+                <td style="padding:10px;"><Label class="Libelle">Commentaires négociation :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Commentaire_Nego"></span></td>
+            </tr>
+    </table>
+<br/>
+
+<!--SECTION DETAIL DE LA DEMANDE-->
+<input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#000000;color:#FFFFFF;width:200px;border-radius:2px;border:none;" value="DETAIL DEMANDE"/>
+<br/>
+    <table class="SPWChildTable" style="width:83%;border-top: 4px solid #000000;" id="DetailDA" data-listName="Demande Achats Detail" data-headerId="DetailDAHeader" data-lineId="DetailDALigne" data-keyFieldName="Numero_x0020_demande" data-guidFieldName="GuidDemande">
+    <tr id="DetailDAHeader">
+	    <th data-colId="Indice"></th>
+            <th data-inputSize="50" data-colId="Designation" data-fieldName="Designation" data-type="texte" data-attrib="tooltip">Désignation</th>
+	    <th data-inputSize="29" data-colId="Reference" data-fieldName="Reference" data-type="texte" data-attrib="tooltip">Ref fournisseur (code article)</th>
+            <th data-inputSize="5" data-colId="Qte" data-fieldName="Quantite" data-type="nombre">Qté</th>
+	    <th data-inputSize="5" data-colId="Unite" data-fieldName="Unite" data-source="PrimaryChoice,Unite,Title" data-attrib="mandatory">Unité</th>	   
+	    <th data-inputSize="7" data-colId="PU" data-fieldName="Prix_x0020_unitaire_x0020_HT" data-type="nombre">Prix Unitaire H.T</th>
+	    <th data-inputSize="15" data-colId="DateLiv" data-fieldName="DureeViePrev" data-type="texte" data-attrib="tooltip">Durée d’utilisation (amortissements)</th>
+    	    <th data-colId="PT">Total Ligne</th>
+    </tr>
+    </table>
+<br/>
+<br/>
+    <table>
+        <tr>
+            <td><button style="border:none;padding:6px 0 6px 0;background:#000000;color:#FFFFFF;font:bold 13px Arial;" type="button" />Total :</td>
+            <td style="color:white;"> . </td>
+            <td><strong><span class="SPWCustomForm" data-displayname="sTotal"></span></strong></td>
+            <td style="color:white;"> . </td>
+            <td><strong><u><span class="SPWCustomForm" data-displayname="Devise"></span></u></strong></td>
+        </tr>
+    </table>
+    
+<br/>
+<br/>
+
+<!--SECTION DEMANDEUR-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#000000;color:#FFFFFF;width:200px;border-radius:2px;border:none;" value="APPROBATIONS"/>
+    <table class="da-bloc-bleu">
+	<tr>
+	    <td style="padding:10px;"><Label class="Libelle">Etape Validation</Label></td>
+	    <td><Label class="Libelle">Nom Approbateur</Label></td>
+	    <td><Label class="Libelle">Réponse approbateur</Label></td>
+	    <td><Label class="Libelle">Date de validation</Label></td>
+	    <td><Label class="Libelle">Observations / Commentaires</Label></td>
+	</tr>
+	<tr>
+	    <td style="padding:10px;"><Label class="Libelle">Initiateur :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Demandeur"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid0Reponse"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid0Date"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="CommentairesCER"></span></td>  
+        <tr>
+            <td style="padding:10px;"><Label class="Libelle">Responsable budget :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="RespServiceAffectation"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid1Reponse"></span></td>       
+	    <td><span class="SPWCustomForm" data-displayname="Valid1Date"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid1Commentaire"></span></td>                 
+        </tr>
+	<tr>	
+            <td style="padding:10px;"><Label class="Libelle">Directeur budget :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="RespDirectionService"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid2Reponse"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid2Date"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid2Commentaire"></span></td>  
+        </tr>  
+        <tr>
+            <td style="padding:10px;"><Label class="Libelle">Acheteur :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Acheteur"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid3Response"></span></td>       
+	    <td><span class="SPWCustomForm" data-displayname="Valid3Date"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid3Commentaire"></span></td>                 
+        </tr>      
+        <tr>
+            <td style="padding:10px;"><Label class="Libelle">Directeur Supply Chain:</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Valid4Nom"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid4Response"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid4Date"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid4Commentaire"></span></td> 
+        </tr>
+	<tr>
+            <td style="padding:10px;"><Label class="Libelle">Directeur Financier:</Label></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid6Nom"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid6Response"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid6Date"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid6Commentaire"></span></td>  
+        </tr>
+	<tr>
+            <td style="padding:10px;"><Label class="Libelle">Directeur Général Délégué:</Label></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid7Nom"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid7Response"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid7Date"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Valid7Commentaire"></span></td>  
+        </tr>
+        <tr>
+            <td style="padding:10px;"><Label class="Libelle">Vérification comptable:</Label></td>
+	    <td><span class="SPWCustomForm" data-displayname="Comptable"></span></td>
+	    <td><span class="SPWCustomForm" data-displayname="Validation_Comptable"></span></td>
+	    <td></td>
+	    <td></td>  
+        </tr>
+    </table>
+<br/>
+
+<table>
+        <tr>
+            <td style="color:white;">Guid demande</td>
+            <td style="color:white;"><span class="SPWCustomForm" data-displayname="GuidDemande"></span></td>
+        </tr>        
+</table>
+
+</body>
+</html>
+
+

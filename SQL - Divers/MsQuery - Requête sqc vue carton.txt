@@ -1,0 +1,3 @@
+SELECT V_CARTON."Atelier Num", V_CARTON.Atelier, V_CARTON."Carton Num", V_CARTON.Format, V_CARTON.Materiau, V_CARTON."Classe Cellule", V_CARTON."Code BAAN", V_CARTON."Code Logistique", V_CARTON."Embc Date Heure", V_CARTON."Embc Date Poste", V_CARTON."Embc Semaine Poste", V_CARTON."Embc Mois Poste", V_CARTON."Embc Annee Poste", V_CARTON."Embc Equipe", V_CARTON."Embc Matricule", V_CARTON."Embc Obs", V_CARTON."Embc Poste", V_CARTON."Embc Qte", V_CARTON."Palette Num", V_CARTON."Tri Equipement", V_CARTON."Exe Date Heure"
+FROM SQC_DB.dbo.V_CARTON V_CARTON
+ORDER BY V_CARTON."Embc Date Heure" DESC

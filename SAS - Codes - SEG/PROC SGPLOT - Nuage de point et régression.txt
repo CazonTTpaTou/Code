@@ -1,0 +1,6 @@
+PROC SGPLOT DATA=DTM_PRO.DTM_PRO_TRAC_CEL_TRIEES;
+	SCATTER X=Cel_Materiau
+	        Y=Cel_Tri_Rsh_Moy;
+	REG X=Cel_Materiau
+	    Y=Cel_Tri_Rsh_Moy;
+RUN;

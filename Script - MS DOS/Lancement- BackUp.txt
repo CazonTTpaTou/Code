@@ -1,0 +1,40 @@
+Microsoft Windows [Version 6.3.9600]
+(c) 2013 Microsoft Corporation. All rights reserved.
+
+C:\Users\pwsasprod>cd c:\
+
+c:\>cd :\d d:
+The filename, directory name, or volume label syntax is incorrect.
+
+c:\>cd \d d:
+The filename, directory name, or volume label syntax is incorrect.
+
+c:\>cd /d d:
+
+D:\>cd D:\SAS\BIN\SASPlatformObjectFramework\9.4\tools\admin
+
+D:\SAS\BIN\SASPlatformObjectFramework\9.4\tools\admin>sas-backup -profile sasadm
+
+File containing credential information not found : sasadm.
+Argument was not provided to the utility : -host -port -user -password
+
+D:\SAS\BIN\SASPlatformObjectFramework\9.4\tools\admin>sas-backup -profile sasadm
+.properties
+The HTTP request failed. : hostname in certificate didn't match: <sas.photowatt.
+com> != <mail.photowatt.com> OR <mail.photowatt.com> OR <autodiscover.photowatt.
+com> OR <ecp.photowatt.com> OR <owa.photowatt.com>
+
+D:\SAS\BIN\SASPlatformObjectFramework\9.4\tools\admin>sas-backup -profile sasadm
+.properties
+The HTTP request failed. : hostname in certificate didn't match: <sas.photowatt.
+com> != <mail.photowatt.com> OR <mail.photowatt.com> OR <autodiscover.photowatt.
+com> OR <ecp.photowatt.com> OR <owa.photowatt.com>
+
+D:\SAS\BIN\SASPlatformObjectFramework\9.4\tools\admin>sas-backup -profile sasadm
+.properties
+The HTTP request failed. : hostname in certificate didn't match: <sas.photowatt.
+com> != <mail.photowatt.com> OR <mail.photowatt.com> OR <autodiscover.photowatt.
+com> OR <ecp.photowatt.com> OR <owa.photowatt.com>
+
+D:\SAS\BIN\SASPlatformObjectFramework\9.4\tools\admin>sas-backup -profile sasadm
+.properties

@@ -1,0 +1,78 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<link rel="stylesheet" type="text/css" href="./Presentation.css"></link>
+<script src="fonctions_JS.js" type="text/javascript"></script>
+<title>Secoia - TO</title>
+</head>
+
+<body class="Jaune" >
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Secoia_TO.php">Version en PDF</a></p>
+<H1><div><span class="Titre2">▼ CONSTRUCTION DE TABLES DE TURN OVER ▼ <br> ET DE TABLES DE MORTALITE </span></div></H1>
+<p class="TexteI"><img src="../Pictures/Click_Fam_1.JPG"/></p>
+</br>
+
+<a name="Presentation"></a>
+
+<table class="sommaire">
+  <tr><td>
+  <center><span class="titre_sommaire">► Sommaire ◄</span><center>
+<ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="/HTML/Secoia.html" title="Se rendre à cette section...">Présentation de la société.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section2" title="Se rendre à cette section...">Explication de la mission.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section3" title="Se rendre à cette section...">Construction d'une table de Turn-Over.</li></a>
+<ol start="31">
+             <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section31" title="Se rendre à cette sous section...">Le choix des coefficients.</li></a>
+	     <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section32" title="Se rendre à cette sous section...">Ajustement avec les résultats empiriques.</li></a>
+</ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section4" title="Se rendre à cette section...">Interpolation linéaire de tables de mortalité.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section5" title="Se rendre à cette section...">Calcul des espérances de vie.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Conclusion" title="Se rendre à cette section...">Conclusion.</li></a>
+</ol>
+</td></tr></table></br>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section2"></a>
+<p class="Texte">Pour effectuer des calculs d'engagements de passifs sociaux, il était nécessaire d'utiliser des tables de turn-over pour calculer les probabilités de présence de chaque individu dans l'entreprise à un instant T du futur. Parfois, ces tables étaient déjà disponibles, mais parfois ce n'était pas le cas, ce qui nécessitait alors leur création. </p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section3"></a>
+<p class="Texte">Pour créer une table modélisant de façon appropriée les mouvements de population, il était nécessaire de fixer les 3 éléments suivants, appelés paramètres de turn-over :</p>
+<a name="Section31"></a>
+<div class="Paragraphe"><ul type="square" class="Paragraphe1"><li class="Paragraphe2">La fin de l'âge du turn-over (âge auquel on considérait que le salarié n'a plus aucune chance de quitter l'entreprise de son propre chef).</li></ul></div>
+<div class="Paragraphe"><ul type="square" class="Paragraphe1"><li class="Paragraphe2">La valeur du coefficient multiplicateur (ce coefficient permettait de faire varier à la hausse ou à la baisse le taux de turnover moyen).</li></ul></div>
+<div class="Paragraphe"><ul type="square" class="Paragraphe1"><li class="Paragraphe2">La valeur du coefficient de l'évolution du pas. (ce coefficient permettait de déterminer l'ordre de grandeur de l'évolution graduelle de la probabilité de départ de l'entreprise, à mesure que le salarié vieillissait – plus ce taux était élevé et plus l'amplitude de la courbe serait élevée, indiquant à terme une probabilité importante de départ de l'entreprise - cas adapté aux secteurs d'activité connaissant un taux élevé de turnover comme celui de l'hôtellerie - restauration, de la vente ou des SSII informatiques).</li></ul></div>
+<p class="TexteI"><img src="../Pictures/Secoia_TO_1.JPG"/></p>
+<p class="Texte">Par exemple, dans le cas ci-dessus, on estimait à 11,81% la probabilité de départ de l'entreprise durant l'année à venir, pour un salarié de 30 ans. Celle-ci baissant à 7,88% pour un salarié de 35 ans... Ces probabilités de départ étaient relativement faibles car les coefficients multiplicateurs choisis et l'évolution du pas étaient plutôt modestes (l'entreprise considérée pour cet exemple appartenait au secteur de l'industrie où le turn-over est généralement assez limité).</p>
+<a name="Section32"></a>
+<p class="Texte">Ensuite toute la difficulté était de comparer ce taux théorique avec les observations empiriques (départs réellement survenus), pour déterminer si la modélisation choisie était suffisamment pertinente pour estimer correctement les mouvements futures de population :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_TO_2.JPG"/></p>
+<p class="Texte">Au delà, d'un certain seuil, la modélisation était considérée comme non satisfaisante et une nouvelle courbe théorique était construite à partir de paramètres différents : 
+<p class="TexteI"><img src="../Pictures/Secoia_TO_8.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section4"></a>
+<p class="Texte">Pour effectuer des calculs d'engagements de passifs sociaux, il était nécessaire d'utiliser des tables de mortalité pour calculer les probabilités de décès de chaque individu dans l'entreprise à un instant T du futur. Parfois, ces tables étaient déjà disponibles (tables INSEE), mais parfois ce n'était pas le cas, ce qui nécessitait parfois leur création.</p>
+<p class="Texte">Ainsi pour certains pays, les données OMS ne fournissaient les moyennes de mortalité que sur des périodes de 5 ans. Il était alors nécessaire de calculer les taux de mortalité par interpolation linéaire, afin d'obtenir une table plus précise.</p>
+<p class="TexteI"><img src="../Pictures/Secoia_TO_3.JPG"/></p>
+<p class="Texte">L'interpolation linéaire s'effectuait par le biais des formules Excel suivantes :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_TO_4.JPG"/></p>
+<p class="Texte">La courbe de mortalité obtenue passait alors par les médianes de chacune des classes d'âge :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_TO_5.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section5"></a>
+<p class="Texte">Par ailleurs, pour certains dossiers spécifiques, il était parfois nécessaire de calculer l'espérance de vie précise de chaque tranche d'âge, notamment pour les dossiers de type assurance vie ou pension de réversion :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_TO_10.JPG"/></p>
+
+<a name="Conclusion"></a>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+<p class="Texte">Ainsi, pour tout dossier de calcul de passif social et d'engagement, l'élaboration des diverses tables de probabilité était primordiale pour la justesse et la pertinence des calculs effectués...</p>
+
+</br>
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Secoia_TO.php">Version en PDF</a></p>
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+</br>
+</body>
+</html>

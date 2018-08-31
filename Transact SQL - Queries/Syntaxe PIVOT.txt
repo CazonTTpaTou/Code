@@ -1,0 +1,10 @@
+select 
+Nom_Champ,
+[1] as Table_1,[2] AS Table_2,[3] AS Table_3,[4] AS Table_4,[5] AS Table_5
+FROM
+(Select Nom_Champ,Nom_Table,Numero FROM
+					dbo.Vue_Liste_Champ_Table) UP
+      
+Pivot (Sum(Numero) for Numero in ([1],[2],[3],[4],[5])) as pvt
+
+GO

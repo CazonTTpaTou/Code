@@ -1,0 +1,51 @@
+%macro transpose_TEMP1_L0B_DATA ;
+
+%let Num_cuve1 = 1;
+%let Num_cuve2 = 2;
+%let Num_cuve3 = 3;
+%let Num_cuve4 = 4;
+
+data work.TEMP2_L0B_DATA (keep=Num_assemblage Lessivielle Date_Cv: Heure_Cv: Nom_Cv: Position_Cv: Temps_cycle_prog_Cv: Temps_cycle_Cv: Nb_enreg_Cv:);
+
+	set TEMP1_L0B_DATA;
+	by Num_assemblage;
+	retain
+		%do i = 1 %to 4;
+			Date_Cv&i Heure_Cv&i Nom_Cv&i Position_Cv&i Temps_cycle_prog_Cv&i Temps_cycle_Cv&i Nb_enreg_Cv&i
+		%end;
+		/*Date_Cv1 Heure_Cv1 Nom_Cv1 Position_Cv1 Temps_cycle_prog_Cv1 Temps_cycle_Cv1 Nb_enreg_Cv1 
+		Date_Cv2 Heure_Cv2 Nom_Cv2 Position_Cv2 Temps_cycle_prog_Cv2 Temps_cycle_Cv2 Nb_enreg_Cv2 
+		Date_Cv3 Heure_Cv3 Nom_Cv3 Position_Cv3 Temps_cycle_prog_Cv3 Temps_cycle_Cv3 Nb_enreg_Cv3 
+		Date_Cv4 Heure_Cv4 Nom_Cv4 Position_Cv4 Temps_cycle_prog_Cv4 Temps_cycle_Cv4 Nb_enreg_Cv4*/;
+
+	array Date_Cv_(4) Date_Cv1-Date_Cv4;
+	array Heure_Cv_(4) Heure_Cv1-Heure_Cv4;
+	array Nom_Cv_(4) Nom_Cv1-Nom_Cv4;
+	array Position_Cv_(4) Position_Cv1-Position_Cv4;
+	array Temps_cycle_prog_Cv_(4) Temps_cycle_prog_Cv1-Temps_cycle_prog_Cv4;
+	array Temps_cycle_Cv_(4) Temps_cycle_Cv1-Temps_cycle_Cv4;
+	array Nb_enreg_Cv_(4) Nb_enreg_Cv1-Nb_enreg_Cv4;
+
+	format Date_Cv: ddmmyy8.;
+	format Heure_Cv: time5.;
+
+	%do i = 1 %to 4;
+	if Num_cuve = &&Num_cuve&i then do;
+		Date_Cv_(&i) = Date;
+		Heure_Cv_(&i) = Heure;
+		Nom_Cv_(&i) = Nom_cuve;
+		Position_Cv_(&i) = Position;
+		Temps_cycle_prog_Cv_(&i) = Temps_cycle_prog;
+		Temps_cycle_Cv_(&i) = Temps_cycle;
+		Nb_enreg_Cv_(&i) = Nb_enregistrements;
+		i=%eval(&i+1);
+	end;
+	%end;
+
+	if last.Num_assemblage then output;
+
+run;
+
+%mend transpose_TEMP1_L0B_DATA;
+
+%transpose_TEMP1_L0B_DATA;

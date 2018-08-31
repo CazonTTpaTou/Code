@@ -1,0 +1,82 @@
+CREATE TABLE [dbo].[entiers](
+    [i] [int] NOT NULL,
+ CONSTRAINT [PK_entiers] PRIMARY KEY CLUSTERED 
+(
+    [i] ASC
+))
+
+go
+
+-----------------------------------------------------------------------------
+
+insert into entiers (i) values(0);
+insert into entiers (i) values(1);
+insert into entiers (i) values(2);
+insert into entiers (i) values(3);
+insert into entiers (i) values(4);
+insert into entiers (i) values(5);
+insert into entiers (i) values(6);
+insert into entiers (i) values(7);
+insert into entiers (i) values(8);
+insert into entiers (i) values(9);
+
+go
+----------------------------------------------------------------------------
+
+create view Vue_Base_10
+
+as
+
+select (1000*m.i+100 * c.i + 10*d.i + u.i) as chiffre
+from entiers u
+cross join entiers d
+cross join entiers c
+cross join entiers m
+
+go
+---------------------------------------------------------------------------
+
+create view vue_Calendrier_H0
+
+AS
+
+select CAST(FLOOR(CAST(getdate() AS FLOAT)) AS DATETIME) - chiffre 
+as DatesSuiv 
+from Vue_Base_10 
+where getdate() - chiffre > dateAdd(yy,-10,getdate())
+
+go
+
+---------------------------------------------------------------------------
+
+/****** Object:  Table [dbo].[T_TableJour]    Script Date: 04/30/2013 14:14:27 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[T_TableJour](
+	[idJour] [int] NULL,
+	[Jour] [int] NULL,
+	[Mois] [int] NULL,
+	[Annee] [int] NULL,
+	[DateJour] [datetime] NULL
+) ON [PRIMARY]
+
+GO
+
+----------------------------------------------------------------------------
+
+delete from T_TableJour;
+
+INSERT INTO t_tablejour (DateJour) 
+SELECT DatesSuiv FROM vue_Calendrier_H0 
+WHERE DatesSuiv >= 
+dateadd("m",-1,getdate())
+ AND DatesSuiv <= 
+getdate();
+
+
+
+

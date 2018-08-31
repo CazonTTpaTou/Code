@@ -1,0 +1,17 @@
+PROC SQL;
+
+CONNECT to odbc(readbuff=32767 DATASRC=SSIS_DWH USER=SASSQL  PASSWORD="{SAS002}3625302A43996237206B48FF5188832F3A71A582");
+
+CREATE TABLE STATS.DATA_LOG_TRI_WAVELABS 
+AS 
+select * from connection to odbc
+(
+	SELECT * 
+	FROM [dbo].[WAFER_WAV]
+	WHERE datediff(DAY,[TimeStamp_Flash],getdate()) <= 31
+);
+disconnect from odbc;
+QUIT;
+
+
+

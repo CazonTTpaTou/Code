@@ -1,0 +1,119 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<link rel="stylesheet" type="text/css" href="./Presentation.css"></link>
+<script src="fonctions_JS.js" type="text/javascript"></script>
+<title>Orminsol - Segmentation</title>
+</head>
+
+<body class="Jaune" >
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Irminsul_Segmentation.php">Version en PDF</a></p>
+<H1><div><span class="Titre2">▼ SEGMENTATION ET EXTRACTION DE PROFILS ▼ </br>(CLASSIFICATION ET AFC)</span></div></H1>
+<p class="TexteI"><img src="../Pictures/Click_Fam_1.JPG"/></p>
+</br>
+
+
+<table class="sommaire">
+  <tr><td>
+  <center><span class="titre_sommaire">► Sommaire ◄</span><center>
+<ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="/HTML/Orminsol.html" title="Se rendre à cette section...">Présentation de la société.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section2" title="Se rendre à cette section...">Explication de la mission.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section3" title="Se rendre à cette section...">Exemple d'ACP (analyse en composantes principales).</li></a>
+<ol start="31">
+             <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section31" title="Se rendre à cette sous section...">Projection des modalités de Récence - Fréquence - Montant.</li></a>
+</ol>
+
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section4" title="Se rendre à cette section...">Exemple d'AFC (analyse en compasantes factorielles.</li></a>
+<ol start="41">
+             <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section41" title="Se rendre à cette sous section...">Comparaison des modalités de récence des fichiers de prospection.</li></a>
+</ol>
+
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section5" title="Se rendre à cette section...">Exemple d'AFCM (analyse en compasantes factorielles.</li></a>
+<ol start="51">
+             <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section51" title="Se rendre à cette sous section...">Vérification de la pertinence de la segmentation RFM.</li></a>
+</ol>
+	     
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section6" title="Se rendre à cette section...">Exemple de classification - CAH.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Conclusion" title="Se rendre à cette section...">Conclusion.</li></a>
+</ol>
+</td></tr></table></br>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section2"></a>
+<p class="Texte">Le postulat de la segmentation est que les clients ne se ressemblent pas et que l'idéal serait de pouvoir proposer à chacun d'eux une offre commerciale sur mesure par rapport à leurs attentes. La segmentation consiste donc à découper le marché en sous-ensembles homogènes liés aux attentes des clients et des prospects de l'entreprise.</p>
+<p class="Texte">C'est pourquoi, les éditions Orminsol envisageaient de segmenter leur fichier client afin de pouvoir mieux adapter leur offre en fonction des segments de clientèle visée. Pour opérer la segmentation du fichier clientèle de la société, j'ai eu recours aux méthodes d'analyse factorielle de correspondance et de classification hiérarchique du logiciel de statistique open source R.</p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section3"></a>
+<p class="Texte">Dans un premier temps, la question qui s'était posée était de savoir si le fichier client devait être segmenté selon le fichier d'origine (fichier de prospection dont a été extrait le client) ou selon des caractéristiques marketing (de type Récence – Fréquence – Montant).</p>
+<p class="Texte">Nous avions donc opéré une analyse en composante principale sur le fichier client. Dans ce fichier client, nous n'avions conservé que le fichier d'origine, le montant total des achats effectués par le client, la fréquence des achats (nombre total d'achat) et enfin la récence des achats (nombre de mois écoulés depuis le dernier achat). </p>
+<p class="TexteI"><img src="../Pictures/Irminsul_segm_8.JPG"/></p>
+<p class="Texte">Une fois l'ACP (analyse en composante principale) lancée par le biais du logiciel R, nous obtenions un graphique représentant la projection des variables sur les deux premiers axes factoriels.</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_segm_3.jpeg"/></p>
+<a name="Section31"></a>
+<p class="Texte">Nous pouvions constater que la modalité Récence d'achat était opposée aux modalités Fréquence et Montant, c'est à dire que plus le nombre de mois écoulés depuis le dernier achat augmentait, plus le montant total et la fréquence des achats baissait. Tandis, que le montant des achats était positivement corrélé à la fréquence des achats.  </p>
+<p class="Texte">La projection des individus clients sur les deux axes factoriels confirmait ces observations :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_segm_4.jpeg"/></p>
+<p class="Texte">On observait ainsi que les clients se caractérisaient selon la récence de leur dernier achat et selon le montant de leur total de leurs paniers. Plus, le cumul de leurs achats était élevé, plus ils étaient éloignés de la modalité récence, c'est à dire que plus le montant cumulé de leurs paniers était élevé, et plus leurs derniers achats étaient récents (moins de 4 mois).</p>
+<p class="Texte">Et, plus leur modalité récence était élevée (plus la date de leur dernier achat était éloigné dans le temps) et moins leur montant d'achat cumulé était élevé. On remarquait donc, que le premier critère de segmentation était la fraîcheur du dernier achat, c'est à dire que les clients à travailler en priorité étaient ceux qui s'étaient montrés actifs sur les derniers mois.</p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section4"></a>
+<p class="Texte">Dans la même temps, une des hypothèses qui avaient été posées considérait que les fichiers d'origine pouvaient être un critère de segmentation, car on pouvait penser qu'un client recruté dans le fichier de France Loisirs n'avait pas forcément le même comportement qu'un client recruté dans le fichier du magazine Le Point. </p>
+<p class="Texte">Pourtant, cette hypothèse était infirmée par la projection des modalités Fichier sur les deux axes factorielles :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_segm_6.jpeg"/></p>
+<p class="Texte">On pouvait ainsi remarquer que les légendes de couleur des différents fichiers étaient uniformément distribuées sur les axes factoriels et on en déduisait que ce critère de segmentation n'était pas discriminant.</p>
+<p class="Texte">En effet, si le comportement d'achat d'un fichier particulier avait été différent des autres, nous aurions pu observer un agglomérat de points projetés d'une couleur précise. Or ce n'était pas le cas. </p>
+<p class="Texte">Et la projection factorielle avec marquage par ellipse confirmait ce constat :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_segm_7.jpeg"/></p>
+<p class="Texte">Toutes les ellipses étaient au centre de la représentation et à l'intersection des deux axes factorielles, ce qui confirmait bien que le fichier d'origine du client n'était pas un critère de segmentation pertinent.</p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<p class="Texte">Toutefois, nous avions vérifié que les caractéristiques des clients de chaque fichier source ne présentaient pas de différence profonde, par le biais d'une analyse factorielle des correspondances (AFC).</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_segm_11.JPG"/></p>
+<a name="Section41"></a>
+<p class="Texte">La projection des différentes modalités sur les deux premiers axes factoriels se présentait selon le graphique suivant :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_segm_9.jpeg"/></p>
+<p class="Texte">On pouvait alors constater que les fichiers source client se différenciaient sur la modalité Inactif. Les fichiers Orminsol et Figaro présentaient des taux d'inactivité client (clients qui n'ont plus commandé depuis longtemps et qui ne sont donc plus considérés comme actifs) très supérieurs aux autres fichiers. Cette caractéristique était logique si l'on considère que ces deux fichiers étaient les plus anciens et donc les moins mis à jour. </p>
+<p class="Texte">Cette AFC permettait donc d'attirer l'attention sur le fait que certains fichiers client source devait être triés  selon le critère de la date du dernier achat effectué, afin d'économiser les frais de mailing expédié à des clients qui n'étaient plus actifs.</p>
+<p class="Texte">Par ailleurs, cette analyse factorielle pouvait être considéré comme relativement pertinente, au vu du pourcentage d'inertie très élevé contenu par les deux premiers axes factoriels :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_segm_10.jpeg"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section5"></a>
+<p class="Texte">Enfin, afin de valider la pertinence de la mise en place de la segmentation sur les critères marketing Récence – Fréquence – Montant (segmentation RFM), nous avons procédé à une analyse factorielle de correspondance multiple.</p>
+<p class="Texte">Pour chaque client, nous avions attribué un facteur de type qualitatif pour résumer sa fréquence d'achat, son cumul d'achat et sa récence d'achat. Le qualificatif attribué pouvait être considéré comme un scoring du potentiel commercial du client :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_segm_14.jpeg"/></p>
+<a name="Section51"></a>
+<p class="Texte">Le lancement de l'AFCM sur le fichier client renseigné par critère RFM eût pour résultat la projection factorielle résumé par le graphique suivant :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_segm_16.jpeg"/></p>
+<p class="Texte">Cette AFCM confirmait bien la pertinence de la segmentation RFM, puisque la projection des clients sur les deux axes factoriels faisait clairement apparaître 5 groupes compacts et homogènes, correspondant aux 5 modalités des facteurs RFM : </p>
+<div class="Paragraphe"><ul type="circle" class="Paragraphe1">
+<li class="Paragraphe2">Client One Shot, </li>
+<li class="Paragraphe2">Client occasionnel, </li>
+<li class="Paragraphe2">Client moyen, </li>
+<li class="Paragraphe2">Gros client,</li>
+<li class="Paragraphe2">Client très important (de type VIP).</li>
+</ul></div>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section6"></a>
+<p class="Texte">Par ailleurs, la segmentation obtenue par analyse factorielle était vérifiée par des opérations de regroupement par classification hiérarchique ascendante, qui permettait d'obtenir des classes homogènes de clients au profil marketing similaire </br> (représentée ci-après sous forme de dendogramme) :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Segm_18.JPG"/></p>
+<p class="Texte">La logique de la classification était la suivante, obtenir des groupes homogènes les plus dissemblables les uns des autres, afin de pouvoir différencier l'offre commerciale (comme envoyer un catalogue différent à chacun des groupes de client identifiés) :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Sup_9.JPG"/></p>
+<p class="Texte">Cette classification perpétrée par le biais du logiciel R permettait également de segmenter le fichier en classes de clients, selon leur degré de rentabilité potentiel :</p>
+<p class="TexteI"><img src="../Pictures/Irminsul_Sup.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Conclusion"></a>
+<p class="Texte">En définitive, la mise en oeuvre des techniques d'analyse factorielle et de classification permettaient à la société de segmenter son fichier client de façon optimale. Cette segmentation était primordiale pour pouvoir ajuster en conséquence l'offre commerciale et affiner la politique marketing de l'entreprise. C'est à dire dépenser moins (ne cibler que les clients potentiellement intéressants) pour gagner plus (augmenter les dépenses client en leur proposant une offre sur mesure)... </p>
+
+</br>
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Irminsul_Segmentation.php">Version en PDF</a></p>
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+</br>
+</body>
+</html>

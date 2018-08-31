@@ -1,0 +1,56 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<link rel="stylesheet" type="text/css" href="./Presentation.css"></link>
+<script src="fonctions_JS.js" type="text/javascript"></script>
+<title>Aviso - SQL</title>
+</head>
+
+<body class="Vert" >
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+<p class="Paragraphe1"><a class="PDF" href="/PDF/Aviso_SQL.pdf">Version en PDF</a></p>
+<H1><div><span class="Titre2"> ▼ CONSTITUTION DE FICHIERS ▼ </br> PAR REQUÊTES SQL </span></div></H1>
+<p class="TexteI"><img src="../Pictures/Click_Fam_4.JPG"/></p>
+</br>
+
+<table class="sommaire">
+  <tr><td>
+  <center><span class="titre_sommaire">► Sommaire ◄</span><center>
+<ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Presentation" title="Se rendre à cette section...">Présentation de la société.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section2" title="Se rendre à cette section...">Explication de la mission.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section3" title="Se rendre à cette section...">Les différents types de requête.</li></a></li>
+<ol start="31">
+             <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section31" title="Se rendre à cette sous section...">Requête de sélection.</li></a>
+	     <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section32" title="Se rendre à cette sous section...">Requête de dédoublonnage.</li></a>
+</ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Conclusion" title="Se rendre à cette section...">Conclusion</li></a>
+</ol>
+</td></tr></table></br>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Presentation"></a>
+<p class="Texte">AVISO est une société lyonnaise de conseil en marketing. Elle réalise pour le compte de ses clients des études de marché et des opérations de fidélisation client en télémarketing. Pour ces opérations, il était donc nécessaire de constituer des fichiers clients voire de les enrichir à partir de données extérieures (données socio-économiques d'une ville ou d'une région par exemple).</p>
+<p class="TexteI"><img src="../Pictures/Aviso_Logo.jpeg"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+<a name="Section2"></a>
+<p class="Texte">Ma mission consistait notamment à créer ces fichiers selon des critères transmis par le responsable de l'étude. Ces fichiers devaient ensuite servir de support pour la réalisation de l'étude (enquête) ou de l'opération de télémarketing (campagne d'appels téléphoniques). Ces critères marketing étaient variés et allaient de la tranche d'âge, du sexe, à la région d'habitation...</p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+<a name="Section3"></a>
+<a name="Section31"></a>
+<p class="Texte">Ces fichiers au format CVS ou texte brut étaient extraits à partir d'une base de données Access par le biais de requête SQL élaborées. Voici par exemple un aperçu d'une requête pour extraire la liste des clients ayant commandé au cours de l'année auprès d'une société de vente par correspondance :</p>
+<p class="TexteI"><img src="../Pictures/SQL_Requete.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+<a name="Section32"></a>
+<p class="Texte">Il était nécessaire également de dédoublonner les fichiers pour éviter les multiples appels aux mêmes foyers (dans le cas de concubinage par exemple - il y a deux noms différents pour un seul numéro de téléphone) :</p>
+<p class="TexteI"><img src="../Pictures/SQL_Requete2.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+<a name="Conclusion"></a>
+<p class="Texte">Par ailleurs, des requêtes de non correspondance (par jointure externe droite ou gauche) étaient réalisées pour vérifier les mouvements de population entre fichiers de même source, mais de date différente (par exemple par rapport au fichier de l'année N-1, le fichier de l'année N de la société X sera enrichi de nouveaux clients mais expurgé des clients décédés ou partis à la concurrence). </p>
+<p class="Texte">Les données de mouvement de population servaient principalement pour les rapports post-campagne et notamment pour le calcul de ratios ou de statistiques. L'élaboration de ces requêtes nécessitaient donc une certaine connaissance des bases de données et du langage SQL, ainsi qu'un peu de bon sens marketing...</p>
+</br>
+<p class="Paragraphe1"><a class="PDF" href="/PDF/Aviso_SQL.pdf">Version en PDF</a></p>
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+</br>
+</body>
+</html>

@@ -1,0 +1,60 @@
+PROC MEANS Data=Training.BOX_PLOT N noprint;
+VAR Sawstep;
+Class num_Semaine;
+Output out=Training.Fabien_Resultats_Means N=Effectif;
+Run;
+Data TRaining.fabien_resultats_means;
+SET TRAINING.FABIEN_RESULTATS_MEANS;
+if Num_Semaine ne . Then output;
+RUN;
+
+Proc Sort Data=Training.Fabien_Resultats_Means;
+BY Descending Effectif ;
+RUN;
+
+/*PROC PRINT data=Training.Fabien_Resultats_Means (obs=2);
+RUN;
+Data Training.fabien_resultats_means_final ;
+SET TRAINING.FABIEN_RESULTATS_MEANS (obs=2);
+RUN;*/
+
+Data _NULL_;
+Set TRAINING.FABIEN_RESULTATS_MEANS_Final;
+if _N_ = 1 then call symput('s1',compress(Num_Semaine));
+if _N_ = 2 then call symput('s2',compress(Num_Semaine));
+if _N_ <= 2 then output;
+RUN;
+
+Data TRaining.Fabien_Pre_boxPlot;
+SET Training.Box_Plot;
+Where Num_Semaine = &s1 
+   or Num_Semaine = &s2;
+RUN;
+TITLE1 "Numéro de semaine &s1 et &s2";
+TITLE2 'Pour les deux sous groupes les plus représentés';
+FOOTNOTE 'Formation Soladis';
+Proc BoxPlot data=TRaining.Fabien_Pre_boxPlot;
+PLOT (SawStep Thickn TTV) * Num_Semaine;
+Inset 
+      mean='Moyenne'
+	  stddev='Ecart-type'/
+	  format=6.2 
+	  cshadow=black 
+	  position=n
+	  cfill=antiquewhite;
+Insetgroup
+	  mean='Moyenne'
+	  N='Effectif'
+	  Q1='1er quartile'
+	  Q3='3ème quartile'/
+	  format=6.2 
+	  position=bottom
+	  ctext=bib;
+RUN;
+
+
+
+
+
+
+

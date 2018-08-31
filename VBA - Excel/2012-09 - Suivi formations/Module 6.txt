@@ -1,0 +1,370 @@
+Function Stats()
+
+Dim Statistiq(1 To 12) As Integer
+Dim annee(1 To 12) As Integer
+
+annee(1) = 2009
+annee(2) = 2010
+annee(3) = 2011
+annee(4) = 2012
+annee(5) = 2013
+annee(6) = 2014
+annee(7) = 2015
+annee(8) = 2016
+annee(9) = 2017
+annee(10) = 2018
+annee(11) = 2019
+annee(12) = 2020
+
+Select Case ActiveSheet.index
+        Case 1: delai_b = delai_base_COFRAC
+                delai_u = delai_urgent_COFRAC
+                intitule_Formation = "COFRAC"
+        Case 2: delai_b = delai_base_BPL
+                delai_u = delai_urgent_BPL
+                intitule_Formation = "BPL"
+        Case 3: delai_b = delai_base_BPL
+                delai_u = delai_urgent_BPL
+                intitule_Formation = "BPF"
+    End Select
+
+For i = 6 To 200
+    For j = 1 To UBound(annee)
+        If Year(Cells(i, 25).value) = annee(j) Then
+            Statistiq(j) = Statistiq(j) + 1
+        End If
+    Next j
+Next i
+
+For j = 1 To UBound(annee)
+    If (Statistiq(j) > 0) Then
+        Msg = Msg & " - " & annee(j) & " : " & Statistiq(j) & " formations " & intitule_Formation & " planifiées." & Chr(10)
+    End If
+Next j
+
+MsgBox Msg
+
+End Function
+
+Function Check_User(Name As String, Plage As String, Feuille As String)
+
+Dim x As Range
+Dim flag As Boolean
+
+With Worksheets(Feuille).Range(Plage)
+    Set x = .Find(Name, LookIn:=xlValues, LookAt:=xlWhole)
+End With
+
+If x Is Nothing Then
+    flag = False
+    Else: flag = True
+End If
+    
+Check_User = flag
+
+End Function
+
+Public Sub Desactiver()
+
+With ActiveSheet
+    .EnableSelection = xlNoSelection
+End With
+
+End Sub
+
+Public Sub Activer()
+
+With ActiveSheet
+    .EnableSelection = xlNoRestrictions
+End With
+
+End Sub
+
+Public Sub Deproteger()
+
+If ActiveSheet.ProtectContents = True Then
+    ActiveSheet.Unprotect Password = "croco"
+End If
+
+End Sub
+
+Public Sub Proteger()
+
+If ActiveSheet.ProtectContents = False Then
+With ActiveSheet
+    .EnableSelection = xlNoRestrictions
+End With
+ActiveSheet.Protect Password = "croco"
+End If
+
+End Sub
+
+Function Rang_Zone(value As String)
+
+tampon = 1
+
+For i = 1 To UBound(Zone)
+    If Trim(value) = Trim(Zone(i)) Then tampon = i
+Next i
+
+Rang_Zone = tampon
+
+End Function
+
+Sub AfficherNormal()
+
+ActiveWindow.View = xlNormalView
+
+End Sub
+
+Function Compte(ByRef cont As Variant)
+
+i = 0
+
+Start = 6
+
+Do While (Not (IsEmpty(Cells(Start, 1))))
+    i = i + 1
+    'MsgBox "N° " & num & " - " & "Saut de ligne n° " & i & " - Position : " & InStr(Start, cont, Chr(10))
+        Liste_Fiche(i) = Cells(Start, 1).value
+        Start = Start + 1
+Loop
+
+Compte = i
+
+End Function
+
+Function Init()
+
+For k = 1 To N_fiche
+    Liste_Fiche(k) = ""
+Next k
+
+End Function
+
+Sub Action_Supprimer(ByVal num As Integer)
+
+Type_fiche = num
+
+N_fiche = Compte(num)
+
+    Select Case Type_fiche
+    Case 1:
+        Aff_Menu_Fiche = False
+        Aff_Suppression_Fiche = True
+        Aff_Creation_Fiche = False
+        Aff_Reintegration = False
+    Case 2:
+        Aff_Menu_Fiche = False
+        Aff_Suppression_Fiche = False
+        Aff_Creation_Fiche = False
+        Aff_Reintegration = True
+    End Select
+    
+    MonRuban.Invalidate
+    Call Desactiver
+
+End Sub
+
+Function Ajouter_Fiche(ByVal num As Integer)
+
+Call Deproteger
+
+Type_fiche = num
+
+Select Case Type_fiche
+Case 1
+    Ajout = "FA-"
+Case 2
+    Ajout = "EC-"
+Case 3
+    Ajout = "FT-"
+Case 4
+    Ajout = "MS-"
+End Select
+
+Ajout = Ajout & Mid(Application.UserName, 1, 1) & Mid(Application.UserName, InStrRev(Application.UserName, " ") + 1, 1)
+Ajout = Ajout & "-" & Day(Date) & Right(0 & Month(Date), 2) & Right(Year(Date), 2)
+
+Cells(9, 5 + Type_fiche).value = Cells(9, 5 + Type_fiche).value + 1
+Ajout = Ajout & "-" & 1000 + Cells(9, 5 + Type_fiche)
+
+contenu = Cells(ActiveCell.Row, 5 + Type_fiche).value
+
+If Len(Trim(contenu)) <= 1 Then
+        contenu = ""
+        Prems = ""
+Else: Prems = Chr(10)
+End If
+
+contenu = contenu & Prems & Ajout
+Cells(ActiveCell.Row, 5 + Type_fiche).value = contenu
+
+Ajouter_Fiche = Ajout
+Call Proteger
+
+End Function
+
+Sub Action_Ajouter_fiche(ByVal num As Integer)
+
+Type_fiche = num
+tampon = Ajouter_Fiche(Type_fiche)
+
+If tampon <> "" Then
+    MsgBox ("La " & Intitule_fiche(Type_fiche) & " n° " & tampon & " a été ajoutée !!! ")
+    Aff_Menu_Fiche = True
+    Aff_Suppression_Fiche = False
+    Aff_Creation_Fiche = False
+    MonRuban.Invalidate
+    Call Activer
+Else: MsgBox ("Aucune " & Intitule_fiche(Type_fiche) & " n'a été ajoutée - Veuillez recommencer !!! ")
+End If
+
+End Sub
+
+Sub Suppression_fiche(ByVal num As Integer, index As Integer)
+
+Call Deproteger
+
+Cells(Num_Salarie_Selec + 6, 16).value = False
+Cells(Num_Salarie_Selec + 6, 1).Select
+With Selection.Font
+        .Strikethrough = True
+End With
+With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = -0.149998474074526
+        .PatternTintAndShade = 0
+End With
+
+N_fiche = 0
+Num_Salarie_Selec = 0
+
+Call Proteger
+Call Activer
+
+Call Init
+
+N_fiche = 0
+Fiche_Selection = 0
+
+Aff_Menu_Fiche = True
+Aff_Creation_Fiche = False
+Aff_Suppression_Fiche = False
+Choix_supprimer_Fiches = False
+Aff_Reintegration = False
+MonRuban.Invalidate
+
+End Sub
+
+Public Function Export()
+
+    On Error GoTo GestionErreur
+    
+    Worksheets("JLog").Visible = True
+    Worksheets("JLog").Select
+
+    Chemin = ActiveWorkbook.Path
+    Name = Chemin & "\Export Tracking-" & Day(Date) & "-" & Month(Date) & "-" & Year(Date) & ".pdf"
+    'MsgBox (Name)
+    ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:= _
+        Name, Quality:= _
+        xlQualityStandard, IncludeDocProperties:=True, IgnorePrintAreas:=False, _
+        OpenAfterPublish:=True
+    
+    Worksheets("JLog").Visible = False
+    Worksheets("Suivi").Select
+        
+     Export = True
+     Exit Function
+     
+GestionErreur:
+    Worksheets("JLog").Visible = False
+    Worksheets("Suivi").Select
+    Export = False
+    
+End Function
+
+Public Function Tracking(ByVal id As Integer, numero As Variant)
+    
+    Dim Tracking_Msg, Message As String
+    Dim i, j, a, b As Integer
+    Dim Track_List(1 To 100, 1 To 10) As Variant
+    Dim Intitule(1 To 12) As String
+    
+    On Error GoTo GestionErreur
+    
+    i = 3
+    j = 1
+    a = 0
+    
+    Intitule(1) = "N° Anomalie - Date Détection - Zone - Etude"
+    Intitule(2) = "N° fiche d'anomalie"
+    Intitule(3) = "Date de détection"
+    Intitule(4) = "Code Zone"
+    Intitule(5) = "Numéro Etude"
+    Intitule(6) = "Fiche d'autopsie"
+    Intitule(7) = "Fiche examen clinique"
+    Intitule(8) = "Fiche de traitement"
+    Intitule(9) = "Mesure sanitaire"
+    Intitule(10) = "Date de cloture de la fiche "
+    Intitule(11) = "Verrouillage de l'anomalie"
+    
+    Worksheets("JLog").Visible = True
+    Worksheets("JLog").Select
+    
+    Do While (Cells(i, j).value <> "")
+        If Cells(i, 2).value = id Then
+            a = a + 1
+            Message = ""
+            'Titre = "Anomalie n° " & numero & Chr(10) & Chr(10)
+            Message = Message & Cells(i, 3).value & " par " & Cells(i, 1).value
+            Message = Message & " le " & Format(Cells(i, 4).value, "dd/mm/yyyy") & " à " & Format(Cells(i, 5).value, "hh:mm:ss")
+            Track_List(a, 1) = Message
+            Track_List(a, 2) = "- Champ concerné : " & Intitule(Cells(i, 6).value + 1)
+            Track_List(a, 3) = "    - Valeur Saisie : " & Cells(i, 7).value
+            Track_List(a, 4) = "    - Valeur Modifiée : " & Cells(i, 8).value
+        End If
+    i = i + 1
+    Loop
+        
+    If a > 0 Then
+        Msg = a & " Tracking pour l'anomalie n° " & numero & " : "
+        For b = 1 To a
+            Tracking_Msg = ""
+            Tracking_Msg = Tracking_Msg & Chr(10) & Chr(10)
+            Tracking_Msg = Tracking_Msg & Track_List(b, 1) & Chr(10)
+            Tracking_Msg = Tracking_Msg & Track_List(b, 2) & Chr(10)
+            Tracking_Msg = Tracking_Msg & Track_List(b, 3) & Chr(10)
+            Tracking_Msg = Tracking_Msg & Track_List(b, 4) & Chr(10)
+            Tracking_Msg = Tracking_Msg & "-----------------------------------------------------------------------------------"
+            Msg = Msg & Tracking_Msg
+        Next b
+    Else: Msg = "Aucun tracking enregistré pour l'anomalie n° " & numero & " !!!"
+    End If
+        
+    Worksheets("JLog").Visible = False
+    Worksheets("Suivi").Select
+    Aff_Menu_Tracking = True
+    MonRuban.Invalidate
+    Call Activer
+        
+    MsgBox Msg
+        
+     Tracking = True
+     Exit Function
+     
+GestionErreur:
+    MsgBox (Err.Description & Err.Source)
+    Worksheets("JLog").Visible = False
+    Worksheets("Suivi").Select
+    Aff_Menu_Tracking = True
+    MonRuban.Invalidate
+    Call Activer
+    Tracking = False
+End Function
+
+
+

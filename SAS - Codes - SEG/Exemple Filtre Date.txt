@@ -1,0 +1,6 @@
+SASApp:RE_FIN.DTM_FI_CA_PERIODE filtré par datepart(t_ddat) >= mdy(8,18,2017)
+SASApp:RE_FIN.DTM_FI_CA_PERIODE filtré par DATEPART(t_ddat) >= INTNX('month', DATE(), -1)
+SASApp:RE_FIN.DTM_FI_CA_PERIODE filtré par intck('year',datepart(t_lcod),datepart(t_ddat)) = 0
+
+
+

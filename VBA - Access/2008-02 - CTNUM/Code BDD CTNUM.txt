@@ -1,0 +1,23 @@
+Formulaire : Top Client
+
+Default View: Continuous
+Cycle: All Records
+
+OnClick :
+    stDocName = "Marketing Client"
+    stLinkCriteria = "[Code Client]=" & Me![Code Client]
+    DoCmd.OpenForm stDocName, , , stLinkCriteria
+
+Formulaire : Marketing Client
+
+Sous Formulaire : Marketing Formulaire
+
+Source Object : Marketing Formulaire
+Link Master fields : Code Client
+Link Child fields : N° Client
+
+Marketing Formulaire : Marketing 2 (requête)
+
+SELECT Produit.[Code Produit], Produit.[Nom Produit], [Ligne Commande].Quantité, [Ligne Commande].[N° Commande], Commande.[N° Client], Commande.Date, Produit.[Prix Produit], [Ligne Commande].Quantité, [Prix Produit]*[Quantité] AS Total, Produit.Recette, Produit.Stati1, Produit.Stati2, Produit.Stati3
+FROM (Produit INNER JOIN [Ligne Commande] ON Produit.[Code Produit] = [Ligne Commande].[Code Produit]) INNER JOIN Commande ON [Ligne Commande].[N° Commande] = Commande.[N° Commande];
+

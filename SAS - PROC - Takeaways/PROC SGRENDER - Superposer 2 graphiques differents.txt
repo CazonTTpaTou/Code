@@ -1,0 +1,37 @@
+Proc sort data=Training.multivariee_courant nodupkey out=wORK.SANSdOUBLON;
+BY Serial;
+
+Data Work.sansdoublon;
+set work.sansdoublon;
+if serial="" Then delete;
+call symput(compress("numdelot"||_N_),serial);
+run;
+
+Proc Sql;
+SELECT count(*) 
+	INTO :Nobs
+	FROM Work.sansdoublon;
+RUN;
+DATA Work.Matable;
+SET TRAINING.MULTIVARIEE_COURANT;
+%do indice=1 %to %nobs;
+	if Serial="&&numdelot&indice" then &indice=&indice+0.1*RANNOR(0);
+%end;
+run;
+proc template;
+     define statgraph Nuage ;
+     begingraph;
+          layout overlay / x2axisopts=(display=(line) 
+                               linearopts=(viewmin=1 viewmax=&nobs));
+                boxplot x=LATF y=sawedge /display=(caps mean median) 
+                                                         fillattrs=(color=white);
+				%do i=1 %to &nobs;
+					scatterplot x=S&i y=rend markerattra=(color=blue);
+				%end;
+			endlayout;
+%essai;
+
+
+
+			
+	

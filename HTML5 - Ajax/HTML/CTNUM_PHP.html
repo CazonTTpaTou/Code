@@ -1,0 +1,127 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<link rel="stylesheet" type="text/css" href="./Presentation.css"></link>
+<script src="fonctions_JS.js" type="text/javascript"></script>
+<title>CTNUM - PHP</title>
+</head>
+
+<body class="Vert" >
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+<p class="Paragraphe1"><a class="PDF" href="../PHP/CTNUM.php">Version en PDF</a></p>
+<H1><div><span class="Titre2">▼ RÉALISATION APPLICATION EN PHP/ MySQL ▼ </br> DE GESTION COMMERCIALE </span></div></H1>
+<p class="TexteI"><img src="../Pictures/Click_Fam_4.JPG"/></p>
+</br>
+
+<table class="sommaire">
+  <tr><td>
+  <center><span class="titre_sommaire">► Sommaire ◄</span><center>
+<ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Presentation" title="Se rendre à cette section...">Présentation de la société.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section2" title="Se rendre à cette section...">Explication de la mission.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section3" title="Se rendre à cette section...">Quelques exemples d'IHM de l'application.</li></a></li>
+<ol start="31">
+             <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section31" title="Se rendre à cette sous section...">Enregistrement d'une commande.</li></a>
+	     <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section32" title="Se rendre à cette sous section...">Enregistrement d'un destinataire.</li></a>
+	      <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section33" title="Se rendre à cette sous section...">Gestion de la logistique.</li></a>
+	      <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section34" title="Se rendre à cette sous section...">Lancement d'une impression.</li></a>
+	      <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section35" title="Se rendre à cette sous section...">Edition des bordereaux de livraison.</li></a>
+	      <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section36" title="Se rendre à cette sous section...">Edition de factures client.</li></a>
+</ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section4" title="Se rendre à cette section...">Langage de programmation.</li></a></li>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section5" title="Se rendre à cette section...">Menu de l'application.</li></a></li>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section6" title="Se rendre à cette section...">Environnement de développement.</li></a></li>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section7" title="Se rendre à cette section...">Diagramme de classes.</li></a></li>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section8" title="Se rendre à cette section...">Influence sur les processus.</li></a></li>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Conclusion" title="Se rendre à cette section...">Conclusion</li></a>
+</ol>
+</td></tr></table></br>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Presentation"></a>
+<p class="Texte">CTNUM est une entreprise spécialisée dans l'édition numérique et plus spécialement dans l'impression numérique à la demande de documents en petite quantité. Afin de réaliser des économies de transport, la société propose en plus de ses services d'impression, des prestations de diffusion logistique. </p>
+<p class="TexteI"><img src="../Pictures/CTNUM_Logo.JPG" /</p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section2"></a>
+<p class="Texte"">Par exemple, un client éditeur de notices pour matériel médical pouvait par exemple demander l'édition d'une centaine de modes d'emploi. CTNUM imprimait alors les documents et les stockait. A chaque fois que le client éditeur recevait une commande d'une clinique, il transmettait cette dernière à CTNUM qui se chargeait du conditionnement et de la livraison directe à l'établissement hospitalier.  </p>
+<p class="Texte">Les échanges entre CTNUM et ses clients se faisaient par fax. Cependant, un mode de communication plus efficient fut envisagé. La mission de mon stage fut donc de réaliser un outil sous PHP hébergé sur un serveur Web qui permettrait aux clients de la société de passer directement leurs commandes par le biais de leur navigateur Internet, mais également de gérer les renseignements concernant leurs clients et leurs produits. </p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section3"></a>
+<p class="Texte">La mise en place de cet outil était inspirée des Web services en mode architecture REST, qui permettent d'invoquer des méthodes et procédures à distance. Voici l'interface Web par lequel le client pouvait enregistrer sa commande:</p>
+<a name="Section31"></a>
+<p class="TexteI"><img src="../Pictures/CTNUM_19.JPG"/></p>
+<a name="Section32"></a>
+<p class="Texte">Lorsque les références du destinataire n'étaient pas encore enregistrées, elles pouvaient être saisies par le biais de l'interface graphique suivante sur le navigateur Internet du poste client: </p>
+<p class="TexteI"><img src="../Pictures/CTNUM_4.JPG"/></p>
+<a name="Section33"></a>
+<p class="Texte">L'opérateur responsable de la logistique de CTNUM pouvait ensuite avoir accès à la commande saisie par son client pour l'expédier par l'intermédiaire de l'écran suivant (gestion des expéditions) :</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_13.JPG"/></p>
+<a name="Section34"></a>
+<p class="Texte">Une fois les commandes choisies, une macro Postscript pouvait être lancée vers les pilotes des machines d'impression :</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_14.JPG"/></p>
+<a name="Section35"></a>
+<p class="Texte">Un récapitulatif des adresses à livrer était proposé en PDF afin de pouvoir servir de bordereau d'expédition pour le service logistique:</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_15.JPG"/></p>
+<a name="Section36"></a>
+<p class="Texte">Dans le même temps, par le biais d'un appel de Web Service, l'application permettait d'éditer une facture client en double exemplaire, destinée à la fois au service comptabilité de CTNUM ainsi que celui du client: </p>
+<p class="TexteI"><img src="../Pictures/CTNUM12.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section4"></a>
+<p class="Texte">L'application a été développée en langage PHP, Javascript, CSS et XHTML :</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_8.JPG"/></p>
+<p class="Texte">Une grande part des fonctionnalités des interfaces graphiques étaient développées selon la technologie AJAX, combinant langage PHP et JavaScript, comme par exemple le système du menu principal, qui ne nécessitait pas un rafraichissement de la page Web à chaque nouveau choix de l'utilisateur:</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_1.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section5"></a>
+<p class="Texte">A partir d'un navigateur internet, le menu de l'application permettait les opérations suivantes à partir de n'importe quel poste pourvu d'un navigateur Internet et d'une connexion réseau:</p>
+<div style="margin-left:10em;">
+<ol class="Texte">
+<li style="font-size:14pt;text-align:left">enregistrer les commandes clients,</li>
+<li style="font-size:14pt;text-align:left">gérer le fichier client, </li>
+<li style="font-size:14pt;text-align:left">gérer le référencement des produits, </li>
+<li style="font-size:14pt;text-align:left">gérer le stock, la réception des marchandises et les expéditions, </li>
+<li style="font-size:14pt;text-align:left">piloter des mailings,</li>
+<li style="font-size:14pt;text-align:left">éditer des rapports statistiques.</li>
+</ol>
+</div>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section6"></a>
+<p class="Texte">L'applicatif a été développé par le biais de l'IDE NotePad ++ :</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_9.JPG"/></p>
+<p class="Texte">La base de données était implémentée sous MySQL et était gérée par le biais de PHP_MyAdmin :</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_0.JPG"/></p>
+<ul type="none" class="Texte">Cette base de données était herbergée sur un serveur d'applications MySL. Elle comportait :
+<li></br></li>
+<li class="ParagrapheMacros">■ 50 tables, </li>
+<li class="ParagrapheMacros">■ 10 vues, </li>
+<li class="ParagrapheMacros">■ 12 triggers, </li>
+<li class="ParagrapheMacros">■ 5 procédures stockées en PL/ SQL. </li></ul>
+<p class="TexteI"><img src="../Pictures/CTNUM_33.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section7"></a>
+<p class="Texte">Le diagramme de classes UML de l'application se déclinait selon le schéma suivant : </p>
+<p class="TexteI"><img src="../Pictures/CTNUM_31.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section8"></a>
+<p class="Texte">En outre, l'application permit notamment d'améliorer la productivité des opérateurs chargés de la logistique des commandes. En effet, cet applicatif permettait de simplifier le processus de gestion des commandes, comme le montre le schéma suivant :</p>
+<p class="TexteI"><img src="../Pictures/CTNUM_Java_01.JPG"/></p>
+<p class="TexteI"><img src="../Pictures/CTNUM_Java_02.JPG"/></p>
+<p class="TexteI"><img src="../Pictures/CTNUM_Java_03.JPG"/></p>
+
+<a name="Conclusion"></a>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+<p class="Texte">La logique de cet applicatif était calquée sur le mode SAAS du cloud computing, qui permet à plusieurs utilisateurs d'accéder à une application hébergée sur un serveur distant par le biais d'un simple navigateur Internet. Dans le contexte d'utilisation de l'entreprise, ce mode d'architecture logicielle permit d'importants gain de productivité. </p>
+<p class="Texte">C'est pourquoi, au final, la direction de CTNUM fut très satisfaite de cette application car elle simplifiait le processus de gestion des commandes qui devint de ce fait plus efficient avec, à la clé, des gains de temps conséquents qui furent mis à profit pour améliorer la qualité du service logistique de l'entreprise...   </p>
+</br>
+<p class="Paragraphe1"><a class="PDF" href="../PHP/CTNUM.php">Version en PDF</a></p>
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+</br>
+</body>
+</html>

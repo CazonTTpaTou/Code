@@ -1,0 +1,17 @@
+proc copy in=DTM_PRO out=WORK force ;
+select DTM_PRO_TBO_PVA;
+select DTM_PRO_TRAC_CEL;
+select DTM_PRO_TRAC_CEL_TRIEES;
+select DTM_PRO_TRAC_LINGOTS;
+select DTM_PRO_TRAC_WAFERS;
+run;
+
+
+/*LIBNAME DTM_PRO ;
+LIBNAME DTM_TECH ;*/
+
+
+
+
+
+

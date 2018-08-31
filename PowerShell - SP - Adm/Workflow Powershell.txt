@@ -1,0 +1,186 @@
+# Script d'envoi automatique de notification lorsque un contrat juridique arrive à échéance
+
+# Auteur : Eric Wyss, pour le compte de la société Photowatt
+# Date de création : 24/02/2016
+# Date de mise à jour : 10/03/2016
+# Version 1.01
+
+$url = "http://intranet.photowatt.local/juridique"
+$contrats = "Contrats"
+$listeDiffusion = "Listes de diffusion"
+
+$smtp = "smtp.photowatt.com"
+$from = "intranet@photowatt.com"
+$Global:body = ""
+$anonUsername = "anonymous"
+$anonPassword = ConvertTo-SecureString -String "anonymous" -AsPlainText -Force
+$anonCredentials = New-Object System.Management.Automation.PSCredential($anonUsername,$anonPassword)
+
+$ver = $host | select version
+if ($ver.Version.Major -gt 1) {$Host.Runspace.ThreadOptions = "ReuseThread"}
+Add-PsSnapin Microsoft.SharePoint.PowerShell
+Set-Location $home
+
+function setBody ($dateExpiration, $nom, $objet)
+{
+
+    $lineA1 = "Bonjour,"
+    $lineB1 = "Le contrat suivant arrive bientôt à échéance :"
+
+    $lineC1 = "- Date expiration : $dateExpiration"
+    $lineC2 = "- N° du contrat : $nom"
+    $lineC3 = "- Objet du contrat : $objet"
+
+    $lineD1 = "Bonne journée."
+    $lineE1 = "Cordialement."
+    $lineF1 = "L'équipe Juridique"
+
+    $groupe1 = "$lineC1`n$lineC2`n$lineC3"
+    $Global:body = "$lineA1`n`n$lineB1`n`n$groupe1`n`n$lineD1`n`n$lineE1`n`n$lineF1"
+}
+
+function Convert-StringToDateTime ($DateTimeStr)
+{
+# Converts from French to US date format (dd/mm/yyyy to mm/dd/yyyy)
+$DateTimeParts = $DateTimeStr -split '/'
+return $DateTimeParts[1]+'/'+$DateTimeParts[0]+'/'+$DateTimeParts[2]
+}
+
+
+function sendNotification ($document, $firstSecond)
+{
+
+  # Récupérer le contenu du champ Notification
+  $emails = @();
+  $notifColl = $document["Notification"] -as [Microsoft.SharePoint.SPFieldLookupValueCollection]
+  foreach ($notif in $notifColl)
+  {
+      
+      #Write-Host "notif =" $notif.LookupValue;
+      $ld = $w.lists[$listeDiffusion];
+	  foreach ($item in $ld.Items)
+	{
+    if ($item["Title"] -eq $notif.LookupValue) 
+	{ 
+        #Write-Host "Elément " $notif.LookupValue " trouvé dans liste de diffusion";
+		if (($item["Emails"] -ne $null) -and ($item["Emails"].length -gt 0))
+		{
+        Write-Host "Emails : " $item["Emails"]
+		[string[]]$emails2 = $item["Emails"].Split(';');
+		foreach ($em in $emails2) { $emails += $em }
+		}
+	}
+	}
+  }
+  
+  if ($emails.length -eq 0) { return }
+
+  # Envoyer un email de notification
+  Write-Host "Pour " $document.Name " , notification à " $emails.Length " personne(s)"
+
+  if ($firstSecond -eq "First")
+  {
+	$sub = "Première notification pour contrat juridique " + $document.Name
+  }
+  else
+  {
+	$sub = "RAPPEL : Deuxième notification pour contrat juridique " + $document.Name
+  }
+  $encoding=[System.Text.Encoding]::UTF8
+
+  # Composer le corps du texte
+  #Write-Host "Date expiration :" $document["Date expiration"].ToLongDateString()
+  #Write-Host "N° du contrat :" $document["Nom"]
+  #Write-Host "Objet du contrat :" $document["Objet du contrat (Agreement's object / Gegenstand des Auftrags)"]
+  setBody $document["Date expiration"].ToLongDateString() $document["Nom"] $document["Objet du contrat (Agreement's object / Gegenstand des Auftrags)"]
+  
+
+  $c1 = $Error.Count
+  Write-Host "Envoi email notification " $document.Name " / Niveau : " $firstSecond
+  send-MailMessage -SmtpServer $smtp -To $emails -Subject $sub -Body $Global:body -From $from -credential $anonCredentials -Encoding $encoding
+  $c2 = $Error.Count
+  
+  # Si envoi sans erreur, mettre à jour le champ de première notification
+  if ($c1 -eq $c2)
+  {
+    if ($firstSecond -eq "First")
+	{
+		 $document["Premiere Notification Envoyee"] = [System.DateTime]::Now
+		# $document["PDF - Lancement"] = "OK"
+
+		$site = Get-SPSite "http://intranet.photowatt.local"
+
+		$manager=$site.WorkFlowManager
+
+		$wfToStart = "Notification Expiration"
+
+		$association=$doclib.WorkFlowAssociations | where {$_.Name -eq $wfToStart}
+		# $association.AllowAsyncManualStart = $true
+		# $association.AllowManual = $true
+
+		# $assoc=$doclib.WorkflowAssociations["Notification Expiration"]
+		
+		$data=$association.AssociationData
+
+		$wf=$manager.StartWorkFlow($doc, $association, $data)
+
+	}
+	else
+	{
+		$document["Deuxieme Notification Envoyee"] = [System.DateTime]::Now
+	}
+    $document.Update()
+    Write-Host "Envoi email de notification sans erreur";
+  }
+  else
+  {
+    Write-Host "Erreur lors de l'envoi de la notification"
+  }
+}
+
+
+$cc1 = $Error.Count
+$w = get-spweb $url 
+$doclib = $w.lists[$contrats]
+foreach ($doc in $doclib.Items)
+{
+  
+  # Regarder si'il s'agit d'un contrat principal
+  # Un contrat est principal lorsque la colonne "Contrat Racine" est vide
+  $contratRacine = $doc["Contrat Racine"];
+  if (($contratRacine -eq $null) -or ($contratRacine.Length -eq 0))
+{
+
+  # Récupérer la date de notification
+  $calcfield = $doc.fields["Date notification"] -as [Microsoft.SharePoint.SPFieldCalculated];
+  $frDate = $calcfield.GetFieldValueAsText($doc["Date notification"]);
+if (($frDate -ne $null) -and ($frDate.Length -gt 0))
+{
+  $usDate = Convert-StringToDateTime $frDate
+  $NotificationDate = [datetime] $usDate
+
+
+
+  # Comparer avec la date du jour dans le cas où il n'y a pas eu de première notification
+  if (((get-date) -ge $NotificationDate) -and ($doc["Premiere Notification Envoyee"] -eq $null))
+	{
+  #Write-Host $doc.Name " (" $NotificationDate ")"
+	# Envoyer un email de première notification
+	sendNotification $doc "First"
+	}
+  #sinon, comparer avec la date du jour + 15, dans le cas d'une première notification sans seconde notification
+  else
+  {
+	if (((get-date) -ge ($NotificationDate).AddDays(1)) -and ($doc["Premiere Notification Envoyee"] -ne $null) -and ($doc["Deuxieme Notification Envoyee"] -eq 
+$null))
+	{
+	  # Envoyer un email de deuxième notification
+	  sendNotification $doc "Second"
+	}
+  }
+}
+}
+}
+$cc2 = $Error.Count
+exit $cc2-$cc1
+

@@ -1,0 +1,126 @@
+LIBNAME CDSN ODBC  DATASRC=CDSN  SCHEMA=CDSN_app  USER=SASSQL  PASSWORD="{SAS002}3625302A43996237206B48FF5188832F3A71A582" ;
+
+/*
+PROC SQL;
+SELECT MAX(T1.Time) INTO : Last_Date_Import
+	FROM STATS.DATA_HENNECKE AS T1;
+RUN;
+*/
+
+PROC SQL ;
+CREATE TABLE Work.DATA_Hennecke
+AS
+
+SELECT
+
+		t1.Assemblage_Num,
+		t1.Ass_Col_Date_Poste,
+		t1.Ass_Liv_Date_Poste,
+		t1.Ass_Sci_Cause_Casse_Fil_1,
+		t1.Ass_Sci_Cause_Casse_Fil_2,
+		t1.Ass_Sci_Cause_Incident_1,
+		t1.Ass_Sci_Cause_Incident_2,
+		t1.Ass_Sci_Equipe_Debut,
+		t1.Ass_Sci_Equipement,
+		t1.Ass_Sci_Date_Heure_Fin,
+		t1.Ass_Sci_Fil_Diametre,
+		t1.Ass_Sci_Km_apres_Tension,
+		t1.Ass_Sci_Lg_Sortie_mm,
+		t1.Ass_Sci_Nb_Assemblages,
+		t1.Ass_Sci_Nb_CasseFil_E,
+		t1.Ass_Sci_Nb_CasseFil_EMS,
+		t1.Ass_Sci_Nb_CasseFil_M,
+		t1.Ass_Sci_Nb_CasseFil_S,
+		t1.Ass_Sci_Nb_Double,
+		t1.Ass_Sci_Num_Decoupe,
+		t1.Ass_Sci_Operateur_Debut,
+		t1.Ass_Sci_Pas_microns,
+		t1.Ass_Sci_Position,
+		T1.Ass_Sci_Qte_Sortie_Theo,
+		t1.Ass_Sci_Sem_Poste_Fin,
+		t1.Ass_Sci_Slurry_Densite,
+		t1.Ass_Sci_Slurry_Nb_Util,
+		t1.Ass_Sci_Type_Fil,
+		t1.Ass_Sci_Vitesse_Fil_m_par_s,
+		t1.Ass_Sci_Vitesse_Table_microns_pa,
+		t1.Lingot_Num,
+		t1.Lingot_Type,
+		t1.Type_assemblage,
+		t1.Waf_Ctrl_Annee_Poste,
+		t1.Waf_Ctrl_Date_Poste,
+		t1.Waf_Ctrl_Equipe,
+		t1.Waf_Ctrl_Mois_Poste,
+		t1.Waf_Ctrl_Qte_Rejet,
+		t1.Waf_Ctrl_Qte_Sortie,
+		t1.Waf_Ctrl_Rej_Dim,
+		t1.Waf_Ctrl_Rej_Ebrech,
+		t1.Waf_Ctrl_Rej_Epais,
+		t1.Waf_Ctrl_Rej_Ondul,
+		t1.Waf_Ctrl_Rej_Strie,
+		t1.Waf_Ctrl_Rej_TTV,
+		t1.Waf_Ctrl_Sem_Poste,	
+		t1.Waf_Net_Qte_Entree,
+		t1.Ling_Dec_Equipement,
+		t1.Ling_Fus_Equipement,
+
+		t3.Nbre_Assemblage_Decoupe,
+
+		t2.'N°Assemblage'n as N_Assemblage,
+		t2.WaferId,
+		t2.Schnitt,
+		t2.Time,
+		t2.Qual,
+		t2.Thickn,
+		t2.TTV,
+		t2.LATF,
+		t2.SawGroove,
+		t2.SawStep,
+		t2.SawEdge,
+		t2.BOW,
+		t2.Struct,
+		t2.SizeX,
+		t2.SizeY,
+		t2.Thpt,
+		t2.PL_Imp,
+		t2.PL_Int,
+		t2.PL_Disl,
+		t2.Recipe
+
+FROM
+
+		CDSN.TL_HENNECKE AS T2 
+
+		LEFT OUTER JOIN  DTM_PRO.DTM_PRO_TRAC_WAFERS AS T1 
+		 ON t2.'N°Assemblage'n =  T1.Assemblage_Num
+
+		LEFT OUTER JOIN WORK.NBRE_ASSEMBLAGE AS T3
+		 ON t1.Ass_Sci_Num_Decoupe = t3.Ass_Sci_Num_Decoupe
+
+		/*WHERE T2.Time > &Last_Date_Import;*/
+		 WHERE T2.Time > (SELECT MAX(T1.Time) FROM STATS.DATA_HENNECKE AS T1);
+
+RUN;
+
+/*PROC SQL;
+DELETE * FROM STATS.Data_Hennecke;
+RUN;
+*/
+
+PROC APPEND 
+	Data=Stats.Data_Hennecke 
+	Out=Work.Data_Hennecke;
+RUN;
+
+PROC SORT 
+Data=Work.DATA_Hennecke Out=Stats.Data_Hennecke Dupout=Work.Doublons
+Nodup;
+BY Time;
+RUN;
+
+
+
+
+
+
+
+

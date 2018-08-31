@@ -1,0 +1,23 @@
+%macro copy_PROD(bib=, tab=);
+%let path_prod=E:\Donnees_SAS_Utilisateur\Copie_Production;
+%let bib1=DS_DWH;
+%let tab1=DWH_CDSN_ASSEMBLAGE;
+%let tab2=DWH_CDSN_DECOUPE;
+%let tab3=DWH_CDSN_HENNECKE_RESULTATS;
+
+LIBNAME DS_DWH ODBC  DATASRC=DWH_PROD  SCHEMA=dbo  USER=SASSQL  PASSWORD="{SAS002}3625302A43996237206B48FF5188832F3A71A582" ;
+libname sortie "&path_prod";
+
+data sortie.&tab.;
+set &bib..&tab.;
+run;
+
+%mend;
+
+%copy_PROD(bib=DS_DWH, tab=DWH_CDSN_ASSEMBLAGE);
+%copy_PROD(bib=DS_DWH, tab=DWH_CDSN_DECOUPE);
+%copy_PROD(bib=DS_DWH, tab=DWH_CDSN_HENNECKE_RESULTATS);
+
+
+
+

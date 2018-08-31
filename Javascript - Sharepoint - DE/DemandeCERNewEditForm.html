@@ -1,0 +1,448 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="http://intranet.photowatt.local/SupplyChain/CER/WebParts/jquery-ui.min.css" />
+    <link rel="stylesheet" href="http://intranet.photowatt.local/SupplyChain/CER/WebParts/DemandeAchats/DemandeAchatNewEditForm.css" />
+    <script src="http://intranet.photowatt.local/SupplyChain/CER/WebParts/jquery-2.2.3.min.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/CER/WebParts/SPWFormV3.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/CER/WebParts/DemandeAchats/DemandeAchatNewEditForm.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/CER/WebParts/jquery-ui.min.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/CER/WebParts/jquery.ui.datepicker-fr.js"></script>          
+  
+  <script>
+        $( function() {$( "#opener" ).button(); 
+                       $( "#opener" ).click( function( event ) {
+                                                                event.preventDefault();} );
+                       } ); 
+    </script>
+  <script>
+        $( function() {$( "#opener1" ).button(); 
+                       $( "#opener1" ).click( function( event ) {
+                                                                event.preventDefault();} );
+                       } ); 
+    </script>
+  <script>
+        $( function() {$( "#opener2" ).button(); 
+                       $( "#opener2" ).click( function( event ) {
+                                                                event.preventDefault();} );
+                       } ); 
+    </script>
+  <script>
+  $( function() {
+    $( "#dialog" ).dialog({       
+      autoOpen: false,
+      show: {
+        effect: "blind",
+        duration: 1000        
+      },
+      hide: {
+        effect: "explode",
+        duration: 1000
+      }
+    });
+ 
+    $( "#opener" ).on( "click", function() {
+      $( "#dialog" ).dialog( "open" );
+    });
+  } );
+  </script>
+
+<script>
+  $( function() {
+    $( "#dialog1" ).dialog({       
+      autoOpen: false,
+      show: {
+        effect: "blind",
+        duration: 1000        
+      },
+      hide: {
+        effect: "explode",
+        duration: 1000
+      }
+    });
+ 
+    $( "#opener1" ).on( "click", function() {
+      $( "#dialog1" ).dialog( "open" );
+    });
+  } );
+  </script>
+
+<script>
+  $( function() {
+    $( "#dialog2" ).dialog({       
+      autoOpen: false,
+      show: {
+        effect: "blind",
+        duration: 1000        
+      },
+      hide: {
+        effect: "explode",
+        duration: 1000
+      }
+    });
+ 
+    $( "#opener2" ).on( "click", function() {
+      $( "#dialog2" ).dialog( "open" );
+    });
+  } );
+  </script>
+
+  <style>
+  .photo {
+    width: 300px;
+    text-align: center;
+
+  }
+  .photo .ui-widget-header {
+    margin: 1em 0;
+    font-weight:bold;
+  }
+  .map {
+    width: 550px;
+    height: 450px;
+  }
+  .maps {
+    width: 1000px;
+    height: 400px;
+  }
+  .ui-tooltip {
+    max-width: 550px;
+  }
+  </style>
+
+  <script>
+  $( function() {
+    $( document ).tooltip({
+      items: "img, [data-geo], [data-geos], [title]",
+      content: function() {
+        var element = $( this );
+        if ( element.is( "[data-geo]" ) ) {
+          var text = element.text();
+          return "<img class='map' alt='" + text +
+            "' src='http://intranet.photowatt.local/SupplyChain/CER/SiteAssets/Liste_Acheteurs.png'" +           
+            text + "'>";
+        }  
+        if ( element.is( "[data-geos]" ) ) {
+          var text = element.text();
+          return "<img class='maps' alt='" + text +
+            "' src='http://intranet.photowatt.local/SupplyChain/CER/SiteAssets/Tableau_Devise.png'" +           
+            text + "'>";
+        }        
+      }
+    });
+  } );
+  </script>
+
+</head>
+
+<body>
+
+<style type="text/css">
+  .ms-formtable
+  {display:none;}
+</style>
+
+<!--SECTION RUBAN-->
+    <div>
+    <table>
+	    <tr>
+	    <td class="da-formtitlecol1" style="width: 250px;padding:15px;"><img src="http://intranet.photowatt.local/SupplyChain/DA/WebParts/DemandeAchats/Photowatt_LogoCouleur.png" /></td>
+	    <td><input type="button" style="background: #000000;border:none;color:#FFFFFF;font:bold 12px Verdana;padding:6px 6px 6px 6px;" onclick="getLastDAs.call(oLastDAs);" value="Afficher les dernières CER"/></td>
+	    <td style="width:100px;"></td>
+            <td><select id="listeDAs"></select></td>
+            <td style="width:100px;"></td>
+	    <td><input type="button" style="background: #000000;border:none;color:#FFFFFF;font:bold 12px Verdana;padding:6px 6px 6px 6px;" onclick="copySelectedDA()" value="Copier la CER sélectionnée"/></td>
+	    </tr>
+    </table>
+    </div>
+<br/><br/>
+
+<div id="formLog2" style="color:red"></div>
+
+<!--SECTION ENTETE-->
+    <table style="width: 83%; border-width:1px;Border-style:dotted;border-color:black;border-radius:7px;" class="da-formtitle">
+            <tr>
+                <td class="da-formtitlecol2" rowspan="2"><h2 style="text-align:center;"><span style="font:bold 40px Verdana;color: #000000;text-decoration: none;text-shadow: 0 -2px 0 #222222;">DEMANDE</span>
+                                                                                        <span style="font:bold 40px Verdana;color: #000000;text-decoration: none;text-shadow: 0 -2px 0 #222222;">INVESTISSEMENT</span></h2></td>
+                <td>N° CER*:</td>
+                <td style="padding:15px;"><span class="SPWCustomForm" data-displayname="Numero demande" style="background:grey;"></span></td>
+            </tr>
+            <tr>                
+                <td>Date*:</td>
+                <td style="padding:15px;"><span class="SPWCustomForm" data-displayname="Date" style="background:grey;"></span></td>
+            </tr>
+	    <tr>                
+                <td Colspan="2" Align="center" style="padding:15px;"><a href="http://intranet.photowatt.local/qualite/SitePages/Procedures_Accueil.aspx" target="_blank"><i>Selon la procédure CER D03-P05-01 disponible sous la GED Qualité</i></a></td>
+                <td Colspan="2" Align="center" style="padding:15px;"><i>* Remplissage automatique lors de la validation</i></td>
+            </tr>
+    </table>
+<br/><br/>
+
+<!--SECTION APPROBATIONS -->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#000000;color:#FFFFFF;width:200px;border-radius:2px;border:none;" value="APPROBATEURS"/>
+    <table class="da-bloc-bleu">	
+	<tr>
+	    <td style="padding:10px;"><Label class="Libelle">Initiateur :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Demandeur" data-attrib="mandatory,currentUser" data-type="personne"></span></td>
+        </tr>
+        <tr>
+            <td style="padding:10px;"><Label class="Libelle">Responsable budget investissement :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="RespServiceAffectation" data-attrib="mandatory" data-type="personne"></span></td>
+        </tr>
+	<tr>	
+            <td style="padding:10px;"><Label class="Libelle">Directeur budget investissement :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="RespDirectionService"></span></td>
+        </tr>
+	<tr>	
+            <td style="padding:10px;"><Label class="Libelle">Acheteur concerné :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Acheteur" data-attrib="mandatory" data-type="personne"></span></td>
+        </tr>  
+        <tr>
+	    <td></td>
+            <td> 
+                 <div class="ui-widget photo">
+  			<div class="ui-widget-header ui-corner-all">
+    				<h3><a href="http://intranet.photowatt.local/SupplyChain/CER/SiteAssets/Liste_Acheteurs.png" data-geo="" target="_blank"><b>Rappel des périmètres acheteurs</b></a></h3>
+  			</div>
+		 </div> 
+            </td>
+        </tr>
+    </table>
+
+<br/>
+
+<!--SECTION DESCRIPTION CER-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#000000;color:#FFFFFF;width:200px;border-radius:2px;border:none;" value="DESCRIPTION CER"/>
+    <br/>
+        <table class="da-bloc-vert">
+	    
+            <tr>
+		<td style="padding:10px;"><Label class="Libelle">Description et justification de l'investissement :</Label></td>
+		<td style="padding:10px;"><span class="SPWCustomForm" data-displayname="Motif demande"></span></td>
+            </tr>
+	    <tr>
+		<td style="padding:10px;"><Label class="Libelle">Libellé à retenir pour fichier d’immos FA7* :</Label></td>
+                <td style="padding:10px;"><span class="SPWCustomForm" data-displayname="Libelle FASSET" data-attrib="mandatory"></span></td>            	
+            </tr> 
+	    <tr>
+                <td style="padding:10px;"><i>* Maximum de 60 caractères…</i></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>           
+        </table>
+<br/>
+
+<!--SECTION IMMOBILISATIONS-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#000000;color:#FFFFFF;width:300px;border-radius:2px;border:none;" value="RATTACHEMENT OU REMPLACEMENT"/>
+    <br/>
+        <table class="da-bloc-vert">
+	    <tr>
+		<td style="padding:10px;"><Label class="Libelle">Rattachement immobilisation existante :</Label></td>
+		<td style="padding:10px;"><span class="SPWCustomForm" data-displayname="RattachementImmoExist"></span></td>
+		<td style="padding:10px;"><Label class="Libelle">Remplacement immobilisation existante :</Label></td>
+		<td style="padding:10px;"><span class="SPWCustomForm" data-displayname="RemplacementImmoExist"></span></td>
+	    </tr>
+            <tr>		
+	    	<td style="padding:10px;"><Label class="Libelle">Libellé immobilisation concernée :</Label></td>
+		<td style="padding:10px;"><span class="SPWCustomForm" data-displayname="LibelleImmoRattachement"></span></td>
+	        <td style="padding:10px;"><Label class="Libelle">Numéro CER concernée :</Label></td>
+	        <td style="padding:10px;"><span class="SPWCustomForm" data-displayname="Numero CER Reference"></span></td>
+	    </tr>         
+        </table>
+<br/>
+
+<!--SECTION BUDGET-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#000000;color:#FFFFFF;width:200px;border-radius:2px;border:none;" value="BUDGET"/>
+    <br/>
+    <table class="da-bloc-bleu">	
+	<tr><td style="padding:10px;"><b>Accord de délégation préalable EDF ENR obligatoire si le montant est supérieur à 50k€ (direction)</b></td></tr> 
+    </table>          
+    <table class="da-bloc-bleu">
+	<tr>
+            <td style="padding:10px;"><Label class="Libelle">Code budget :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Code budget"></span></td>   
+            <td style="padding:10px;"><Label class="Libelle">Inclus au budget :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Inclus au budget"></span></td>                    
+        </tr>
+	<tr>
+	    <td style="padding:10px;"><Label class="Libelle">Libellé du budget :</Label></td>
+	    <td><span class="SPWCustomForm" data-displayname="Nom Projet" data-attrib="mandatory"></span></td>             	    
+	    <td style="padding:10px;"><Label class="Libelle">Imputation analytique :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Imputation analytique" data-source="PrimaryChoice,Imputation Analytique,Title" data-attrib="mandatory"></span></td>            
+        </tr>
+	<tr>
+	    <td style="padding:10px;"><Label class="Libelle">Emplacement géographique :</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="EmplacementGeo" data-attrib="mandatory"></span></td>
+            <td></td>                
+            <td></td>
+	</tr>
+     </table>
+<br/>     
+
+<!--SECTION FOURNISSEUR-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#000000;color:#FFFFFF;width:300px;border-radius:2px;border:none;" value="FOURNISSEUR ET INFOS DE LIVRAISON"/>
+    <br/>
+        <table class="da-bloc-bleu">
+            <tr>                
+                <td style="padding:10px;"><Label class="Libelle">Fournisseur :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="FournNom" data-attrib="mandatory"></span></td>
+                <td></td>
+                <td></td>
+            </tr> 
+	    <tr>	
+	        <td style="padding:10px;"><Label class="Libelle">Adresse livraison :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Adresse de livraison" data-attrib="mandatory"></span></td>
+	        <td style="padding:10px;"><Label class="Libelle">Date de livraison prévue :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="DateLivraisonPrevue" data-attrib="mandatory"></span></td> 
+	    </tr>  
+	    <tr>  
+                <td style="padding:10px;"><Label class="Libelle">Caution bancaire :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Caution_Bancaire"></span></td> 
+                <td style="padding:10px;"><Label class="Libelle">Conditions paiement particulières*</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Conditions_Paiement"></span></td>          		                     
+            </tr>          
+	    <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><i>* Acomptes, échéancier particulier…</i></td>
+            </tr>                     
+        </table>
+<br/>
+
+<!--SECTION PIECES JOINTES-->
+<input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#000000;color:#FFFFFF;width:300px;border-radius:2px;border:none;" value="OFFRES - 2 DEVIS NECESSAIRES A MINIMA"/>
+<br/>
+    <table class="da-bloc-vert">
+        <tr> <!-- Première ligne -->
+            <td style="padding:10px; width=190px; valign=top;" class="ms-formlabel"><div><Label class="Libelle">Documents justificatifs (CDC, devis, plans):</Label></div></td>
+            <td valign="top" class="ms-formbody" id="attachmentsOnClient" style="width: 434px"><span dir="ltr"><input type="file" name="fileupload0"  id="onetidIOFile" size="56" title="Name">              </input></span></td>
+            <td width="100px" valign="top" class="ms-formbody"><input name="FileAttachButton" type="button" value="Ajouter" onclick="OkAttach(); displayFileAttachMessage(false);" style="width: 6em; height: auto" /><span id="idSpace"></span></td>
+            <td><div id="FileAttachMessage"style="display: none; color:red;"><strong>&lt;--Cliquer sur le bouton pour insérer le document</strong></div></td>
+        </tr>
+            <tr id="idAttachmentsRow" style="display: none;"></tr>
+    </table>
+    <table>
+	    <tr>
+		<td style="padding:10px;"><Label class="Libelle">Nombre de devis :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="Nombre_Devis"></span></td>
+                <td></td>                
+                <td></td>
+            </tr>	    
+    </table>
+<br/>
+
+<!--SECTION DETAIL DE LA DEMANDE-->
+<input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#000000;color:#FFFFFF;width:200px;border-radius:2px;border:none;" value="DETAIL DEMANDE"/>
+<br/>
+    <table class="SPWChildTable" style="width:83%;border-top: 4px solid #000000;" id="DetailDA" data-listName="Demande Achats Detail" data-headerId="DetailDAHeader" data-lineId="DetailDALigne" data-keyFieldName="Numero_x0020_demande" data-guidFieldName="GuidDemande">
+    <tr id="DetailDAHeader">
+	    <th data-colId="Indice"></th>
+            <th data-inputSize="50" data-colId="Designation" data-fieldName="Designation" data-type="texte" data-attrib="tooltip">Désignation</th>
+	    <th data-inputSize="29" data-colId="Reference" data-fieldName="Reference" data-type="texte" data-attrib="tooltip">Ref fournisseur (code article)</th>
+            <th data-inputSize="5" data-colId="Qte" data-fieldName="Quantite" data-type="nombre">Qté</th>
+	    <th data-colId="Unite" data-fieldName="Unite" data-source="PrimaryChoice,Unite,Title" data-attrib="mandatory">Unité</th>	   
+	    <th data-inputSize="8" data-colId="PU" data-fieldName="Prix_x0020_unitaire_x0020_HT" data-type="nombre">Prix Unitaire H.T</th>
+	    <th data-inputSize="15" data-colId="DateLiv" data-fieldName="DureeViePrev" data-type="texte" data-attrib="tooltip">Durée d’utilisation (amortissements)</th>
+    	    <th data-colId="PT">Prix Total</th>
+	<th width="5%" data-colId="Suppr" data-type="button"></th>
+    </tr>
+    </table>
+
+    <table>
+        <tr>
+             <td><i>Cliquer sur le bouton suivant pour ajouter une nouvelle ligne de commande:</i></td>
+	     <td><button style="border:none;padding:6px 0 6px 0;border-radius:8px;background:#000000;font:bold 13px Arial;color:#FFFFFF;" type="button" onclick="addChildLine();">+ Ajouter</button></td>
+	</tr>
+    </table>
+ <br/>
+    <table>
+	<tr>
+            <td><strong>Total :</strong></td>
+            <td><span class="SPWCustomForm" data-displayname="sTotal"></span></td>
+            <td><strong>Devise :</strong></td>
+            <td><span class="SPWCustomForm" data-displayname="Devise" data-source="PrimaryChoice,Devise,Title" data-attrib="mandatory"></span></td>
+        </tr>
+        <tr> 
+            <td></td>     
+            <td style="padding:10px;"> 
+                 <div class="ui-widget photo">
+  			<div class="ui-widget-header ui-corner-all">
+    				<h3><a href="http://intranet.photowatt.local/SupplyChain/CER/SiteAssets/Tableau_Devise.png" data-geos="" target="_blank">Liste des devises</a></h3>
+  			</div>
+		 </div> 
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+
+    </table>
+<br/>
+
+<!-- SECTION - COMMENTAIRES -->
+<input type="button" style="padding: 6px 0 6px 0; font: Bold 13px Arial; background: #000000; color: #FFFFFF; width: 250px; border-radius: 2px; border: none; " value="COMMENTAIRES CER" />    
+    <table class="da-bloc-vert">	
+        <tr>
+		<td style="padding:10px;"><span class="SPWCustomForm" data-displayname="CommentairesCER"></span></td>
+        </tr>            
+    </table>
+<br/>
+
+<!-- SECTION - INSTRUCTIONS -->
+<input type="button" style="padding: 6px 0 6px 0; font: Bold 13px Arial; background: #000000; color: #FFFFFF; width: 200px; border-radius: 2px; border: none; " value="INSTRUCTIONS" />    
+    <table class="da-bloc-bleu"> 
+        <tr>
+		<td style="padding:10px;"><Label class="Libelle">Personne supplémentaire à notifier :</Label></td>
+		<td style="padding:10px;"><span class="SPWCustomForm" data-displayname="Avertir_Personne"></span></td>
+        </tr>        
+    </table>    
+    <table>
+	<tr>
+                <td style="padding:10px;"><span class="SPWCustomForm" data-displayname="EnvoiNotification"></span></td>
+		<td><strong>Je souhaite recevoir des notifications email à chacune des approbations...</strong></td>
+        </tr>
+    </table>
+<br/>
+<br/>
+    <table>
+	<tr>
+		<td>
+			<div id="dialog" title="Cinétique du circuit de validation">
+				<img src="http://intranet.photowatt.local/SupplyChain/CER/SiteAssets/Workflow_DA_Reduit.png" />  
+			</div>
+			<button id="opener">Afficher plus de détails sur le circuit de validation</button>
+ 		</td>
+		<td>
+			<div id="dialog1" title="Les différents statuts d'une CER">
+				<img src="http://intranet.photowatt.local/SupplyChain/CER/SiteAssets/Bandeau_Legende.png" />  
+			</div>
+			<button id="opener1">Afficher les différents statuts d'une CER</button>
+		</td>
+
+		<td>
+			<div id="dialog2" title="Les différents temps de traitement">
+				<img src="http://intranet.photowatt.local/SupplyChain/CER/SiteAssets/Instructions.png" />  
+			</div>
+			<button id="opener2">Afficher les différents temps de traitement</button>
+		</td>
+   </table>
+<br/>
+<br/>
+<!-- SECTION - CORRECTION DU FORMULAIRE-->
+    <table>
+        <tr>
+            <td colspan="2"><div id="formLog" style="color:red"></div></td>
+        </tr>
+    </table>
+<br/>
+<div>
+<span style="display: none;" class="SPWCustomForm" data-displayname="Direction" data-source="PrimaryChoice,DirectionService,Title" data-attrib="mandatory"></span>
+<span style="display: none;" class="SPWCustomForm" data-displayname="Service" data-source="SecondaryChoice,DirectionService,Direction,Service" data-attrib="mandatory"></span>
+</div>
+</body>
+</html>
+

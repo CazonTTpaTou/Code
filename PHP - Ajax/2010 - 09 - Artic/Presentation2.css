@@ -1,0 +1,91 @@
+* { font-size:12px; font-family:times-new-roman; } 
+
+.Intro {position: absolute; 
+	top:0%; left:0%;
+	height:100%;
+	width:30%;}
+
+.tabl {color:#FFFFFF;
+       background-color:#000000;
+       width=25%;height=20%;
+       font-weight:bold;}
+
+.tabl1 {color:#FFFFFF;
+       background-color:#FFFFFF;
+	width=75%;height=20%;
+	font-weight:bold;}
+
+.tabl2 {color:#FFFFFF;
+       background-color:#A9A9A9;
+       width=25%;height=20%;
+       font-weight:bold;
+	}
+
+.fond1 {
+	background-color:#A9A9A9;
+	color:#FFFFFF;}
+
+.fond2 {background-color:#FFFFFF;
+	color:#000000;}
+
+.fond3 {background-color:#FA8072;}
+
+.princ {position: absolute; 
+	top:5%; left:25%;
+	width:65%;
+	height:95%;
+	//overflow:scroll;
+	}
+
+.princ_livre {position: absolute; 
+	top:5%; left:25%;
+	width:65%;
+	height:95%;
+	overflow:scroll;
+	}
+
+.Message {position: absolute; 
+	top:3%; left:90%;
+	font-weight:bold;
+	font-size=30px;}
+
+.dernier {position: absolute; 
+	top:43%; left:55%;
+	text-align:right;
+	font-weight:bold;
+	font-size=30px;
+	}
+
+.libelle {position: relative; 
+	 left:5%;}
+	   
+.champs {position: relative;
+	 left:20%;}
+
+.ListeC {position: absolute;
+	  left:20%;
+	  top:49%;
+	height:50%;
+	width:78%;
+	overflow:scroll;}
+
+.ListeD {position: absolute;
+	  left:20%;
+	  top:65%;
+	height:35%;
+	width:78%;
+	overflow:scroll;}
+
+.entete {font-weight:bold;}
+
+.princi {position: absolute; 
+	top:5%; left:25%;
+	width:75%;
+	height:95%;
+	overflow:scroll;}
+
+.colorus3 {background-color:#FFD700;}
+
+.colorus2 {background-color:#FFFFFF;}
+
+.colorus4 {background-color:#778899;}

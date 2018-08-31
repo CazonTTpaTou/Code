@@ -1,0 +1,232 @@
+'Callback for Fichier1 onAction
+Sub Action_Fichier1(control As IRibbonControl)
+End Sub
+
+'Callback for Fichier1 getEnabled
+Sub Aut_Fichier1(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for Fichier2 getEnabled
+Sub Aut_Fichier2(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for Fichier2 onAction
+Sub Action_Fichier2(control As IRibbonControl)
+End Sub
+
+'Callback for Fichier3 getEnabled
+Sub Aut_Fichier3(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for Fichier3 onAction
+Sub Action_Fichier3(control As IRibbonControl)
+End Sub
+
+'Callback for AdministrationG1 getEnabled
+Sub Aut_AdministrationG1(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for AdministrationG1 onAction
+Sub Action_AdministrationG1(control As IRibbonControl)
+End Sub
+
+'Callback for AdministrationG2 getEnabled
+Sub Aut_AdministrationG2(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for AdministrationG2 onAction
+Sub Action_AdministrationG2(control As IRibbonControl)
+End Sub
+
+'Callback for ParametreAdmin1 getEnabled
+Sub Aut_ParametreAdmin1(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for ParametreAdmin1 onAction
+Sub Action_ParametreAdmin1(control As IRibbonControl)
+End Sub
+
+'Callback for ParametreAdmin2 getEnabled
+Sub Aut_ParametreAdmin2(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for ParametreAdmin2 onAction
+Sub Action_ParametreAdmin2(control As IRibbonControl)
+End Sub
+
+'Callback for DonneesGen1 getEnabled
+Sub Aut_DonneesGen1(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for DonneesGen1 onAction
+Sub Action_DonneesGen1(control As IRibbonControl)
+End Sub
+
+'Callback for DonneesGen2 getEnabled
+Sub Aut_DonneesGen2(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for DonneesGen2 onAction
+Sub Action_DonneesGen2(control As IRibbonControl)
+End Sub
+
+'Callback for Fournisseurs1 getEnabled
+Sub Aut_Fournisseurs1(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for Fournisseurs1 onAction
+Sub Action_Fournisseurs1(control As IRibbonControl)
+End Sub
+
+'Callback for Fournisseurs2 getEnabled
+Sub Aut_Fournisseurs2(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for Fournisseurs2 onAction
+Sub Action_Fournisseurs2(control As IRibbonControl)
+End Sub
+
+'Callback for Equipements1 getEnabled
+Sub Aut_Equipements1(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for Equipements1 onAction
+Sub Action_Equipements1(control As IRibbonControl)
+End Sub
+
+'Callback for Equipements2 getEnabled
+Sub Aut_Equipements2(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for Equipements2 onAction
+Sub Action_Equipements2(control As IRibbonControl)
+End Sub
+
+'Callback for Equipements3 getEnabled
+Sub Aut_Equipements3(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for Equipements3 onAction
+Sub Action_Action_Equipements3(control As IRibbonControl)
+End Sub
+
+'Callback for Equipements4 getEnabled
+Sub Aut_Equipements4(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for Equipements4 onAction
+Sub Action_Equipements4(control As IRibbonControl)
+End Sub
+
+'Callback for Equipements5 getEnabled
+Sub Aut_Equipements5(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for Equipements5 onAction
+Sub Action_Equipements5(control As IRibbonControl)
+End Sub
+
+'Callback for Equipements6 getEnabled
+Sub Aut_Equipements6(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for Equipements6 onAction
+Sub Action_Equipements6(control As IRibbonControl)
+End Sub
+
+'Callback for ParamInterventions1 getEnabled
+Sub Aut_ParamInterventions1(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for ParamInterventions1 onAction
+Sub Action_ParamInterventions1(control As IRibbonControl)
+End Sub
+
+'Callback for ParamInterventions2 getEnabled
+Sub Aut_ParamInterventions2(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for ParamInterventions2 onAction
+Sub Action_ParamInterventions2(control As IRibbonControl)
+End Sub
+
+'Callback for ParamInterventions3 getEnabled
+Sub Aut_ParamInterventions3(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for ParamInterventions3 onAction
+Sub Action_ParamInterventions3(control As IRibbonControl)
+End Sub
+
+'Callback for ParamInterventions4 getEnabled
+Sub Aut_ParamInterventions4(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for ParamInterventions4 onAction
+Sub Action_ParamInterventions4(control As IRibbonControl)
+End Sub
+
+'Callback for ParamInterventions5 getEnabled
+Sub Aut_ParamInterventions5(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for ParamInterventions5 onAction
+Sub Action_ParamInterventions5(control As IRibbonControl)
+End Sub
+
+'Callback for InterventionsG1 getEnabled
+Sub Aut_InterventionsG1(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for InterventionsG1 onAction
+Sub Action_InterventionsG1(control As IRibbonControl)
+End Sub
+
+'Callback for InterventionsG2 getEnabled
+Sub Aut_InterventionsG2(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for InterventionsG2 onAction
+Sub Action_InterventionsG2(control As IRibbonControl)
+End Sub
+
+'Callback for Tables1 getEnabled
+Sub Aut_Tables1(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for Tables1 onAction
+Sub Action_Tables1(control As IRibbonControl)
+End Sub
+
+'Callback for Tables2 getEnabled
+Sub Aut_Tables2(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for Tables2 onAction
+Sub Action_Tables2(control As IRibbonControl)
+End Sub
+
+'Callback for FichePrev1 getEnabled
+Sub Aut_FichePrev1(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for FichePrev1 onAction
+Sub Action_FichePrev1(control As IRibbonControl)
+End Sub
+
+'Callback for FichePrev2 getEnabled
+Sub Aut_FichePrev2(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for FichePrev2 onAction
+Sub Action_FichePrev2(control As IRibbonControl)
+End Sub
+
+'Callback for Compteurs1 getEnabled
+Sub Aut_Compteurs1(control As IRibbonControl, ByRef returnedVal)
+End Sub
+
+'Callback for Compteurs1 onAction
+Sub Action_Compteurs1(control As IRibbonControl)
+End Sub
+

@@ -1,0 +1,208 @@
+ALTER VIEW Vue_DO_Equipement
+AS
+------------------------------------------------------------------------
+-- Temps d'arrêt des sous équipements 
+------------------------------------------------------------------------
+WITH T_INTERVAL_ITV AS
+(SELECT equ.Libelle as ITV_ITEM,Equ.idSousEnsemble as ITV_ID,
+rea.DebutArret as ITV_DEBUT,
+coalesce(rea.FinArret,getdate()) as ITV_FIN 
+	FROM dbo.Realisation as rea
+	
+inner join dbo.Intervention as inter
+on rea.idIntervention = inter.idIntervention
+
+inner join Demande as dem
+on dem.idDemande = inter.idDemande
+
+inner join dbo.SousEnsemble as Equ
+on dem.idSousEnsemble = Equ.idSousEnsemble
+
+where not(rea.DebutArret is null) ),
+------------------------------------------------------------------------
+T1 As 
+(SELECT ITV_ID,ITV_ITEM, ITV_DEBUT Temps 
+ FROM   T_INTERVAL_ITV 
+ UniON  All 
+ SELECT ITV_ID,ITV_ITEM, ITV_FIN FROM T_INTERVAL_ITV), 
+------------------------------------------------------------------------ 
+T2 As 
+(SELECT Row_Number() OVER(PARTITION BY ITV_ITEM ORDER BY Temps) Nm, ITV_ITEM, ITV_ID,Temps 
+ FROM   T1 T1_1), 
+------------------------------------------------------------------------ 
+T3 As 
+(SELECT T2_1.Nm-Row_Number() OVER(PARTITION BY T2_1.ITV_ITEM ORDER BY T2_1.Temps,T2_2.Temps) Nm1, 
+        T2_1.ITV_ID,T2_1.ITV_ITEM, T2_1.Temps ITV_DEBUT, T2_2.Temps ITV_FIN 
+ FROM   T2 T2_1 
+        Inner join T2 T2_2 
+              ON T2_1.ITV_ITEM=T2_2.ITV_ITEM 
+                 And T2_1.Nm=T2_2.Nm-1 
+ WHERE  Exists (SELECT * 
+                FROM   T_INTERVAL_ITV S 
+                WHERE  S.ITV_ITEM=T2_1.ITV_ITEM 
+                  And  (S.ITV_DEBUT < T2_2.Temps And S.ITV_FIN>T2_1.Temps)) 
+    Or  T2_1.Temps = T2_2.Temps), 
+------------------------------------------------------------------------    
+T_ArretBrut AS
+(SELECT ITV_ID,ITV_ITEM, Min(ITV_DEBUT) ITV_DEBUT, Max(ITV_FIN) ITV_FIN 
+FROM   T3 
+GROUP  BY ITV_ID,ITV_ITEM, Nm1),
+------------------------------------------------------------------------ 
+T_ArretBrut_SSEq AS (
+select Se.idEquipement,T_A.* from T_ArretBrut as T_A 
+inner join SousEnsemble as SE
+on T_A.ITV_ID = SE.idSousEnsemble),
+------------------------------------------------------------------------
+-- Temps d'arrêt des équipements 
+------------------------------------------------------------------------
+T_INTERVAL_ITV_1 AS
+(SELECT equ.Libelle as ITV_ITEM,Equ.idEquipement as ITV_ID,
+rea.DebutArret as ITV_DEBUT,
+coalesce(rea.FinArret,getdate()) as ITV_FIN 
+	FROM dbo.Realisation as rea
+	
+inner join dbo.Intervention as inter
+on rea.idIntervention = inter.idIntervention
+
+inner join Demande as dem
+on dem.idDemande = inter.idDemande
+
+inner join dbo.Equipement as Equ
+on dem.idEquipement = Equ.idEquipement
+
+where not(rea.DebutArret is null) ),
+------------------------------------------------------------------------
+T4 As 
+(SELECT ITV_ID,ITV_ITEM, ITV_DEBUT Temps 
+ FROM   T_INTERVAL_ITV_1 
+ UniON  All 
+ SELECT ITV_ID,ITV_ITEM, ITV_FIN FROM T_INTERVAL_ITV_1), 
+------------------------------------------------------------------------ 
+T5 As 
+(SELECT Row_Number() OVER(PARTITION BY ITV_ITEM ORDER BY Temps) Nm, ITV_ITEM, ITV_ID,Temps 
+ FROM   T4 T4_1), 
+------------------------------------------------------------------------ 
+T6 As 
+(SELECT T5_1.Nm-Row_Number() OVER(PARTITION BY T5_1.ITV_ITEM ORDER BY T5_1.Temps,T5_2.Temps) Nm1, 
+        T5_1.ITV_ID,T5_1.ITV_ITEM, T5_1.Temps ITV_DEBUT, T5_2.Temps ITV_FIN 
+ FROM   T5 T5_1 
+        Inner join T5 T5_2 
+              ON T5_1.ITV_ITEM=T5_2.ITV_ITEM 
+                 And T5_1.Nm=T5_2.Nm-1 
+ WHERE  Exists (SELECT * 
+                FROM   T_INTERVAL_ITV_1 S 
+                WHERE  S.ITV_ITEM=T5_1.ITV_ITEM 
+                  And  (S.ITV_DEBUT < T5_2.Temps And S.ITV_FIN>T5_1.Temps)) 
+    Or  T5_1.Temps = T5_2.Temps), 
+------------------------------------------------------------------------    
+T_ArretBrut_1 AS
+(SELECT ITV_ID,ITV_ITEM, Min(ITV_DEBUT) ITV_DEBUT, Max(ITV_FIN) ITV_FIN 
+FROM   T6 
+GROUP  BY ITV_ID,ITV_ITEM, Nm1),
+------------------------------------------------------------------------    
+T_ArretBrut_2 AS
+(select T_A_SS.ITV_ID as ID_SSEq,T_a_ss.ITV_ITEM as ITEM_SSeq,
+T_A_eq.* from T_ArretBrut_SSEq As T_A_SS inner join T_ArretBrut_1 as T_A_Eq
+on T_A_SS.idEquipement = T_A_Eq.ITV_ID ),
+------------------------------------------------------------------------
+-- Union des temps d'arrêt des équipements et de ses sous équipements 
+------------------------------------------------------------------------
+T_INTERVAL_ITV_2 AS
+(Select TQ.ITV_ID,TQ.ITV_ITEM,TQ.ITV_DEBUT,TQ.ITV_FIN from T_ArretBrut_SSEq as TQ
+ Union all
+ Select TQQ.ID_SSEq as ITV_ID,TQQ.ITEM_SSeq as ITV_ITEM,TQQ.ITV_DEBUT,TQQ.ITV_FIN from T_ArretBrut_2 as TQQ),
+------------------------------------------------------------------------
+T7 As 
+(SELECT ITV_ID,ITV_ITEM, ITV_DEBUT Temps 
+ FROM   T_INTERVAL_ITV_2 
+ UniON  All 
+ SELECT ITV_ID,ITV_ITEM, ITV_FIN FROM T_INTERVAL_ITV_2), 
+------------------------------------------------------------------------ 
+T8 As 
+(SELECT Row_Number() OVER(PARTITION BY ITV_ITEM ORDER BY Temps) Nm, ITV_ITEM, ITV_ID,Temps 
+ FROM   T7 T7_1), 
+------------------------------------------------------------------------ 
+T9 As 
+(SELECT T8_1.Nm-Row_Number() OVER(PARTITION BY T8_1.ITV_ITEM ORDER BY T8_1.Temps,T8_2.Temps) Nm1, 
+        T8_1.ITV_ID,T8_1.ITV_ITEM, T8_1.Temps ITV_DEBUT, T8_2.Temps ITV_FIN 
+ FROM   T8 T8_1 
+        Inner join T8 T8_2 
+              ON T8_1.ITV_ITEM=T8_2.ITV_ITEM 
+                 And T8_1.Nm=T8_2.Nm-1 
+ WHERE  Exists (SELECT * 
+                FROM   T_INTERVAL_ITV S 
+                WHERE  S.ITV_ITEM=T8_1.ITV_ITEM 
+                  And  (S.ITV_DEBUT < T8_2.Temps And S.ITV_FIN>T8_1.Temps)) 
+    Or  T8_1.Temps = T8_2.Temps), 
+------------------------------------------------------------------------    
+T_ArretBrut_3 AS
+(SELECT ITV_ID,ITV_ITEM, Min(ITV_DEBUT) ITV_DEBUT, Max(ITV_FIN) ITV_FIN 
+FROM   T9 
+GROUP  BY ITV_ID,ITV_ITEM, Nm1),   
+------------------------------------------------------------------------
+-- Taux d'impact
+------------------------------------------------------------------------
+Taux_Impact AS(
+select idEquipement,
+cast(1/(cast(count(idEquipement) as decimal(18,2))) as decimal(18,2)) as taux_impact,
+COUNT(idEquipement) 
+as Nb_SousEquipement  
+from SousEnsemble group by idEquipement),
+------------------------------------------------------------------------  
+Taux_Impact_Bis AS(
+select idSousEnsemble,Libelle,
+case when coalesce(Dependance,1) = 0 Then 1 
+else (T_I.taux_impact)END AS TauxImpact from dbo.SousEnsemble as SE
+inner join Taux_Impact as T_I
+on SE.idEquipement = T_I.idEquipement),
+------------------------------------------------------------------------
+-- Calcul des temps d'arrêt sous équipement par jour
+------------------------------------------------------------------------
+Tps_Arret AS
+(select 
+		V.ITV_ID,J.DateJour,V.ITV_ITEM,
+		
+		Case When ITV_DEBUT>=DateJour 
+			Then ITV_Debut 
+			Else DateJour 
+			End as DateDebut,
+		
+		Case When ITV_FIN <= DateAdd(day,1,J.DateJour) 
+			Then ITV_FIN 
+			Else DateAdd(day,1,J.DateJour) 
+			End as DateFin,
+			
+		DATEDIFF(n,
+			Case When ITV_DEBUT>=DateJour 
+			Then ITV_Debut 
+			Else DateJour 
+			End ,
+			Case When ITV_FIN <= DateAdd(day,1,J.DateJour) 
+			Then ITV_FIN 
+			Else DateAdd(day,1,J.DateJour) 
+			End)	
+				AS Duree
+				
+		FROM Vue_Calendrier as J,
+		
+		T_ArretBrut_3  as V
+                
+         WHERE J.DateJour < V.ITV_Fin 
+           and J.DateJour >= 
+			   CAST(FLOOR(CAST(V.ITV_Debut AS FLOAT)) AS DATETIME)),
+------------------------------------------------------------------------
+-- Calcul des temps d'arrêt sous équipement par jour avec impact
+------------------------------------------------------------------------
+Tps_Arret_Impacte AS 
+(SELECT Tp.*,Tb.TauxImpact,(Tp.Duree * tb.TauxImpact) as Duree_Impactee 
+from Tps_Arret as Tp 
+inner join Taux_Impact_Bis as TB
+on Tp.ITV_ID = Tb.TauxImpact)
+------------------------------------------------------------------------  
+select * from Tps_Arret_Impacte 
+
+
+
+
+
+

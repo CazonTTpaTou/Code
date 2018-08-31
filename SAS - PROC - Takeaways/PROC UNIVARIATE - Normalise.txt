@@ -1,0 +1,48 @@
+PROC SORT Data=WORK.STNDStandardizedFILTER_FOR_DATA_ Out=Work.DATA_HENNECKE_2_MOIS_NORM;
+BY Type_Assemblage Ass_Sci_Equipement;
+RUN;
+
+PROC UNIVARIATE DATA=WORK.DATA_HENNECKE_2_MOIS_NORM NOPRINT PLOTS;
+VAR stnd_TTV;
+HISTOGRAM stnd_TTV  /  NORMAL  (color=(red blue) mu=0 est sigma=1 est NOPRINT) ;
+BY Type_Assemblage Ass_Sci_Equipement;
+RUN;
+
+
+PROC UNIVARIATE DATA=WORK.DATA_HENNECKE_2_MOIS_NORM NOPRINT PLOTS;
+VAR stnd_SawStep;
+HISTOGRAM stnd_SawStep  /  NORMAL  (color=(red blue) mu=0 est sigma=1 est NOPRINT) ;
+BY Type_Assemblage Ass_Sci_Equipement;
+RUN;
+
+PROC UNIVARIATE DATA=WORK.DATA_HENNECKE_2_MOIS_NORM NOPRINT PLOTS;
+VAR stnd_SawGroove;
+HISTOGRAM stnd_SawGroove  /  NORMAL  (color=(red blue) mu=0 est sigma=1 est NOPRINT) ;
+BY Type_Assemblage Ass_Sci_Equipement;
+RUN;
+
+PROC UNIVARIATE DATA=WORK.DATA_HENNECKE_2_MOIS_NORM NOPRINT PLOTS;
+VAR stnd_SawEdge;
+HISTOGRAM stnd_SawEdge  /  NORMAL  (color=(red blue) mu=0 est sigma=1 est NOPRINT) ;
+BY Type_Assemblage Ass_Sci_Equipement;
+RUN;
+
+PROC UNIVARIATE DATA=WORK.DATA_HENNECKE_2_MOIS_NORM NOPRINT PLOTS;
+VAR stnd_BOW;
+HISTOGRAM stnd_BOW  /  NORMAL  (color=(red blue) mu=0 est sigma=1 est NOPRINT) ;
+BY Type_Assemblage Ass_Sci_Equipement;
+RUN;
+
+PROC UNIVARIATE DATA=WORK.DATA_HENNECKE_2_MOIS_NORM NOPRINT PLOTS;
+VAR stnd_Thickn;
+HISTOGRAM stnd_Thickn  /  NORMAL  (color=(red blue) mu=0 est sigma=1 est NOPRINT) ;
+BY Type_Assemblage Ass_Sci_Equipement;
+RUN;
+
+PROC UNIVARIATE DATA=WORK.DATA_HENNECKE_2_MOIS_NORM NOPRINT PLOTS;
+VAR stnd_ThPt;
+HISTOGRAM stnd_ThPt  /  NORMAL  (color=(red blue) mu=0 est sigma=1 est NOPRINT) ;
+BY Type_Assemblage Ass_Sci_Equipement;
+RUN;
+
+

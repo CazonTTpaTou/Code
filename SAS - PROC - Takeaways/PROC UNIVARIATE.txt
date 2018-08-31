@@ -1,0 +1,7 @@
+ proc univariate data=measures;
+      qqplot length1 length2 / normal(mu=10 sigma=0.3)
+                               square ctext=blue;
+   run;
+
+
+

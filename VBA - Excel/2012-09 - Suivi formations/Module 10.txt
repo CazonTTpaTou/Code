@@ -1,0 +1,146 @@
+' Callback for N22 onGetItemLabel
+Sub GetI_Annee(control As IRibbonControl, index As Integer, ByRef returnedVal)
+    returnedVal = annees(index + 1)
+End Sub
+
+' Callback for N22 onGetItemCount
+Sub GetC_Annee(control As IRibbonControl, ByRef returnedVal)
+    returnedVal = N_Zone
+End Sub
+
+' Callback for N22 onGetSelectedItemIndex
+Sub GetD_Annee(control As IRibbonControl, ByRef returnedVal)
+    returnedVal = 0
+End Sub
+
+' Callback for N22 onAction
+Sub GetA_Annee(control As IRibbonControl, id As String, index As Integer)
+    Num_Year_Selec = index
+End Sub
+
+' -----------------------------------------------------------------------------
+' Gestion des salariés
+' -----------------------------------------------------------------------------
+
+'Callback for F222 onChange
+Sub Change_Salarie(control As IRibbonControl, text As String)
+Salarie_Cree = text
+End Sub
+
+'Callback for F4 getVisible
+Sub Reintegration_visible(control As IRibbonControl, ByRef returnedVal)
+returnedVal = Aff_Reintegration
+End Sub
+
+'Callback for F41 onAction
+Sub Selection_Reintegration(control As IRibbonControl, id As String, index As Integer)
+Num_Salarie_Selec = index
+End Sub
+
+'Callback for F27 onAction
+Sub Enregistre_Salarie(control As IRibbonControl)
+    
+Call Deproteger
+
+For i = 6 To 200
+    If UCase(Trim(Salarie_Cree)) < UCase(Trim(Cells(i, 1).value)) Then
+    tampon = i
+    Cells(i, 1).EntireRow.Insert
+    Cells(i, 1).value = UCase(Trim(Salarie_Cree))
+    
+    Cells(i, 1).Select
+    With Selection.Font
+        .Strikethrough = False
+    End With
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    
+    Cells(i, 16).value = True
+    Cells(i, 25).value = DateSerial(Year(Date), Month(Date), 1)
+    Cells(i, 26).value = DateAdd("m", 6, DateSerial(Year(Date), Month(Date), 1))
+    
+    Range("B6").Select
+    Selection.Copy
+    Range(Cells(i, 2), Cells(i, 13)).Select
+    Selection.PasteSpecial Paste:=xlPasteFormats, Operation:=xlNone, _
+        SkipBlanks:=False, Transpose:=False
+    Cells(i, 2).Select
+    Exit For
+End If
+
+Next i
+
+Call Proteger
+Call Activer
+
+Salarie_Cree = ""
+
+Aff_Menu_Fiche = True
+Aff_Creation_Fiche = False
+Aff_Suppression_Fiche = False
+Aff_Reintegration = False
+MonRuban.Invalidate
+
+End Sub
+
+'Callback for F42 onAction
+Sub Reintegrer_salarie(control As IRibbonControl)
+
+Call Deproteger
+
+Cells(Num_Salarie_Selec + 6, 16).value = True
+Cells(Num_Salarie_Selec + 6, 1).Select
+
+With Selection.Font
+        .Strikethrough = False
+End With
+With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+End With
+    
+Call Proteger
+Call Activer
+
+Call Init
+
+N_fiche = 0
+Fiche_Selection = 0
+
+Aff_Menu_Fiche = True
+Aff_Creation_Fiche = False
+Aff_Suppression_Fiche = False
+Choix_supprimer_Fiches = False
+Aff_Reintegration = False
+MonRuban.Invalidate
+
+End Sub
+
+Function ChercheSalarie(ByVal Nom As String)
+
+i = 0
+Recherche = False
+Start = 6
+
+Do While (Not (IsEmpty(Cells(Start, 1)))) And (Recherche = False)
+    i = i + 1
+    'MsgBox "N° " & num & " - " & "Saut de ligne n° " & i & " - Position : " & InStr(Start, cont, Chr(10))
+         If Cells(Start, 1).value = Trim(UCase(Nom)) Then
+            Recherche = True
+            Start = Start - 1
+        End If
+        Start = Start + 1
+Loop
+
+ChercheSalarie = Start
+
+
+End Function

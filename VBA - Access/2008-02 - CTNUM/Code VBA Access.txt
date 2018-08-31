@@ -1,0 +1,62 @@
+Option Compare Database
+
+Private Sub Command53_Click()
+    'Dim cnc As ADODB.Connection
+    Dim cnc As DAO.Database
+    Dim strSQL As String
+    Dim strMessage As String
+    
+    Set cnc = CurrentDb
+    strSQL = "insert into school (Nom_Image,Image,Description) values('"
+    strSQL = strSQL + Me.Nom_image.Value + "','"
+    strSQL = strSQL + Me.Image.FileName + "','"
+    strSQL = strSQL + Me.Description.Value + "');"
+    cnc.Execute strSQL
+    If MsgBox("Confirmez vous votre choix ? ", vbYesNo) = vbYes Then DoCmd.Close acForm, Form_Picture_Form, acSaveYes
+    
+End Sub
+
+Private Sub Image_AfterUpdate()
+    Me.Nom_image.Value = Me.Image.FileName
+    Image52.Picture = Me.Nom_image.Value
+End Sub
+
+Private Sub Image_Change()
+    'Me.Nom_image.Value = Me.Image.FileName
+    'Image52.Picture = Me.Nom_image.Value
+End Sub
+
+Private Sub Image_Dirty(Cancel As Integer)
+    ' Me.Nom_image.Value = "Rempli"
+    'Me.Nom_image.Value = Me.Image.FileName
+    'Image52.Picture = Me.Nom_image.Value
+End Sub
+
+
+Option Compare Database
+
+Public Function MyDelete() As Boolean
+    MsgBox "Bonjour!"
+    MyDelete = True
+End Function
+
+Public Sub Initialisation(ruban As IRibbonUI)
+    MsgBox "Bienvenue !"
+End Sub
+
+'Callback for Par11 onAction
+Public Sub ShowProduct(control As IRibbonControl)
+    'MsgBox "Bonjour!"
+    DoCmd.OpenForm "Unite_Prod"
+End Sub
+
+Public Function ShowSector()
+
+    'MsgBox "Bienvenue!"
+    DoCmd.OpenForm "Equipement", acNormal
+
+End Function
+
+Public Sub ShowContacts(control As IRibbonControl)
+    DoCmd.OpenForm "Sous_Formulaire", acNormal
+End Sub

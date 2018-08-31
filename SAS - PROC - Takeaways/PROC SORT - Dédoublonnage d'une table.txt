@@ -1,0 +1,26 @@
+PROC SORT
+data=CDSN.v_assemblage out= work.v_Assemb
+                        nodupkey
+                        dupout=work.Doublons;
+BY N°Assemblage;
+RUN;
+
+PROC SORT data=CDSN.V_Recette out= work.V_Recett nodupkey dupout=work.DoublonsV_Rec; BY N°Charge;RUN;
+PROC SORT data=CDSN.V_Decoupe out= work.V_Decoup nodupkey dupout=work.DoublonsV_Dec; BY N°Decoupe;RUN;
+PROC SORT data=CDSN.V_Lingot out= work.V_Lingot nodupkey dupout=work.DoublonsV_Lin; BY N°Lingot;RUN;
+PROC SORT data=CDSN.TL_HENNECKE_STAT out= work.TL_HENNE nodupkey dupout=work.DoublonsTL_HE; BY N°Import;RUN;
+
+PROC SORT data=DS_SQC.V_Poids_Decape out= work.V_Poid_D nodupkey dupout=work.DoublonsV_Poi; BY Lot NumRes;RUN;
+PROC SORT data=DS_SQC.V_R2 out= work.V_R2 nodupkey dupout=work.DoublonsV_R2; BY Lot NumRes;RUN;
+PROC SORT data=DS_SQC.Vue_metier_Mesures out= work.V_Mesure nodupkey dupout=work.DoublonsV_Mes; BY  Mesure_date_heure Mesure_Type;RUN;
+PROC SORT data=DS_SQC.V_Lots out= work.V_Lots nodupkey dupout=work.DoublonsV_Lot; BY Lot;RUN;
+PROC SORT data=DS_SQC.Vue_SAS_CHGT_ECRANS_SERIG out= work.Vue_SAS1_ nodupkey dupout=work.DoublonsVue_S1; BY Chg_Ecran_Date_Heure_Montage;RUN;
+PROC SORT data=DS_SQC.VUE_SAS_CHGT_ENCRE_SERIG out= work.VUE_SAS2_ nodupkey dupout=work.DoublonsVUE_S2; BY Chg_Encre_Date_Heure_D_but;RUN;
+
+
+PROC SORT data=DTM_PRO.DTM_PRO_TRAC_CEL out= work.DTM_PRO_CEL nodupkey dupout=work.Doublons_CEL; BY Cel_Lot;RUN;
+PROC SORT data=DTM_PRO.DTM_PRO_TRAC_CEL_TRIEES out= work.DTM_PRO_CEL_TRI nodupkey dupout=work.Doublons_CEL_TRI; BY Cel_Lot;RUN;
+PROC SORT data=DTM_PRO.DTM_PRO_TRAC_LINGOTS out= work.DTM_PRO_LING nodupkey dupout=work.Doublons_LINGOTS; BY Lingot_Num;RUN;
+PROC SORT data=DTM_PRO.DTM_PRO_TRAC_WAFERS out= work.DTM_PRO_WAFERS nodupkey dupout=work.Doublons_WAFERS; BY Assemblage_Num;RUN;
+PROC SORT data=DTM_PRO.DTM_PRO_TBO_PVA out= work.DTM_PRO_PBO noduplicate dupout=work.Doublons_PBO;BY Lot;RUN;
+

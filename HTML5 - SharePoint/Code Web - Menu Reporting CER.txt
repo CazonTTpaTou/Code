@@ -1,0 +1,31 @@
+
+
+<h2 unselectable="on"><b unselectable="on">Liste des rapports CER disponibles :</b></h2>
+<br unselectable="on">
+<ul unselectable="on">
+<li unselectable="on">
+<a href="https://sas.photowatt.com/SASVisualAnalytics/report?location=%2F_Achats%2FCER_Indicateurs_Globaux&type=Report.BI&section=vi1" unselectable="on">Indicateurs généraux des demandes de CER</a>
+</li>
+<br unselectable="on">
+<br unselectable="on">
+<li unselectable="on">
+<a href="https://sas.photowatt.com/SASVisualAnalytics/report?location=%2F_Achats%2FCER_Temps_Approbation&type=Report.BI&section=vi859" unselectable="on">Répartition des délais d'approbation des CER</a>
+</li>
+<br unselectable="on">
+<br unselectable="on">
+<li unselectable="on">
+<a href="https://sas.photowatt.com/SASVisualAnalytics/report?location=%2F_Achats%2FCER_Segmentation_RFM&type=Report.BI&section=vi47" unselectable="on">Segmentation RFM des demandes d'investissement</a>
+</li>
+<br unselectable="on">
+<br unselectable="on">
+<li unselectable="on">
+<a href="https://sas.photowatt.com/SASVisualAnalytics/report?location=%2F_Achats%2FCER_Performances_Achats&type=Report.BI&section=vi14975" unselectable="on">Performances du service Achats</a>
+</li>
+<br unselectable="on">
+<br unselectable="on">
+<li unselectable="on">
+<a href="https://sas.photowatt.com/SASVisualAnalytics/report?location=%2F_Achats%2FCER_Ventilations_Comptables&type=Report.BI&section=vi502" unselectable="on">Ventilation des imputations comptables</a>
+</li>
+</ul>
+<br unselectable="on">
+

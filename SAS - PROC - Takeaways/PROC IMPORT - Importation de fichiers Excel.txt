@@ -1,0 +1,4 @@
+proc import datafile="U:\Bases_de_donnees\Machines\TRIs-PASAN\PASAN-C02\Fichiers-Journaliers\Tri2_2010-12-13.csv" 
+out=Work.Essai dbms=EXCEL replace;
+run; quit;
+

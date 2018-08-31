@@ -1,0 +1,9 @@
+DATA Work.Trying (keep=Newchamp);
+SET DTM_PRO.DTM_PRO_TRAC_WAFERS;
+IF Missing(Type_Assemblage) 
+THEN DO;
+	NewChamp = 'NON OK';
+END;
+ELSE NewChamp = 'OK';
+RUN;
+

@@ -1,0 +1,27 @@
+/****** Object:  Table [dbo].[Vue_Prevision_Planification]    Script Date: 04/30/2013 14:14:27 ******/
+
+create view Vue_Prevision_Planification
+
+AS
+
+SELECT     COUNT(idFichePreventive) AS NbPlanification
+FROM         dbo.FichePreventive
+WHERE     (DatePlanification <= GETDATE()) 
+AND (Actif = - 1)
+
+go
+
+/****** Object:  Table [dbo].[Vue_Prevision_Intervention]    Script Date: 04/30/2013 14:14:27 ******/
+
+create view Vue_Prevision_Intervention
+
+AS
+
+select count(idPlanification) as NbPrevision 
+ from Planification 
+where EstPlanifie = 0 
+and Date <= getdate()
+
+go
+
+

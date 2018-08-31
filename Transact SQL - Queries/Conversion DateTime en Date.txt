@@ -1,0 +1,8 @@
+SELECT CAST(YourDateTimeColumn AS DATE)
+
+SELECT CONVERT(VARCHAR(10), GETDATE(), 103) -- dd/MM/yyyy format
+
+http://stackoverflow.com/questions/8901161/convert-a-sql-server-datetime-to-a-shorter-date-format
+
+
+

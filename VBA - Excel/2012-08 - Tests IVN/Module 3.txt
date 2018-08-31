@@ -1,0 +1,96 @@
+Public Monruban As IRibbonUI
+
+Public Autorisation_Validation As Boolean
+
+Public Const Num_Feuil_Donnees = 9
+
+Sub Sur_Chargement(ribbon As IRibbonUI)
+    
+    Set Monruban = ribbon
+    
+    numero = ActiveSheet.index
+    adresse = "BL" & 7 + numero
+
+    Autorisation_Validation = Autoriser_Valider
+    
+End Sub
+
+Sub Calcul_Sur_Clic(control As IRibbonControl)
+
+app = "C:\WINDOWS\system32\calc.exe"
+
+ret = Shell(app, 1) ' Exécuter la Calculatrice
+
+End Sub
+
+'Callback for Extrait getEnabled
+Sub Valider_Feuille(control As IRibbonControl, ByRef returnedVal)
+
+returnedVal = Autorisation_Validation
+
+End Sub
+
+'Callback for VerifButton onAction
+Sub CheckerSaisie(control As IRibbonControl)
+
+Dim Tampon As Boolean
+Dim zone1, zone2, zone3, zone4, zone5, zone6, BigRange As Range
+Dim rang As Integer
+Dim liste As String
+
+On Error Resume Next
+
+If (ActiveSheet.index > 1) And (ActiveSheet.index < 6) Then
+    
+Tampon = False
+
+Set zone1 = Range("E24:F33")
+Set zone2 = Range("E36:F40")
+Set zone3 = Range("E24:E33")
+Set zone4 = Range("E36:E40")
+Set zone5 = Range("E44:E53")
+Set zone6 = Range("E56:E60")
+
+Select Case ActiveSheet.index
+    Case 2: Set BigRange = Application.Union(zone1, zone2)
+    Case 3: Set BigRange = Application.Union(zone3, zone4, zone5, zone6)
+    Case 4: Set BigRange = Application.Union(zone1, zone2)
+    Case 5: Set BigRange = Application.Union(zone3, zone4, zone5, zone6)
+End Select
+
+For Each cell In BigRange
+    If (cell.Value = "") Or (cell.Value = "/") Then
+        Tampon = True
+        liste = liste & cell.Address & Chr(10)
+    End If
+Next cell
+        
+If Tampon Then
+          reponse = MsgBox("Attention, les cellules suivantes n'ont pas été remplies : " & Chr(10) & Chr(10) & liste, vbCritical + vbOK, "Vérifications des saisies")
+    Else: reponse = MsgBox("Toutes les cellules de saisie ont bien été remplies !!!", vbInformation, "Vérifications des saisies")
+End If
+
+Else: MsgBox ("Cette fonctionnalité n'est disponible que pour les onglets de saisie des lectures !!!")
+End If
+
+End Sub
+
+Function Autoriser_Valider()
+
+    numero = ActiveSheet.index
+    adresseA = "BL" & 6 + numero
+    adresseB = "BL" & 7 + numero
+
+    If (ActiveSheet.index < Num_Feuil_Donnees) And (Worksheets(Num_Feuil_Donnees).Range(adresseA) = 1) And (Worksheets(Num_Feuil_Donnees).Range(adresseB) = 0) Then
+            Autoriser_Valider = True
+    Else: Autoriser_Valider = False
+    End If
+
+End Function
+
+
+
+
+
+
+

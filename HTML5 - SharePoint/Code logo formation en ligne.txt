@@ -1,0 +1,16 @@
+<li>
+                            <a href="https://desktop.pingone.com/photowatt/url?source=application&url=https%3A%2F%2Fsso.connect.pingidentity.com%2Fsso%2Fsp%2Finitsso%3Fsaasid%3D80bcfe12-a97c-4440-8e2a-64a9107d29d0%26idpid%3Df6bd7713-f6d4-498c-8228-64aeb14f0820&title=ADConnect&applicationtype=APPLICATION_SAML20&saasid=80bcfe12-a97c-4440-8e2a-64a9107d29d0">
+                                <img src="/SiteCollectionImages/E_Learning.png" />
+                            </a>
+                        </li>
+<li>
+                            <a href="https://desktop.pingone.com/photowatt/url?source=application&url=https%3A%2F%2Fsso.connect.pingidentity.com%2Fsso%2Fsp%2Finitsso%3Fsaasid%3D80bcfe12-a97c-4440-8e2a-64a9107d29d0%26idpid%3Df6bd7713-f6d4-498c-8228-64aeb14f0820&title=ADConnect&applicationtype=APPLICATION_SAML20&saasid=80bcfe12-a97c-4440-8e2a-64a9107d29d0">
+                    Formation en ligne
+                
+                            
+                            
+                            
+                            
+                            </a>
+</li>
+

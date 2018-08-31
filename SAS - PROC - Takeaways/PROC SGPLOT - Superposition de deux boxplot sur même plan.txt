@@ -1,0 +1,14 @@
+%let Min=15;
+%let Max=18;
+
+Proc sgplot Data=TRAINING.multivariee_courant;
+hbox Rend / Category=Serial;
+hbox Rend / Category=Serial y2axis x2axis;
+yaxis offsetmax=0.5;
+xaxis values=(&min to &max by 1);
+x2axis values=(&min to &max by 1);
+Y2axis offsetmin=0.5;
+INSET "Moyenne 4.2";
+RUN;
+
+

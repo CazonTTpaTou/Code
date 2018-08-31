@@ -1,0 +1,27 @@
+Proc sort Data=Training.box_plot;
+By Num_Semaine;
+Run;
+
+Proc BoxPlot data=Training.box_plot;
+PLOT (SawStep Thickn TTV) * Num_Semaine /
+GRID CGRID=LIME
+BoxWidthscale=0.5 bwslegend
+Boxconnect=Mean cconnect=GOLD;
+Inset 
+      mean='Moyenne'
+	  stddev='Ecart-type'/
+	  format=6.2 
+	  cshadow=black 
+	  position=n
+	  cfill=antiquewhite;
+Insetgroup
+	  mean='Moyenne'
+	  N='Effectif'
+	  Q1='1er quartile'
+	  Q3='3ème quartile'/
+	  format=6.2 
+	  position=bottom
+	  ctext=bib;
+RUN;
+
+

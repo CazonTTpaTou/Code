@@ -1,0 +1,90 @@
+' *** Start of script for flow vdb_DAILY_LOGS_TRI_WAVESLABS_1516365325723 ***
+
+' Define constants needed for accessing files
+Const ForReading = 1, ForWriting = 2, ForAppending = 8
+
+flowStatus = 0
+
+scriptFilename = "D:\SAS\Config\Lev1\SchedulingServer\RunNow_PWSASPROD\vdb_DAILY_LOGS_TRI_WAVESLABS_1516365325723\vdb_DAILY_LOGS_TRI_WAVESLABS_1516365325723.vbs"
+
+' Update date and time variable
+curDateTime = Now()
+
+' Create timestamp used in naming the status file
+timeStamp = Left("0000", 4 - Len(Year(curDateTime))) & Year(curDateTime) & Left("00", 2 - Len(Month(curDateTime))) & Month(curDateTime) & Left("00", 2 - Len(Day(curDateTime))) & Day(curDateTime) & Left("00", 2 - Len(Hour(curDateTime))) & Hour(curDateTime) & Left("00", 2 - Len(Minute(curDateTime))) & Minute(curDateTime) & Left("00", 2 - Len(Second(curDateTime))) & Second(curDateTime)
+
+statusFilename = "D:\SAS\Config\Lev1\SchedulingServer\RunNow_PWSASPROD\vdb_DAILY_LOGS_TRI_WAVESLABS_1516365325723\" & timeStamp & "_vdb_DAILY_LOGS_TRI_WAVESLABS_1516365325723_status.log"
+
+' Initialize references to FileSystem and Shell objects
+Set fileSys = Wscript.CreateObject("Scripting.FileSystemObject")
+Set shell = Wscript.CreateObject("Wscript.Shell")
+
+' Open status file
+Set statusFile = fileSys.OpenTextFile(statusFilename, ForWriting, True)
+
+' *** Start of flow ***
+
+' Log start of flow to status file
+statusFile.WriteLine("Flow STARTING...")
+
+' *** No Dependencies ***
+
+' *** Begin Job Event ***
+
+' Update date and time variables
+curDateTime = Now()
+curDate = Left("00", 2 - Len(Month(curDateTime))) & Month(curDateTime) & "/" & Left("00", 2 - Len(Day(curDateTime))) & Day(curDateTime) & "/" & Left("0000", 4 - Len(Year(curDateTime))) & Year(curDateTime)
+curTime = Left("00", 2 - Len(Hour(curDateTime))) & Hour(curDateTime) & ":" & Left("00", 2 - Len(Minute(curDateTime))) & Minute(curDateTime) & ":" & Left("00", 2 - Len(Second(curDateTime))) & Second(curDateTime)
+
+' Log start of job to status file
+statusFile.WriteLine("Job vdb_DAILY_LOGS_TRI_WAVESLABS_1516365325723_A5967C5U_BR00014H STARTING " & curDate & " " & curTime)
+
+' Enable error handling
+On Error Resume Next
+
+' Execute job
+errorLevel = shell.Run("D:\SAS\Config\Lev1\SASApp\BatchServer\sasbatch.bat -log F:\SAS\Config\Lev1\Logs\vdb_DAILY_LOGS_TRI_WAVESLABS_1516365325723_#Y.#m.#d_#H.#M.#s.log -print D:\SAS\Config\Lev1\SASApp\BatchServer\Output\vdb_DAILY_LOGS_TRI_WAVESLABS_1516365325723.lst -batch -noterminal -logparm ""rollover=session""  -sysin D:\SAS\Config\Lev1\SASApp\SASEnvironment\SASCode\Jobs\vdb_DAILY_LOGS_TRI_WAVESLABS_1516365325723.sas", , True)
+
+If Err.Number <> 0 Then
+  status_A5967C5U_BR00014H = Err.Number
+  Err.Clear
+Else
+  status_A5967C5U_BR00014H = errorLevel
+End If
+
+' Disable error handling
+On Error Goto 0
+
+' Update date and time variables
+curDateTime = Now()
+curDate = Left("00", 2 - Len(Month(curDateTime))) & Month(curDateTime) & "/" & Left("00", 2 - Len(Day(curDateTime))) & Day(curDateTime) & "/" & Left("0000", 4 - Len(Year(curDateTime))) & Year(curDateTime)
+curTime = Left("00", 2 - Len(Hour(curDateTime))) & Hour(curDateTime) & ":" & Left("00", 2 - Len(Minute(curDateTime))) & Minute(curDateTime) & ":" & Left("00", 2 - Len(Second(curDateTime))) & Second(curDateTime)
+
+' Log completion of job and exit code to status file
+statusFile.WriteLine("Job vdb_DAILY_LOGS_TRI_WAVESLABS_1516365325723_A5967C5U_BR00014H COMPLETE " & curDate & " " & curTime & " status=" & status_A5967C5U_BR00014H & ".")
+
+' Set flag indicating that job has executed
+exec_A5967C5U_BR00014H = True
+
+' Update flow exit code
+If flowStatus = 0 Then
+  flowStatus = status_A5967C5U_BR00014H
+End If
+
+' *** End Job Event ***
+
+' Update date and time variables
+curDateTime = Now()
+curDate = Left("00", 2 - Len(Month(curDateTime))) & Month(curDateTime) & "/" & Left("00", 2 - Len(Day(curDateTime))) & Day(curDateTime) & "/" & Left("0000", 4 - Len(Year(curDateTime))) & Year(curDateTime)
+curTime = Left("00", 2 - Len(Hour(curDateTime))) & Hour(curDateTime) & ":" & Left("00", 2 - Len(Minute(curDateTime))) & Minute(curDateTime) & ":" & Left("00", 2 - Len(Second(curDateTime))) & Second(curDateTime)
+
+' Log completion of flow and exit code to status file
+statusFile.WriteLine("Flow vdb_DAILY_LOGS_TRI_WAVESLABS_1516365325723 COMPLETE " & curDate & " " & curTime & " status=" & flowStatus & ".")
+
+' Close status file
+statusFile.Close
+
+' Exit flow and return status
+Wscript.Quit(flowStatus)
+
+' *** End of script for flow vdb_DAILY_LOGS_TRI_WAVESLABS_1516365325723 ***

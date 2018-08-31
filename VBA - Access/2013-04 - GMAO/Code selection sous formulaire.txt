@@ -1,0 +1,24 @@
+http://access.developpez.com/faq/?page=PositionForm#PosPereFils
+
+Private Sub Form_Query()
+
+Me.SelTop = 5
+
+End Sub
+
+----------------------------------------
+
+X = Me.CurrentRecord
+
+Me.CadreSousFormulaire.Form.Recordset.Move X
+
+----------------------------------------
+Me.MonSsFormulaire.SetFocus
+DoCmd.RunCommand acCmdRecordsGoToNew
+
+-----------------------------------------
+
+Msgbox Me.Recordset.PercentPosition
+
+-----------------------------------------
+Me.Recordset.Move -10

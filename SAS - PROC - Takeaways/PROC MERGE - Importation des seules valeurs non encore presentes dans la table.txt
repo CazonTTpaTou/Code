@@ -1,0 +1,12 @@
+PROC SORT Data=CDSN.TL_HENNECKE OUT=STATS.Hennecke_Source;
+BY Time;
+RUN;
+PROC SORT Data=STATS.HENNECKE_LOGS;
+By Time;
+DATA STATS.IMPORT_ETL; 
+MERGE STATS.Hennecke_Source(IN=Dans_Source)
+      STATS.HENNECKE_LOGS (IN=Dans_Import); 
+BY Time; 
+IF Dans_Source AND Not Dans_Import THEN OUTPUT;
+RUN;
+

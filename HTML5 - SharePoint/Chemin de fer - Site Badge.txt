@@ -1,0 +1,33 @@
+------------------------------------------
+Instructions pour demande de badge
+/Badge/SitePages/Instructions%20badge.aspx
+------------------------------------------
+Liste des visiteurs
+/Badge/Lists/Visiteurs/AllItems.aspx
+------------------------------------------
+Ma liste de demande de badge
+/Badge/SitePages/Demande_Badge_V2.aspx
+------------------------------------------
+Ma liste de demande détaillée
+/Badge/Lists/Demande%20badges%20v2/Demande%20badge%20dtaille.aspx
+------------------------------------------
+Modifier un de mes badges
+/Badge/Lists/Liste%20des%20badges/AllItems.aspx
+------------------------------------------
+Liste des badges à éditer
+/Badge/SitePages/Badges%20à%20éditer.aspx
+------------------------------------------
+
+------------------------------------------
+Gardien : page des badges à éditer
+/Badge/Lists/Demande%20badges%20v2/Badges%20%20diter.aspx
+------------------------------------------
+------------------------------------------
+Gardien : page des badges déjà édités
+/Badge/Lists/Demande%20badges%20v2/Badges%20dj%20dits.aspx
+------------------------------------------
+------------------------------------------
+Gardien : page des badges refusés
+/Badge/Lists/Demande%20badges%20v2/Badges%20refuss.aspx
+------------------------------------------
+

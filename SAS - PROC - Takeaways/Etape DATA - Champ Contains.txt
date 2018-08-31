@@ -1,0 +1,8 @@
+DATA _NULL_;
+SET Work.RatioDataMart end=last;
+length ConcatChamps $1000.;
+Retain ConcatChamps 'SAS VA LASR - Tables en erreur : ';
+ConcatChamps = catx(' - ',ConcatChamps,memname);
+%put ConcatChamps;
+if last then call symputx('Object',ConcatChamps);
+RUN;

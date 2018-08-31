@@ -1,0 +1,24 @@
+ALTER DATABASE [DB_GRAND_HOTEL]
+ADD FILEGROUP Storage_A;
+
+
+ALTER DATABASE [DB_GRAND_HOTEL]
+ADD FILEGROUP Storage_B;
+
+ALTER DATABASE [DB_GRAND_HOTEL]
+ADD FILE 
+			  (Name = 'Donnees',
+			   Filename = N'D:\FABIEN\Donnees_',
+			   size=1 GB,
+			   Filegrowth=50 MB)
+			   TO Filegroup Storage_A
+
+ALTER DATABASE [DB_GRAND_HOTEL]
+ADD FILE 
+			  (Name = 'Index',
+			   Filename = N'D:\FABIEN\Index_',
+			   size=1 GB,
+			   Filegrowth=50 MB)
+			   TO Filegroup Storage_B
+
+

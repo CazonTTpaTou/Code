@@ -1,0 +1,5 @@
+1361567491656	Extract method 'dodu'
+1361568081078	Extract local variable 'string'
+1361568139078	Inline local variable 'string'
+1361645414828	Move compilation unit
+1361645440953	Move compilation units

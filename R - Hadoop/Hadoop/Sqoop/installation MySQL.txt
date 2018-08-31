@@ -1,0 +1,7 @@
+sudo apt-get install mysql-server
+sudo service mysql start
+
+sudo apt-get install libmysql-java
+sudo ln -s /usr/share/java/mysql-connector-java.jar /var/lib/sqoop2 
+
+

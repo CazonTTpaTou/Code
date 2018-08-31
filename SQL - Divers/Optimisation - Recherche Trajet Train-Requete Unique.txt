@@ -1,0 +1,8 @@
+select LIGNE.No_ligne, LIGNE.Rang, LIGNE.Gare 
+from LIGNE Initial, LIGNE Final, Ligne
+where Initial.Gare = « Angers » and Final.Gare= « Béziers »
+and Initial.No_ligne=Final.No_ligne and Initial.No_ligne= Ligne.No_Ligne 
+and Ligne.Rang >= Initial.Rang and Ligne.Rang <= Final.Rang
+order by No_Ligne asc , Rang asc 
+
+ 

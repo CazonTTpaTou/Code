@@ -1,0 +1,10 @@
+<Query>
+<Where>
+  <Eq>
+    <FieldRef Name="Service"></FieldRef>
+    <Value Type="Text">Maintenance - Utilities</Value>
+  </Eq>
+</Where>
+</Query>
+
+

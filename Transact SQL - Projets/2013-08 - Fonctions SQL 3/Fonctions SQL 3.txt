@@ -1,0 +1,31 @@
+fonction 	description 	Type
+COUNT(*) 	compte le nombre de lignes 	tous
+COUNT(exp) 	compte le nombre d'occurrences 	tous
+MAX(exp) 	renvoie le maximum 	tous
+MIN(exp) 	renvoie le minimum 	tous
+SUM(exp) 	sommation 	numérique
+AVG(exp) 	calcule la moyenne 	numérique
+EVERY(exp) 	renvoie un booléen SQL qui vaut vrai si les occurrences sont toutes vrais 	booléen
+ANY(exp)SOME(exp) 	renvoie un booléen SQL qui vaut vrai si au moins une occurrence est vrai 	booléen
+STDDEV_POP(exp) 	(nouveauté SQL:2003) écart type d'une population 	numérique
+STDDEV_SAMP(exp) 	(nouveauté SQL:2003) écart type d'un échantillon 	numérique
+VAR_POP(exp) 	(nouveauté SQL:2003) variance d'une population 	numérique
+VAR_SAMP(exp) 	(nouveauté SQL:2003) variance d'un échantillon 	numérique
+PERCENTILE_CONT(exp) 	valeur interpolée d'après pourcentage 	numérique
+PERCENTILE_DIST(exp) 	plus petite distribution cumulée supérieure ou égale au pourcentage indiqué 	numérique
+
+fonction 	définition
+RANK() 	classement absolu avec prise en compte des ex-æquo par saut
+DENSE_RANK() 	classement absolu sans prise en compte des ex-æquo par saut.
+PERCENT_RANK() 	classement en pourcentage.
+CUM_DIST() 	position relative de la valeur. Résultat dans l'intervalle ] 0, 1 ]
+ROW_NUMBER() 	numérotation des lignes.
+NTILE(n) 	définition de n-tile (décile : n=10, centile : n=100...)
+
+fonction 	définition
+LEAD (exp [, offset] [, defaut] ) 	valeur relative avant dans la fenêtre
+LAG (exp [, offset] [, defaut] ) 	valeur relative après dans la fenêtre
+FIRST_VALUE 	première valeur dans la fenêtre
+LAST_VALUE 	dernière valeur dans la fenêtre
+NTH_VALUE 	nième valeur dans la fenêtre
+

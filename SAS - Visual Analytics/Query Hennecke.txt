@@ -1,0 +1,85 @@
+/** QUERY **/ 
+
+%LET VDB_GRIDHOST=srv-sasva.photowatt.local;
+%LET VDB_GRIDINSTALLLOC=/opt/TKGrid;
+options set=GRIDHOST="srv-sasva.photowatt.local";
+options set=GRIDINSTALLLOC="/opt/TKGrid";
+options validvarname=any validmemname=extend;
+
+/* Register Table Macro */
+%macro registertable( REPOSITORY=Foundation, REPOSID=, LIBRARY=, TABLE=, FOLDER=, TABLEID=, PREFIX= );
+
+/* Mask special characters */
+
+   %let REPOSITORY=%superq(REPOSITORY);
+   %let LIBRARY   =%superq(LIBRARY);
+   %let FOLDER    =%superq(FOLDER);
+   %let TABLE     =%superq(TABLE);
+
+   %let REPOSARG=%str(REPNAME="&REPOSITORY.");
+   %if ("&REPOSID." ne "") %THEN %LET REPOSARG=%str(REPID="&REPOSID.");
+
+   %if ("&TABLEID." ne "") %THEN %LET SELECTOBJ=%str(&TABLEID.);
+   %else                         %LET SELECTOBJ=&TABLE.;
+
+   %if ("&FOLDER." ne "") %THEN
+      %PUT INFO: Registering &FOLDER./&SELECTOBJ. to &LIBRARY. library.;
+   %else
+      %PUT INFO: Registering &SELECTOBJ. to &LIBRARY. library.;
+
+   proc metalib;
+      omr (
+         library="&LIBRARY." 
+         %str(&REPOSARG.) 
+          ); 
+      %if ("&TABLEID." eq "") %THEN %DO;
+         %if ("&FOLDER." ne "") %THEN %DO;
+            folder="&FOLDER.";
+         %end;
+      %end;
+      %if ("&PREFIX." ne "") %THEN %DO;
+         prefix="&PREFIX.";
+      %end;
+      select ("&SELECTOBJ."); 
+   run; 
+   quit;
+
+%mend;
+
+LIBNAME LASRLIB SASIOLA  TAG=VAPUBLIC  PORT=10031 HOST="srv-sasva.photowatt.local"  SIGNER="http://srv-sasva.photowatt.local:80/SASLASRAuthorization" ;
+
+option DBIDIRECTEXEC;
+
+proc sql noprint;
+	create view TEMP_LASR_VIEW_1437 as 
+    SELECT
+        TL_Hennecke.'N°Assemblage'n length=8 format=11. AS 'N°Assemblage'n,
+        TL_Hennecke.WaferId length=8 format=11. AS WaferId,
+        TL_Hennecke.Schnitt length=20 format=$20. AS Schnitt,
+        TL_Hennecke.Time length=8 format=DATETIME22.3 AS Time,
+        TL_Hennecke.Qual length=8 format=11. AS Qual,
+        TL_Hennecke.Thickn length=8 format=11. AS Thickn,
+        TL_Hennecke.TTV length=8 format=11. AS TTV,
+        TL_Hennecke.LATF length=8 format=11. AS LATF,
+        TL_Hennecke.SawGroove length=8 format=11. AS SawGroove,
+        TL_Hennecke.SawStep length=8 format=11. AS SawStep,
+        TL_Hennecke.SawEdge length=8 format=11. AS SawEdge,
+        TL_Hennecke.BOW length=8 format=11. AS BOW,
+        TL_Hennecke.Struct length=8 format=11. AS Struct 
+    FROM
+        CDSN.TL_Hennecke TL_Hennecke 
+    WHERE
+        datepart(TL_Hennecke.Time) >= INTNX('month', DATE(), -1);
+quit;
+/* Drop existing table */
+%vdb_dt(LASRLIB.Test_Hennecke);
+data LASRLIB.Test_Hennecke ( squeeze=yes    );
+	set TEMP_LASR_VIEW_1437 (  );
+run;
+
+/* Synchronize table registration */
+%registerTable(
+     LIBRARY=%nrstr(/Shared Data/SAS Visual Analytics/Public/Visual Analytics Public LASR)
+, REPOSID=%str(A5967C5U)
+, TABLEID=%str(A5967C5U.BG00001M)
+);

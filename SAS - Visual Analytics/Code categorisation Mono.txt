@@ -1,0 +1,12 @@
+IF ( 'Taux de mono'n < 'Multi'p )
+RETURN 'Multi'
+ELSE ( 
+  IF ( ( 'Taux de mono'n >= 'Monolike'p ) AND ( 'Taux de mono'n < 'Mono'p ) )
+  RETURN 'MonoLike'
+  ELSE ( 
+    IF ( ( 'Taux de mono'n >= 'Mono'p ) AND ( 'Taux de mono'n < 'Full Mono'p ) )
+    RETURN 'Mono'
+    ELSE ( 
+      IF ( ( 'Taux de mono'n >= 'Full Mono'p ))
+      RETURN 'Full Mono'
+      ELSE ( 'Indéterminé' ) ) ) ) 

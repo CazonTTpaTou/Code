@@ -1,0 +1,46 @@
+Public Sub ZInsertion(ByVal value1 As String, ByVal value2 As Integer)
+
+ 'Dim adoConnection As ADODB.Connection
+ '       Dim adoCommand As ADODB.Command
+ '       Dim adoRecordset As ADODB.Recordset
+        Dim strBase As String
+        Dim strFilter As String
+        Dim strAttributes As String
+        Dim strQuery As String
+        Dim listGroups() As Variant
+        Dim i As Integer
+        'Initialisation des objets ADO
+        'Set adoCommand = New ADODB.Command
+        'Set adoConnection = New ADODB.Connection
+        'Set adoRecordset = New ADODB.Recordset
+
+        strAttributes = ""
+
+        strQuery = "insert into TypePJ (Libelle,Actif) " _
+                   & "values(" _
+                   & value1 & "," _
+                   & value2 & ")"
+                   
+        CurrentDb.Execute strQuery, dbSeeChanges
+    
+        'lecture des droits de l'utilisateur.
+        Dim strSQL As String
+        Dim code As String
+                
+        strSQL = "select * from TypePJ"
+        
+        Dim rs As DAO.Recordset
+        Set rs = CurrentDb.OpenRecordset(strSQL, dbOpenForwardOnly)
+        While Not rs.EOF
+                strAttributes = strAttributes & rs![Libelle]
+                rs.MoveNext
+        Wend
+        rs.Close
+
+        MsgBox strAttributes
+
+End Sub
+
+Public Sub ZRequest()
+    Call ZInsertion("'Fichier SAS'", -1)
+End Sub

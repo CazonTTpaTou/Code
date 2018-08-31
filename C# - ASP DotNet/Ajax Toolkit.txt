@@ -1,0 +1,34 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm4.aspx.cs" Inherits="WebApplication1.WebForm4" %>
+<%@ Register Assembly ="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit"%>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>    
+    <div>
+        <asp:DropDownList ID="Liste_Villes" runat="server" Width="200px">
+            <asp:ListItem>Paris</asp:ListItem>
+            <asp:ListItem>Lyon</asp:ListItem>
+            <asp:ListItem>Marseille</asp:ListItem>
+            <asp:ListItem>Poitier</asp:ListItem>
+            <asp:ListItem>Lausanne</asp:ListItem>
+            <asp:ListItem>Montpelier</asp:ListItem>
+            <asp:ListItem>Montbard</asp:ListItem>
+            <asp:ListItem>Montluçon</asp:ListItem>
+            <asp:ListItem>Montreux</asp:ListItem>
+            <asp:ListItem>Lille</asp:ListItem>
+        </asp:DropDownList>
+        <br />
+        <br />
+        <ajaxToolkit:ListSearchExtender ID="ListSearchExtender1" runat="server" TargetControlID="Liste_Villes"></ajaxToolkit:ListSearchExtender>
+        
+    </div>
+    </form>
+</body>
+</html>

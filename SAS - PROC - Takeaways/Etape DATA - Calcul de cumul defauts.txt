@@ -1,0 +1,56 @@
+proc sql noprint;
+create table WORK.DATA_ICOS_FSPI_P1 as
+select 
+
+'ICOS BSPI P1' AS Equipement,
+timestamp,
+ifn(Contour_Result In ('break'),1,0) as Contour_Result_NB length=3 format=3.,
+ifn(Back_Print_Result In ('Bad', 'bad'),1,0) as Print_Result_NB length=3 format=3.,
+ifn(Geometry_Result In ('bad'),1,0) as Geometry_Result_NB length=3 format=3.,
+ifn(Presence_Result In ('Not Present'),1,0) as Presence_Result_NB length=3 format=3.,
+ifn(Surface_Result In ('bad', 'Bad'),1,0) as Surface_Result_NB length=3 format=3.,
+ifn(Quality_Result_Inspection In ('Not Present', 'break', 'Bad', 'bad'),1,0) as Cel_En_Defaut length=3 format=3.,
+Hour(timepart(t.Timestamp)) AS Heure,
+Datepart(t.Timestamp) AS Jour format =date9.,
+(ifn(Contour_Result In ('break'),1,0) 
+	+ ifn(Back_Print_Result In ('Bad', 'bad'),1,0) 
+	+ ifn(Geometry_Result In ('bad'),1,0) 
+	+ ifn(Presence_Result In ('Not Present'),1,0)
+	+ ifn(Surface_Result In ('bad', 'Bad'),1,0)) AS Total_Defaut
+
+FROM 
+ 
+IN_LINE.ICOS_BSPI_P1 as t
+where 
+datepart(t.TimeStamp) >= INTNX('day', DATE(), -10) ;
+quit;
+
+PROC SORT data=Work.DATA_ICOS_FSPI_P1;
+BY Jour TimeStamp;
+RUN;
+
+DATA Work.Cumul_Icos_FSPI_P1;
+
+SET WORK.DATA_ICOS_FSPI_P1;
+BY Jour;
+
+IF first.jour Then do 
+	Cumul_Contour_Result = 0;
+	Cumul_Print_Result = 0;
+	Cumul_Geometry_Result = 0;
+	Cumul_Presence_Result = 0;
+	Cumul_Surface_Result = 0;
+	Cumul_Cel_Defaut=0;
+	Cumul_Total_Defaut =0;
+	Cumul_Cellules=0;
+	end;
+
+    Cumul_Contour_Result + Contour_Result;
+	Cumul_Print_Result + Print_Result;
+	Cumul_Geometry_Result + Geometry_Result;
+	Cumul_Presence_Result + Presence_Result;
+	Cumul_Surface_Result + Surface_Result;
+	Cumul_Cel_Defaut + Cel_Defaut;
+	Cumul_Total_Defaut+Total_Defaut;
+	Cumul_Cellules+1;
+RUN;

@@ -1,0 +1,18 @@
+select idPoste from dbo.t_poste 
+where nom like '%technicien pva%'
+GO
+
+
+select op.nom,op.prenom,eq.nom from t_operateur as op
+inner join t_equipe as eq
+on op.idEquipe = eq.idEquipe
+ 
+where idOperateur in
+
+(select idoperateur from t_habilitation
+	where  idPoste = 
+		(select idPoste from dbo.t_poste 
+			where nom like '%technicien pva%'))
+		
+GO
+

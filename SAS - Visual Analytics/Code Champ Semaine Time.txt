@@ -1,0 +1,2 @@
+Concatenate(Format(Year(DatePart('Time'n)), 'Z4.0'), Concatenate('Semaine', Format(WeekNumber(DatePart('Time'n)), 'Z2.0')))
+

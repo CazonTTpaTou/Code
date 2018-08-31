@@ -1,0 +1,221 @@
+Option Compare Database
+
+Option Explicit
+
+' N.B. le champ GD_Utilisateur.autoriseAD booléen sur Access devient numérique avec SQL-Server
+
+Public Declare Function LogonUser Lib "advapi32.dll" Alias "LogonUserA" _
+        (ByVal lpszUsername As String, _
+        ByVal lpszDomain As String, _
+        ByVal lpszPassword As String, _
+        ByVal dwLogonType As Long, _
+        ByVal dwLogonProvider As Long, _
+        phToken As Long) As Long
+
+Const LOGON32_LOGON_INTERACTIVE As Long = 2
+Const LOGON32_LOGON_NETWORK As Long = 3
+Const LOGON32_PROVIDER_DEFAULT As Long = 0
+Const LOGON32_PROVIDER_WINNT50 As Long = 3
+Const LOGON32_PROVIDER_WINNT40 As Long = 2
+Const LOGON32_PROVIDER_WINNT35 As Long = 1
+'--------------------------
+'
+'  Module commun de gestion des droits d'Accès
+'
+' Ce module a besoin des :
+' Tables
+' - GD_droit
+' - GD_droit_groupe
+' - GD_droit_utilisateur
+' - GD_groupe
+' - GD_utilisateur
+' - GD_utilisateur_groupe
+
+' Formulaires
+' - GD_frmAdmin
+' - GD_Login
+'
+'
+'  les deux constantes ci dessous sont propre à l'ative directory de photowatt.
+'--------------------------
+Private Const GD_nomDomaine As String = "photowatt"
+Private Const GD_nomextension As String = "local"
+
+'--------------------------
+'
+' DEBUG
+'
+' passer a false pour supprimer toutes les vérifications AD
+'
+'--------------------------
+'Private Const GD_CheckAD As Boolean = True
+
+
+'--------------------------
+'
+'  Collection de droits de l'utilisateur loggé sur le poste.
+'
+'  cette collection est initialisée par la méthode GD_initialisation
+'
+'--------------------------
+Private mCDroits As Collection
+
+'--------------------------
+'
+' Utilisateur connecté
+'
+'--------------------------
+Private msUser As String
+
+'--------------------------
+'
+' Initialisation des droits :
+'
+' le groupeAD passé en parametre est le nom du groupe dans lequel l'utilisateur doit
+' etre pour accéder à l'application.
+'
+' Cette fonction renvoi vrai si l'utilisateur est dans le groupe AD,
+' et charge l'ensemble des droits auxquels il a accès via la structure de
+' base de données composées des 6 tables de gestion des droits GD_******
+'
+'
+'--------------------------
+
+Public Const Bureau = "C:\Users\FMONNERY\Desktop\"
+Public Const Path = "C:\Documents and Settings\Fabien Monnery\"
+Public Const fichier = "Enhancing_Decision.pdf"
+Public Const Script = "C:\Documents and Settings\Fabien Monnery\Mes documents\Fabien\Work\PhotoWatt\GMAO\SQL\Script SQL\*.*"
+Public Const DossierScript = "C:\Documents and Settings\Fabien Monnery\Mes documents\Fabien\Work\PhotoWatt\GMAO\SQL\Script SQL\"
+
+Sub Fichier1()
+    Dim GestionFichier As Object
+    Dim Name1, Name2 As String
+    
+    Set GestionFichier = CreateObject("Scripting.FileSystemObject")
+    Name2 = Path & "Mes Documents\" & fichier
+    Name1 = Path & "Bureau\" & fichier
+    GestionFichier.CopyFile Name1, Name2
+    Set GestionFichier = Nothing
+End Sub
+
+Sub ParcourtFichier(ByVal Texte As String)
+    Dim fichier, SQLscript, Name As String
+    Dim GestionFichier As New Scripting.FileSystemObject
+    Dim FichierTexte, FichierLire As Scripting.TextStream
+    
+    SQLscript = Bureau & "SQLscript.txt"
+    Set FichierTexte = GestionFichier.CreateTextFile(SQLscript)
+    'fichier = Dir(Script)
+  
+    'While fichier <> ""
+          
+          'Debug.Print fichier
+          'Name = DossierScript & fichier
+          'Set FichierLire = GestionFichier.OpenTextFile(Name, ForReading)
+            'While FichierLire.AtEndOfStream = False
+                FichierTexte.WriteLine (Texte)
+           ' Wend
+          'Set FichierLire = Nothing
+         'fichier = Dir
+    'Wend
+    
+    FichierTexte.Close
+    Set GestionFichier = Nothing
+    
+End Sub
+
+
+
+
+
+
+'inistialise la liste des utilisateurs autorisés dans l'AD
+'
+' créé les utilisateurs non déclarés dans l'appli
+' décoche les utilisateurs non déclarés dans l'AD
+Public Sub GD_RecuperationMail()
+
+Dim Tampon As String
+
+   If GD_CheckAD Then
+        
+        
+        Dim adoConnection As ADODB.Connection
+        Dim adoCommand As ADODB.Command
+        Dim adoRecordset As ADODB.Recordset
+        Dim strBase As String
+        Dim strFilter As String
+        Dim strAttributes As String
+        Dim strQuery As String
+        Dim listUsers() As Variant
+         Dim chaine_user As Variant
+                    Dim userTmp As String
+                  Dim i As Integer
+        Dim idtmp As Long
+        'Initialisation des objets ADO
+        Set adoCommand = New ADODB.Command
+        Set adoConnection = New ADODB.Connection
+        Set adoRecordset = New ADODB.Recordset
+        
+        adoConnection.Provider = "ADsDSOObject"
+        adoConnection.Open "Active Directory Provider"
+        adoCommand.ActiveConnection = adoConnection
+        adoCommand.Properties("Searchscope") = 2
+       
+        adoCommand.CommandText = "SELECT mail " _
+                & "FROM 'LDAP://dc=" & GD_nomDomaine & ";dc=" & GD_nomextension & "' " _
+                & "WHERE objectCategory='person'  AND objectClass='user' " _
+                & " AND memberOf='CN=" & GD_nomGroupeAD & ",OU=Applications et Databases,OU=Groupes,DC=photowatt,DC=local'"
+     
+        
+        adoCommand.Properties("Page Size") = 1000
+        adoCommand.Properties("Timeout") = 30
+        adoCommand.Properties("Cache Results") = False
+        'Exécution de la requête
+        On Error Resume Next
+        Set adoRecordset = adoCommand.Execute
+        If Err <> 0 Then
+           
+           Err.Clear
+            Exit Sub
+        End If
+         On Error GoTo 0
+        'Connexion ok, on décoche tout le monde
+        CurrentDb.Execute "update GD_utilisateur set autoriseAD = false", dbSeeChanges
+        
+              'Parcours des résultats de la requête
+             
+        Do Until adoRecordset.EOF
+            'On stocke l'ensemble des groupes dans un tableau de variants
+            'MsgBox adoRecordset.Fields("sAMAccountName")
+            
+            
+            If Not IsNull(adoRecordset.Fields("mail")) Then
+                userTmp = adoRecordset.Fields("mail")
+                
+                Tampon = Tampon & userTmp & ";"
+                
+            End If
+            
+            ' Move to the next record in the recordset.
+            adoRecordset.MoveNext
+        Loop
+        
+        ' Clean up.
+        adoRecordset.Close
+        adoConnection.Close
+    End If
+  
+    
+    MsgBox Tampon
+    Call ParcourtFichier(Tampon)
+
+End Sub
+
+Public Sub Bonjour()
+
+MsgBox "Bonjour"
+
+End Sub
+
+

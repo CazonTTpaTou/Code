@@ -1,0 +1,93 @@
+###############################################################
+
+df <- read.csv("scores.csv")
+
+head(df)
+
+###############################################################
+
+head(df)
+
+add_2014 <- paste(df$match_date,'-2014',sep=' ')
+
+###############################################################
+
+paste(df$match_date, "-2014")
+
+df$match_date <- paste(df$match_date,"-2014")
+
+update_2014 <- df$match_date
+
+###############################################################
+
+extract_date <- function(date) {
+    return(substr(date,4,length(date)))
+    }
+
+months_ <- tapply(df$match_date,df$match_date,extract_date)
+
+---------------------------------------------------------------
+
+months <- substr(df$match_date,3,8)
+
+###############################################################
+
+match_date <- df$match_date
+
+match_date <- as.character(match_date)
+
+date_split <- strsplit(match_date,split=" ")
+
+###############################################################
+
+df$match_date <- sub('June','-06',df$match_date)
+
+df$match_date <- sub('July','-07',df$match_date)
+
+updated_dates <- df$match_date
+
+###############################################################
+
+remove_space <- gsub(" ","",df$match_date)
+
+###############################################################
+
+date_convert <- as.Date(df$match_date,format='%d-%m-%Y')
+
+###############################################################
+
+pos_obj <- as.POSIXlt(df$match_date)
+
+###############################################################
+
+dayofweek <- df$match_date$wday
+
+###############################################################
+
+dayofweek <- df$match_date$wday
+
+df$dayofwwek <- dayofweek
+
+###############################################################
+
+df$month <- sub(5,"June",df$match_date$mon)
+
+df$month <- sub(6,"July",df$month)
+
+headline <- paste("On",df$month,paste(df$match_date$mday,"th,",sep=""),df$win_country,'won the match',paste(df$home_goals,df$away_goals,sep='-'),sep=' ')
+
+###############################################################
+
+df$month <- df$match_date$mon
+df$month<- sub(5, "June",df$month)
+df$month<- sub(6, "July",df$month)
+
+df$headline <- paste("On",df$month, sub(" ","", paste(df$match_date$mday, "th,")), df$win_country, 
+                     "won the match", gsub(" ", "", paste(df$home_goals, "-", df$away_goals)))
+headline <- df$headline
+
+###############################################################
+
+
+
+

@@ -1,0 +1,20 @@
+Use GMAO_DB;
+
+BEGIN TRANSACTION
+
+Update [dbo].[FichePreventive] SET idService=6 Where idFichePreventive = 655;
+
+IF @@ROWCOUNT = 1
+                 BEGIN 
+				       PRINT 'Nombre de ligne retournée égale à 1';
+				       PRINT 'Transaction bien validée !!';
+					   COMMIT;
+				 END
+ELSE BEGIN 
+           Print'Nombre de ligne retournée différent de 1';
+		   Print'Un problème est survenu !!';
+		   Print 'La transaction est donc annulée...';
+		   ROLLBACK;
+	 END
+GO
+

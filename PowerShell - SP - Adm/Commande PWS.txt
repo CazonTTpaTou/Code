@@ -1,0 +1,2 @@
+Import-SPWeb http://intranetpp.photowatt.local/BeWalk/ -Path C:\Users\sp_install\Desktop\Site.cmp -UpdateVersions Overwrite
+

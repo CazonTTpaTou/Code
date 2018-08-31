@@ -1,0 +1,18 @@
+# Synchronisation avec la plate-forme Workflow 2013
+
+$credential = [System.Net.CredentialCache]::DefaultNetworkCredentials
+
+$site = Get-SPSite http://intranet.photowatt.local
+$proxy = Get-SPWorkflowServiceApplicationProxy
+$svcAddress = $proxy.GetWorkflowServiceAddress($site)
+Copy-SPActivitiesToWorkflowService -WorkflowServiceAddress $svcAddress -Credential $credential -Force $true
+
+$site = Get-SPSite http://myphotowatt
+$proxy = Get-SPWorkflowServiceApplicationProxy
+$svcAddress = $proxy.GetWorkflowServiceAddress($site)
+Copy-SPActivitiesToWorkflowService -WorkflowServiceAddress $svcAddress -Credential $credential -Force $true
+
+$site = Get-SPSite http://portail-accueil.photowatt.local
+$proxy = Get-SPWorkflowServiceApplicationProxy
+$svcAddress = $proxy.GetWorkflowServiceAddress($site)
+Copy-SPActivitiesToWorkflowService -WorkflowServiceAddress $svcAddress -Credential $credential -Force $true

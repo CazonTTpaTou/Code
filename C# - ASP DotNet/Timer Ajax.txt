@@ -1,0 +1,84 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm3.aspx.cs" Inherits="WebApplication1.WebForm3" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+
+        <asp:ScriptManager ID="ScriptManager1" runat="server">
+        </asp:ScriptManager>
+
+        <div>
+    
+            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                <ContentTemplate>
+                    <asp:Button ID="cmd_maj_heure" runat="server" Text="Actualiser" OnClick="cmd_maj_heure_Click" />
+                    <br />
+                    Heure Ajax :
+                    <asp:Label ID="Label_heure_panel" runat="server" Text="Label"></asp:Label>
+                    <br />
+                    <asp:Label ID="Label_heure_Timer" runat="server" Text="Label"></asp:Label>
+                    <asp:Timer ID="Timer1" runat="server" OnTick="Timer1_Tick" Interval="1000"></asp:Timer>
+                </ContentTemplate>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="cmd_hors_panel" EventName="Click" />
+                </Triggers>
+            </asp:UpdatePanel>
+    </div>
+    <br />
+        <div>
+                    <br />
+                    Heure Page :
+                    <asp:Label ID="Label_heure_page" runat="server" Text="Label"></asp:Label>
+                    <br />
+                    <asp:Button ID="cmd_hors_panel" runat="server" Text="Trigger" OnClick="cmd_hors_panel_Click" />
+                </div>
+    </form>
+</body>
+</html>
+
+-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace WebApplication1
+{
+    public partial class WebForm3 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack && !IsCallback)
+                Label_heure_page.Text = DateTime.Now.ToLongTimeString();
+        }
+
+        protected void cmd_maj_heure_Click(object sender, EventArgs e)
+        {
+                Label_heure_panel.Text = DateTime.Now.ToLongTimeString();
+        }
+
+        protected void cmd_hors_panel_Click(object sender, EventArgs e)
+        {
+                Label_heure_panel.Text = DateTime.Now.ToLongTimeString();
+        }
+
+        protected void Timer1_Tick(object sender, EventArgs e)
+        {
+            Label_heure_Timer.Text = DateTime.Now.ToLongTimeString();
+        }
+    }
+}
+

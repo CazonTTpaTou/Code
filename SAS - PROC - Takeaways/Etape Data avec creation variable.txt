@@ -1,0 +1,10 @@
+Libname Training meta library="TRAINING" repname="Foundation" METAOUT=Data;
+
+DATA Training.Box_Plot1; 
+SET Training.Box_Plot;
+length IMPACT 6.;
+Retain Impact 0;
+if SawStep > 40 Then Impact=0;
+else impact=1;
+Run;
+

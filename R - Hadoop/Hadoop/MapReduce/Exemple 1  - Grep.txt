@@ -1,0 +1,8 @@
+
+export HADOOP_MAPRED_HOME=/opt/cloudera/parcels/CDH/lib/hadoop-mapreduce
+
+hadoop jar /opt/cloudera/parcels/CDH-4.7.1-1.cdh4.7.1.p0.47/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar grep /user/eulidia/input /user/eulidia/outputgrep 'dfs[a-z.]+'
+
+hadoop fs -ls /user/eulidia/outputgrep 
+
+hadoop fs -cat /user/eulidia/outputgrep/part-00000 | head 

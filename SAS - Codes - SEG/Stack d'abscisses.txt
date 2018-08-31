@@ -1,0 +1,55 @@
+data test;
+input annee mois semestre valeur;
+cards;
+1 1 1 43
+1 2 1 29
+1 3 1 43
+1 4 1 13
+1 5 1 40
+1 6 1 82
+1 7 2 42
+1 8 2 72
+1 9 2 17
+1 10 2 32
+1 11 2 19
+1 12 2 62
+2 1 1 18
+2 2 1 85
+2 3 1 28
+2 4 1 64
+2 5 1 55
+2 6 1 99
+2 7 2 48
+2 8 2 7
+2 9 2 10
+2 10 2 38
+2 11 2 85
+2 12 2 86
+;
+run;
+ 
+data test;
+set test;
+tout=annee||"-"||semestre||"-"||mois;
+run;
+ 
+proc template; 
+     define statgraph blockplot1; 
+     begingraph; 
+     entrytitle "Pour toi Julie"; 
+     layout lattice /columns=1 rowweights=(.76 .04 .04 .04 .04 .04 .04 ) COLUMNDATARANGE=UNION;
+          boxplot x=tout y=valeur ; 
+          blockplot x=tout block=mois / display=(fill values outline label) valuehalign=center fillattrs=(transparency=1); 
+          blockplot x=tout block=semestre / display=(fill outline values label) valuehalign=center fillattrs=(transparency=1); 
+          blockplot x=tout block=annee / display=(fill values outline label) valuehalign=center fillattrs=(transparency=1);
+          columnaxes;
+                     columnaxis / display=none;
+          endcolumnaxes;
+     endlayout; 
+     endgraph; 
+     end;
+run;
+ 
+proc sgrender data=test template=blockplot1;
+run;
+ 

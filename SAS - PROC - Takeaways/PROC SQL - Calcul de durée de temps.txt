@@ -1,0 +1,29 @@
+PROC SQL;
+
+SELECT CAL1.Jour AS Jour_Debut,
+	   CAL2.Jour AS Jour_Fin,
+
+	   CAL2.Cumul_Heure_Travail - CAL1.Cumul_Heure_Travail - CAL2.Heure_Travail AS Nb_Heure_Intervalle,
+
+	   case when DE1.Debut >= CAL1.Heure_Debut Then timepart(DE1.Debut) else CAL1.Heure_Debut END as Debut_Intervalle,
+
+	   case when DE1.Fin <= CAL2.Heure_Fin Then timepart(DE1.Fin) else CAL1.Heure_Fin END as Fin_Intervalle,
+
+	   ((CAL1.Heure_Fin - (case when DE1.Debut >= CAL1.Heure_Debut Then timepart(DE1.Debut) else CAL1.Heure_Debut END))/3600) AS Nb_Heure_Debut,
+
+	   (((case when DE1.Fin <= CAL2.Heure_Fin Then timepart(DE1.Fin) else CAL1.Heure_Fin END) - CAL2.Heure_Debut)/3600) AS Nb_Heure_Fin,
+
+	   (CAL2.Cumul_Heure_Travail - CAL1.Cumul_Heure_Travail - CAL2.Heure_Travail
+		+ ((CAL1.Heure_Fin - (case when DE1.Debut >= CAL1.Heure_Debut Then timepart(DE1.Debut) else CAL1.Heure_Debut END))/3600)
+		+ (((case when DE1.Fin <= CAL2.Heure_Fin Then timepart(DE1.Fin) else CAL1.Heure_Fin END) - CAL2.Heure_Debut)/3600)) 
+		AS Duree_Ecran_Heure
+
+FROM RE_PROC.Date_Ecran AS DE1 
+			INNER JOIN RE_PROC.Calendrier AS CAL1
+			ON CAL1.JOUR = datepart(DE1.Debut)
+		 	INNER JOIN RE_PROC.Calendrier AS CAL2
+			ON CAL2.JOUR = datepart(DE1.Fin);
+
+
+RUN;
+

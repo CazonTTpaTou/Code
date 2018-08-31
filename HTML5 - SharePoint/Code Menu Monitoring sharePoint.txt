@@ -1,0 +1,25 @@
+<ul unselectable="on">
+<li unselectable="on">
+<h2 unselectable="on"><b unselectable="on">Statistiques d'utilisation de l'Intranet :</b></h2>
+<br unselectable="on">
+<ul unselectable="on">
+<li unselectable="on">
+<a href="https://sas.photowatt.com/SASVisualAnalytics/report?location=/_Intranet/Intranet_Stats_Utilisation&amp;type=Report.BI&amp;section=vi1" unselectable="on">Accès et clics utilisateurs</a>
+</li>
+<br unselectable="on">
+<br unselectable="on">
+<li unselectable="on">
+<a href="https://sas.photowatt.com/SASVisualAnalytics/report?location=%2F_Intranet%2FIntranet_Acces_Sites_Historique&type=Report.BI&section=vi1150" unselectable="on">Historique des accès Intranet</a>
+</li>
+<br unselectable="on">
+<br unselectable="on">
+<li unselectable="on">
+<a href="https://sas.photowatt.com/SASVisualAnalytics/report?location=/_Intranet/Intranet_Utilisation_Globale&amp;type=Report.BI&amp;section=vi136" unselectable="on">Consultation des documents</a>
+</li>
+<br unselectable="on">
+<br unselectable="on">
+<li unselectable="on"><a href="https://sas.photowatt.com/SASVisualAnalytics/report?location=/_Intranet/Intranet_Acces_Sites&amp;type=Report.BI&amp;section=vi47" unselectable="on">Mots clés des recherches</a>
+</li>
+</ul>
+<br unselectable="on"></li></ul>
+

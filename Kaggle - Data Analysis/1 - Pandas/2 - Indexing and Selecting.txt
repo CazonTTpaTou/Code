@@ -1,0 +1,111 @@
+import pandas as pd
+import seaborn as sns
+
+import sys
+sys.path.append('../input/advanced-pandas-exercises/')
+from indexing_selecting_assigning import *
+
+reviews = pd.read_csv("../input/wine-reviews/winemag-data-130k-v2.csv", index_col=0)
+pd.set_option("display.max_rows", 5)
+
+######################################################################################################
+Exercise 1: Select the description column from reviews.
+######################################################################################################
+
+column = reviews.loc[:,'description']
+column.head(5)
+
+######################################################################################################
+Exercise 2: Select the first value from the description column of reviews.
+######################################################################################################
+
+value = reviews.loc[0,'description']
+value
+
+######################################################################################################
+Exercise 3: Select the first row of data (the first record) from reviews.
+######################################################################################################
+
+first = reviews.iloc[0,:]
+first
+
+######################################################################################################
+Exercise 4: Select the first 10 values from the description column in reviews. Hint: format your output as a pandas Series.
+######################################################################################################
+
+ten_first = pd.Series(reviews.loc[0:10,'description'])
+ten_first
+
+######################################################################################################
+Exercise 5**: Select the records with the `1`, `2`, `3`, `5`, and `8` row index positions. In other words, generate the following`DataFrame`:
+######################################################################################################
+
+fancy_indexing = [1,2,3,5,8]
+
+view = reviews.iloc[fancy_indexing,:]
+
+view
+
+######################################################################################################
+Exercise 6: Select the country, province, region_1, and region_2 columns of the records with the 0, 1, 10, and 100 index positions. In other words, generate the following DataFrame:
+######################################################################################################
+
+view = reviews.loc[[0,1,10,100],['country','province','region_1','region_2']]
+view
+
+######################################################################################################
+Exercise 7: Select the country and variety columns of the first 100 records. 
+######################################################################################################
+
+data = reviews.loc[0:99,['country','variety']]
+data
+
+######################################################################################################
+**Exercise 8**: Select wines made in `Italy`. Hint: `reviews.country` equals what?
+######################################################################################################
+
+reviews.loc[reviews.country=='Italy',:]
+
+######################################################################################################
+**Exercise 9**: Select wines whose `region_2` is not `NaN`.
+######################################################################################################
+
+reviews.loc[reviews.region_2.notnull()]
+
+######################################################################################################
+Exercise 10: Select the points column.
+######################################################################################################
+
+reviews.points
+
+######################################################################################################
+**Exercise 11**: Select the `points` column for the first 1000 wines.
+######################################################################################################
+
+reviews.loc[0:999,'points']
+
+######################################################################################################
+**Exercise 12**: Select the `points` column for the last 1000 wines.
+######################################################################################################
+
+reviews.loc[len(reviews.points)-1000:,'points']
+reviews.iloc[-1000:, 3]
+
+######################################################################################################
+**Exercise 13**: Select the `points` column, but only for wines made in Italy.
+######################################################################################################
+
+reviews.loc[reviews.country=='Italy','points']
+reviews[reviews.country == "Italy"].points
+
+######################################################################################################
+Exercise 14: Who produces more above-averagely good wines, France or Italy? Select the country column, but only when said country is one of those two options, and the points column is greater than or equal to 90.
+######################################################################################################
+
+reviews.loc[((reviews.country=='France')|(reviews.country=='Italy'))&(reviews.points>=90),'country']
+
+reviews[reviews.country.isin(["Italy", "France"]) & (reviews.points >= 90)].country
+
+
+
+

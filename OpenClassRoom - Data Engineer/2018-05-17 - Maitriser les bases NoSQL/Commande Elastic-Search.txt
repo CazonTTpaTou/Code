@@ -1,0 +1,225 @@
+################ Lancer Elastic Search
+
+Lancer ElasticSearch.bat dans le repertoire/Bin
+
+################ Importer films
+
+cd c:\
+e:
+
+cd E:\Data\RawData\movies_for_elastic_json\movies_elastic.json
+
+curl -XPUT localhost:9200/_bulk -H"Content-Type: application/json" --data-binary @movies_elastic.json
+
+
+http://localhost:9200/
+http://localhost:9200/movies/movie/_search
+http://localhost:9200/movies/
+
+cd ./mapping_movies
+
+################ Importer films avec nouveau schéma
+
+curl -XPUT localhost:9200/movies3 H"Content-Type: application/json" -d mapping.json
+
+curl -XPUT localhost:9200/_bulk -H"Content-Type: application/json" --data-binary @movies_elastic2.json
+
+http://localhost:9200/movies2/
+http://localhost:9200/movies2/movie/_search
+
+################ Faire une recherche sur des mots clés
+
+http://localhost:9200/movies2/_search?q=Star+Wars
+
+################ Faire une recherche sur un titre
+
+http://localhost:9200/movies2/_search?q=fields.title:Star Wars
+
+################ Faire une recherche sur un acteur
+
+http://localhost:9200/movies2/_search?q=fields.actors:Harrison Ford
+
+################ Faire une recherche sur un titre et un realisateur
+
+http://localhost:9200/movies2/_search?q=fields.title:Star Wars AND fields.directors:George Lucas
+
+http://localhost:9200/movies2/_search?q=actors=Harrison Ford AND fields.plot:Jones AND -fields.plot:Nazis
+
+################ Requête JSON
+
+curl -XGET "localhost:9200/movies2/movie/_search" -d @query1
+{
+    "query":{
+        "match":{
+            "fields.title":"Star Wars"
+        }
+    }
+}
+
+################ Requête JSON - Filtre conditionnel
+
+{"query":{
+    "bool": {
+        "should": [
+            { "match": { "fields.title": "Star Wars" }},
+            { "match": { "fields.directors": "George Lucas" }}
+        ]
+}}}
+
+################ Requête JSON - Filtre impératif
+
+{"query":{
+    "bool": {
+        "should": { "match": { "fields.title": "Star Wars" }},
+        "must" :  { "match": { "fields.directors": "George Lucas" }}
+}}}
+
+################ Requête JSON - Ordre des mots
+
+{"query":{
+    "bool": {
+        "should": [
+            { "match_phrase": { "fields.title": "Star Wars" }},
+            { "match": { "fields.directors": "George Lucas" }}
+        ]
+}}}
+
+################ Requête JSON - Condition négative
+
+{"query":{
+    "bool": {
+        "should": [
+            { "match": { "fields.actors": "Harrison Ford" }},
+            { "match": { "fields.plot": "Jones" }}
+        ],
+        "must_not" : { "match" : {"fields.plot":"Nazis"}}
+}}}
+
+################ Requête JSON - Requête avec range
+
+{"query":{
+    "bool": {
+            "must": [
+                { "match_phrase": { "fields.directors": "James Cameron" }},
+                { "range": { "fields.rank": {"lt":1000 }}}
+           ]
+}}}
+
+################ Requête JSON - Requête complexe
+
+{"query":{
+    "bool": {
+        "should": { "match": { "fields.directors": "James Cameron" }},
+        "must":{ "range": { "fields.rating": {"gte":5 }}},
+        "must_not":[
+            {"match":{"fields.genres":"Action"}},
+            {"match":{"fields.genres":"Drama"}}
+        ]
+}}}
+
+################ Requête JSON - Requête complexe
+
+{
+    "query": {
+        "bool":{
+            "must": {"match": {"fields.directors": "J.J. Abrams"}},
+            "filter": {"range": {"fields.release_date":
+                { "from": "2010-01-01", "to": "2015-12-31"}}}
+}}}
+
+################ Requête JSON - Requête agrégat
+
+{"aggs" : {
+    "nb_par_annee" : {
+        "terms" : {"field" : "fields.year"}
+}}}
+
+{"aggs" : {
+    "note_moyenne" : {
+        "avg" : {"field" : "fields.rating"}
+}}}
+
+################ Requête JSON - Requête agrégat
+
+{
+    "query" :{
+        "match" : {"fields.directors" : "George Lucas"}
+    },
+    "aggs" : {
+            "note_moyenne" : {
+                        "avg" : {"field" : "fields.rating"}
+            },
+            "rang_moyen" : {
+                        "avg" : {"field" : "fields.rank"}
+            }
+}}
+
+################ Requête JSON - Requête agrégats imbriqués
+
+{"aggs" : {
+    "group_year" : {
+        "terms" : { "field" : "fields.year" },
+        "aggs" : {
+            "note_moyenne" : {"avg" : {"field" : "fields.rating"}},
+            "note_min" : {"min" : {"field" : "fields.rating"}},
+            "note_max" : {"max" : {"field" : "fields.rating"}}
+        }
+}}}
+
+################ Requête JSON - Tris et agrégats imbriqués
+
+{"aggs" : {
+    "group_year" : {
+        "terms" : {
+            "field" : "fields.year",
+            "order" : { "rating_moyen" : "desc" }
+        },
+        "aggs" : {
+            "note_moyenne" : {"avg" : {"field" : "fields.rating"}}
+        }
+}}}
+
+################ Requête JSON - Agrégats sur plages de valeurs
+
+{"aggs" : {
+    "group_range" : {
+        "range" : {
+            "field" : "fields.rating",
+            "ranges" : [
+                {"to" : 1.9},
+                {"from" : 2, "to" : 3.9},
+                {"from" : 4, "to" : 5.9},
+                {"from" : 6, "to" : 7.9},
+                {"from" : 8}
+            ]
+}}}}
+
+################ Requête JSON - Agrégats sur des listes de valeurs
+
+{"aggs" : {
+    "nb_per_genres" : {
+        "terms" : {"field" : "fields.genres.raw"}
+}}}
+
+{"aggs" : {
+    "nb_per_director" : {
+        "terms" : {"field" : "fields.directors.raw"}
+}}}
+
+################ Requête JSON - Agrégats imbriqués sur des listes de valeurs
+
+{"aggs" : {
+    "group_actors" : {
+        "terms" : {
+            "field" : "fields.actors.raw"
+        },
+        "aggs" : {
+            "note_moyenne" : {"avg" : {"field" : "fields.rating"}},
+            "rang_min" : {"min" : {"field" : "fields.rank"}},
+            "rang_max" : {"max" : {"field" : "fields.rank"}}
+        }
+}}}
+
+E:\Data\RawData\movies_for_elastic_json>curl -XGET "localhost:9200/movies2/movie/_search" -H"Content-Type: application/json" -d @query3.json >result2.json
+
+E:\Data\RawData\movies_for_elastic_json>curl -XGET "localhost:9200/movies2/movie/_search" -H"Content-Type: application/json" -d @query_kibana.json >resultKibana.json 

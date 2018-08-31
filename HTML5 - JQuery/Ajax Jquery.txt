@@ -1,0 +1,88 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Test.aspx.cs" Inherits="CSS3.Test" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
+    <title>Test dotnet</title>
+    <link rel="stylesheet" type="text/css" href="CSS/Test.css" />
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/smoothness/jquery-ui.css" />
+ 
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $("#bt1").click(function (e) {
+                $.ajax({
+                    type: "POST",
+                    url: "Test.aspx/GetDate",
+                    data: "{}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        alert(msg.d);
+                    },
+                    complete: function (msg) {
+                        alert("Terminé");
+                    },
+                    error: function (msg) {
+                        alert("3");
+                    },
+                    send: function (msg) {
+                        alert("4");
+                    },
+                    stop: function (msg) {
+                        alert("5");
+                    },
+                    start: function (msg) {
+                        alert("6");
+                    }
+                });
+                return false;
+            });
+        });
+		</script>
+</head>
+<body>
+    <form id="formOptions" runat="server">
+        <asp:Label ID="Label1" runat="server" Text="Date d'envoi :"></asp:Label>
+        <input type="time" id="Heure" />
+        <asp:Button ID="bt1" runat="server" Text="Bouton" PostBackUrl="~/Test.aspx" />
+    </form>
+</body>
+
+
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.Services;
+
+namespace CSS3
+{
+ 
+    public partial class Test : System.Web.UI.Page
+    {
+ 
+        [WebMethod]
+        public static string GetDate()
+        {
+            return DateTime.Now.ToString();
+        }
+ 
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            
+        }
+ 
+    }
+}
+

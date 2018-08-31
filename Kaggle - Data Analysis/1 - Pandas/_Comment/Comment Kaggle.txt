@@ -1,0 +1,10 @@
+Thanks for your great tutorials about pandas. These exercices are really a tricky but useful training... 
+
+For the question number 8, about rounding reviews scores, it seems that the nearest half-point is given by an inferior rounding compute. For example, 4.8 would have 4.5 as nearest half-point, but in fact 4.8 is closer of 5.0. 
+
+So, if we wanted apply a classic half-point rounding, maybe  the following instruction would be a better fit :
+
+             ***.map(lambda v : round(v * 2, 0) /2 )*** 
+
+Have a  nice day !
+

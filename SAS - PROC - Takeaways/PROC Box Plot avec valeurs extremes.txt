@@ -1,0 +1,16 @@
+/*Data Training.Fabien_Pre_Box_Plot2;
+Set Training.Box_Plot;
+Where num_semaine=40;
+RUN;*/
+
+PROC BOXPLOT Data=Training.Box_Plot;
+Plot TTV * Ass_Sci_Equipement /
+boxstyle=schematicidfar;
+id WaferID;
+Where num_semaine=40;
+RUN;
+
+
+
+
+

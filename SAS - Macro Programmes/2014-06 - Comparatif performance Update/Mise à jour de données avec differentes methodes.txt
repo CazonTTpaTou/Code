@@ -1,0 +1,56 @@
+
+Exemple
+
+
+
+"update DTM_Name set Date_MAJ=getDate() 
+from DTM_Name as Z join Data_Updated as i 
+on Z.idSys=i.idSys"
+"Insert into DTM_Name (liste des champs) 
+VALUES (liste des valeurs)"
+
+"DELETE DTM_Name 
+from DTM_Name as Z join Data_Updated as i 
+on Z.idSys=i.idSys"
+"Insert into DTM_Name (liste des champs) 
+VALUES (liste des valeurs)"
+
+
+
+"PROC SORT Data=Data_MAJ;
+PROC SORT Data=DTM_Name;
+DATA DTM_Name; 
+UPDATE DTM_Name Data_MAJ ; BY Num_Lot; 
+RUN:"
+
+"DATA DTM_Name; 
+MODIFY DTM_Name Data_Updated; 
+BY Num_Lot; 
+IF _IORC_=%SYSRC(_sok) THEN REPLACE; 
+ELSE IF _IORC_=%SYSRC(_dsenmr) 
+THEN DO;OUTPUT;_ERROR_=0; 
+END; 
+RUN;"
+
+"PROC SORT Data=Data_MAJ;
+PROC SORT Data=DTM_Name;
+DATA DTM_Name; 
+MERGE DTM_Name(IN=Dans_DTM)
+                Data_MAJ (IN=Dans_MAJ); 
+BY Num_Lot; 
+IF Dans_DTM AND Dans_MAJ THEN OUTPUT;
+IF Not Dans_DTM AND Dans_MAJ THEN OUTPUT;
+RUN:"
+
+
+
+"PROC SQL;
+DELETE FROM DTM_Name a
+WHERE EXISTS (
+ SELECT *
+ FROM Data_MAJ b
+ WHERE a.Num_Lot = b.Num_Lot);
+QUIT;"
+"PROC APPEND BASE= DTM_Name 
+             DATA = Data_MAJ FORCE;
+RUN;"

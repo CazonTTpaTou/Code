@@ -1,0 +1,18 @@
+IF ( ( TreatAs(_Number_, DatePart(Now())) - TreatAs(_Number_, DatePart('Ling Dem Date Heure'n)) ) = 0 )
+RETURN 'J-0'
+ELSE ( 
+  IF ( ( TreatAs(_Number_, DatePart(Now())) - TreatAs(_Number_, 'Ling Dem Date'n) ) = 1 )
+  RETURN 'J-1'
+  ELSE ( 
+    IF ( ( TreatAs(_Number_, DatePart(Now())) - TreatAs(_Number_, 'Ling Dem Date'n) ) = 2 )
+    RETURN 'J-2'
+    ELSE ( 
+      IF ( ( TreatAs(_Number_, DatePart(Now())) - TreatAs(_Number_, 'Ling Dem Date'n) ) = 3 )
+      RETURN 'J-3'
+      ELSE ( 
+        IF ( ( TreatAs(_Number_, DatePart(Now())) - TreatAs(_Number_, 'Ling Dem Date'n) ) = 4 )
+        RETURN 'J-4'
+        ELSE ( 
+          IF ( ( TreatAs(_Number_, DatePart(Now())) - TreatAs(_Number_, 'Ling Dem Date'n) ) = 5 )
+          RETURN 'J-5'
+          ELSE 'Jours restant' ) ) ) ) )

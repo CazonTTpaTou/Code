@@ -1,0 +1,65 @@
+/**********************************************************************************************************************/
+/* FICHE DESCRIPTIVE DU PROGRAMME :                                                                                   */
+/*                                                                                                                    */
+/* NOM.................= Recette                                                                                      */
+/* MODELE..............=                                                                                              */
+/* LIBELLE.............= Programme de validation des developpements (recette technique)                               */
+/*                                                                                                                    */
+/*---------------------------------------------- DESCRIPTION SOMMAIRE --------------------------------------------------*/
+/* OBJET  : 3 Macros présentes : - desc_variable sort un fichier excel avec les modalités de chacune des variables    */
+/*              - compare_dev_prod compare les structure et les données des tables de DEV avec les tables en PROD     */
+/*              - test_dev appelle les 2 macros précédentes                                                           */
+/*                                                                                                                    */
+/*---------------------------------------------- DONNEES ---------------------------------------------------------------*/
+/*                                                                                                                    */
+/*                                                                                                                    */
+/*                                                                                                                    */
+/*                                                                                                                    */
+/*---------------------------------------------- HISTORIQUE ------------------------------------------------------------*/
+/* VERSION * AUTEUR        * DATE DE MAJ *       COMMENTAIRES                                                         */
+/*---------*---------------*-------------*------------------------------------------------------------------------------*/
+/* M001C01 * M.MORNET      * 06/03/2014  * CREATION DE L'OBJET                                                        */
+/*---------*---------------*-------------*------------------------------------------------------------------------------*/
+/*         *               *             *                                                                            */
+/************************                        FIN CARTOUCHE                        *********************************/
+
+/************************* paramètres à modifier **********************/
+%let root=\\srv-sasdev\Partage\2 - Projets de développement\2014-03-03 - PRO - CDSN;
+%let arg=D; /* 	D pour le fichier excel des données, 
+				S pour une comparaison de la structure et des données entre DEV et PROD*/
+
+%let bib=DTM_PRO;
+%let tab=DTM_PRO_TRAC_WAFERS;
+
+%let listvar=
+/* Champs à surveiller */
+Ass_Sci_Nb_CasseFil_E,
+Ass_Sci_Nb_CasseFil_M,
+Ass_Sci_Nb_CasseFil_S,
+Ass_Sci_Nb_CasseFil_EMS,
+Ass_Sci_Type_Fil,
+Ass_Sci_Cause_Casse_Fil_1,
+Ass_Sci_Cause_Casse_Fil_2,
+Ass_Sci_Cause_Casse_Fil_Hors_Cpe,
+Ass_Sci_Cause_Incident_1,
+Ass_Sci_Cause_Incident_2;
+
+/************************ fin paramètres à modifier *******************/
+
+%let path_pgm= &root\3 - Recette\1 - Programmes source;
+%let path_sort=&root\3 - Recette\3 - Données Sortie;
+%let path_prod= &root\3 - Recette\2 - Données Entrée;
+
+
+FILENAME pgm "&path_pgm" ;
+%include pgm("Macro_Recette.sas");
+
+
+%test_dev(	arg=&arg,
+			listvar="&listvar", 
+			bib= &bib, 
+			tab= &tab,
+			path_sort= &path_sort, 
+			path_prod= &path_prod );
+
+

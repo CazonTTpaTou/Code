@@ -1,0 +1,176 @@
+/****** Object:  View [dbo].[Vue_Indicateur_DO_Dependance]    Script Date: 07/22/2013 09:17:48 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE VIEW [dbo].[Vue_Indicateur_DO_Dependance]
+AS
+------------------------------------------------------------------------
+WITH T_INTERVAL_ITV_1 AS
+(Select Tab.ITV_ID,Equip.libelle AS ITV_ITEM,
+		Tab.ITV_ID_DEP,Tab.ITV_Pourcentage,
+		Tab.ITV_DEBUT,Tab.ITV_FIN
+	FROM Equipement as Equip
+		inner join
+	(SELECT equ.dependant as ITV_ID,
+	Equ.idEquipement as ITV_ID_DEP,
+	Equ.pourcentageDependance as ITV_Pourcentage,
+	rea.DebutArret as ITV_DEBUT,
+	coalesce(rea.FinArret,getdate()) as ITV_FIN 
+	FROM dbo.Realisation as rea
+	
+	inner join dbo.Intervention as inter
+	on rea.idIntervention = inter.idIntervention
+
+	inner join Demande as dem
+	on dem.idDemande = inter.idDemande
+
+	inner join dbo.Equipement as Equ
+	on dem.idEquipement = Equ.idEquipement
+
+	where not(rea.DebutArret is null) ) AS Tab
+		on tab.ITV_ID = Equip.idEquipement ),
+------------------------------------------------------------------------
+T_INTERVAL_ITV_2 AS
+(SELECT Equ.idEquipement as ITV_ID,equ.Libelle as ITV_ITEM,
+NULL as ITV_ID_DEP,NULL as ITV_Pourcentage,
+rea.DebutArret as ITV_DEBUT,
+coalesce(rea.FinArret,getdate()) as ITV_FIN 
+	FROM dbo.Realisation as rea
+	
+inner join dbo.Intervention as inter
+on rea.idIntervention = inter.idIntervention
+
+inner join Demande as dem
+on dem.idDemande = inter.idDemande
+
+inner join dbo.Equipement as Equ
+on dem.idEquipement = Equ.idEquipement
+
+where not(rea.DebutArret is null) ),
+------------------------------------------------------------------------
+T_INTERVAL_ITV AS
+(Select * FROM T_INTERVAL_ITV_1
+UNION
+SELECT * FROM T_INTERVAL_ITV_2),
+------------------------------------------------------------------------
+T1 As 
+(SELECT ITV_ID,ITV_ITEM,ITV_DEBUT Temps 
+ FROM   T_INTERVAL_ITV 
+ UniON  All 
+ SELECT ITV_ID,ITV_ITEM, ITV_FIN FROM T_INTERVAL_ITV), 
+------------------------------------------------------------------------ 
+T2 As 
+(SELECT Row_Number() OVER(PARTITION BY ITV_ITEM ORDER BY Temps) Nm, ITV_ITEM, ITV_ID,Temps 
+ FROM   T1 T1_1), 
+------------------------------------------------------------------------ 
+T3 As 
+(SELECT T2_1.Nm-Row_Number() OVER(PARTITION BY T2_1.ITV_ITEM ORDER BY T2_1.Temps,T2_2.Temps) Nm1, 
+        T2_1.ITV_ID,T2_1.ITV_ITEM, T2_1.Temps ITV_DEBUT, T2_2.Temps ITV_FIN 
+ FROM   T2 T2_1 
+        Inner join T2 T2_2 
+              ON T2_1.ITV_ITEM=T2_2.ITV_ITEM 
+                 And T2_1.Nm=T2_2.Nm-1 
+ WHERE  Exists (SELECT * 
+                FROM   T_INTERVAL_ITV S 
+                WHERE  S.ITV_ITEM=T2_1.ITV_ITEM 
+                  And  (S.ITV_DEBUT < T2_2.Temps And S.ITV_FIN>T2_1.Temps)) 
+    Or  T2_1.Temps = T2_2.Temps), 
+------------------------------------------------------------------------    
+T_ArretBrut AS
+(SELECT ITV_ID,ITV_ITEM, Min(ITV_DEBUT) ITV_DEBUT, Max(ITV_FIN) ITV_FIN 
+FROM   T3 
+GROUP  BY ITV_ID,ITV_ITEM, Nm1),
+------------------------------------------------------------------------ 
+Tps_Arret AS
+(select 
+		V.ITV_ID,J.DateJour,V.ITV_ITEM,
+		
+		Case When ITV_DEBUT>=DateJour 
+			Then ITV_Debut 
+			Else DateJour 
+			End as DateDebut,
+		
+		Case When ITV_FIN <= DateAdd(day,1,J.DateJour) 
+			Then ITV_FIN 
+			Else DateAdd(day,1,J.DateJour) 
+			End as DateFin,
+			
+		DATEDIFF(n,
+			Case When ITV_DEBUT>=DateJour 
+			Then ITV_Debut 
+			Else DateJour 
+			End ,
+			Case When ITV_FIN <= DateAdd(day,1,J.DateJour) 
+			Then ITV_FIN 
+			Else DateAdd(day,1,J.DateJour) 
+			End)	
+				AS Duree
+				
+		FROM Vue_Calendrier as J,
+		
+		T_ArretBrut  as V
+                
+         WHERE J.DateJour < V.ITV_Fin 
+           and J.DateJour >= 
+			   CAST(FLOOR(CAST(V.ITV_Debut AS FLOAT)) AS DATETIME)),
+------------------------------------------------------------------------ 
+Nb_Arret AS
+(select ITV_ID,J.DateJour,ITV_ITEM,ITV_DEBUT,ITV_FIN
+			
+		FROM 	   
+			Vue_Calendrier as J,
+			T_INTERVAL_ITV
+			
+		WHERE J.DateJour < ITV_Fin 
+           and J.DateJour >= 
+			   CAST(FLOOR(CAST(ITV_Debut AS FLOAT)) AS DATETIME)),
+------------------------------------------------------------------------
+Cumul_Tps_Arret AS
+(select ITV_ID,ITV_ITEM,DateJour,SUM(Duree) as Duree_Arret
+		FROM Tps_Arret
+		GROUP BY ITV_ID,ITV_ITEM,DateJour),			   
+------------------------------------------------------------------------
+Cumul_Nb_Arret AS
+(select ITV_ID,ITV_ITEM,DateJour,COUNT(ITV_Debut) as Nb_Arret
+		FROM Nb_Arret
+		GROUP BY ITV_ID,ITV_ITEM,DateJour),
+------------------------------------------------------------------------
+Cumul_Tps_Arret_Nb_Arret AS
+(select T.ITV_ID,T.ITV_ITEM,T.DateJour,	N.Nb_Arret, 
+	cast((T.Duree_Arret)/60.00 as decimal(18,2)) as Duree_Arret
+
+	from Cumul_Tps_Arret as T
+	inner join Cumul_Nb_Arret as N
+	on t.ITV_ID = n.ITV_ID
+	and t.DateJour = n.DateJour)
+------------------------------------------------------------------------	
+select VE.DateJour as DateJour,VE.Libelle as Equipement,
+	   VE.idEquipement as Numero,
+	   24 as Tps_Ouverture,
+	   24-coalesce(CTN.duree_Arret,0) as Tps_Bon_fonctionnement,
+	   coalesce(CTN.Duree_Arret,0) as Tps_Arret_h,
+	   coalesce(CTN.Nb_Arret,0) as Nb_Arret
+
+from 
+
+(select V.DateJour,E.idEquipement,E.Libelle
+	    FROM Vue_Calendrier as V,Equipement as E) as VE
+
+left outer join 
+
+		Cumul_Tps_Arret_Nb_Arret as CTN
+			on VE.DateJour = CTN.DateJour
+			and VE.idEquipement = CTN.ITV_ID
+
+
+
+GO
+
+
+
+
+
+

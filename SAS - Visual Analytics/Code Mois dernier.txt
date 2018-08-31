@@ -1,0 +1,4 @@
+IF ( ( Month(DatePart('TimeStamp'n)) = ( Month(DatePart(Now())) - 1 ) ) AND ( Year(DatePart('TimeStamp'n)) = Year(DatePart(Now())) ) )
+RETURN 1
+ELSE 0
+

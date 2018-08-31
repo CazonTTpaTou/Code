@@ -1,0 +1,241 @@
+BDD Boot
+
+Module 1 / Fermeture d’une BDD Access
+
+Option Compare Database
+
+Private Declare Function GetWindowThreadProcessId Lib "user32" _
+  (ByVal hwnd As Long, lpdwProcessId As Long) As Long
+ 
+Private Declare Function WaitForSingleObject Lib "kernel32" _
+(ByVal hwnd As Long, ByVal dwMilliseconds As Long) As Long
+ 
+Private Declare Function FindWindow Lib "user32" Alias "FindWindowA" _
+(ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+ 
+Private Declare Function PostMessage Lib "user32" Alias "PostMessageA" _
+(ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, _
+ByVal lParam As Long) As Long
+Private Declare Function IsWindow Lib "user32" (ByVal hwnd As Long) As Long
+ 
+Private Const WM_CLOSE = &H10
+Private Const INFINITE = &HFFFFFFFF
+
+Function CloseApplication(ByVal ClassName As String, _
+    Optional ByVal AppTitle As String) As Boolean
+ 
+Dim lReturn As Long
+Dim lWindowHandle As Long
+Dim lProcessID As Long
+ 
+    lWindowHandle = FindWindow(ClassName, AppTitle)
+    If lWindowHandle Then
+      lReturn = PostMessage(lWindowHandle, WM_CLOSE, 0, ByVal 0&)
+      lReturn = GetWindowThreadProcessId(lWindowHandle, lProcessID)
+      lReturn = WaitForSingleObject(lProcessID, INFINITE)
+      If Not IsWindow(lWindowHandle) Then
+        CloseApplication = True
+      End If
+    End If
+End Function
+
+Public Sub FermerAccess()
+Const APP_TITLE As String = "L'application Access"
+Const ACCESS_CLASSNAME As String = "OMain"
+ 
+  If CloseApplication(ACCESS_CLASSNAME, "ADO") Then
+    MsgBox "C'est fermé !", 64, "Fin"
+  Else
+    MsgBox APP_TITLE & " n'a pas pu être fermé !", 16, "Fin"
+  End If
+End Sub
+
+
+Public Sub Ouvrir()
+
+Dim appAccess As Access.Application
+ Dim frm As Form, strDB As String
+ 
+ Const strConPathToSamples = "C:\Documents and Settings\Fabien Monnery\Bureau\"
+ 
+ ' Initialize string to database path.
+ strDB = strConPathToSamples & "ADO.accdb"
+ 
+Set appAccess = CreateObject("Access.Application")
+ ' Open database in Microsoft Access window.
+ appAccess.OpenCurrentDatabase strDB
+ 
+ 
+End Sub
+
+ 
+Module 2 / Ouverture d’une BDD
+
+Option Compare Database
+
+
+Private Declare Function apiSetForegroundWindow Lib "user32" _
+            Alias "SetForegroundWindow" _
+            (ByVal hwnd As Long) _
+            As Long
+
+Private Declare Function apiShowWindow Lib "user32" _
+            Alias "ShowWindow" _
+            (ByVal hwnd As Long, _
+            ByVal nCmdShow As Long) _
+            As Long
+
+Private Const SW_MAXIMIZE = 3
+Private Const SW_NORMAL = 1
+
+Function fOpenRemoteForm(strMDB As String, _
+                                        strForm As String, _
+                                        Optional intView As Variant) _
+                                        As Boolean
+Dim objAccess As Access.Application
+Dim lngRet As Long
+
+    On Error GoTo fOpenRemoteForm_Err
+
+    If IsMissing(intView) Then intView = acViewNormal
+
+    If Len(Dir(strMDB)) > 0 Then
+        Set objAccess = New Access.Application
+        With objAccess
+            lngRet = apiSetForegroundWindow(.hWndAccessApp)
+            lngRet = apiShowWindow(.hWndAccessApp, SW_MAXIMIZE)
+            'le premier appel à  ShowWindow semble rester sans effet
+            lngRet = apiShowWindow(.hWndAccessApp, SW_MAXIMIZE)
+            .OpenCurrentDatabase strMDB
+            .DoCmd.OpenForm strForm, intView
+            Do While Len(.CurrentDb.Name) > 0
+                DoEvents
+            Loop
+        End With
+    End If
+fOpenRemoteForm_Exit:
+    On Error Resume Next
+    objAccess.Quit
+    Set objAccess = Nothing
+    Exit Function
+fOpenRemoteForm_Err:
+    fOpenRemoteForm = False
+    Select Case Err.Number
+        Case 7866:
+            ' MDB ouverte en mode exclusif
+            MsgBox "The database you specified " & vbCrLf & strMDB & _
+                vbCrLf & "is currently open in exclusive mode.  " & vbCrLf _
+                & vbCrLf & "Please reopen in shared mode and try again", _
+                vbExclamation + vbOKOnly, "Could not open database."
+        Case 2102:
+            ' Ce formulaire n'existe pas
+            MsgBox "The Form \'" & strForm & _
+                        "\' doesn\'t exist in the Database " _
+                        & vbCrLf & strMDB, _
+                        vbExclamation + vbOKOnly, "Form not found"
+        Case 7952:
+            ' L'utilisateur a fermé la base de données
+            fOpenRemoteForm = True
+        Case Else:
+            MsgBox "Error#: " & Err.Number & vbCrLf & Err.Description, _
+                    vbCritical + vbOKOnly, "Runtime error"
+    End Select
+    Resume fOpenRemoteForm_Exit
+End Function
+
+
+
+
+ 
+Module de classe Recording
+
+Option Compare Database
+
+Private strOrigine As String
+Private strDestination As String
+Public Event Completed()
+
+
+' Assesseur Origine
+Public Property Get Origine() As Variant
+    Origine = strOrigine
+End Property
+
+Public Property Let Origine(ByVal vNewValue As Variant)
+    strOrigine = vNewValue
+End Property
+
+' Assesseur Destination
+Public Property Get Destination() As Variant
+    Destination = strDestination
+End Property
+
+Public Property Let Destination(ByVal vNewValue As Variant)
+    strDestination = vNewValue
+End Property
+
+Public Function Chemin() As String
+    
+    Chemin = Application.CurrentProject.Path _
+    & "/" _
+    & Me.Destination
+    
+End Function
+
+Private Sub class_Initialize()
+    Debug.Print "Evénement Initialize - Création d'un objet Recording"
+End Sub
+
+Private Sub class_Terminate()
+    Debug.Print "Evénement Terminate - destruction d'un objet Recording : " & Me.Origine
+End Sub
+                
+Public Sub Copier()
+
+Dim fso As Object
+Dim strCurrent, strDest As String
+  
+  Set fso = CreateObject("Scripting.FileSystemObject")
+    
+    strCurrent = Me.Origine
+    strDest = Me.Chemin
+    fso.CopyFile strCurrent, strDest
+ 
+ Set fso = Nothing
+
+End Sub
+
+Public Function Version() As String
+   
+    Version = Application.CurrentDb.Properties("AppTitle")
+
+End Function
+
+ 
+Evènement onLoad formulaire Form1
+
+Option Compare Database
+
+Private Sub Command0_Click()
+
+Dim rec As New Recording
+
+Call FermerAccess
+
+rec.Origine = "C:\Documents and Settings\Fabien Monnery\Bureau\Access et SQL Server\ADO.accdb"
+rec.Destination = "ADO.accdb"
+
+'MsgBox rec.Destination
+'MsgBox rec.Chemin
+
+rec.Copier
+
+'MsgBox rec.Version
+
+Call fOpenRemoteForm("C:\Documents and Settings\Fabien Monnery\Bureau\ADO.accdb", "Form1")
+
+End Sub
+
+
+
+

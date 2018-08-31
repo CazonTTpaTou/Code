@@ -1,0 +1,63 @@
+Use Habilitations;
+GO
+WITH Vue_Generale_Bis
+AS
+(SELECT     TOP 100 PERCENT dbo.t_operateur.nom AS operateurNom, dbo.t_operateur.prenom AS operateurPrenom, 
+                      dbo.t_operateur.idHoroquartz AS operateurHoroquartz, dbo.ts_unite.nom AS operateurUniteNom, ts_ilot_1.nom AS operateurIlot, 
+                      dbo.ts_typeContrat.libelle AS typeContratLibelle, dbo.t_equipe.nom AS equipeNom, faciliteur.nom AS faciliteurNom, 
+                      faciliteur.prenom AS faciliteurPrenom, dbo.t_poste.nom AS posteNom, ts_unite_2.nom AS posteUnite, 
+                      dbo.t_poste.quantiteFormationBinome AS posteQuantiteFormationBinomeRequise, 
+                      dbo.t_poste.quantiteFormationAutonome AS posteQuantiteFormationAutonomeRequise, dbo.ts_uniteFormation.libelle AS posteUniteFormation, 
+                      dbo.t_habilitation.formation, dbo.t_habilitation.dateFormation, dbo.t_habilitation.formationSecurite, dbo.t_habilitation.dateFormationSecurite, 
+                      dbo.t_habilitation.quantiteRealiseeFormationBinome, dbo.t_habilitation.quantiteRealiseeFormationSemiAutonome, dbo.t_habilitation.habilitation, 
+                      dbo.t_habilitation.dateHabilitation, dbo.t_habilitation.EstFormateur, dbo.t_habilitation.nomFormateurSemiAutonome, 
+                      dbo.t_habilitation.nomFormateurBinome, dbo.t_habilitation.dateDerniereEvaluation, dbo.t_operateur.dateDebutContrat, dbo.t_operateur.dateFinContrat, 
+                      dbo.t_poste.idUnite AS idUnitePoste, dbo.t_operateur.idUnite AS idUniteOperateur,
+                      case  
+							When coalesce(t_Operateur.dateFinContrat,0)=0 Then 'Oui'
+							Else 'Non'
+							END
+							As [Salarié Présent],
+					  case  
+							When coalesce(Formateur.Est_Formateur,0)=1 Then 'Oui'
+							Else 'Non'
+							END
+							As [Salarié Formateur],
+					 dbo.t_poste.idUniteFormation,
+					 Case When dbo.t_poste.idUniteFormation = 1 Then 1
+					      When dbo.t_poste.idUniteFormation = 2 then 8
+						  When dbo.t_poste.idUniteFormation = 3 then 152
+						  When dbo.t_poste.idUniteFormation = 4 then 8
+						  When dbo.t_poste.idUniteFormation = 5 then 8
+				          END
+					 AS Nb_Heure
+					                                              
+FROM         dbo.t_operateur LEFT OUTER JOIN
+                      dbo.ts_unite ON dbo.t_operateur.idUnite = dbo.ts_unite.idUnite RIGHT OUTER JOIN
+                      dbo.t_habilitation ON dbo.t_operateur.idOperateur = dbo.t_habilitation.idOperateur LEFT OUTER JOIN
+                      dbo.ts_typeContrat ON dbo.t_operateur.idTypeContrat = dbo.ts_typeContrat.idTypeContrat LEFT OUTER JOIN
+                      dbo.ts_ilot AS ts_ilot_1 ON dbo.t_operateur.idIlot = ts_ilot_1.idIlot LEFT OUTER JOIN
+                      dbo.t_equipe ON dbo.t_operateur.idEquipe = dbo.t_equipe.idEquipe LEFT OUTER JOIN
+                      dbo.t_operateur AS faciliteur ON dbo.t_equipe.idFaciliteur = faciliteur.idOperateur LEFT OUTER JOIN
+                      dbo.t_poste LEFT OUTER JOIN
+                      dbo.ts_ilot ON dbo.t_poste.idIlot = dbo.ts_ilot.idIlot LEFT OUTER JOIN
+                      dbo.ts_uniteFormation ON dbo.t_poste.idUniteFormation = dbo.ts_uniteFormation.idUniteFormation ON 
+                      dbo.t_habilitation.idPoste = dbo.t_poste.idPoste LEFT OUTER JOIN
+                      dbo.ts_unite AS ts_unite_2 ON dbo.ts_ilot.idUnite = ts_unite_2.idUnite
+                      LEFT OUTER JOIN 
+                      
+                      (select idOperateur,Max(convert(int,EstFormateur)) as Est_Formateur from dbo.t_habilitation
+						Group BY idOperateur)
+								AS Formateur
+                      ON T_Operateur.idOperateur = Formateur.idOperateur)
+
+SELECT [operateurNom],[operateurPrenom],
+       
+	   (SUM([quantiteRealiseeFormationBinome] * [Nb_Heure]) + SUM([quantiteRealiseeFormationSemiAutonome] * [Nb_Heure])) AS Duree_Formation_H 
+
+FROM [Vue_generale_Bis]
+WHERE year([DateFormation])=2016
+GROUP BY [operateurNom],[operateurPrenom]
+ORDER BY [operateurNom],[operateurPrenom]
+GO
+

@@ -1,0 +1,7 @@
+SELECT LotID,WaferNr,[WaferID_Auto],[WaferID_Manu],TimeStamp_Flash FROM [dbo].[WAFER_WAV]
+Where LotID is NULL 
+AND  ((WaferID_Manu like '') OR (WaferID_Manu IS NULL))
+AND DATEDIFF(DAY,cast(cast(2017*10000 + 11*100 + 29 as varchar(255)) as date),TimeStamp_Flash) > 0
+ORDER BY TimeStamp_Flash DESC; 
+--like '%N17492195%'
+GO

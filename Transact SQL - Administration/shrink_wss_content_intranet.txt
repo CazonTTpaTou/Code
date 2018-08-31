@@ -1,0 +1,3 @@
+ALTER DATABASE [WSS_Content_Intranet] SET RECOVERY SIMPLE;
+DBCC SHRINKFILE ([WSS_Content_Intranet_log], 5);
+ALTER DATABASE [WSS_Content_Intranet] SET RECOVERY FULL;

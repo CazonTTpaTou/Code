@@ -1,0 +1,43 @@
+DATA Stats.SPC_CARTE_CONTROLE_IMR;
+
+SET Work.Vue_Mesures;
+BY Carte;
+Precedent = LAG(Valeur_Mesur_e);
+If first.Carte Then 
+                   Do;
+						Cumul = Valeur_Mesur_e;
+						Numero=1;
+						Etendue = .;
+				   End;
+
+				Else 
+				  Do; 
+				     Cumul+Valeur_Mesur_e;
+					 Numero+1;
+					 Etendue = Valeur_Mesur_e - Precedent;
+				  End;
+
+Etendue_Abs = Abs(Etendue);
+
+Moy_Mobile_10=DIF10(Cumul)/10;
+Moy_Mobile_20=DIF20(Cumul)/20;
+Moy_Mobile_30=DIF30(Cumul)/30;
+ 
+IF Numero<=10 THEN Do; Moy_Mobile_10 = Cumul/Numero;
+														   Moy_Mobile_20 = Cumul/Numero;
+														   Moy_Mobile_30 = Cumul/Numero;
+													   End;
+IF Numero<=20 THEN Do;
+                   
+                                                           Moy_Mobile_20 = Cumul/Numero;
+														   Moy_Mobile_30 = Cumul/Numero;
+														End;
+														   
+IF Numero<=30 THEN Do;
+                       Moy_Mobile_30 = Cumul/Numero;
+					End;
+
+RUN;
+
+
+

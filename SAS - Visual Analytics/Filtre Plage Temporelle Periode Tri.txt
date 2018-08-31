@@ -1,0 +1,3 @@
+( TreatAs(_Number_, DatePart('Date_Heure'n)) <= ( TreatAs(_Number_, DatePart(Now())) - 'Fin'p ) ) 
+AND ( TreatAs(_Number_, DatePart('Date_Heure'n)) >= ( TreatAs(_Number_, DatePart(Now())) - 'Debut'p ) ) 
+AND ( 'Date_Heure'n NotMissing )

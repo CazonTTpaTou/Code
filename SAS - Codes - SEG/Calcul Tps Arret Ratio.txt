@@ -1,0 +1,26 @@
+DATA Work.Liste_Arret_Complet;
+Format
+	Date_Fin_SSE Datetime23.
+	Date_Fin_EQ Datetime23.
+	Date_Fin_PROC Datetime23.
+	Date_Fin_SECT Datetime23.
+	Date_Fin_UAP Datetime23.;
+
+SET Work.LISTE_ARRET_DI;
+
+if (substr(reverse(trim(Code_Emplacement)),1,1)='0') Then Dep_SSE = 1; 														  
+                   									 Else do;
+															Dep_SSE = Dep_Sous_Equipement;
+															Date_Fin_SSE = FinArret2;
+														  End;
+													      
+Date_Fin_EQ=intnx('minute',DebutArret,intck('minute',DebutArret,FinArret2)*Dep_SSE);
+Date_Fin_PROC=intnx('minute',DebutArret,intck('minute',DebutArret,FinArret2)*Dep_SSE*Dep_Equipement);
+Date_Fin_SECT=intnx('minute',DebutArret,intck('minute',DebutArret,FinArret2)*Dep_SSE*Dep_Equipement*Dep_Procede);
+Date_Fin_UAP=intnx('minute',DebutArret,intck('minute',DebutArret,FinArret2)*Dep_SSE*Dep_Equipement*Dep_Procede*Dep_Secteur);
+
+RUN;
+
+
+
+

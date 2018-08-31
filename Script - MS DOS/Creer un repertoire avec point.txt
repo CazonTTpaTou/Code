@@ -1,0 +1,6 @@
+cd c:\Users\monne
+
+mkdir .m2
+
+
+

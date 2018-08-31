@@ -1,0 +1,21 @@
+DELETE ICOS_BSPI_P2
+FROM 
+
+		dbo.ICOS_BSPI_P2 
+		
+		INNER JOIN
+
+		(SELECT 
+					LotWaferId,
+					ROW_NUMBER() OVER(PARTITION BY LotWaferId ORDER BY LotWaferID) AS NUMERO
+					
+						FROM dbo.ICOS_BSPI_P2) 
+												AS Num
+
+		ON ICOS_BSPI_P2.LotWaferId = Num.LotWaferID
+		AND Num.NUMERO = 1
+
+GO
+
+
+

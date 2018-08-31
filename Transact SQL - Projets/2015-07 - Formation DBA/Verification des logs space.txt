@@ -1,0 +1,4 @@
+dbcc sqlperf(logspace)
+dbcc traceon(3604)
+DBCC tracestatus
+DBCC SHOWCONTIG WITH TABLERESULTS

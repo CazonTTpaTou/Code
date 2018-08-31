@@ -1,0 +1,3 @@
+IF ( DatePart('TimeStamp'n) = DateFromMDY(Month(DatePart(Now())), ( DayOfMonth(DatePart(Now())) - 1 ), Year(DatePart(Now()))) )
+RETURN 1
+ELSE 0

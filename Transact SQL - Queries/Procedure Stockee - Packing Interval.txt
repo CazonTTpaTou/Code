@@ -1,0 +1,109 @@
+-------------------------------------------------------------------------------------------------------
+CREATION D'UN TYPE
+-------------------------------------------------------------------------------------------------------
+
+/****** Object:  UserDefinedTableType [dbo].[TableTampon]    Script Date: 08/21/2013 16:04:10 ******/
+CREATE TYPE [dbo].[TableTampon] AS TABLE(
+	[ITV_ID] [int] NULL,
+	[ITV_ITEM] [varchar](50) NULL,
+	[ITV_Debut] [datetime] NULL,
+	[ITV_Fin] [datetime] NULL
+)
+GO
+
+-------------------------------------------------------------------------------------------------------
+CREATION DE LA PROCEDURE AVEC ARGUMENT PARAMETER VALUED TABLE
+-------------------------------------------------------------------------------------------------------
+
+CREATE PROCEDURE [dbo].[Essai] @TableTampon TableTampon READOnly
+	
+AS
+BEGIN
+	
+WITH
+------------------------------------------------------------------------
+T1 As 
+(SELECT ITV_ID,ITV_ITEM, ITV_DEBUT Temps 
+ FROM   @TableTampon 
+ UniON  All 
+ SELECT ITV_ID,ITV_ITEM, ITV_FIN FROM @TableTampon), 
+------------------------------------------------------------------------ 
+T2 As 
+(SELECT Row_Number() OVER(PARTITION BY ITV_ITEM ORDER BY Temps) Nm, ITV_ITEM, ITV_ID,Temps 
+ FROM   T1 T1_1), 
+------------------------------------------------------------------------ 
+T3 As 
+(SELECT T2_1.Nm-Row_Number() OVER(PARTITION BY T2_1.ITV_ITEM ORDER BY T2_1.Temps,T2_2.Temps) Nm1, 
+        T2_1.ITV_ID,T2_1.ITV_ITEM, T2_1.Temps ITV_DEBUT, T2_2.Temps ITV_FIN 
+ FROM   T2 T2_1 
+        Inner join T2 T2_2 
+              ON T2_1.ITV_ITEM=T2_2.ITV_ITEM 
+                 And T2_1.Nm=T2_2.Nm-1 
+ WHERE  Exists (SELECT * 
+                FROM   @TableTampon S 
+                WHERE  S.ITV_ITEM=T2_1.ITV_ITEM 
+                  And  (S.ITV_DEBUT < T2_2.Temps And S.ITV_FIN>T2_1.Temps)) 
+    Or  T2_1.Temps = T2_2.Temps), 
+------------------------------------------------------------------------ 
+T_ArretBrut AS
+(SELECT ITV_ID,ITV_ITEM, Min(ITV_DEBUT) ITV_DEBUT, Max(ITV_FIN) ITV_FIN 
+FROM   T3 
+GROUP  BY ITV_ID,ITV_ITEM, Nm1)
+
+Select * from T_ArretBrut
+    
+END
+
+-------------------------------------------------------------------------------------------------------
+UTILISATION DE LA PROCEDURE AVEC UNE TABLE TEMPORAIRE
+-------------------------------------------------------------------------------------------------------
+
+Declare @tabl TableTampon
+
+WITH T_INTERVAL_ITV AS
+(SELECT 
+	Equ.idSousEnsemble as ITV_ID,
+	equ.Libelle as ITV_ITEM,
+	rea.DebutArret as ITV_DEBUT,
+	coalesce(rea.FinArret,getdate()) as ITV_FIN 
+	
+	FROM dbo.Realisation as rea
+	
+		inner join dbo.Intervention as inter
+		on rea.idIntervention = inter.idIntervention
+
+		inner join Demande as dem
+		on dem.idDemande = inter.idDemande
+
+		inner join dbo.SousEnsemble as Equ
+		on dem.idSousEnsemble = Equ.idSousEnsemble
+
+	where not(rea.DebutArret is null) 
+		  and Equ.Actif = -1 
+		  and Equ.dependance = 1)
+
+insert into @tabl select * from  T_INTERVAL_ITV;
+exec Essai @tabl;
+
+GO
+
+
+-----------------------------------------------------------------------
+EXECUTION DYNAMIQUE DE CODE SQL
+-----------------------------------------------------------------------
+
+declare @cmd nvarchar(max),
+	    @num int,
+	    @nums nvarchar(10)
+	    
+select @num = MAX(idintervention) from Intervention;
+set @nums = @num
+
+SET @cmd = 'Select * from intervention where idIntervention = ' + @nums
+
+print @cmd
+
+exec (@cmd)
+
+
+

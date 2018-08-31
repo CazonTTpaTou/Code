@@ -1,0 +1,71 @@
+
+/* Tri de la table sans doublon (avec l'option nodupkey) */
+proc sort data=training.multivariee_courant nodupkey out=work.sansdoublon;
+     by serial; 
+run; 
+
+data work.sansdoublon; 
+     set work.sansdoublon; 
+     if serial="" then delete; /* Je ne veux pas des données manquantes */
+     call symput(compress("numdelot"||_N_), serial); /* Construction de N macros variables accueillant chacune 
+                                                                    la modalité observée de Serial */
+run; 
+
+proc sql ; /* On récupère le nombre de modalités de Serial observées */
+     select count(*) 
+     into :Nobs
+     from work.sansdoublon ; 
+run; quit; 
+
+%macro essai (); /* On est obligé de créer une macro à cause du %DO */
+data work.matable; 
+     set training.Multivariee_courant; 
+     /* Pour chaque modalité de Serial, on créé une nouvelle variable */
+     %do indice=1 %to &nobs; 
+          if Serial="&&numdelot&indice" then S&indice=&indice+0.1*RANNOR(0); 
+     %end; 
+run; 
+
+/* Construction du template graphique */
+proc template;
+     define statgraph essai2 ;
+     begingraph;
+          layout overlay / x2axisopts=(display=(line) 
+                               linearopts=(viewmin=1 viewmax=&nobs));
+                     /* Tracé d'autant de scatterplot que de modalités de Serial */
+                %do i=1 %to &nobs; 
+                          scatterplot x=S&i y=Rend / xaxis=x2 markerattrs=(color=blue );
+                %end; 
+                boxplot x=serial y=Rend /display=(caps mean median) 
+                                                         fillattrs=(color=white);
+          endlayout;
+     endgraph;
+     end;
+run;
+%mend essai; 
+%essai; 
+
+/* Print du graphique */
+proc sgrender data=work.matable template="essai2";
+run;
+
+
+ 
+      Grégory SAVIDAND
+      Ingénieur process / Process Engineer
+
+      EDF ENR PWT
+      33, rue Saint-Honoré
+      Z.I. Champfleuri
+      CS 14012
+      38 307 Bourgoin-Jallieu • France
+      G.SAVIDAND@photowatt.com
+      www.photowatt.com
+
+
+Tél. : +33 4 74 93 80 20
+Mobile : 06 14 56 90 48 
+Fax : +33 4 74 93 80 40 
+
+
+

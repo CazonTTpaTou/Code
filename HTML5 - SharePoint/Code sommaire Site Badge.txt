@@ -1,0 +1,48 @@
+
+<a href="/Badge/SitePages/Instructions%20badge.aspx">
+Instructions pour demande de badge
+</a>
+
+<a href="/Badge/Lists/Visiteurs/AllItems.aspx">
+Liste des visiteurs
+</a>
+
+<a href="/Badge/SitePages/Demande_Badge_V2.aspx">
+Ma liste de demande de badge
+</a>
+
+<a href="/Badge/Lists/Demande%20badges%20v2/Demande%20badge%20dtaille.aspx">
+Ma liste de demande détaillée
+</a>
+
+<a href="/Badge/Lists/Liste%20des%20badges/AllItems.aspx">
+Modifier un de mes badges
+</a>
+
+<a href="/Badge/SitePages/Badges%20à%20éditer.aspx">
+Liste des badges à éditer (réservé aux gardiens)
+</a>
+
+<a href="/Badge/SitePages/Demande_badge.aspx">
+Mon historique de demande de badges
+</a>
+
+<a href="http://intranet.photowatt.local">
+Retour à l'intranet
+</a>
+
+------------------------------------------
+
+------------------------------------------
+Gardien : page des badges à éditer
+/Badge/Lists/Demande%20badges%20v2/Badges%20%20diter.aspx
+------------------------------------------
+------------------------------------------
+Gardien : page des badges déjà édités
+/Badge/Lists/Demande%20badges%20v2/Badges%20dj%20dits.aspx
+------------------------------------------
+------------------------------------------
+Gardien : page des badges refusés
+/Badge/Lists/Demande%20badges%20v2/Badges%20refuss.aspx
+------------------------------------------
+

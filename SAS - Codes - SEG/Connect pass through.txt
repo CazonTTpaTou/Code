@@ -1,0 +1,19 @@
+proc sql;
+
+    connect to ODBC as mycon
+   (datasrc="sqc_sqlserver_dev" user=sqc_app password=$QC_@pp);
+
+select *
+
+   from connection to mycon
+      (select *
+      from t_Machine);
+
+disconnect from mycon;
+
+
+quit;
+
+
+
+

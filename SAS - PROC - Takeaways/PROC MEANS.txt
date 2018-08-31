@@ -1,0 +1,12 @@
+PROC MEANS Data=Training.BOX_PLOT N;
+VAR Sawstep;
+Class num_Semaine;
+Output out=Training.Fabien_Resultats_Means N=Effectif;
+Run;
+Data TRaining.fabien_resultats_means;
+SET TRAINING.FABIEN_RESULTATS_MEANS;
+if Num_Semaine ne . Then output;
+RUN;
+
+Proc Sort Data=Training.Fabien_Resultats_Means;
+BY Descending Effectif ;

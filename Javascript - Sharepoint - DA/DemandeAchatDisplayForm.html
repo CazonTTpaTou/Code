@@ -1,0 +1,362 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="http://intranet.photowatt.local/SupplyChain/DA/WebParts/jquery-ui.min.css" />
+    <link rel="stylesheet" href="http://intranet.photowatt.local/SupplyChain/DA/WebParts/DemandeAchats/DemandeAchatNewEditForm.css" />
+    <script src="http://intranet.photowatt.local/SupplyChain/DA/WebParts/jquery-2.2.3.min.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/DA/WebParts/SPWFormV3.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/DA/WebParts/DemandeAchats/DemandeAchatDisplay.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/DA/WebParts/jquery-ui.min.js"></script>
+    <script src="http://intranet.photowatt.local/SupplyChain/DA/WebParts/jquery.ui.datepicker-fr.js"></script>
+
+    <script>  $(function () { $("#tabs").tabs(); });</script>    
+</head>
+
+<body>
+
+    <style type="text/css">
+        .ms-formtable {
+            display: none;
+        }
+    </style>
+
+    <div id="formLog2" style="color:red"></div>
+
+    <!--SECTION ENTETE-->
+    <table style="width: 83%; border-width:1px;Border-style:dotted;border-color:black;border-radius:7px;" class="da-formtitle">
+        <tr>
+            <td class="da-formtitlecol1" style="width: 250px;padding:15px;"><img src="http://intranet.photowatt.local/SupplyChain/DA/WebParts/DemandeAchats/Photowatt_LogoCouleur.png" /></td>
+            <td class="da-formtitlecol2" rowspan="2">
+                <h2 style="text-align:center;">
+                    <span style="font:bold 50px Verdana;color: #478bf9;text-decoration: none;text-shadow: 0 -2px 0 #222222;">DEMANDE</span>
+                    <span style="font:bold 50px Verdana;color: #57D53B;text-decoration: none;text-shadow: 0 -2px 0 #222222;">D&#39;ACHATS</span>
+                </h2>
+            </td>
+            <td><u>Numéro :</u></td>
+            <td style="padding:15px;"><span class="SPWCustomForm" data-displayname="Numero demande" style="font-weight:bold;background:#478bf9;color:#fff;"></span></td>
+        </tr>
+        <tr>
+            <td class="da-formtitlecol1" style="text-align:center;font:bold 25px Verdana;color: black;">EDF ENR PWT</td>
+            <td><u>Date :</u></td>
+            <td style="padding:15px;"><span class="SPWCustomForm" data-displayname="Date" style="font-weight:bold;background:#57D53B;color:#fff;"></span></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center" style="padding:15px;"><a href="http://intranet.photowatt.local/qualite/SitePages/Procedures_Accueil.aspx" target="_blank"><i>Selon la procédure Achats P05-01 disponible sous la GED Qualité</i></a></td>
+            <td><u>Statut :</u></td>
+            <td colspan="1" align="left" style="padding:15px;"><i><span class="SPWCustomForm" data-displayname="Statut" style="font-weight:bold;background:#d34836;color:#fff;"></span></i></td>
+        </tr>
+    </table>
+    <br /><br />
+
+
+<!--SECTION DEMANDEUR-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#478bf9;color:#fff;width:200px;border-radius:2px;border:none;" value="DEMANDEUR"/>
+    <table class="da-bloc-bleu">
+	<tr>	
+            <td style="padding:10px;"><Label class="Libelle">Direction:</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Direction" data-source="PrimaryChoice,DirectionService,Title" data-attrib="mandatory"></span></td>
+            <td style="padding:10px;"><Label class="Libelle">Demandeur:</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Demandeur" data-attrib="mandatory,currentUser" data-type="personne"></span></td>
+        </tr>
+        <tr>
+            <td style="padding:10px;"><Label class="Libelle">Service:</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="Service" data-source="SecondaryChoice,DirectionService,Direction,Service" data-attrib="mandatory"></span></td>
+            <td style="padding:10px;"><Label class="Libelle">Responsable service affectation:</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="RespServiceAffectation" data-attrib="mandatory" data-type="personne"></span></td>            
+           
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td style="padding:10px;"><Label class="Libelle">Directeur service affectation:</Label></td>
+            <td><span class="SPWCustomForm" data-displayname="RespDirectionService"></span></td>
+        </tr>
+    </table>
+<br/>
+
+
+    <!--SECTION DESCRIPTION DE L'ACHAT-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#57D53B;color:#fff;width:200px;border-radius:2px;border:none;" value="DESCRIPTION DE L'ACHAT" />
+    <br />
+    <table class="da-bloc-vert">
+
+        <tr>
+            <td style="padding:10px;width: 200px;"><label class="Libelle">Nature de la dépense:</label></td>
+            <td><span class="SPWCustomForm" data-displayname="Nature depense" style="color:black;"></span></td>
+        </tr>
+        <tr>
+            <td style="padding:10px;width: 200px;"><label class="Libelle">Imputation analytique:</label></td>
+            <td><span class="SPWCustomForm" data-displayname="Imputation analytique" style="color:black;"></span></td>
+        </tr>
+        <tr>
+            <td style="padding:10px;width: 200px;"><label class="Libelle">Numéro de compte:</label></td>
+            <td><span class="SPWCustomForm" data-displayname="Numero Compte" style="color:black;"></span></td>
+        </tr>
+    </table>
+    <br />
+
+
+
+    <!--SECTION MOTIF DEMANDE-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#478bf9;color:#fff;width:200px;border-radius:2px;border:none;" value="MOTIF DE LA DEMANDE" />
+    <br />
+    <table class="da-bloc-bleu">
+        <tr>
+            <td style="padding:10px;"><span class="SPWCustomForm" data-displayname="Motif demande" style="color:black;"></span></td>
+        </tr>
+    </table>
+    <br />
+
+
+    <!--SECTION PIECES JOINTES-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#57D53B;color:#fff;width:200px;border-radius:2px;border:none;" value="PIECES JOINTES" />
+    <br />
+    <table class="da-bloc-vert">
+        <tr id="idAttachmentsRow" style="display: none;">
+            <td style="padding:10px;width: 200px;"><label class="Libelle">Documents justificatifs :</label></td>
+        </tr>
+    </table>
+    <br />
+
+<!--SECTION FOURNISSEUR-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#478bf9;color:#fff;width:200px;border-radius:2px;border:none;" value="FOURNISSEUR SOUHAITE"/>
+    <br/>
+        <table class="da-bloc-bleu">
+            <tr>                
+                <td style="padding:10px;width:200px;"><Label class="Libelle">Nom :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="FournNom" data-attrib="mandatory" style="text-align:left;color:black;"></span></td>
+                <td><Label class="Libelle">Contact :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="FournContact" style="text-align:left;color:black;"></span></td>
+            </tr>
+            <tr>
+                
+	    </tr>
+            <tr>
+                <td style="padding:10px;"><Label class="Libelle">Téléphone :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="FournTelephone" style="text-align:left;color:black;"></span></td>
+                <td><Label class="Libelle">Email :</Label></td>
+                <td><span class="SPWCustomForm" data-displayname="FournMail" style="text-align:left;color:black;"></span></td>
+            </tr>
+            <tr>
+		<td></td><td></td>	               
+           </tr>
+        </table>
+
+	<table id="detailFournisseurLigne1" style="width:83%;">
+            <tr>       
+		<td style="padding:10px;"><Label class="Libelle">Recours à ce fournisseur impératif : </Label></td>	
+                <td style="padding:10px;"><span class="SPWCustomForm" data-displayname="FournNonReference" style="color:black;"></span></td>         
+		<td style="padding:10px;"><Label class="Libelle">Motif justifiant le recours à ce fournisseur : </Label></td>
+                <td style="padding:10px;"><span class="SPWCustomForm" data-displayname="FournMotif" style="color:black;"></span></td>
+	    </tr>            
+        </table>
+<br/>
+<br/>
+
+    <!--SECTION DETAIL DE LA DEMANDE-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#d34836;color:#fff;width:200px;border-radius:2px;border:none;" value="DETAIL DEMANDE" />
+    <br /><br />
+    <table>
+        <tr>
+            <td><button style="border:none;padding:6px 0 6px 0;border-radius:8px;background:#d34836;font:bold 13px Arial;color:#fff;" type="button" />Total :</td>
+            <td style="color:white;"> . </td>
+            <td><strong><span class="SPWCustomForm" data-displayname="sTotal"></span></strong></td>
+            <td style="color:white;"> . </td>
+            <td><strong><u><span class="SPWCustomForm" data-displayname="Devise"></span></u></strong></td>
+        </tr>
+    </table>
+   
+    <br />
+
+    <table class="SPWChildTable" style="width:83%;border-top: 4px solid #d34836;" id="DetailDA" data-listName="Demande Achats Detail" data-headerId="DetailDAHeader" data-lineId="DetailDALigne" data-keyFieldName="Numero_x0020_demande" data-guidFieldName="GuidDemande">
+    <tr id="DetailDAHeader">
+	    <th data-colId="Indice">Indice</th>
+            <th data-inputSize="75" data-colId="Designation" data-fieldName="Designation" data-type="texte" data-attrib="tooltip">Désignation</th>
+	    <th data-inputSize="14" data-colId="Reference" data-fieldName="Reference" data-type="texte" data-attrib="tooltip">Référence</th>
+            <th data-inputSize="5" data-colId="Qte" data-fieldName="Quantite" data-type="nombre">Qté</th>
+	    <th data-inputSize="5" data-colId="Unite" data-fieldName="Unite" data-source="PrimaryChoice,Unite,Title" data-attrib="mandatory">Unité</th>	   
+	    <th data-inputSize="7" data-colId="PU" data-fieldName="Prix_x0020_unitaire_x0020_HT" data-type="nombre">Prix Unitaire H.T</th>
+	    <th data-inputSize="8" data-colId="DateLiv" data-fieldName="Date_x0020_livraison_x0020_souha" data-type="date" data-attrib="mandatory">Date de livraison</th>
+    	    <th data-colId="PT">Total Ligne</th>
+    </tr>
+    </table>
+
+    <br />
+    <br />
+
+    <!--SECTION FINALE-->
+    <input type="button" style="padding:6px 0 6px 0;font:Bold 13px Arial;background:#478bf9;color:#fff;width:200px;border-radius:2px;border:none;" value="WORKFLOW" />
+
+    <div id="tabs" style="width: 83%;">
+        <ul>
+            <li><a href="#tabs-1">VALIDATION</a></li>
+            <li><a href="#tabs-2">COMMENTAIRES</a></li>
+            <li><a href="#tabs-3">HISTORIQUE</a></li>
+            <li><a href="#tabs-4">DETAILS</a></li>
+            <li><a href="#tabs-5">STATISTIQUES</a></li>
+        </ul>
+        <!-- SECTION VALIDATION-->
+        <div id="tabs-1">
+            <table>
+                <tr>
+                    <td style="padding:20px;">
+                        <table class="da-formvalidation">
+                            <thead><tr><td colspan="2">Demandeur</td></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight:bold;text-decoration:underline;">Nom : </td>
+                                    <td><span class="SPWCustomForm" data-displayname="Valid0Nom"></span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;text-decoration:underline;">Date : </td>
+                                    <td><span class="SPWCustomForm" data-displayname="Valid0Date"></span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;text-decoration:underline;">Statut : </td>
+                                    <td><span class="SPWCustomForm" data-displayname="Valid0Reponse"></span></td>
+                                </tr>
+                            </tbody>
+                            <tfoot><tr><td colspan="2"></td></tr></tfoot>
+                        </table>
+                    </td>
+                    <td style="padding:20px;">
+                        <table class="da-formvalidation">
+                            <thead><tr><td colspan="2">Resp. Service Affectation</td></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight:bold;text-decoration:underline;">Nom : </td>
+                                    <td><span class="SPWCustomForm" data-displayname="Valid1Nom"></span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;text-decoration:underline;">Date : </td>
+                                    <td><span class="SPWCustomForm" data-displayname="Valid1Date"></span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;text-decoration:underline;">Statut : </td>
+                                    <td><span class="SPWCustomForm" data-displayname="Valid1Reponse"></span></td>
+                                </tr>
+                            </tbody>
+                            <tfoot><tr><td colspan="2"></td></tr></tfoot>
+                        </table>
+                    </td>
+                    <td style="padding:20px;">
+                        <table class="da-formvalidationv">
+                            <thead><tr><td colspan="2">Approbation Directeur (si &gt;=2 K€)</td></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight:bold;text-decoration:underline;">Nom : </td>
+                                    <td><span class="SPWCustomForm" data-displayname="Valid2Nom"></span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;text-decoration:underline;">Date : </td>
+                                    <td><span class="SPWCustomForm" data-displayname="Valid2Date"></span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;text-decoration:underline;">Statut : </td>
+                                    <td><span class="SPWCustomForm" data-displayname="Valid2Reponse"></span></td>
+                                </tr>
+                            </tbody>
+                            <tfoot><tr><td colspan="2"></td></tr></tfoot>
+                        </table>
+                    </td>
+            </table>
+        </div>
+
+        <!-- SECTION COMMENTAIRE-->
+        <div id="tabs-2">
+            <table>
+                <tr>
+                    <td style="padding:10px;"><span class="SPWCustomForm" data-displayname="Commentaires DA"></span>
+                </tr>
+            </table>
+        </div>
+
+        <!-- SECTION HISTORIQUE-->
+        <div id="tabs-3">
+            <table>
+                <tr>
+                    <td style="padding:10px;"><span class="SPWCustomForm" data-displayname="Historique DA"></span>
+                </tr>
+            </table>
+        </div>
+
+        <!-- SECTION DETAIL-->
+        <div id="tabs-4">
+            <table>
+                <tr>
+                    <td><strong>Suivi assuré par :</strong></td>
+                    <td><span class="SPWCustomForm" data-displayname="Gestionnaire"></span></td>
+                </tr>
+                <tr>
+                    <td><strong>Acheteur en charge :</strong></td>
+                    <td><span class="SPWCustomForm" data-displayname="Acheteur"></span></td>
+                </tr>
+                <tr>
+                    <td><strong>Numéro commande  :</strong></td>
+                    <td><span class="SPWCustomForm" data-displayname="NumCommande"></span></td>
+                </tr>
+                <tr>
+                    <td><strong>Date de commande :</strong></td>
+                    <td><span class="SPWCustomForm" data-displayname="DateCommande"></span></td>
+                </tr>
+                <tr>
+                    <td><strong>Date livr estimée:</strong></td>
+                    <td><span class="SPWCustomForm" data-displayname="DateLivraisonEstim"></span></td>
+                </tr>
+                <tr>
+                    <td><strong>Date de livraison:</strong></td>
+                    <td><span class="SPWCustomForm" data-displayname="DateLivraison"></span></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- SECTION STATISTIQUES-->
+        <div id="tabs-5">
+            <table>
+                <tr>
+                    <td><strong>Temps d'approbation responsable(j):</strong></td>
+                    <td><span class="SPWCustomForm" data-displayname="TempsApprobationResp"></span></td>
+                </tr>
+                <tr>
+                    <td><strong>Temps d'approbation direction (j) :</strong></td>
+                    <td><span class="SPWCustomForm" data-displayname="TempsApprobationDir"></span></td>
+                </tr>
+                <tr>
+                    <td><strong>Temps renseignement comptable (j) :</strong></td>
+                    <td><span class="SPWCustomForm" data-displayname="TempsComptable"></span></td>
+                </tr>
+                <tr>
+                    <td><strong>Temps de prise compte achats (j)  :</strong></td>
+                    <td><span class="SPWCustomForm" data-displayname="TempsAchat"></span></td>
+                </tr>
+                <tr>
+                    <td><strong>Temps de traitement commande (j)  :</strong></td>
+                    <td><span class="SPWCustomForm" data-displayname="TempsCommande"></span></td>
+                </tr>
+                <tr>
+                    <td><strong>Temps de traitement global (jours):</strong></td>
+                    <td><span class="SPWCustomForm" data-displayname="TempsTraitement"></span></td>
+                </tr>
+                <tr>
+                    <td><strong>Délai de livraison fournisseur(j) :</strong></td>
+                    <td><span class="SPWCustomForm" data-displayname="DelaiFournisseur"></span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <br />
+
+    <table>
+        <tr>
+            <td style="color:white;">Guid demande</td>
+            <td style="color:white;"><span class="SPWCustomForm" data-displayname="GuidDemande"></span></td>
+        </tr>        
+    </table>
+
+</body>
+</html>
+
+

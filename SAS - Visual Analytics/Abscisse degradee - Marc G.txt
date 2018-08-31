@@ -1,0 +1,15 @@
+IF ( ( Year('Date_tri'n) <> Year(DatePart(Now())) ) )
+RETURN '_Tri_Date_A'n
+ELSE ( 
+  IF ( ( Year('Date_tri'n) = Year(DatePart(Now())) ) 
+         AND ( 'Semaine'n = WeekNumber(DatePart(Now())) ) )
+  RETURN '_Tri_Date_AM'n
+  ELSE ( 
+    IF (( Year('Date_tri'n) = Year(DatePart(Now())) )
+         AND (Month('Date_Tri'n) = Month(datepart(now())))
+         AND (DayOfMonth('Date_Tri'n) = DayOfMonth(datepart(now()))))
+    RETURN '_Tri_Date_AMS'n
+    ELSE (
+          IF ( 'Semaine'n = WeekNumber(datepart(now())))
+          RETURN '_Tri_Date_AMS'n
+          ELSE '_Tri_Date_AMS'n)))

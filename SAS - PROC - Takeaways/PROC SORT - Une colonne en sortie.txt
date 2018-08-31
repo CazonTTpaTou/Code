@@ -1,0 +1,5 @@
+PROC SORT 
+Data=STATS.TDB_V_LOTS_CLASSE_LIGNE (keep=Lot)
+Out=Work.Liste_Lots_MAJ NODUPKEY; 
+BY LOT;
+RUN;

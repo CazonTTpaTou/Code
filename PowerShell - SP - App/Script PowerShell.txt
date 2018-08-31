@@ -1,0 +1,13 @@
+$MyWeb = WebUrl 
+$MyList = MyWeb.Lists["ListName"] 
+$MyItems = $MyList.Items 
+$MyItems | Select Fields.. | Export-Csv
+FilePath
+$MyWeb.Dispose()
+
+
+
+
+
+
+

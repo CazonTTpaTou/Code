@@ -1,0 +1,24 @@
+
+############ Method Chaining ####################################   
+
+(ramen['Stars']
+     .replace('Unrated', None)
+     .dropna()
+     .astype('float64')
+     .head())
+
+############ Colonne calculée ####################################  
+
+wine.assign(
+    region_1=wine.apply(lambda srs: srs.region_1 if pd.notnull(srs.region_1) else srs.province, 
+                        axis='columns')
+)
+
+############ pipe bending ####################################  
+
+def name_index(df):
+    df.index.name = 'review_id'
+    return df
+
+wine.pipe(name_index)
+

@@ -1,0 +1,44 @@
+USE [GMAO_DB]
+GO
+
+/****** Object:  UserDefinedFunction [dbo].[Tri_Texte]    Script Date: 29/03/2017 09:59:14 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE FUNCTION [dbo].[Tri_Texte] 
+(
+	@Chiffre int
+)
+RETURNS Varchar(4)
+AS
+BEGIN
+	-- Declare the return variable here
+	DECLARE @Result Varchar(4)
+
+	-- Add the T-SQL statements to compute the return value here
+	SELECT @Result =
+	
+				CASE 
+					 WHEN @Chiffre < 10 
+					 THEN CONVERT(Varchar(4),'000' + Convert(Varchar(4),@Chiffre))
+				     WHEN @Chiffre >= 10 AND @Chiffre < 100
+					 THEN CONVERT(Varchar(4),'00' + Convert(Varchar(4),@Chiffre))
+				     WHEN @Chiffre >= 100 AND @Chiffre < 1000
+					 THEN CONVERT(Varchar(4),'0' + Convert(Varchar(4),@Chiffre))
+				ELSE 
+					 CONVERT(Varchar(4),@Chiffre)
+				END
+
+	-- Return the result of the function
+	RETURN @Result
+
+END
+
+
+GO
+
+

@@ -1,0 +1,118 @@
+PROC SQL;
+   CREATE TABLE WORK.Wav_Stats AS 
+   SELECT t1.Lot, 
+          t1.FF_moy As FF_Moy, 
+          /* Rend_Abs */
+            (abs(t1.FF_moy)) LABEL="Rend_Abs" AS Rend_Abs
+      FROM IN_LINE.V_WAV_STATISTIQUES t1;
+QUIT;
+
+PROC SQL;
+   CREATE TABLE WORK.QUERY_FOR_WAV_STATS AS 
+   SELECT t1.Lot, 
+          /* Rend_Moy */
+            (0) LABEL="FF_Moy" AS FF_Moy, 
+          /* Rend_Abs */
+            (0) LABEL="FF_Abs" AS FF_Abs
+      FROM WORK.WAV_STATS t1;
+QUIT;
+
+/*************************************************************************************************/
+
+PROC SORT DATA=STATS.DTM_LOGS_TRI_6_STATS_OLD OUT=WORK.Base_byidnum;
+   BY LotId;
+RUN;
+
+PROC SORT DATA=STATS.DTM_LOGS_TRI_6_STATS_NEW OUT=WORK.Compare_byidnum;
+   BY LotId;
+RUN;
+
+PROC COMPARE BASE=WORK.Base_byidnum COMPARE=WORK.Compare_byidnum
+	METHOD=ABSOLUTE
+	OUT=WORK.COMPCompareDTM_LOGS_TRI_6_STATS_(LABEL="Comparer les données pour DTM_LOGS_TRI_6_STATS_OLD et DTM_LOGS_TRI_6_STATS_NEW")
+	OUTDIF
+	MAXPRINT=50;
+	ID LotId;
+RUN;
+
+PROC SQL;
+   CREATE TABLE WORK.FILTER_FOR_COMPCOMPAREDTM_LOGS_T AS 
+   SELECT t1._TYPE_, 
+          t1._OBS_, 
+          t1.LotId, 
+          t1.Cel_Tri_PFF_Moy, 
+          t1.Cel_Tri_PFF_Med, 
+          t1.Cel_Tri_Rend_ampl, 
+          t1.Cel_Tri_Rend_ect, 
+          t1.Cel_Tri_Rend_ectr, 
+          t1.Cel_Tri_Rend_max, 
+          t1.Cel_Tri_Rend_med, 
+          t1.Cel_Tri_Rend_min, 
+          t1.Cel_Tri_FF_moy, 
+          t1.Cel_Tri_Vmax_max, 
+          t1.Cel_Tri_Vmax_med, 
+          t1.Cel_Tri_Vmax_min, 
+          t1.Cel_Tri_Vmax_moy, 
+          t1.Cel_Tri_Voc_ampl, 
+          t1.Cel_Tri_Voc_ect, 
+          t1.Cel_Tri_Voc_ectr, 
+          t1.Cel_Tri_Voc_max, 
+          t1.Cel_Tri_Voc_med, 
+          t1.Cel_Tri_Voc_min, 
+          t1.Cel_Tri_Voc_moy
+      FROM WORK.COMPCOMPAREDTM_LOGS_TRI_6_STATS_ t1
+      WHERE t1.Cel_Tri_FF_moy NOT = 0 AND t1.Cel_Tri_FF_moy NOT IS MISSING;
+QUIT;
+
+PROC SQL;
+   CREATE TABLE WORK.FILTER_FOR_COMPCOMPAREDTM_L_0000 AS 
+   SELECT t1.LotId, 
+          t1.Cel_Tri_FF_moy
+      FROM WORK.FILTER_FOR_COMPCOMPAREDTM_LOGS_T t1;
+QUIT;
+
+PROC SQL;
+   CREATE TABLE WORK.QUERY_FOR_FILTER_FOR_COMPCOMPARE(label="QUERY_FOR_FILTER_FOR_COMPCOMPAREDTM_L") AS 
+   SELECT t1.LotId, 
+          t1.Cel_Tri_FF_moy, 
+          /* Rend_Abs */
+            (abs(t1.Cel_Tri_FF_moy)) LABEL="Rend_Abs" AS FF_Abs
+      FROM WORK.FILTER_FOR_COMPCOMPAREDTM_L_0000 t1;
+QUIT;
+
+/*************************************************************************************************/
+
+PROC SQL;
+   CREATE TABLE WORK.QUERY_FOR_WAV_STATS_0000(label="QUERY_FOR_WAV_STATS") AS 
+   SELECT t1.Lot AS LotID, 
+          t1.FF_Moy AS Cel_Tri_FF_Moy, 
+          t1.FF_Abs
+      FROM WORK.QUERY_FOR_WAV_STATS t1
+		   WHERE T1.Lot NOT IN (Select T3.LotId FROM WORK.QUERY_FOR_FILTER_FOR_COMPCOMPARE AS T3);
+QUIT;
+
+/*************************************************************************************************/
+
+PROC APPEND 
+BASE=WORK.QUERY_FOR_WAV_STATS_0000 
+Data=WORK.QUERY_FOR_FILTER_FOR_COMPCOMPARE Force;
+RUN;
+
+PROC SQL;
+CREATE TABLE Work.Fusion AS
+SELECT 
+	T1.*,
+	T2.*
+	FROM WORK.QUERY_FOR_WAV_STATS_0000 AS T1
+	RIGHT OUTER JOIN STATS.DTM_LOGS_TRI_6_DELTA AS T2
+	ON T1.LotID = T2.LotID;
+RUN;
+
+PROC SORT 
+	Data=WORK.Fusion 
+	OUT=STATS.DTM_LOGS_TRI_6_DELTA_FF 
+	Dupout=Work.Doublons_Tri;
+BY LotID;
+RUN;
+
+

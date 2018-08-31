@@ -1,0 +1,379 @@
+
+ODS PROCTITLE;
+OPTIONS DEV=ACTIVEX;
+GOPTIONS XPIXELS=0 YPIXELS=0;
+FILENAME EGSRX TEMP;
+ODS tagsets.sasreport13(ID=EGSRX) FILE=EGSRX
+    STYLE=HtmlBlue
+    STYLESHEET=(URL="file:///C:/Program%20Files/SASHome/SASEnterpriseGuide/6.1/Styles/HtmlBlue.css")
+    NOGTITLE
+    NOGFOOTNOTE
+    GPATH=&sasworklocation
+    ENCODING=UTF8
+    options(rolap="on")
+;
+
+/*   DEBUT DE NOEUD : defauts_absdegradee   */
+%LET _CLIENTTASKLABEL='defauts_absdegradee';
+%LET _CLIENTPROJECTPATH='U:\Process\MGerard\1_Projets\Hennecke\Tendance TNQ_Hennecke\Hennecke_50.egp';
+%LET _CLIENTPROJECTNAME='Hennecke_50.egp';
+
+GOPTIONS ACCESSIBLE;
+%_eg_conditional_dropds(WORK.QUERY_FOR_USER_HENNECKE_0000);
+
+PROC FORMAT;
+VALUE MOIS
+1 = 'Janvier'
+2 = 'Février'
+3 = 'Mars'
+4 = 'Avril'
+5 = 'Mai'
+6 = 'Juin'
+7 = 'Juillet'
+8 = 'Août'
+9 = 'Septembre'
+10 = 'Octobre'
+11 = 'Novembre'
+12 = 'Décembre';
+RUN ;
+
+PROC FORMAT;
+VALUE JOUR
+
+1 = 'Jour1'
+2 = 'Jour2'
+3 = 'Jour3'
+4 = 'Jour4'
+5 = 'Jour5'
+6 = 'Jour6'
+7 = 'Jour7'
+8 = 'Jour8'
+9 = 'Jour9'
+10 = 'Jour10'
+11 = 'Jour11'
+12 = 'Jour12'
+13 = 'Jour13'
+14 = 'Jour14'
+15 = 'Jour15'
+16 = 'Jour16'
+17 = 'Jour17'
+18 = 'Jour18'
+19 = 'Jour19'
+20 = 'Jour20'
+21 = 'Jour21'
+22 = 'Jour22'
+23 = 'Jour23'
+24 = 'Jour24'
+25 = 'Jour25'
+26 = 'Jour26'
+27 = 'Jour27'
+28 = 'Jour28'
+29 = 'Jour29'
+30 = 'Jour30'
+31 = 'Jour31'
+
+RUN ;
+
+PROC FORMAT;
+VALUE SEMAINE
+
+1 = 'Semaine01'
+2 = 'Semaine02'
+3 = 'Semaine03'
+4 = 'Semaine04'
+5 = 'Semaine05'
+6 = 'Semaine06'
+7 = 'Semaine07'
+8 = 'Semaine08'
+9 = 'Semaine09'
+10 = 'Semaine10'
+11 = 'Semaine11'
+12 = 'Semaine12'
+13 = 'Semaine13'
+14 = 'Semaine14'
+15 = 'Semaine15'
+16 = 'Semaine16'
+17 = 'Semaine17'
+18 = 'Semaine18'
+19 = 'Semaine19'
+20 = 'Semaine20'
+21 = 'Semaine21'
+22 = 'Semaine22'
+23 = 'Semaine23'
+24 = 'Semaine24'
+25 = 'Semaine25'
+26 = 'Semaine26'
+27 = 'Semaine27'
+28 = 'Semaine28'
+29 = 'Semaine29'
+30 = 'Semaine30'
+31 = 'Semaine31'
+32 = 'Semaine32'
+33 = 'Semaine33'
+34 = 'Semaine34'
+35 = 'Semaine35'
+36 = 'Semaine36'
+37 = 'Semaine37'
+38 = 'Semaine38'
+39 = 'Semaine39'
+40 = 'Semaine40'
+41 = 'Semaine41'
+42 = 'Semaine42'
+43 = 'Semaine43'
+44 = 'Semaine44'
+45 = 'Semaine45'
+46 = 'Semaine46'
+47 = 'Semaine47'
+48 = 'Semaine48'
+49 = 'Semaine49'
+50 = 'Semaine50'
+51 = 'Semaine51'
+52 = 'Semaine52';
+
+run;
+
+
+PROC SQL;
+   CREATE TABLE WORK.QUERY_FOR_USER_HENNECKE_0001 AS 
+   SELECT /* def_Thickn */
+            (case
+            when QThickn > 4 then
+            1
+            else
+            0
+            end) LABEL="def_Thickn" AS def_Thickn, 
+          /* def_Strie_sur_tranche */
+            (case
+            when QSawEdge > 4 then
+            1
+            else
+            0
+            end) LABEL="def_Strie_sur_tranche" AS def_Strie_sur_tranche, 
+          /* def_Chip */
+            (case
+            when QChip >4 then
+            1
+            else
+            0
+            end) LABEL="def_Chip" AS def_Chip, 
+          /* def_Ebrechure_sur_tranche */
+            (case
+            when QEdge > 4 then
+            1
+            else
+            0
+            end
+            ) LABEL="def_Ebrechure_sur_tranche" AS def_Ebrechure_sur_tranche, 
+          /* def_Taille */
+            (case
+            when QSize > 4 then
+            1
+            else
+            0
+            end) LABEL="def_Taille" AS def_Taille, 
+          /* def_taille_diagonale */
+            (case
+            when QDSize > 4 then
+            1
+            else
+            0
+            end) LABEL="def_taille_diagonale" AS def_taille_diagonale, 
+          /* def_Rectangularite */
+            (case
+            when QRect > 4 then
+            1
+            else
+            0
+            end) LABEL="def_Rectangularite" AS def_Rectangularite, 
+          /* def_Long_chanfrein */
+            (case
+            when QChLen > 4 then
+            1
+            else
+            0
+            end) LABEL="def_Long_chanfrein" AS def_Long_chanfrein, 
+          /* def_Mesure_angle */
+            (case
+            when QChAngle > 4 then
+            1
+            else
+            0
+            end) LABEL="def_Mesure_angle" AS def_Mesure_angle, 
+          /* def_parallelisme */
+            (case
+            when QUnp > 4 then
+            1
+            else
+            0
+            end) LABEL="def_parallelisme" AS def_parallelisme, 
+          /* def_Ondulations */
+            (case
+            when QSaw2 > 4 then
+            1
+            else
+            0
+            end) LABEL="def_Ondulations" AS def_Ondulations, 
+          /* def_Stries */
+            (case
+            when QSaw1 > 4 then
+            1
+            else
+            0
+            end) LABEL="def_Stries" AS def_Stries, 
+          /* def_TTV */
+            (case
+            when QTTV > 4 then
+            1
+            else 0
+            end) LABEL="def_TTV" AS def_TTV, 
+          /* def_BOW */
+            (case
+            when QBOW > 4 then
+            1
+            else
+            0
+            end) LABEL="def_BOW" AS def_BOW, 
+         
+			/* abscisse_degradee */
+            (CASE 
+               WHEN    Year(DatePart(Time))  = Year(today()) AND Month(DatePart(Time))  = Month(today()) AND 
+            Week(DatePart(Time))  = Week(today())   then cats('01 - J','Jour_1')
+            
+                    WHEN    Year(DatePart(Time))  = Year(today()) AND Month(DatePart(Time))  = Month(today()) AND 
+            Week(DatePart(Time))  <> Week(today())    then cats('02 - ','Semaine_1')
+            
+                    WHEN    Year(DatePart(Time))  = Year(today()) AND Month(DatePart(Time))  <> Month(today()) then 
+            cats('03 - M',put(1,MOIS.))
+            
+               ELSE cats('04 - A',year(datepart(t1.time)))
+            END
+            ) LABEL="abscisse_degradee" AS abscisse_degradee,
+
+          t1.N_Assemblage, 
+          t1.Time, 
+          t1.semaine, 
+          t1.mois, 
+          t1.trimestre, 
+          t1.annee,
+		  t2.Type_assemblage, 
+          t2.Ass_Sci_Equipement
+
+		   FROM STATS.USER_HENNECKE t1
+           INNER JOIN DTM_PRO.DTM_PRO_TRAC_WAFERS t2 ON (t1.N_Assemblage = t2.Assemblage_Num);;
+QUIT;
+
+/*
+
+GOPTIONS NOACCESSIBLE;
+
+
+%LET _CLIENTTASKLABEL=;
+%LET _CLIENTPROJECTPATH=;
+%LET _CLIENTPROJECTNAME=;
+
+
+
+%LET _CLIENTTASKLABEL='Générateur de requêtes1';
+%LET _CLIENTPROJECTPATH='U:\Process\MGerard\1_Projets\Hennecke\Tendance TNQ_Hennecke\Hennecke_50.egp';
+%LET _CLIENTPROJECTNAME='Hennecke_50.egp';
+
+GOPTIONS ACCESSIBLE;
+%_eg_conditional_dropds(WORK.QUERY_FOR_USER_HENNECKE_0001);
+
+PROC SQL;
+   CREATE TABLE WORK.QUERY_FOR_USER_HENNECKE_0001 AS 
+   SELECT t1.def_Thickn, 
+          t1.def_Strie_sur_tranche, 
+          t1.def_Chip, 
+          t1.def_Ebrechure_sur_tranche, 
+          t1.def_Taille, 
+          t1.def_taille_diagonale, 
+          t1.def_Rectangularite, 
+          t1.def_Long_chanfrein, 
+          t1.def_Mesure_angle, 
+          t1.def_parallelisme, 
+          t1.def_Ondulations, 
+          t1.def_Stries, 
+          t1.def_TTV, 
+          t1.def_BOW, 
+          t1.abs_degradee, 
+          t1.N_Assemblage, 
+          t1.Time, 
+          t1.semaine, 
+          t1.mois, 
+          t1.trimestre, 
+          t1.annee, 
+          t2.Type_assemblage, 
+          t2.Ass_Sci_Equipement
+      FROM WORK.QUERY_FOR_USER_HENNECKE_0000 t1
+           INNER JOIN DTM_PRO.DTM_PRO_TRAC_WAFERS t2 ON (t1.N_Assemblage = t2.Assemblage_Num);
+QUIT;
+
+GOPTIONS NOACCESSIBLE;
+
+
+
+%LET _CLIENTTASKLABEL=;
+%LET _CLIENTPROJECTPATH=;
+%LET _CLIENTPROJECTNAME=;
+
+
+
+%LET _CLIENTTASKLABEL='calcul_pourcentage';
+%LET _CLIENTPROJECTPATH='U:\Process\MGerard\1_Projets\Hennecke\Tendance TNQ_Hennecke\Hennecke_50.egp';
+%LET _CLIENTPROJECTNAME='Hennecke_50.egp';
+
+GOPTIONS ACCESSIBLE;
+%_eg_conditional_dropds(WORK.QUERY_FOR_USER_HENNECKE_0002);
+*/
+
+PROC SQL;
+   CREATE TABLE WORK.QUERY_FOR_USER_HENNECKE_0002 AS 
+   SELECT DISTINCT 
+
+   		  /* Pourcent_Thickn */
+            (sum(def_Thickn)/count(Time)) FORMAT=PERCENT6.3 LABEL="Pourcent_Thickn" AS Pourcent_Thickn,           
+          /* pourcent_Ondulations */
+            (sum(def_Ondulations)/count(Time)) FORMAT=PERCENT6.3 LABEL="pourcent_Ondulations" AS pourcent_Ondulations, 
+          /* pourcent_Stries */
+            (sum(def_Stries)/count(Time)) FORMAT=PERCENT6.3 LABEL="pourcent_Stries" AS pourcent_Stries, 
+          /* pourcent_TTV */
+            (sum(def_TTV)/count(Time)) FORMAT=PERCENT6.3 LABEL="pourcent_TTV" AS pourcent_TTV, 
+          /* pourcent_BOW */
+            (sum(def_BOW)/count(Time)) FORMAT=PERCENT6.3 LABEL="pourcent_BOW" AS pourcent_BOW, 
+
+		/*Regroupement défaut ébréchure*/
+		((sum(def_Strie_sur_tranche)/count(Time))
+         +
+        (sum(def_Chip)/count(Time))
+		  +
+        (sum(def_Ebrechure_sur_tranche)/count(Time))) 
+         LABEL="Defaut_Ebrechure" FORMAT=PERCENT6.3 AS Cat_Ebrechure,
+
+		/*Regroupement défaut dimension*/
+		((sum(def_Taille)/count(Time)) 
+		+
+		(sum(def_taille_diagonale)/count(Time)) 
+		+         
+		(sum(def_Rectangularite)/count(Time)) 
+		+          
+		(sum(def_Long_chanfrein)/count(Time)) 
+		+          
+		(sum(def_Mesure_angle)/count(Time))  
+		+          
+		(sum(def_parallelisme)/count(Time))) 
+		LABEL="Defaut_Dimension" FORMAT=PERCENT6.3 AS Cat_Dimension,
+
+          t1.Type_assemblage, 
+          t1.Ass_Sci_Equipement, 
+          /* COUNT_of_Time */
+            (COUNT(t1.Time)) AS COUNT_of_Time, 
+
+		  t1.abscisse_degradee
+          		  
+      FROM WORK.QUERY_FOR_USER_HENNECKE_0001 t1
+      GROUP BY t1.abscisse_degradee,
+               t1.Type_assemblage,
+               t1.Ass_Sci_Equipement;
+QUIT;
+

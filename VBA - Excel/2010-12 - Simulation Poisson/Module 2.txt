@@ -1,0 +1,79 @@
+Sub Macro1()
+'
+' Macro1 Macro
+' Macro enregistrée le 20/11/2010 par Fabien Monnery
+'
+
+'
+    Range("A2:F2").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.ClearContents
+End Sub
+
+Sub test_3()
+
+Dim element, longueur, temps_service As Integer
+longueur = 0
+Call init(file, 10)
+Call init(guichet1, 10)
+
+Call insertion_file(file, 3)
+Call insertion_file(file, 4)
+Call insertion_file(file, 5)
+
+For i = 1 To 5
+    Cells(i, 1) = file(i)
+Next i
+
+Cells(1, 5) = sortie_file(file)
+
+For i = 1 To 5
+    Cells(i, 2) = file(i)
+Next i
+
+Cells(2, 5) = sortie_file(file)
+Cells(3, 5) = sortie_file(file)
+
+For i = 1 To 5
+    Cells(i, 3) = file(i)
+Next i
+
+Call insertion_file(file, 3)
+Cells(1, 6).Value = guichet_libre(guichet1, 1)
+Cells(1, 7).Value = (file(1) > 0)
+If file(1) > 0 Then
+            Cells(1, 8).Value = "Coucou"
+            If guichet_libre(guichet1, 1) = True Then
+                Cells(1, 9).Value = "Coucou"
+                element = sortie_file(file)
+                Cells(2, 6).Value = element
+                longueur = longueur - 1
+                Cells(3, 6).Value = longueur
+                temps_service = service(element)
+                Cells(4, 6).Value = temps_service
+                Call remplir_Guichet(1, temps_service, element, guichet1)
+                End If
+End If
+
+
+End Sub
+
+Sub test_2()
+
+Dim a, b As Integer
+Range("D1").Select
+
+For b = 1 To 10
+    clients(b, 1) = b
+    ActiveCell.Value = b
+    ActiveCell.Offset(1, 0).Select
+Next b
+
+Range("A1").Select
+
+Range("B1").Value = "la solution est :" & Dicho(22, 1, 100, clients)
+
+
+End Sub
+
+

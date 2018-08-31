@@ -1,0 +1,3 @@
+&ux=webanon@saspw&px=webanonPHOTOWATT@2015
+
+http://srv-sasva.photowatt.local/SASVisualAnalyticsViewer/VisualAnalyticsViewer.jsp?reportPath=/PHOTOWATT/Rapports&reportName=V_LOTS&ux=webanon@saspw&px=webanonPHOTOWATT@2015

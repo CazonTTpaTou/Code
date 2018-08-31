@@ -1,0 +1,234 @@
+Public Const MotDePasse = "IE-ivn018"
+Public Const MotDePasses = "IE-ivn018$"
+
+' Verrouille la feuille en laissant déverrouillé uniquement les cellules de couleur Bleu accentué que l'utilisateur devra remplir
+Sub Protection()
+
+Dim msg As String
+Dim Zone As Range
+
+'ActiveSheet.Unprotect
+
+For Each feuille In Worksheets
+
+If feuille.ProtectContents = False Then
+
+    feuille.Activate
+
+    Set Zone = ActiveSheet.Range("A1:Z100")
+
+    For Each cell In Zone
+        If cell.Interior.ThemeColor = xlThemeColorAccent1 Then
+           msg = cell.Address
+           cell.Select
+           If Selection.Locked = True Then
+             Selection.Locked = False
+         End If
+     Else:
+          If cell.Locked = False Then
+                cell.Select
+                Selection.Locked = True
+            End If
+     End If
+    Next cell
+    
+    ActiveSheet.Protect Password = MotDePasse
+
+End If
+
+Next feuille
+
+End Sub
+' Déverrouille la feuille active et rétablit les boutons d'option à leur état d'origine
+Sub DeProtection()
+
+Dim Obj As Object
+
+ActiveSheet.Unprotect Password = MotDePasse
+
+For Each Obj In ActiveSheet.DrawingObjects
+
+    'Si l'objet passé en revue est un bouton d'option on le verrouille en passant sa propriété Locked à True
+    If Left(Obj.name, 12) = "OptionButton" Then
+         Obj.Locked = False
+         Obj.Enabled = True
+        liste = liste & Obj.name & Chr(10)
+    End If
+    'Si l'objet passé en revue est une case à cocher on le verrouille en passant sa propriété Locked à True
+    If Left(Obj.name, 8) = "CheckBox" Then
+      Obj.Enabled = False
+      liste = liste & Obj.name & Chr(10)
+    End If
+
+ Next Obj
+
+End Sub
+' Verrouille uniquement la feuille active sans traitement sur les cellules
+Sub Quick_Protection()
+
+ActiveSheet.EnableSelection = xlNoRestrictions
+ActiveSheet.Protect Password = MotDePasse
+
+End Sub
+
+' Déprotège l'ensemble des feuilles qui composent le classeur
+Sub Total_Deprotect()
+
+Dim feuille As Worksheet
+
+For Each feuille In Worksheets
+    If feuille.ProtectContents = True Then
+        feuille.Select
+        Call DeProtection
+    
+    End If
+Next feuille
+
+End Sub
+
+' Protège l'ensemble des feuilles qui composent le classeur
+Sub Total_Protection()
+
+Dim feuille As Worksheet
+
+For Each feuille In Worksheets
+     If feuille.Visible = True Then
+      feuille.Select
+      Call Quick_Protection
+     End If
+Next feuille
+
+End Sub
+
+' Exporte le document au format PDF
+Sub Export_PDF()
+
+Dim chemin As String
+Dim Num_Etude As Long
+
+Worksheets(1).Select
+Num_Etude = ActiveSheet.Range("E9").Value
+
+chemin = ActiveWorkbook.Path
+ChDir chemin
+
+chemin = chemin & "\Etude n° " & Num_Etude
+
+    ActiveWorkbook.ExportAsFixedFormat Type:=xlTypePDF, Filename:= _
+        chemin, Quality:=xlQualityStandard, _
+        IncludeDocProperties:=True, IgnorePrintAreas:=False, OpenAfterPublish:= _
+        True
+        
+        Call Retablir_Dim
+        
+End Sub
+
+
+' Fixe des paramètres d'affichage compatible avec une capture d'écran
+Sub Affichage()
+
+Dim feuille As Worksheet
+
+   For Each feuille In Worksheets
+   If feuille.Visible = True Then
+     feuille.Select
+     ActiveWindow.DisplayGridlines = False
+     ActiveWindow.View = xlNormalView
+     Call DeProtection
+    End If
+    Next feuille
+        
+End Sub
+
+Sub Protection_Pour_Test()
+
+Dim feuille As Worksheet
+
+For Each feuille In Worksheets
+        If feuille.Visible = True Then
+        feuille.Select
+        ActiveSheet.EnableSelection = xlNoRestrictions
+        ActiveSheet.Protect Password = MotDePasse
+        End If
+Next feuille
+
+End Sub
+
+Sub Saisie_Password_D(control As IRibbonControl)
+
+Dim reponse As String
+
+reponse = InputBox("Saisissez le mot de passe pour déverrouiller : ")
+
+ActiveSheet.Unprotect Password = reponse
+
+End Sub
+
+Sub Saisie_Password_P(control As IRibbonControl)
+
+Dim reponse As String
+
+ActiveSheet.Protect Password = MotDePasse
+
+End Sub
+
+' Vérifie la concordance des numéros d'index des feuilles du classeur avec leur nom
+Sub Controle_Index()
+
+Dim a As Integer
+Dim b As String
+Dim msg As String
+Dim feuille As Worksheet
+
+For Each feuille In Worksheets
+    a = feuille.index
+    b = feuille.name
+    msg = msg & Chr(10) & "Feuille n° " & a & " - " & b
+Next feuille
+
+MsgBox msg
+
+End Sub
+
+Sub ProtectFormula()
+
+On Error GoTo GestionErreur
+
+For Each sh In Worksheets
+    
+    If sh.index < Num_Feuil_Donnees Then
+    
+        sh.Select
+    
+        Cells.Select
+        
+        Selection.Locked = False
+        Selection.FormulaHidden = False
+        
+        Range("A1").Select
+        
+        Selection.SpecialCells(xlCellTypeFormulas, 23).Select
+        
+            For Each cell In Selection
+                
+                cell.Select
+                Selection.Locked = True
+                
+            Next cell
+    
+    End If
+
+Next sh
+
+Exit Sub
+
+GestionErreur:
+MsgBox (cell.Address)
+
+End Sub
+
+
+
+
+
+

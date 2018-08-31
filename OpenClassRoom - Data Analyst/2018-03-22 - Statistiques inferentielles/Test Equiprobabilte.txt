@@ -1,0 +1,24 @@
+#Question 1 : Réaliser ce test d’équiprobabilité, et donnez la P-valeur.
+L'équiprobabilité des naissances d'homme de femme peut revient à supposer que la variable X = sexe_du_nouveau_né donne des observations comparables à une loi binomiale B(1,p0) avec p0=1/2.
+L'hypothèse nulle est donc H0 p(échantillon)=p0 et l'hypothèse alternative H1 p(échantillon) !=p0
+A cette fin on peut utiliser la fonction prop.test, dont les arguments sont : le nombre de succès, le nombre total d'essais et la proportion sous l'hypothèse nulle H0 : p0
+La p-valeur retournée est telle que p_valeur < 2.2e-16
+
+
+#Question 2 : Accepte-t-on l'hypothèse d’équiprobabilité des naissances femmes-hommes au niveau de test 5% ?
+p_valeur est très inférieure au niveau de test 5%. H0 peut donc être rejetée et on peut considérer que le sexe des nouveaux nées n'est pas equiprobable.
+
+
+#Question 3 : Supposons maintenant que la taille de l'échantillon soit différente, mais que les fréquences femmes-hommes soient les mêmes. Calculez le nombre de femmes et d'hommes dans chacun de ces 3 cas :
+échantillon de taille n = 100 ; échantillon de taille n = 1000 ; échantillon de taille n = 10000
+
+Pour calculer le nombre de femme et d'homme pour des échantillon de taille 100, 1000 et 10000, il faut repartir de la fréquence de l'échantillon initial, à savoir fh = 399284/781167 = 0.5111 et 381883/781167 = 0.4889.
+Ainsi : pour n = 100, n_homme = 51 ; n_femme = 49 ; pour n = 1000, n_homme = 511 ; n_femme = 489 ; pour n = 10000, n_homme = 5111 ; n_femme = 4889
+
+
+#Question 4 : Pour chacun des 3 cas précédents, accepte-t-on l'hypothèse d’équiprobabilité des naissances femmes-hommes au niveau de test 5% ?
+L'application de la fontion prop.test() au trois cas précedents donne :
+Pour n=100, p_valeur = 0.9023 ; Pour n=1000, p_valeur = 0.5011 ; Pour n=10000, p_valeur = 0.02658
+Dans les deux premiers cas la p_valeur est nettement supérieure au niveau de test de 5% et par conséquent, l'hypothèse H0 ne peut pas être rejetée.
+Dans le dernier cas en revanche p_Valeur < 5% et H0 peut être rejetée.
+Cet exemple met en évidence l'influence de la taille de l'échantillon sur les conclusions du test.

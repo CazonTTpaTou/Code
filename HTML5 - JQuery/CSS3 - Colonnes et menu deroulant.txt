@@ -1,0 +1,141 @@
+/*** CSS3 VQS | Chapter 14 | layout.css ***/
+
+/* CSS Simple Reset
+-------------------------------------------------------------- */	
+
+*{margin:0;padding:0;border:0;outline:0;line-height:1.4em;vertical-align:baseline;text-decoration:none;}
+
+
+/* Layout
+-------------------------------------------------------------- */
+
+header, nav, section, article, aside, footer {
+	display: block; /* Sets HTML5 elements to block */
+	overflow: hidden; /* Fixes Child Float Problem */ }
+	
+body {
+	background-color: rgb(153,153,153);
+	font: normal 1em/1.4em Perpetua, Constantia, times, "times new roman", serif; }
+
+header.site, section, footer.site {
+	width: 980px;
+	clear: both;
+	margin: 0 auto; }
+
+section {
+	background: rgb(204,204,204);	}
+
+nav, article, aside {
+	float: left; }
+
+nav { 
+	width: 235px;  
+	_width: 205px;    }
+
+article { 
+	padding: 0 20px; 
+	background: rgb(255,255,255);
+	width: 470px; 
+	_width: 430px;  }
+
+aside { 
+	padding: 0 20px; 
+	width: 135px; 
+	_width: 95px;   }
+	
+ul {
+	list-style: none;
+	margin: 1em; }
+
+/*Menu déroulant*/
+nav.toc .menu .drop {
+	overflow: hidden;
+	height: 0;
+	opacity: 0; }
+
+nav.toc .menu:hover>.drop {
+	height: auto;
+	opacity: 1;
+	-webkit-transition: opacity .25s linear;
+	-moz-transition: opacity .25s linear;
+	-o-transition: opacity .25s linear;
+	transition: opacity .25s linear;  }
+
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <link href="StyleSheet4.css" rel="stylesheet" />
+    <title>Alice's Adventures in Wonderland</title>    
+</head>
+<body id="chapter01" class="book aaiw chapter">
+    <header class="site">
+        <h1>Alice's Adventures In Wonderland</h1>
+        <p class="byline">by <span class="author">Lewis Carroll</span></p>
+    </header>
+    <section>
+        <nav class="toc">
+            <ul class="menu">
+                <li>Table of Contents</li>
+                <ul class="drop">
+                    <li><a href="ch01.html">Down the Rabbit-Hole</a></li>
+                    <li><a href="ch02.html">The Pool of Tears</a></li>
+                    <li><a href="ch03.html">A Caucus-Race and a Long Tale</a></li>
+                    <li><a href="ch04.html">The Rabbit Sends in a Little Bill</a></li>
+                    <li><a href="ch05.html">Advice from a Caterpillar</a></li>
+                    <li><a href="ch06.html">Pig and Pepper</a></li>
+                    <li><a href="ch07.html">A Mad Tea Party</a></li>
+                    <li><a href="ch08.html">The Queen's Croquet-Ground</a></li>
+                    <li><a href="ch09.html">The Mock Turtle's Story</a></li>
+                    <li><a href="ch10.html">The Lobster Quadrille</a></li>
+                    <li><a href="ch11.html">Who Stole the Tarts?</a></li>
+                    <li><a href="ch12.html">Alice's Evidence</a></li>
+                </ul>
+            </ul>
+        </nav>
+        <article>
+            <header class="page"><h2>Chapter 1. <strong>Down The Rabbit-Hole</strong></h2></header>
+            <p>
+                Alice was beginning <a href="" target="_self">to get very tired</a> of sitting by her sister on the
+                bank, and of having nothing to do: once or twice she had peeped into the
+                book her sister was reading, but it <a href="" target="_self">had no pictures or conversations</a> in
+                it, 'and what is the use of a book,' <a href="" target="_self">thought Alice</a> 'without pictures or
+                conversation?'
+            </p>
+            <p>
+                So she was considering in her own mind (as well as she could, for the
+                hot day made her <a href="" target="_self">feel very sleepy and stupid</a>), whether the pleasure
+                of making a daisy-chain would be worth the trouble of getting up and
+                picking the daisies, when suddenly a <a href="" target="_self">White Rabbit</a> with pink eyes ran
+                close by her.
+            </p>
+            <p>
+                There was nothing so VERY remarkable in that; nor did Alice think it so
+                VERY much out of the way to hear the Rabbit say to itself, 'Oh dear!
+                Oh dear! I shall be late!' (when she thought it over afterwards, it
+                occurred to her that she ought to have wondered at this, but at the time
+                it all seemed quite natural); but when the Rabbit actually TOOK A WATCH
+                OUT OF ITS WAISTCOAT-POCKET, and looked at it, and then hurried on,
+                Alice started to her feet, for it flashed across her mind that she had
+                never before seen a rabbit with either a waistcoat-pocket, or a watch
+                to take out of it, and burning with curiosity, she ran across the field
+                after it, and fortunately was just in time to see it pop down a large
+                rabbit-hole under the hedge.
+            </p>           
+        </article>
+        <aside>
+            <h3>About Lewis Carroll</h3>
+            <h4>From <cite>Wikipedia</cite></h4>
+            <p>Charles Lutwidge Dodgson (pronounced /'d?ds?n/, DOD-s?n; 27 January 1832 – 14 January 1898), better known by the pseudonym  Lewis Carroll (/'kær?l/, KA-r?l), was an English author, mathematician, logician, Anglican deacon and a photographer. </p>
+        </aside>
+    </section>
+    <footer class="site">
+        <h4>
+            THE MILLENNIUM FULCRUM EDITION 3.0
+        </h4>
+    </footer>
+</body>
+</html>

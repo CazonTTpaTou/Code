@@ -1,0 +1,7 @@
+DATA RE_FIN.DTM_FINANCE_MVT_STOCKS_3_JOURS;
+Format
+	Date_Lancement DATETIME23.;
+SET RE_FIN.DTM_FI_LISTE_MOUVEMENT_STOCK;
+Date_Lancement = Datetime();
+IF (datepart(t_trdt) > INTNX('day',date(),-3)) THEN OUTPUT;
+RUN;

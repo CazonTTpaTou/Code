@@ -1,0 +1,20 @@
+Proc SQL;
+/* Création de la table*/
+CREATE TABLE TRAINING.SYNTHESE_DEFAUT
+AS
+
+Select 
+/* Création de la colonne Type Defaut*/
+"TTV" AS Type_Defaut,
+/*Création de calcul de pourcentage*/
+SUM(Defaut_Thickness)/Count(Defaut_Thickness) AS Ratio_Defaut
+/* Détermination de la table source de données*/
+FROM Training.MGdefautsciage
+
+/* Concaténation des tables */
+UNION
+
+Select "Ondulation" AS Type_Defaut,SUM(Defaut_Ondulations)/Count(Defaut_Ondulations) AS Ratio_Defaut
+FROM Training.MGdefautsciage;
+
+RUN;

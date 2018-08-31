@@ -1,0 +1,41 @@
+ <li>
+                                <a href="/">Workflow
+                                
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/SupplyChain/DA/_layouts/15/listform.aspx?PageType=8&ListId=%7B795AF58C%2DDF0D%2D41C9%2DB63C%2DF2B15B882737%7D&RootFolder=">
+                                1. Demande d'achat                                     
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/SupplyChain/CER/_layouts/15/listform.aspx?PageType=8&ListId=%7B73FD0E34%2D2B04%2D4363%2D9883%2DF0AADAF27121%7D&RootFolder=">
+                                2. Demande d'investissement (CER)
+										</a>
+				   					 </li>
+				   					 <li>
+                                	    <a href="/Juridique/_layouts/15/listform.aspx?PageType=8&ListId=%7BB7D53B7E%2DBC17%2D4F25%2DAEBD%2D0905F92A3C66%7D&RootFolder=">
+ 							    3. Validation de contrat juridique		                                                         
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="/Badge/_layouts/15/listform.aspx?PageType=8&ListId=%7BF83B9920%2D8239%2D4DDF%2DAD38%2D55090A14A6BE%7D&RootFolder=">
+                                4. Demande de badge visiteur		                                                         
+                                        </a>
+									
+                                </li>
+                                </ul>
+</li>
+
+
+<li>
+                                        <a href="/SupplyChain/CER/SitePages/Mes%20CER.aspx">
+                                4. Demandes d'investissement		                                                         
+                                        </a>
+									
+</li>
+
+
+
+http://intranet.photowatt.local/SupplyChain/CER/SitePages/Mes%20CER.aspx

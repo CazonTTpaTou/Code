@@ -1,0 +1,3 @@
+SELECT V_LOTS.Fournisseur,V_LOTS.Societe, V_LOTS.Lot, V_LOTS.Groupe, V_LOTS."Lot Serig", V_LOTS."Nb Lots", V_LOTS.Statut, V_LOTS.Format, V_LOTS.Materiau, V_LOTS."Mep Qte Entr", V_LOTS."Mep Qte Sort", V_LOTS."Textu Qte Entr", V_LOTS."Textu Qte Sort", V_LOTS."Diff Qte Entr", V_LOTS."Diff Qte Sort", V_LOTS."Desox Qte Entr", V_LOTS."Desox Qte Sort", V_LOTS."Pecvd Qte Entr", V_LOTS."Pecvd Qte Sort", V_LOTS."Seri Qte Entr", V_LOTS."Seri Qte Sort", V_LOTS."Tri Qte Entr", V_LOTS."Tri Qte Sort"
+FROM SQC_DB.dbo.V_LOTS V_LOTS
+WHERE (V_LOTS.Statut='MeP - Terminé S') OR (V_LOTS.Statut='Textu - Terminé S') OR (V_LOTS.Statut='Diffu - Terminé S') OR (V_LOTS.Statut='Desox - Terminé S') OR (V_LOTS.Statut='Pecvd - Terminé S') OR (V_LOTS.Statut='Serig - Terminé S')

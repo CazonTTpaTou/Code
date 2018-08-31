@@ -1,0 +1,119 @@
+Alignment Intervals
+
+Use the SAME value of the alignment argument if you want to base the alignment of the computed date on the alignment of the input date:
+
+intnx('week', '15mar2000'd, 1, 'same');         returns 22MAR2000
+intnx('dtweek', '15mar2000:8:45'dt, 1, 'same'); returns 22MAR00:08:45:00
+intnx('year', '15mar2000'd, 5, 'same');        returns 15MAR2005
+
+
+Adjusting Dates
+
+The INTNX function automatically adjusts for the date if the date in the interval that is incremented does not exist. Here is an example:
+
+intnx('month', '15mar2000'd, 5, 'same');  returns 15AUG2000
+intnx('year', '29feb2000'd, 2, 'same');   returns 28FEB2002
+intnx('month', '31aug2001'd, 1, 'same');  returns 30SEP2001
+intnx('year', '01mar1999'd, 1, 'same');   returns 01MAR2000 
+                                          (the first day of the
+                                           third month of the year)
+intnx('year', '01mar1999'd, 1, 'same');   returns 29FEB2000 (the 60th day
+                                          of the year)
+          
+
+In the example intnx('year', '29feb2000'd, 2); , the INTNX function returns the value 01JAN2002, which is the beginning of the year two years from the starting date (2000).
+
+In the example intnx('year', '29feb2000'd, 2, 'same'); , the INTNX function returns the value 28FEB2002. In this case, the starting date begins in the year 2000, the year is two years later (2002), the month is the same (February), and the date is the 28th, because that is the closest date to the 29th in February 2002.
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+Examples
+
+The following SAS statements produce these results:
+SAS Statements 	Results
+
+qtr=intck('qtr','10jan95'd,'01jul95'd);
+put qtr;
+
+	
+
+ 
+2
+
+year=intck('year','31dec94'd,
+     '01jan95'd);
+put year;
+
+	
+
+ 
+
+1
+
+year=intck('year','01jan94'd,
+     '31dec94'd);
+put year;
+
+	
+
+ 
+
+0
+
+semi=intck('semiyear','01jan95'd,
+     '01jan98'd);
+put semi;
+
+	
+
+ 
+
+6
+
+weekvar=intck('week2.2','01jan97'd,
+     '31mar97'd);
+put weekvar;
+
+	
+
+ 
+
+7
+
+wdvar=intck('weekday7w','01jan97'd,
+     '01feb97'd);
+put wdvar;
+
+	
+
+ 
+
+26
+
+y='year';
+date1='1sep1991'd;
+date2='1sep2001'd;
+newyears=intck(y,date1,date2);
+put newyears;
+
+	
+
+
+
+
+10
+
+y=trim('year     ');
+date1='1sep1991'd + 300;
+date2='1sep2001'd - 300;
+newyears=intck(y,date1,date2);
+put newyears;
+
+	
+
+
+
+
+
+8

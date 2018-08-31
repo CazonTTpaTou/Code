@@ -1,0 +1,87 @@
+##############################################################################
+Exercise 1: What is the median of the points column?
+##############################################################################
+
+med = reviews.points.median()
+med
+
+##############################################################################
+Exercise 2: What countries are represented in the dataset?
+##############################################################################
+
+countr_uniq = reviews.country.unique()
+countr_uniq
+
+##############################################################################
+Exercise 3: What countries appear in the dataset most often?
+##############################################################################
+
+mod = reviews.country.mode()
+mod
+
+reviews.country.value_counts()
+
+##############################################################################
+Exercise 4: Remap the price column by subtracting the median price. Use the Series.map method.
+##############################################################################
+
+med = reviews.price.median()
+reduction = lambda x: x-med
+prix = reviews['price'].map(reduction)
+prix
+
+median_price = reviews.price.median()
+reviews.price.map(lambda v: v - median_price)
+
+##############################################################################
+Exercise 5: Remap the price column by subtracting the median price. Use the Series.map method.
+##############################################################################
+
+med = reviews.price.median()
+reduction = lambda x: x-med
+reviews['price'].apply(reduction)
+
+median_price = reviews.price.median()
+reviews.price.apply(lambda v: v - median_price)
+
+##############################################################################
+Exercise 6: I"m an economical wine buyer. Which wine in is the "best bargain", e.g., which wine has the highest points-to-price ratio in the dataset?
+##############################################################################
+
+reviews['price-ratio']=reviews.points/reviews.price
+index_best = reviews['price-ratio'].idxmax()
+result = reviews.loc[index_best,'title']
+result
+
+reviews.loc[(reviews.points / reviews.price).idxmax()].title
+
+##############################################################################
+Exercise 7: There are only so many words you can use when describing a bottle of wine. Is a wine more likely to be "tropical" or "fruity"? Create a Series counting how many times each of these two words appears in the description column in the dataset.
+##############################################################################
+
+nb_tropical = reviews.description.str.contains('tropical',case=False).sum()
+nb_fruity = reviews.description.str.contains('fruity',case=False).sum()
+nb_words=pd.Series([nb_tropical,nb_fruity],index=['tropical','fruity'])
+nb_words
+
+tropical_wine = reviews.description.map(lambda r: "tropical" in r).value_counts()
+fruity_wine = reviews.description.map(lambda r: "fruity" in r).value_counts()
+pd.Series([tropical_wine[True], fruity_wine[True]], index=['tropical', 'fruity'])
+
+##############################################################################
+Exercise 8: What combination of countries and varieties are most common?
+##############################################################################
+
+data = reviews.loc[(reviews.country.notnull() & reviews.variety.notnull()),:].copy()
+country_variety = data['country'] + ' - ' + data['variety']
+country_variety.value_counts()
+
+ans = reviews.loc[(reviews.country.notnull()) & (reviews.variety.notnull())]
+ans = ans.apply(lambda srs: srs.country + " - " + srs.variety, axis='columns')
+ans.value_counts()
+
+##############################################################################
+##############################################################################
+##############################################################################
+
+

@@ -1,0 +1,4 @@
+DateTimeFromTimeMDY(TimePart('Mesure Date Heure'n), 
+Year(DatePart('Mesure Date Heure'n)), 
+Month(DatePart('Mesure Date Heure'n)), 
+( DayOfMonth(DatePart('Mesure Date Heure'n)) - 7 ))

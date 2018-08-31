@@ -1,0 +1,68 @@
+PROC SQL;
+SELECT MIN(Date_Heure_Import) INTO : Oldest_Date_Import 
+	FROM STATS.HENNECKE_LOGS_HISTORIQUE
+	Where Year(DatePart(Date_Heure_Import)) > 2015;
+RUN;
+
+DATA Work.Valeur ; 
+Format 
+	Valer DATETIME23.;
+   Valer = &Oldest_Date_Import;
+   NewDatevar = input(&Oldest_Date_Import,anydtdte32.);   
+run ;
+
+PROC SQL;
+   CREATE TABLE WORK.Taux_Mono_Assemblage AS 
+   SELECT t1.'N_Assemblage'n LABEL="Num_Assemblage" AS Num_Assemblage, 
+          /* Taux_Mono */
+            (AVG(t1.Struct / 100)) LABEL="Taux_Mono_Assemblage" AS Taux_Mono_Assemblage, 
+          /* Num_Lingot */
+            (int( t1.'N_Assemblage'n /100)) LABEL="Num_Lingot" AS Num_Lingot
+      FROM SPDELOG.TL_Hennecke t1
+	  WHERE t1.Time < &Oldest_Date_Import
+      GROUP BY t1.'N_Assemblage'n;
+QUIT;
+
+PROC SQL;
+   CREATE TABLE WORK.Taux_Mono_Lingot AS 
+   SELECT /* Num_Lingot */
+            (int(t1.'N_Assemblage'n/100) ) LABEL="Num_Lingot" AS Num_Lingot, 
+          /* Taux_Mono_Lingot */
+            (MEAN(t1.Struct / 100)) LABEL="Taux_Mono_Lingot" AS Taux_Mono_Lingot
+      FROM SPDELOG.TL_Hennecke t1
+	  WHERE t1.Time < &Oldest_Date_Import
+      GROUP BY (CALCULATED Num_Lingot);
+QUIT;
+
+PROC SQL;
+	CREATE TABLE WORK.DTM_Hennecke_Taux_Mono AS
+	SELECT
+		T1.Num_Assemblage,
+		T1.Taux_Mono_Assemblage,
+		T2.Taux_Mono_Lingot
+		FROM 
+			WORK.Taux_Mono_Assemblage AS T1
+			LEFT OUTER JOIN WORK.Taux_Mono_Lingot AS T2
+			ON T1.Num_lingot = T2.Num_Lingot;
+RUN;
+
+DATA Work.OlD_Hennecke;
+	SET  Work.DTM_HENNECKE_TAUX_MONO;
+RUN;
+
+PROC APPEND 
+	Base=Work.Old_Hennecke
+	Data=DTM_PRO.dtm_hennecke_taux_mono;
+RUN;
+
+PROC SORT
+	Data = Work.Old_Hennecke
+	Out  = DTM_PRO.dtm_hennecke_taux_mono
+	dupout=Work.old_hennecke_Doublons
+NODUPKEY;
+BY Num_Assemblage;
+RUN;
+
+
+
+	

@@ -1,0 +1,26 @@
+/* Paramétrage de la fonction d'envoi de mail */
+FileName  SENDMAIL Email 	  	
+			to 		= ("&dest")
+			from	= ("SuiviIntervention@photowatt.com")
+			type	= "text/html"
+			subject = "Suivi des Interventions des dernières 24 h";
+	
+
+
+				/* Tri des interventions de la veille par ancienneté */
+				PROC SORT DATA= intervention_dans_periode;
+						by descending date_debut ;
+				RUN;
+
+				/* Construction du corps de l'email à envoyer */
+				ODS HTML BODY=SENDMAIL ;
+					title "Sur les dernières 24 h, &nb_int intervention(s) ont eu lieu sur le(s) UAP &libelle (elles sont triées de la plus récente à la plus ancienne) :";
+					PROC report data=intervention_dans_periode;
+						 		columns Recence Type_Intervention Date_Debut Equipement Sous_Equipement Description 
+						 		Statut_Intervention Duree_Intervention_h Date_Fin;
+					RUN;
+				ODS HTML CLOSE;
+
+
+
+

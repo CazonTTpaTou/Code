@@ -1,0 +1,88 @@
+----------------------------------------------------------------
+Lister les noms des champs d'une table
+
+SELECT COLUMN_NAME 
+FROM INFORMATION_SCHEMA.COLUMNS 
+WHERE TABLE_NAME='GESTION DES INTERVENTIONS'
+
+----------------------------------------------------------------
+Lister les noms de table d'une base de données
+
+SELECT TABLE_NAME
+FROM   INFORMATION_SCHEMA.TABLES
+WHERE Table_Type='BASE TABLE' 
+
+----------------------------------------------------------------
+Lister tous les paramètres des champs d'une table
+
+SELECT *
+FROM   INFORMATION_SCHEMA.COLUMNS
+WHERE Table_Name='NomDeLaTable' 
+
+----------------------------------------------------------------
+Rajouter un champ dans une table
+
+ALTER TABLE dbo.DatabaseLog      
+	ADD ModifiedDate datetime NOT NULL DEFAULT '20010101' 
+
+----------------------------------------------------------------
+Lister le nom d'un utilisateur
+
+DECLARE @usr char(30)
+SET @usr = user
+SELECT 'L''utilisateur courant est : ' + @usr
+GO
+--Ou 
+SELECT 'L''utilisateur courant est : ' + SUSER_NAME()
+GO
+--Ou encore 
+SELECT 'L''utilisateur courant est : ' + SESSION_USER
+GO
+--Nous n'allons pas oublier la fonction Current_user
+SELECT 'L''utilisateur courant est : ' + CURRENT_USER
+
+----------------------------------------------------------------
+Compter le nombre d'utilisateur connecté
+
+SELECT COUNT(*)
+ FROM master..sysprocesses
+WHERE dbid=db_id()
+
+----------------------------------------------------------------
+Créer un trigger
+
+CREATE TRIGGER [dbo].[ZTrying_Create] 
+   ON  [dbo].[ZTrying] 
+   AFTER INSERT
+AS 
+BEGIN
+
+	SET NOCOUNT ON;
+	update ZTrying
+		set 	Sysutc = SESSION_USER,
+			Sysdhc = getDate()
+		from ZTrying as Z
+			join inserted as i on Z.idSys = i.idSys
+END
+
+GO
+
+----------------------------------------------------------------------------------
+http://www.sqlfr.com/tutoriaux/SQL-SERVER-COMPTEUR-IDENTITY_512.aspx
+
+On peut forcer temporairement l'insertion de valeur dans le champ en question
+
+-- Désactive l'autoincrément
+SET IDENTITY_INSERT MaTable ON
+
+-- Insère une valeur particulière sur le champ
+INSERT MaTable (Clef, MonChamp)
+VALUES(-10,'AAAA')
+
+-- Réactive l'autoincrément
+SETIDENTITY_INSERT MaTable OFF
+
+secondaire\HabilitationsRec
+
+
+

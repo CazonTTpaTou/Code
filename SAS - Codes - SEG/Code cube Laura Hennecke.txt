@@ -1,0 +1,79 @@
+PROC SQL;
+   CREATE TABLE STATS.CUBE_LAURA AS 
+   SELECT 
+		  t1.N_Import, 
+          t1.N_Assemblage, 
+          t1.NbImport, 
+          t1.WaferId, 
+          t1.Time, 
+          t1.Schnitt, 
+          t1.Pos, 
+          t1.Ingot, 
+          t1.Qual, 
+          t1.NChip, 
+          t1.NEdge, 
+          t1.QChip, 
+          t1.QEdge,
+		  
+		  Year(DatePart(T1.Time)) AS ANNEE,
+		  Qtr(DatePart(T1.Time)) AS TRIMESTRE,
+		  Month(DatePart(T1.Time)) AS MOIS,
+		  Week(DatePart(T1.Time)) AS SEMAINE,
+          Day(DatePart(T1.Time)) AS JOUR,
+
+		  CASE 
+		  	WHEN t1.NEdge >= 0 THEN 1 ELSE 0 END AS NEdge_Def_0,
+		  CASE 
+		  	WHEN t1.NEdge >= 1 THEN 1 ELSE 0 END AS NEdge_Def_1,
+		  CASE 
+		  	WHEN t1.NEdge >= 2 THEN 1 ELSE 0 END AS NEdge_Def_2,
+		  CASE 
+		  	WHEN t1.NEdge >= 3 THEN 1 ELSE 0 END AS NEdge_Def_3,
+		  CASE 
+		  	WHEN t1.NEdge >= 4 THEN 1 ELSE 0 END AS NEdge_Def_4,
+	      CASE 
+		  	WHEN t1.NEdge >= 5 THEN 1 ELSE 0 END AS NEdge_Def_5,
+		  CASE 
+		  	WHEN t1.NEdge >= 6 THEN 1 ELSE 0 END AS NEdge_Def_6,
+		  CASE 
+		  	WHEN t1.NEdge >= 7 THEN 1 ELSE 0 END AS NEdge_Def_7,
+		  CASE 
+		  	WHEN t1.NEdge >= 8 THEN 1 ELSE 0 END AS NEdge_Def_8,
+		  CASE 
+		  	WHEN t1.NEdge >= 9 THEN 1 ELSE 0 END AS NEdge_Def_9,
+		  CASE 
+		  	WHEN t1.NEdge >= 10 THEN 1 ELSE 0 END AS NEdge_Def_10,
+		  CASE 
+		  	WHEN t1.NEdge >= 15 THEN 1 ELSE 0 END AS NEdge_Def_15,
+		
+		  CASE 
+		  	WHEN t1.NChip >= 0 THEN 1 ELSE 0 END AS NChip_Def_0,
+		  CASE 
+		  	WHEN t1.NChip >= 1 THEN 1 ELSE 0 END AS NChip_Def_1,
+		  CASE 
+		  	WHEN t1.NChip >= 2 THEN 1 ELSE 0 END AS NChip_Def_2,
+		  CASE 
+		  	WHEN t1.NChip >= 3 THEN 1 ELSE 0 END AS NChip_Def_3,
+		  CASE 
+		  	WHEN t1.NChip >= 4 THEN 1 ELSE 0 END AS NChip_Def_4,
+	      CASE 
+		  	WHEN t1.NChip >= 5 THEN 1 ELSE 0 END AS NChip_Def_5,
+		  CASE 
+		  	WHEN t1.NChip >= 6 THEN 1 ELSE 0 END AS NChip_Def_6,
+		  CASE 
+		  	WHEN t1.NChip >= 7 THEN 1 ELSE 0 END AS NChip_Def_7,
+		  CASE 
+		  	WHEN t1.NChip >= 8 THEN 1 ELSE 0 END AS NChip_Def_8,
+		  CASE 
+		  	WHEN t1.NChip >= 9 THEN 1 ELSE 0 END AS NChip_Def_9,
+		  CASE 
+		  	WHEN t1.NChip >= 10 THEN 1 ELSE 0 END AS NChip_Def_10,
+		  CASE 
+		  	WHEN t1.NChip >= 15 THEN 1 ELSE 0 END AS NChip_Def_15
+		  
+      FROM STATS.HENNECKE_LAURA t1;
+
+QUIT;
+
+
+

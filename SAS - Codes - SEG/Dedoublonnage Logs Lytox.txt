@@ -1,0 +1,67 @@
+proc sort data = WORK.LOGS_LYTOX Out= Work.LOGS_TRIES;
+   by Jour LotID Tube;
+run;
+
+data WORK.LOGS_UNIQUE WORK.DOUBLONS;
+   set Work.LOGS_TRIES;
+   by Jour LotID Tube;
+   if first.LotID then output WORK.LOGS_UNIQUE;
+   else output WORK.DOUBLONS;
+run;
+
+proc sort data = Work.LOGS_TRIES;
+   by LotID Tube;
+run;
+
+PROC TRANSPOSE DATA=Work.LOGS_TRIES
+	OUT=WORK.TRANS(LABEL="WORK.TRANS")
+	PREFIX=Colonne
+	NAME=Source
+	LABEL='Libellé'n;
+
+	BY LotID;
+	VAR Tube;
+
+PROC SQL;
+   CREATE TABLE RE_PROC.LOGS_LYTOX AS 
+   SELECT t1.Jour, 
+          t1.IdRecord, 
+          t1.IdEquipement, 
+          t1.DateTime, 
+          t1.LotID, 
+          t1.Status, 
+          t1.LoadTime, 
+          t1.UnloadTime, 
+          t1.Quantity_IN, 
+          t1.Quantity_OUT, 
+          t1.Trash, 
+          t1.RunId, 
+          t1.Lot_Position, 
+          t1.StartProcessTime, 
+          t1.EndProcessTime, 
+          t1.ProcessTotalTime, 
+          t1.MixLot, 
+          t1.RecipeNumber, 
+          t1.RunAborted, 
+          t1.WaferMeasured, 
+          t1.RS_Average, 
+          t1.RS_Stdev, 
+          t2.Colonne1 AS Tube, 
+          t2.Colonne2 AS Tube2, 
+          t2.Colonne3 AS Tube3, 
+          /* NbTube */
+            (CASE  
+               WHEN Colonne2 is Missing THEN 1
+               ELSE (CASE  
+                                  WHEN Colonne3 is Missing THEN 2
+                                   ELSE 3 END)
+            END) LABEL="NbTube" AS NbTube
+      FROM WORK.LOGS_UNIQUE t1
+           LEFT JOIN WORK.TRANS t2 ON (t1.LotID = t2.LotID);
+QUIT;
+
+
+
+
+
+

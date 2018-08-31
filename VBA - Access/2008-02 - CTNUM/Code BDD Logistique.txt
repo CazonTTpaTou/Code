@@ -1,0 +1,429 @@
+Client Requête
+
+SELECT Client.[Code Client], Client.Nom, Commande.[Taux Remise], [Ligne Commande].Quantité, Produit.[Prix Produit], (1-[Taux Remise])*[Quantité]*[Prix Produit] AS Panier
+FROM Client INNER JOIN ((Commande INNER JOIN [Ligne Commande] ON Commande.[N° Commande] = [Ligne Commande].[N° Commande]) INNER JOIN Produit ON [Ligne Commande].[Code Produit] = Produit.[Code Produit]) ON Client.[Code Client] = Commande.[N° Client];
+
+Client Requête 2
+
+SELECT [Client Requête].[Code Client], [Client Requête].Nom, Sum([Client Requête].Panier) AS SommeDePanier
+FROM [Client Requête]
+GROUP BY [Client Requête].[Code Client], [Client Requête].Nom;
+
+Client Requête 3
+
+SELECT [Client Requête 2].[Code Client], [Client Requête 2].Nom, [Client Requête 2].SommeDePanier AS Total
+FROM [Client Requête 2]
+ORDER BY [Client Requête 2].SommeDePanier DESC;
+
+Commande Requête 
+
+SELECT Commande.[N° Commande], Commande.Date, [Ligne Commande].Quantité, Produit.[Prix Produit], Produit.[Taux TVA], Commande.[Taux Remise], Sum([Prix Produit]*(1+[Taux TVA])*[Quantité]*(1-[Taux Remise])) AS Total, Client.Nom, Client.Prénom, Client.[Code Postal], Left([Code Postal],2) AS CP
+FROM ((Commande INNER JOIN [Ligne Commande] ON Commande.[N° Commande] = [Ligne Commande].[N° Commande]) INNER JOIN Produit ON [Ligne Commande].[Code Produit] = Produit.[Code Produit]) INNER JOIN Client ON Commande.[N° Client] = Client.[Code Client]
+GROUP BY Commande.[N° Commande], Commande.Date, [Ligne Commande].Quantité, Produit.[Prix Produit], Produit.[Taux TVA], Commande.[Taux Remise], Client.Nom, Client.Prénom, Client.[Code Postal], Left([Code Postal],2);
+
+
+Commande Requête 2 
+
+SELECT First([Commande Requête].[N° Commande]) AS [PremierDeN° Commande], [Commande Requête].[N° Commande], [Commande Requête].Date, Sum([Commande Requête].Total) AS SommeDeTotal, [Commande Requête].Nom, [Commande Requête].Prénom, [Commande Requête].CP
+FROM [Commande Requête]
+GROUP BY [Commande Requête].[N° Commande], [Commande Requête].Date, [Commande Requête].Nom, [Commande Requête].Prénom, [Commande Requête].CP;
+
+Commande Requête 3 
+
+SELECT [Commande Requête 2].[PremierDeN° Commande], [Commande Requête 2].Date, [Commande Requête 2].SommeDeTotal, [Commande Requête 2].Nom, [Commande Requête 2].Prénom, [Département Requête].[Nom départment], [Département Requête].[Nom région]
+FROM [Commande Requête 2] INNER JOIN [Département Requête] ON [Commande Requête 2].CP = [Département Requête].[N° Département];
+
+Commande Requête 4 
+
+SELECT [Commande requête 3].[PremierDeN° Commande], [Commande requête 3].Date, [Commande requête 3].SommeDeTotal, [Commande requête 3].Nom, [Commande requête 3].Prénom, [Commande requête 3].[Nom départment], [Commande requête 3].[Nom région]
+FROM [Commande requête 3]
+ORDER BY [Commande requête 3].SommeDeTotal DESC;
+
+Constitution Fichier
+
+SELECT Client.[Code Client], Client.Civilité, Client.Nom, Client.Prénom, Client.[Adresse 1], Client.[Adresse 2], Client.[Adresse 3], Client.[Code Postal], Client.Ville, Client.Pays, Client.Fichier, Client.Etat, [Client Requête 3].Total, nz([Total],0) AS Customer, Client.Clientèle
+FROM Client LEFT JOIN [Client Requête 3] ON Client.[Code Client] = [Client Requête 3].[Code Client]
+GROUP BY Client.[Code Client], Client.Civilité, Client.Nom, Client.Prénom, Client.[Adresse 1], Client.[Adresse 2], Client.[Adresse 3], Client.[Code Postal], Client.Ville, Client.Pays, Client.Fichier, Client.Etat, [Client Requête 3].Total, nz([Total],0), Client.Clientèle;
+
+
+Constitution Fichier 3
+
+SELECT [Constitution Fichier].[Code Client], [Constitution Fichier].Civilité, [Constitution Fichier].Nom, [Constitution Fichier].Prénom, [Constitution Fichier].[Adresse 1], [Constitution Fichier].[Adresse 2], [Constitution Fichier].[Adresse 3], [Constitution Fichier].[Code Postal], [Constitution Fichier].Ville, [Constitution Fichier].Pays, [Constitution Fichier].Fichier, [Constitution Fichier].Etat, [Constitution Fichier].Customer, [Constitution Fichier].Nom AS Naming
+FROM [Constitution Fichier]
+WHERE ((([Constitution Fichier].Etat)="Adresse Viable") AND (([Constitution Fichier].Customer)<>"0"));
+
+Constitution Fichier 4
+
+UPDATE Commande LEFT JOIN Client ON Commande.[N° Client] = Client.[Code Client] SET Client.Clientèle = "Client";
+
+Constitution Fichier 5
+
+INSERT INTO Fichier ( [Code Client] )
+SELECT Client.[Code Client]
+FROM Client RIGHT JOIN Commande ON Client.[Code Client] = Commande.[N° Client];
+
+Constitution Fichier 7
+
+SELECT Fichier.[Code Client], Client.Civilité, Client.Nom, Client.Prénom, Client.[Adresse 1], Client.[Adresse 2], Client.[Adresse 3], Client.[Code Postal], Client.Ville, Client.Pays, Client.Téléphone, Client.[E-mail], Client.Fichier, Client.Etat
+FROM Fichier INNER JOIN Client ON Fichier.[Code Client] = Client.[Code Client];
+
+Dédoublonage
+
+SELECT Client.[Code Client], Client.Civilité, Client.Nom, Client.Prénom, Client.[Adresse 1], Client.[Adresse 2], Client.[Adresse 3], Client.[Code Postal], Client.Ville, Client.Pays, Client.Téléphone, Client.[E-mail], Client.Fichier, Client.Etat, [Client]![Code Postal] & [Client]![Nom] & [Client]![Prénom] AS [Match Code]
+FROM Client;
+
+Dédoublonage 2
+
+SELECT First(Dédoublonage.[Match Code]) AS [Exemplaire distinct Match Code], Count(Dédoublonage.[Match Code]) AS [Nombre d'exemplaire], Dédoublonage.[Match Code], Dédoublonage.Nom
+FROM Dédoublonage
+GROUP BY Dédoublonage.[Match Code], Dédoublonage.Nom;
+
+Dédoublonage 3
+
+SELECT Dédoublonage.[Code Client], Dédoublonage.Civilité, Dédoublonage.Nom, Dédoublonage.Prénom, Dédoublonage.[Adresse 1], Dédoublonage.[Adresse 2], Dédoublonage.[Adresse 3], Dédoublonage.[Code Postal], Dédoublonage.Ville, Dédoublonage.Pays, Dédoublonage.Téléphone, Dédoublonage.[E-mail], Dédoublonage.Fichier, Dédoublonage.Etat, Dédoublonage.[Match Code], [Dédoublonage 2].[Nombre d'exemplaire], IIf([Dédoublonage 2]![Nombre d'exemplaire]>1,"Oui","Non") AS Doublon
+FROM Dédoublonage INNER JOIN [Dédoublonage 2] ON Dédoublonage.[Match Code] = [Dédoublonage 2].[Match Code]
+GROUP BY Dédoublonage.[Code Client], Dédoublonage.Civilité, Dédoublonage.Nom, Dédoublonage.Prénom, Dédoublonage.[Adresse 1], Dédoublonage.[Adresse 2], Dédoublonage.[Adresse 3], Dédoublonage.[Code Postal], Dédoublonage.Ville, Dédoublonage.Pays, Dédoublonage.Téléphone, Dédoublonage.[E-mail], Dédoublonage.Fichier, Dédoublonage.Etat, Dédoublonage.[Match Code], [Dédoublonage 2].[Nombre d'exemplaire], IIf([Dédoublonage 2]![Nombre d'exemplaire]>1,"Oui","Non");
+
+Dédoublonage 4
+
+SELECT [Dédoublonage 3].[Code Client], [Dédoublonage 3].Civilité, [Dédoublonage 3].Nom, [Dédoublonage 3].Prénom, [Dédoublonage 3].[Adresse 1], [Dédoublonage 3].[Adresse 2], [Dédoublonage 3].[Adresse 3], [Dédoublonage 3].[Code Postal], [Dédoublonage 3].Ville, [Dédoublonage 3].Pays, [Dédoublonage 3].Téléphone, [Dédoublonage 3].[E-mail], [Dédoublonage 3].Fichier, [Dédoublonage 3].Etat, [Dédoublonage 3].[Match Code], [Dédoublonage 3].[Nombre d'exemplaire], [Dédoublonage 3].Doublon
+FROM [Dédoublonage 3]
+WHERE ((([Dédoublonage 3].Doublon)="Oui"));
+
+
+
+
+
+Département Requête 
+
+SELECT Département.[N° Département], Département.[Nom départment], Région.[Nom région]
+FROM Département INNER JOIN Région ON Département.[Code région] = Région.[N° Région]
+ORDER BY Département.[N° Département];
+
+Département Requête 2
+
+SELECT First([Commande Requête 4].[Nom départment]) AS [PremierDeNom départment], [Commande Requête 4].[Nom départment], Avg([Commande Requête 4].Date) AS MoyenneDeDate, Count([Commande Requête 4].[PremierDeN° Commande]) AS [CompteDePremierDeN° Commande], Sum([Commande Requête 4].SommeDeTotal) AS SommeDeSommeDeTotal
+FROM [Commande Requête 4]
+GROUP BY [Commande Requête 4].[Nom départment];
+
+Département Requête 3
+
+SELECT [Département Requête 2].[PremierDeNom départment], [Département Requête 2].[Nom départment], [Département Requête 2].MoyenneDeDate, [Département Requête 2].[CompteDePremierDeN° Commande], [Département Requête 2].SommeDeSommeDeTotal, DateSerial(Year([Expr1]),Month([Expr1]),Day([Expr1])) AS Expr6, Fix([MoyenneDeDate]) AS Expr1
+FROM [Département Requête 2];
+
+Département Requête 4
+
+SELECT First([Commande Requête 4].[Nom région]) AS [PremierDeNom région], [Commande Requête 4].[Nom région], Avg([Commande Requête 4].Date) AS MoyenneDeDate, Sum([Commande Requête 4].SommeDeTotal) AS SommeDeSommeDeTotal, Count([Commande Requête 4].[Nom région]) AS [CompteDeNom région]
+FROM [Commande Requête 4]
+GROUP BY [Commande Requête 4].[Nom région];
+
+
+
+
+Département Requête 5
+
+SELECT [Département Requête 4].[PremierDeNom région], [Département Requête 4].[Nom région], [Département Requête 4].MoyenneDeDate, [Département Requête 4].SommeDeSommeDeTotal, [Département Requête 4].[CompteDeNom région], DateSerial(Year(Fix([MoyenneDeDate])),Month(Fix([MoyenneDeDate])),Day(Fix([MoyenneDeDate]))) AS Expr1
+FROM [Département Requête 4]
+ORDER BY [Département Requête 4].SommeDeSommeDeTotal DESC;
+
+Extraction Adresse
+
+SELECT Client.[Code Client], Client.Civilité, Client.Nom, Client.Prénom, Client.[Adresse 1], Client.[Adresse 2], Client.[Adresse 3], Client.[Code Postal], Client.Ville, Client.Pays, Client.Téléphone, Client.[E-mail], Client.Fichier, Client.Etat
+FROM Client
+WHERE (((Client.Etat)="Adresse Viable"));
+
+Ligne Produit
+
+SELECT [Ligne Commande].[Code Produit], [Ligne Commande].Quantité, Produit.[Nom Produit], Produit.[Prix Produit], [Ligne Commande].[N° Commande], [Quantité]*[Prix Produit] AS [Total Brut], [Quantité]*[Prix Produit]*(1+[Produit]![Taux TVA]) AS [Total Net], Produit.[Unités vendues], Produit.Taxes, Produit.Compteur, Produit.[Taux TVA], Produit.VAT, [Quantité]*[Prix Produit]*[Taux TVA] AS [Total TVA]
+FROM Produit INNER JOIN [Ligne Commande] ON Produit.[Code Produit] = [Ligne Commande].[Code Produit];
+
+Ligne Réassortiment
+
+SELECT [Ligne Réassort].[Code Produit], [Ligne Réassort].Quantité, Produit.[Nom Produit], [Ligne Réassort].[N° Réassort], [Ligne Réassort].Compteur
+FROM [Ligne Réassort] INNER JOIN Produit ON [Ligne Réassort].[Code Produit] = Produit.[Code Produit];
+
+
+
+
+Mailing Requête
+
+SELECT Mailing.[Nom Mailing], Commande.[Taux Remise], [Ligne Commande].Quantité, Produit.[Prix Produit], (1-[Taux Remise])*[Quantité]*[Prix Produit] AS Total
+FROM ((Mailing INNER JOIN Commande ON Mailing.[Nom Mailing] = Commande.[Nom Mailing]) INNER JOIN [Ligne Commande] ON Commande.[N° Commande] = [Ligne Commande].[N° Commande]) INNER JOIN Produit ON [Ligne Commande].[Code Produit] = Produit.[Code Produit];
+
+Mailing Requête 10
+
+SELECT Mailing.[N° Mailing], Mailing.[Date début], Mailing.[Date fin], Mailing.[Nom Mailing], Mailing.[Total Ventes], Mailing.[Nombre commande], Mailing.[Taux de retour], Mailing.[Nombre d'envoi], Mailing.[Coût Mailing], Mailing.[Surface de ventes], Mailing.[Nombre pages], Mailing.Nouveautés, Mailing.[Offres promotionnelles], Mailing.[Type Catalogue], [Mailing Requête 9].SommeDeDouble, Mailing.[Moyenne jour], Mailing.Intervalle, Mailing.[1ère commande], Mailing.[Dernière commande], Mailing.Recommande, Mailing.[Panier moyen], Mailing.[Clients uniques], Mailing.[Taux de retour net], Mailing.[Gain total], Mailing.[Gain par client], Mailing.[Date Moyenne], Mailing.[Date Médiane], Mailing.[Nombre Client], Mailing.[Gain par produit]
+FROM [Mailing Requête 9] RIGHT JOIN Mailing ON [Mailing Requête 9].[PremierDeNom Mailing] = Mailing.[Nom Mailing];
+
+Mailing Requête 2
+
+SELECT [Mailing Requête].[Nom Mailing], Sum([Mailing Requête].Total) AS SommeDeTotal, Count([Mailing Requête].Quantité) AS CompteDeQuantité
+FROM [Mailing Requête]
+GROUP BY [Mailing Requête].[Nom Mailing];
+
+Mailing Requête 3
+
+SELECT [Mailing Requête 2].[Nom Mailing], [Mailing Requête 2].SommeDeTotal, [Mailing Requête 2].CompteDeQuantité AS Expr1, [Mailing Requête 2]![SommeDeTotal]/[Mailing Requête 2]![CompteDeQuantité] AS [Panier Moyen]
+FROM [Mailing Requête 2]
+ORDER BY [Mailing Requête 2].SommeDeTotal DESC;
+
+Mailing Requête 4
+
+SELECT Commande.[Nom Mailing], Commande.[N° Commande], Commande.Date, Commande.[Taux Remise], [Ligne Commande].Quantité, Produit.[Prix Produit], (1-[Taux Remise])*[Quantité]*[Prix Produit] AS Total, Commande.[Max Mailing], Commande.[Min Mailing], Commande.[Total Mailing], Commande.[Numb Mailing], Produit.[Nom Produit], Commande.[Moy Mailing], Commande.[Med Mailing], Commande.[Comp Mailing]
+FROM (Commande INNER JOIN [Ligne Commande] ON Commande.[N° Commande] = [Ligne Commande].[N° Commande]) INNER JOIN Produit ON [Ligne Commande].[Code Produit] = Produit.[Code Produit];
+
+Mailing Requête 5
+
+SELECT Commande.[N° Client], Commande.[Nom Mailing], Commande.[N° Commande], [N° Client] & [Nom Mailing] AS [ID Mailing]
+FROM Commande;
+
+Mailing Requête 6
+
+SELECT [Mailing Requête 5].[ID Mailing], Count([Mailing Requête 5].[ID Mailing]) AS [CompteDeID Mailing]
+FROM [Mailing Requête 5]
+GROUP BY [Mailing Requête 5].[ID Mailing];
+
+Mailing Requête 7
+
+SELECT First([Mailing Requête 5].[ID Mailing]) AS [PremierDeID Mailing], Count([Mailing Requête 5].[ID Mailing]) AS [Nombre ID], [Mailing Requête 5].[ID Mailing]
+FROM [Mailing Requête 5]
+GROUP BY [Mailing Requête 5].[ID Mailing];
+
+Mailing Requête 8
+
+SELECT [Mailing Requête 5].[Nom Mailing], [Mailing requête 7].[Nombre ID], IIf([Nombre ID]>1,1,0) AS [Double]
+FROM [Mailing requête 7] INNER JOIN [Mailing Requête 5] ON [Mailing requête 7].[ID Mailing] = [Mailing Requête 5].[ID Mailing];
+
+Mailing Requête 9
+
+SELECT First([Mailing Requête 8].[Nom Mailing]) AS [PremierDeNom Mailing], Sum([Mailing Requête 8].Double) AS SommeDeDouble
+FROM [Mailing Requête 8]
+GROUP BY [Mailing Requête 8].[Nom Mailing];
+
+Marketing
+
+SELECT Client.[Code Client], Client.Civilité, Client.Nom, Client.Prénom, Client.[Adresse 1], Client.[Adresse 2], Client.[Adresse 3], Client.[Code Postal], Client.Ville, Client.Pays, Client.Téléphone, Client.[E-mail], Client.Fichier, Client.Etat, Client.[Nombre commande], Client.[Quantité commandée], Client.Recette, Client.[Moyenne commandée], Client.[Type Client], Client.Stat1, Client.Stat2, Client.Stat3, Client.Stat4, Client.Stat5, Client.Stat6, Client.Stat7, Client.Typo1, Client.Typo2, Client.Première, Client.Typo3, Client.Typo4, Client.Stat8, Client.Stat9
+FROM Client;
+
+Marketing 2
+
+SELECT Produit.[Code Produit], Produit.[Nom Produit], [Ligne Commande].Quantité, [Ligne Commande].[N° Commande], Commande.[N° Client], Commande.Date, Produit.[Prix Produit], [Ligne Commande].Quantité, [Prix Produit]*[Quantité] AS Total, Produit.Recette, Produit.Stati1, Produit.Stati2, Produit.Stati3
+FROM (Produit INNER JOIN [Ligne Commande] ON Produit.[Code Produit] = [Ligne Commande].[Code Produit]) INNER JOIN Commande ON [Ligne Commande].[N° Commande] = Commande.[N° Commande];
+
+Marketing 3
+
+SELECT Commande.[N° Commande], Commande.Date, Commande.Etat, Produit.Commandes, [Ligne Commande].Quantité, Produit.[Prix Produit], [Quantité]*[Prix Produit] AS Expr1, Produit.Stati4, Produit.Stati5, Commande.[Nom Mailing], Commande.Recommande
+FROM (Produit INNER JOIN [Ligne Commande] ON Produit.[Code Produit] = [Ligne Commande].[Code Produit]) INNER JOIN Commande ON [Ligne Commande].[N° Commande] = Commande.[N° Commande];
+
+
+
+Marketing 4
+
+SELECT Commande.[N° Commande], Commande.Date, Sum([Marketing 3].Expr1) AS SommeDeExpr1, Commande.Etat, Commande.[Taux Remise], Commande.[N° Client], [Marketing 3].Commandes, [Marketing 3].Stati4, [Marketing 3].Stati5, Commande.[Nom Mailing], Commande.Recommande
+FROM [Marketing 3] INNER JOIN Commande ON [Marketing 3].[N° Commande] = Commande.[N° Commande]
+GROUP BY Commande.[N° Commande], Commande.Date, Commande.Etat, Commande.[Taux Remise], Commande.[N° Client], [Marketing 3].Commandes, [Marketing 3].Stati4, [Marketing 3].Stati5, Commande.[Nom Mailing], Commande.Recommande;
+
+Marketing 5
+
+SELECT [Marketing 4].[N° Commande], [Marketing 4].Date, [Marketing 4].SommeDeExpr1, [Marketing 4].Etat, [Marketing 4].[Taux Remise], [Marketing 4].[N° Client], [Marketing 4].Commandes, [Marketing 4]![SommeDeExpr1]*(1-[Marketing 4]![Taux Remise]) AS [Total Net], [Marketing 4].SommeDeExpr1 AS [Total Brut], [Marketing 4].Stati4, [Marketing 4].Stati5, [Marketing 4].[Nom Mailing], [Marketing 4].Recommande
+FROM [Marketing 4];
+
+Produit Requête
+
+SELECT Produit.[Code Produit], Produit.[Nom Produit], Produit.[Prix Produit], Produit.[Taux de marge], [Ligne Commande].Quantité, Commande.[Taux Remise], [Prix Produit]*(1-[Taux Remise])*[Quantité] AS CA, [Prix Produit]*[Quantité]*(1-[Taux Remise])*([Taux de marge]) AS VA
+FROM (Produit INNER JOIN [Ligne Commande] ON Produit.[Code Produit] = [Ligne Commande].[Code Produit]) INNER JOIN Commande ON [Ligne Commande].[N° Commande] = Commande.[N° Commande];
+
+Produit Requête 2
+
+SELECT First([Produit Requête].[Code Produit]) AS [PremierDeCode Produit], [Produit Requête].[Code Produit], Sum([Produit Requête].CA) AS SommeDeCA, Sum([Produit Requête].VA) AS SommeDeVA, Sum([Produit Requête].Quantité) AS SommeDeQuantité
+FROM [Produit Requête]
+GROUP BY [Produit Requête].[Code Produit];
+
+Produit Requête 3
+
+SELECT [Produit Requête 2].[PremierDeCode Produit], [Produit Requête 2].SommeDeCA, Produit.[Nom Produit]
+FROM [Produit Requête 2] INNER JOIN Produit ON [Produit Requête 2].[Code Produit] = Produit.[Code Produit]
+ORDER BY [Produit Requête 2].SommeDeCA DESC;
+
+Produit Requête 4
+
+SELECT [Produit Requête 2].[PremierDeCode Produit], [Produit Requête 2].SommeDeVA, Produit.[Nom Produit]
+FROM [Produit Requête 2] INNER JOIN Produit ON [Produit Requête 2].[Code Produit] = Produit.[Code Produit]
+ORDER BY [Produit Requête 2].SommeDeVA DESC;
+
+Produit Requête 5
+
+SELECT [Produit Requête 2].[PremierDeCode Produit], [Produit Requête 2].SommeDeQuantité, Produit.[Nom Produit]
+FROM [Produit Requête 2] INNER JOIN Produit ON [Produit Requête 2].[Code Produit] = Produit.[Code Produit]
+ORDER BY [Produit Requête 2].SommeDeQuantité DESC;
+
+Produit Requête 6
+
+SELECT Produit.[Code Produit], Client.[Code Client], Client.Nom, Client.Prénom, Client.[Code Postal], Client.Ville, Produit.[Prix Produit], [Ligne Commande].Quantité, Commande.[Taux Remise], Produit.[Taux de marge], [Prix Produit]*[Quantité]*(1-[Taux Remise]) AS CA, [Quantité]*[Prix Produit]*(1-[Taux Remise])*[Taux de marge] AS VA, Commande.[Nom Mailing], Commande.Date, Produit.[Total CA], Produit.[Total VA], Produit.[Total Client], Produit.[Max Date], Produit.[Min Date], Produit.[Date Moyenne]
+FROM ((Commande INNER JOIN [Ligne Commande] ON Commande.[N° Commande] = [Ligne Commande].[N° Commande]) INNER JOIN Produit ON [Ligne Commande].[Code Produit] = Produit.[Code Produit]) INNER JOIN Client ON Commande.[N° Client] = Client.[Code Client];
+
+
+
+
+
+Produit Requête 7
+
+SELECT Produit.[Code Produit], Produit.[Nom Produit], Produit.[Prix Produit], Produit.[Taux de marge], [Stock Requête 4].[Nombre Vente], [Stock Requête 4].[Nombre Achat], [Stock Requête 4].Stock
+FROM [Stock Requête 4] INNER JOIN Produit ON [Stock Requête 4].[Code Produit] = Produit.[Code Produit];
+
+Réassortiment Requête 
+
+SELECT Commande.Etat, Commande.Date, Client.[Code Client], Client.Nom, Client.Prénom, Client.[Code Postal], Commande.[N° Commande]
+FROM Commande INNER JOIN Client ON Commande.[N° Client] = Client.[Code Client]
+WHERE (((Commande.Etat)="En Attente"))
+ORDER BY Commande.Date;
+
+Réassortiment Requête 2
+
+SELECT Réassortiment.Etat, Réassortiment.Date, Réassortiment.[N° Assort], Client.Civilité, Client.Nom, Client.Prénom, Client.[Code Postal]
+FROM Client INNER JOIN Réassortiment ON Client.[Code Client] = Réassortiment.[Code Fournisseur]
+WHERE (((Réassortiment.Etat)="En attente"))
+ORDER BY Réassortiment.Date;
+
+Réassortiments
+
+SELECT Client.[Code Client], Client.Civilité, Client.Nom, Client.Prénom, Client.[Adresse 1], Client.[Adresse 2], Client.[Adresse 3], Client.[Code Postal], Client.Ville, Client.Pays, Client.Téléphone, Client.[E-mail], Réassortiment.[Code Fournisseur], Réassortiment.Date, Réassortiment.[N° Assort], Réassortiment.Etat, Réassortiment.[Total Produit]
+FROM Réassortiment INNER JOIN Client ON Réassortiment.[Code Fournisseur] = Client.[Code Client];
+
+
+
+
+
+Show Facturier
+
+SELECT Commande.[N° Commande], Commande.Date, Commande.Etat, Commande.[Taux Remise], Commande.[N° Client], Client.[Code Client], Client.Civilité, Client.Nom, Client.Prénom, Client.[Adresse 1], Client.[Adresse 2], Client.[Adresse 3], Client.[Code Postal], Client.Ville, Client.Pays, Client.Téléphone, Client.[E-mail], Client.Fichier, Client.Etat, Commande.Total, Commande.Impôts, Commande.[Remisé 1], Commande.[Remisé 2], Commande.[A payer], Commande.Number, Commande.[Nom Mailing]
+FROM Client INNER JOIN Commande ON Client.[Code Client] = Commande.[N° Client];
+
+Statistiques Client
+
+TRANSFORM Count(Client.Nom) AS CompteDeNom
+SELECT Client.Fichier
+FROM Client
+GROUP BY Client.Fichier
+PIVOT Client.Clientèle;
+
+Statistiques Etat
+
+TRANSFORM Count(Client.Prénom) AS CompteDePrénom
+SELECT Client.Etat
+FROM Client
+GROUP BY Client.Etat
+PIVOT Client.Fichier;
+
+Stock Requête 
+
+SELECT Produit.[Code Produit], Produit.[Nom Produit], Sum([Ligne Réassort].Quantité) AS SommeDeQuantité1, Produit.Stock, [Stock Requête Correction].SommeDeQuantité
+FROM (Produit INNER JOIN [Ligne Réassort] ON Produit.[Code Produit] = [Ligne Réassort].[Code Produit]) INNER JOIN [Stock Requête Correction] ON Produit.[Code Produit] = [Stock Requête Correction].[Code Produit]
+GROUP BY Produit.[Code Produit], Produit.[Nom Produit], Produit.Stock, [Stock Requête Correction].SommeDeQuantité;
+
+Stock Requête 2
+
+SELECT Produit.[Code Produit], Produit.[Nom Produit], Sum([Ligne Réassort].Quantité) AS [Total Achat], [Stock Requête Correction].SommeDeQuantité, [Stock Requête Correction].SommeDeQuantité AS [Total Vente]
+FROM (Produit INNER JOIN [Ligne Réassort] ON Produit.[Code Produit] = [Ligne Réassort].[Code Produit]) INNER JOIN [Stock Requête Correction] ON Produit.[Code Produit] = [Stock Requête Correction].[Code Produit]
+GROUP BY Produit.[Code Produit], Produit.[Nom Produit], [Stock Requête Correction].SommeDeQuantité, [Stock Requête Correction].SommeDeQuantité;
+
+Stock Requête 3
+
+SELECT Produit.[Code Produit], Produit.[Nom Produit], [Stock Requête 2]![Total Vente] AS [Nombre Vente], [Stock Requête 2]![Total Achat] AS [Nombre Achat], [Nombre Achat]-[Nombre Vente] AS Stock, Produit.[Code Fournisseur]
+FROM Produit INNER JOIN [Stock Requête 2] ON Produit.[Code Produit] = [Stock Requête 2].[Code Produit];
+
+Stock Requête 4
+
+SELECT [Stock Requête 3].[Code Produit], [Stock Requête 3].[Nom Produit], [Stock Requête 3].[Nombre Vente], [Stock Requête 3].[Nombre Achat], [Stock Requête 3].Stock, [Stock Requête 3].[Code Fournisseur]
+FROM [Stock Requête 3]
+ORDER BY [Stock Requête 3].Stock DESC;
+
+Stock Requête 5
+
+SELECT [Stock Requête 4].[Code Produit], [Stock Requête 4].[Nom Produit], [Stock Requête 4].[Nombre Vente], [Stock Requête 4].[Nombre Achat], [Stock Requête 4].Stock, [Stock Requête 4].[Code Fournisseur]
+FROM [Stock Requête 4]
+WHERE ((([Stock Requête 4].Stock)<0))
+ORDER BY [Stock Requête 4].Stock;
+
+
+
+Stock Requête Correction
+
+SELECT Produit.[Code Produit], Produit.[Nom Produit], Sum([Ligne Commande].Quantité) AS SommeDeQuantité
+FROM [Ligne Commande] INNER JOIN Produit ON [Ligne Commande].[Code Produit] = Produit.[Code Produit]
+GROUP BY Produit.[Code Produit], Produit.[Nom Produit];
+
+X Requête 
+
+SELECT Client.Fichier, Commande.Date
+FROM (Commande INNER JOIN [Ligne Commande] ON Commande.[N° Commande] = [Ligne Commande].[N° Commande]) INNER JOIN Client ON Commande.[N° Client] = Client.[Code Client]
+GROUP BY Client.Fichier, Commande.Date;
+
+X Requête 2
+
+SELECT First([X Requête].Fichier) AS PremierDeFichier, [X Requête].Fichier, Count([X Requête].Fichier) AS CompteDeFichier
+FROM [X Requête]
+GROUP BY [X Requête].Fichier;
+
+X Requête 3
+
+SELECT First(Client.Fichier) AS PremierDeFichier, Count(Client.Fichier) AS CompteDeFichier
+FROM Client
+GROUP BY Client.Fichier;
+
+
+
+
+
+
+
+
+X Requête 4
+
+SELECT [X Requête 3].PremierDeFichier, [X Requête 3].CompteDeFichier, [X Requête 2].CompteDeFichier, IIf(nz([X Requête 2.CompteDeFichier],0)=0,0,[X Requête 2.CompteDeFichier]/[X Requête 3.CompteDeFichier]) AS [Taux de retour brut], [X Requête 7].CompteDeFichier, nz([X Requête 7.CompteDeFichier],0) AS Multi, ([X Requête 2.CompteDeFichier]-[Multi])/[X Requête 3.CompteDeFichier] AS [Taux de retour net], [X requête 9].CompteDeEtat, ([X Requête 3.CompteDeFichier]-[CompteDeEtat])/[X Requête 3.CompteDeFichier] AS [Taux attrition]
+FROM (([X Requête 2] INNER JOIN [X Requête 3] ON [X Requête 2].PremierDeFichier = [X Requête 3].PremierDeFichier) LEFT JOIN [X Requête 7] ON [X Requête 3].PremierDeFichier = [X Requête 7].PremierDePremierDeFichier) INNER JOIN [X requête 9] ON [X Requête 2].PremierDeFichier = [X requête 9].PremierDeFichier
+ORDER BY IIf(nz([X Requête 2.CompteDeFichier],0)=0,0,[X Requête 2.CompteDeFichier]/[X Requête 3.CompteDeFichier]) DESC;
+
+X Requête 5
+
+SELECT Client.Fichier, Client.[Code Client], Commande.Date
+FROM Client INNER JOIN Commande ON Client.[Code Client] = Commande.[N° Client];
+
+X Requête 6
+
+SELECT First([X Requête 5].Fichier) AS PremierDeFichier, [X Requête 5].Fichier, First([X Requête 5].[Code Client]) AS [PremierDeCode Client], [X Requête 5].[Code Client], Count([X Requête 5].[Code Client]) AS [CompteDeCode Client]
+FROM [X Requête 5]
+GROUP BY [X Requête 5].Fichier, [X Requête 5].[Code Client]
+HAVING (((Count([X Requête 5].[Code Client]))>1));
+
+X Requête 7
+
+SELECT First([X Requête 6].PremierDeFichier) AS PremierDePremierDeFichier, [X Requête 6].Fichier, Count([X Requête 6].Fichier) AS CompteDeFichier
+FROM [X Requête 6]
+GROUP BY [X Requête 6].Fichier;
+
+X Requête 8
+
+SELECT Client.Fichier, Client.Etat, IIf([Etat]<>"Adresse viable",1,0) AS NPAI
+FROM Client;
+
+X Requête 9
+
+SELECT First([X Requête 8].Fichier) AS PremierDeFichier, [X Requête 8].Fichier, [X Requête 8].Etat, Count([X Requête 8].Etat) AS CompteDeEtat
+FROM [X Requête 8]
+GROUP BY [X Requête 8].Fichier, [X Requête 8].Etat
+HAVING ((([X Requête 8].Etat)="Adresse Viable"));
+
+Z Date
+
+SELECT [Grille Bis].[N° Grille], Grille.[Date début], Grille.[Date fin]
+FROM Grille INNER JOIN [Grille Bis] ON Grille.[N° Grille] = [Grille Bis].[N° Grille];
+
+Z Date 2
+
+SELECT Commande.[N° Commande], Commande.Date, Commande.[Taux Remise], [Ligne Commande].Quantité, Produit.[Prix Produit], Produit.[Taux TVA]
+FROM (Commande INNER JOIN [Ligne Commande] ON Commande.[N° Commande] = [Ligne Commande].[N° Commande]) INNER JOIN Produit ON [Ligne Commande].[Code Produit] = Produit.[Code Produit]
+WHERE (((Commande.Date)>=[Date de début de calcul] And (Commande.Date)<=[Date de fin de calcul]));
+
+
+

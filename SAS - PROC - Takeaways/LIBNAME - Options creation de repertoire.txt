@@ -1,0 +1,30 @@
+option dlcreatedir;                                                                                                                     
+libname a "E:\Donnees_SAS\WAVESLABS";                                                                                                           
+libname a "E:\Donnees_SAS\WAVESLABS\meta";                                                                                                      
+libname a "E:\Donnees_SAS\WAVESLABS\dataA";                                                                                                     
+libname a "E:\Donnees_SAS\WAVESLABS\dataB";                                                                                                     
+libname a "E:\Donnees_SAS\WAVESLABS\dataC";                                                                                                     
+libname a "E:\Donnees_SAS\WAVESLABS\dataD";                                                                                                     
+libname a "E:\Donnees_SAS\WAVESLABS\dataE";                                                                                                     
+libname a "E:\Donnees_SAS\WAVESLABS\dataF";                                                                                                     
+libname a "E:\Donnees_SAS\WAVESLABS\dataG";                                                                                                     
+libname a "E:\Donnees_SAS\WAVESLABS\dataH";                                                                                                     
+libname a "E:\Donnees_SAS\WAVESLABS\dataI";                                                                                                     
+libname a "E:\Donnees_SAS\WAVESLABS\dataJ";                                                                                                     
+libname a "E:\Donnees_SAS\WAVESLABS\dataK";                                                                                                     
+libname a "E:\Donnees_SAS\WAVESLABS\dataL";                                                                                                                                                                                               
+libname a "E:\Donnees_SAS\WAVESLABS\idxA";                                                                                                      
+libname a "E:\Donnees_SAS\WAVESLABS\idxB";                                                                                                      
+libname a "E:\Donnees_SAS\WAVESLABS\idxC";                                                                                                      
+libname a "E:\Donnees_SAS\WAVESLABS\idxD";                                                                                                      
+libname a "E:\Donnees_SAS\WAVESLABS\idxE";                                                                                                      
+libname a "E:\Donnees_SAS\WAVESLABS\idxF";                                                                                                      
+libname a "E:\Donnees_SAS\WAVESLABS\idxG";                                                                                                      
+libname a "E:\Donnees_SAS\WAVESLABS\idxH";                                                                                                      
+libname a "E:\Donnees_SAS\WAVESLABS\idxI";                                                                                                      
+libname a "E:\Donnees_SAS\WAVESLABS\idxJ";                                                                                                      
+libname a "E:\Donnees_SAS\WAVESLABS\idxK";                                                                                                      
+libname a "E:\Donnees_SAS\WAVESLABS\idxL";
+
+libname a;
+

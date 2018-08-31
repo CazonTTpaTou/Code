@@ -1,0 +1,10 @@
+DATA work.Beautiful_Caiman;
+
+	set work.&Nom_T;
+
+	Lot = "&Numero_Lot";
+	Val_N = (TRANWRD(Valeurs,',','.'));
+	Val_Num=input(Val_N,Best12.4);
+
+run;
+

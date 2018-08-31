@@ -1,0 +1,1 @@
+Year(DatePart('Cel_Tex_Date_Heure_Fin'n)) = Year(DatePart(Now()))

@@ -1,0 +1,106 @@
+* { font-size:12px; font-family:times-new-roman; } 
+
+.image {position: absolute; 
+	  top:1%; left:2%;
+	  }
+
+.image2 {position: absolute; 
+	  top:1%; left:90%;
+	  }
+
+.titre {position: absolute;
+	font-size:35px;
+	text-align:center;
+	width:70%;height:10%; 
+	top:1%;left:15%;
+	background-color:#000000;
+	color:#FFFFFF;}
+
+.titre2 {position: absolute;
+	font-size:20px;
+	font-weight:bold;
+	text-align:center;
+	width:30%;height:5.5%; 
+	top:15%;left:37%;
+	background-color:#000000;
+	color:#FFFFFF;}
+
+.fact {position: absolute;
+       top:27%;left:4%;
+       font-size:20px;
+       border:#000000 solid 3px; 
+       border-width:3px;
+       margin:15px;
+	padding-left:3%;
+	padding-right:3%;
+	padding-top:1%;
+	padding-bottom:1%;}
+
+.title_fact {font-weight:bold;
+	     font-size:20px;
+	     padding-bottom:0%;
+	     margin:0px;
+	     text-decoration:underline;}
+
+.liv {position: absolute;
+       top:27%;right:4%;
+       font-size:20px;
+       border:#000000 solid 3px; 
+       border-width:3px;
+       margin:15px;
+	padding-left:3%;
+	padding-right:3%;
+	padding-top:1%;
+	padding-bottom:1%;}
+
+.title_liv {font-weight:bold;
+	     font-size:20px;
+	     padding-bottom:0%;
+	     margin:0px;
+	     text-decoration:underline;}
+
+.fond1 {font-size:20px;
+	background-color:#C0C0C0;
+	color:#000000;}
+
+.fond2 {font-size:20px;
+	background-color:#FFFFFF;
+	color:#000000;}
+
+.tableau {position: absolute;
+       top:89%;left:8%;
+       font-size:25px;
+       width:85%;
+	height:45%;
+       }
+
+.sous_total {position: absolute;
+	     top:64.5%;right:5%;
+	     width:36.5%;height:16%;
+		font-size:20px;
+		font-weight:bold;
+		float:right;
+		text-align:right;
+		border:#000000 solid 3px; 
+       		border-width:3px;
+       		margin:5px;
+		padding-left:0%;
+		padding-right:1%;
+		padding-top:0.5%;
+		padding-bottom:0.5%;}
+
+.nomb_livre {position: absolute;
+	     top:82%;left:8%;
+		font-size:20px;
+		font-weight:bold;}
+
+.retour {position: absolute;
+	 top:70%;left:8%;
+	 font-weight:bold;
+     	 font-size:23px;
+     	 color:#0050FF;
+     	 text-align:left;}
+
+.fin {position: absolute;
+	top:1%;left:12%;}
+

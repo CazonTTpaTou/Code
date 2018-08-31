@@ -1,0 +1,6 @@
+Concatenate(Format(Year(datepart('Mesure Date'n)),'BEST4.'),
+Concatenate(' - ',
+Concatenate('Semaine n° ', Format(( 
+  IF ( DayOfWeek(DatePart('Mesure Date'n)) = 1 )
+  RETURN ( WeekNumber(DatePart('Mesure Date'n)) - 1 )
+  ELSE WeekNumber(DatePart('Mesure Date'n)) ), 'BEST2.'))))

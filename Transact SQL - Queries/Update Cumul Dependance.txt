@@ -1,0 +1,27 @@
+USE gmao_db
+GO
+
+With Cumul
+AS (select idProcede,Count(PourcentageDependance) as Som_D
+		FROM Equipement
+		WHERE idUAP = 6 and idsecteur = 10
+		
+		GROUP BY idProcede		
+		)
+
+UPDATE Equipement
+
+	SET PourcentageDependance=
+				convert(decimal(10,4),100/convert(decimal(10,4),Cumul.Som_D)) 
+				
+		FROM Equipement 
+		inner join Cumul
+		ON equipement.idProcede = Cumul.idProcede
+		 
+		WHERE Equipement.idUAP = 6 and Equipement.idsecteur = 10
+
+GO
+		 
+
+
+

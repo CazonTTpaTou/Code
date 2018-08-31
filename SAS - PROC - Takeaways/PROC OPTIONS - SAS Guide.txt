@@ -1,0 +1,716 @@
+1                                                          Le Système SAS                         16:28 Wednesday, February 17, 2016
+
+1          ;*';*";*/;quit;run;
+2          OPTIONS PAGENO=MIN;
+3          %LET _CLIENTTASKLABEL='Programme';
+4          %LET _CLIENTPROJECTPATH='';
+5          %LET _CLIENTPROJECTNAME='';
+6          %LET _SASPROGRAMFILE=;
+7          
+8          ODS _ALL_ CLOSE;
+9          OPTIONS DEV=ACTIVEX;
+10         GOPTIONS XPIXELS=0 YPIXELS=0;
+11         FILENAME EGSR TEMP;
+12         ODS tagsets.sasreport13(ID=EGSR) FILE=EGSR STYLE=HtmlBlue
+12       ! STYLESHEET=(URL="file:///C:/Program%20Files/SASHome/SASEnterpriseGuide/5.1/Styles/HtmlBlue.css") NOGTITLE NOGFOOTNOTE
+12       ! GPATH=&sasworklocation ENCODING=UTF8 options(rolap="on");
+NOTE: Writing TAGSETS.SASREPORT13(EGSR) Body file: EGSR
+13         
+14         GOPTIONS ACCESSIBLE;
+15         PROC OPTIONS;
+16         RUN;
+
+    SAS (r) Proprietary Software Version 9.4  TS1M3
+
+
+Options Portable :
+
+ ANIMATION=STOP    Specifies whether to start or stop animation.
+ ANIMDURATION=MIN  Specifies the number of seconds that each animation frame displays.
+ ANIMLOOP=YES      Specifies the number of iterations that animated images repeat.
+ ANIMOVERLAY       Specifies that animation frames are overlaid in order to view all frames.
+ APPEND=           Specifies an option=value pair to insert the value at the end of the existing option value.
+ APPLETLOC=D:\SAS\BIN\SASGraphJavaApplets\9.4
+                   Specifies the location of Java applets, which is typically a URL.
+ ARMAGENT=         Specifies an ARM agent (which is an executable module or keyword, such as LOG4SAS) that contains a specific 
+                   implementation of the ARM API.
+ ARMLOC=ARMLOG.LOG Specifies the location of the ARM log.
+ ARMSUBSYS=(ARM_NONE)
+                   Specifies the SAS ARM subsystems to enable or disable.
+ AUTOCORRECT       Automatically corrects misspelled procedure names and keywords, and global statement names.
+ AUTOEXEC=D:\SAS\Config\Lev1\SASApp\WorkspaceServer\autoexec.sas
+                   Specifies the location of the SAS AUTOEXEC files.
+ AUTOSAVELOC=      Specifies the location of the Program Editor auto-saved file.
+ NOAUTOSIGNON      Disables a SAS/CONNECT client from automatically submitting the SIGNON command remotely with the RSUBMIT command.
+ BINDING=DEFAULT   Specifies the binding edge type of duplexed printed output.
+ BOMFILE           Writes the byte order mark (BOM) prefix when a Unicode-encoded file is written to an external file.
+ BOTTOMMARGIN=0.000 IN
+                   Specifies the size of the margin at the bottom of a printed page.
+ BUFNO=1           Specifies the number of buffers for processing SAS data sets.
+ BUFSIZE=0         Specifies the size of a buffer page for output SAS data sets.
+ BYERR             SAS issues an error message and stops processing if the SORT procedure attempts to sort a _NULL_ data set.
+ BYLINE            Prints the BY line above each BY group.
+ BYSORTED          Requires observations in one or more data sets to be sorted in alphabetic or numeric order.
+ NOCAPS            Does not convert certain types of input, and all data lines, into uppercase characters.
+ NOCARDIMAGE       Does not process SAS source code and data lines as 80-byte records.
+ CATCACHE=0        Specifies the number of SAS catalogs to keep open in cache memory.
+ CBUFNO=0          Specifies the number of extra page buffers to allocate for each open SAS catalog.
+ CENTER            Center SAS procedure output.
+ CGOPTIMIZE=3      Specifies the level of optimization to perform during code compilation.
+ NOCHARCODE        Does not substitute specific keyboard combinations for special characters that are not on the keyboard.
+2                                                          Le Système SAS                         16:28 Wednesday, February 17, 2016
+
+ NOCHKPTCLEAN      Does not erase files in the Work library after a batch program successfully executes in checkpoint mode or 
+                   restart mode.
+ CLEANUP           Performs automatic continuous cleanup of non-essential resources in out-of-resource conditions.
+ NOCMDMAC          Does not check window environment commands for command-style macros.
+ CMPLIB=           Specifies one or more SAS data sets that contain compiler subroutines to include during compilation.
+ CMPMODEL=BOTH     Specifies the output model type for the MODEL procedure.
+ CMPOPT=(NOEXTRAMATH NOMISSCHECK NOPRECISE NOGUARDCHECK NOGENSYMNAMES NOFUNCDIFFERENCING SHORTCIRCUIT NOPROFILE)
+                   Specifies the type of code-generation optimizations to use in the SAS language compiler.
+ NOCOLLATE         Does not collate multiple copies of printed output.
+ COLOPHON=         Specifies the comment text that is included in graphic stream files.
+ COLORPRINTING     Prints in color if color printing is supported.
+ COMAMID=TCP       Specifies the communication access method for connecting client and server sessions across a network.
+ COMPRESS=CHAR     Specifies the type of compression to use for observations in output SAS data sets.
+ CONNECTEVENTS     Clients receive SAS events propagated from a SAS/CONNECT server.
+ CONNECTMETACONNECTION
+                   At sign-on, connects the SAS/CONNECT server to the SAS Metadata server.
+ CONNECTOUTPUT=BUFFERED
+                   Specifies whether to send the SAS/CONNECT server log and list output immediately, or to buffer the output.
+ CONNECTPERSIST    Continues a client/server connection after an RSUBMIT statement has completed.
+ CONNECTREMOTE=    Specifies the ID of a specific server session that a client connects to.
+ CONNECTSTATUS     Displays the Transfer Status window during file transfers.
+ CONNECTWAIT       Executes RSUBMIT statements synchronously.
+ COPIES=1          Specifies the number of copies to print.
+ CPUCOUNT=4        Specifies the number of processors that thread-enabled applications should assume are available for concurrent 
+                   processing.
+ CPUID             Prints the CPU identification number at the beginning of the SAS log.
+ CSTGLOBALLIB=     Specifies the location of the SAS Clinical Standards Toolkit global library.
+ CSTSAMPLELIB=     Specifies the location of the SAS Clinical Standards Toolkit sample library.
+ DATAPAGESIZE=CURRENT
+                   Specifies whether the page size for a data set or utility file is compatible with SAS 9.3 processing, or is 
+                   determined by the current version of SAS.
+ DATASTMTCHK=COREKEYWORDS
+                   Specifies which SAS statement keywords are prohibited from being specified as a one-level DATA step name to 
+                   protect against overwriting an input data set.
+ DATE              Prints the date and time that a SAS program started.
+ DATESTYLE=DMY     Specifies the sequence of month, day, and year when ANYDTDTE, ANYDTDTM, or ANYDTTME informat data is ambiguous.
+ NODBFMTIGNORE     Uses the numeric data type in tables.
+ NODBIDIRECTEXEC   The SQL pass-through facility does not optimize the handling of SQL statements.
+ DBSLICEPARM=(THREADED_APPS, 2)
+                   Specifies whether SAS procedures, applications, and the DATA step can read DBMS tables in parallel, and the 
+                   number of threads to use to read the DBMS tables.
+ DBSRVTP=NONE      Specifies whether SAS/ACCESS engines hold or block the originating client while making performance-critical 
+                   calls to the database.
+ DCSHOST=LOCALHOST Specifies the host name of the SAS Document Conversion Server.
+ DCSPORT=7111      Specifies the port number of the SAS Document Conversion Server.
+ DECIMALCONV=COMPATIBLE
+                   Specifies the binary to decimal conversion and formatting methodology.
+ DEFLATION=6       Specifies the level of compression for device drivers that support the Deflate compression algorithm.
+ NODETAILS         Does not display additional information when files are listed in a SAS library.
+ DEVICE=ACTIVEX    Specifies the device driver to which SAS/GRAPH sends procedure output.
+ DFLANG=FRENCH     Specifies the language for international date informats and formats.
+ DKRICOND=ERROR    Specifies the error level to report when a variable is missing from an input data set during the processing of a 
+                   DROP=, KEEP=, or RENAME= data set option.
+ DKROCOND=WARN     Specifies the error level to report when a variable is missing from an output data set during the processing of 
+                   a DROP=, KEEP=, or RENAME= data set option.
+ NODLCREATEDIR     Does not create a directory for the SAS library that is named in a LIBNAME statement when the directory does not 
+                   already exist.
+ DLDMGACTION=FAIL  Specifies the type of action to take when a SAS data set or a SAS catalog is detected as damaged.
+3                                                          Le Système SAS                         16:28 Wednesday, February 17, 2016
+
+ NODMR             Does not invoke a server session for use with a SAS/CONNECT client.
+ NODMS             Starts SAS using an interactive line-mode session.
+ NODMSEXP          Starts SAS using an interactive line-mode session.
+ DMSLOGSIZE=99999  Specifies the maximum number of rows that the SAS Log window can display.
+ DMSOUTSIZE=2147483647
+                   Specifies the maximum number of rows that the SAS Output window can display.
+ DMSPGMLINESIZE=136
+                   Specifies the maximum number of characters in a Program Editor line.
+ NODMSSYNCHK       Disables syntax check mode for DATA step and PROC step processing in the windowing environment.
+ DQLOCALE=         Specifies the Data Quality Server ordered list of locales for data cleansing.
+ DQOPTIONS=        Specifies the SAS session parameters for data quality programs.
+ DQSETUPLOC=       Specifies the location of the Quality Knowledge Base root directory.
+ DS2ACCEL=NONE     Provides support for DS2 code pass-through acceleration.
+ DS2SCOND=WARN     Specifies the type of message that PROC DS2 generates.
+ DSACCEL=NONE      Provides support for code pass-through acceleration.
+ DSNFERR           Issues an error message and stops processing when a SAS data set cannot be found.
+ NODTRESET         SAS does not update the date and time in the titles of the SAS log and procedure output file.
+ NODUPLEX          Does not print output using duplex (two-sided) printing.
+ NOECHOAUTO        Does not write statements that are in the AUTOEXEC file to the SAS log as they are executed.
+ EMAILACKWAIT=30   Specifies the number of seconds to wait for the SMTP server acknowledgement.
+ EMAILAUTHPROTOCOL=NONE
+                   Specifies the SMTP e-mail authentication protocol.
+ NOEMAILFROM       Does not require the FROM e-mail option when sending e-mail by using the FILE or FILENAME statements.
+ EMAILHOST=smtp.photowatt.com
+                   Specifies one or more domain names for SMTP e-mail servers.
+ EMAILID=          Specifies the SAS user's logon ID, profile or e-mail address.
+ EMAILPORT=25      Specifies the port number for the SMTP e-mail server that is specified in the EMAILHOST option.
+ EMAILPW=XXXXXXXX  Specifies the password for the e-mail address specified by the EMAILID option.
+ EMAILUTCOFFSET=   For SMTP e-mail sent using the FILENAME statement, specifies a UTC offset that is used in the Date header field 
+                   of the e-mail message.
+ NOENCRYPTFIPS     Does not limit SAS/SECURE and SSL security services to use FIPS 140-2 algorithms.
+ ENGINE=V9         Specifies the default access method for SAS libraries.
+ NOERRORABEND      Does not end SAS for most errors, issues an error message, sets OBS=0, and goes into syntax check mode.
+ NOERRORBYABEND    Does not end a SAS program when an error occurs in BY-group processing, issues an error, and continues 
+                   processing.
+ ERRORCHECK=NORMAL Specifies whether SAS enters syntax-check mode when errors are found in the LIBNAME, FILENAME,  %INCLUDE, and 
+                   LOCK statements.
+ ERRORS=20         Specifies the maximum number of observations for which SAS issues complete error messages.
+ EVENTDS=(DEFAULTS)
+                   Specifies one or more data sets that define custom holiday events.
+ NOEXPLORER        Does not invoke Explorer and the Program Editor when SAS starts.
+ EXTENDOBSCOUNTER=YES
+                   Specifies whether to extend the maximum number of observations in a new SAS data file.
+ FILESYNC=HOST     Specifies when operating system buffers that contain contents of permanent SAS files are written to disk.
+ FIRSTOBS=1        Specifies the observation number or external file record that SAS processes first.
+ NOFMTERR          Issues a note for missing variable formats, uses w. or $w., and continues processing.
+ FMTSEARCH=( APFMTLIB WORK LIBRARY )
+                   Specifies the order in which format catalogs are searched.
+ FONTEMBEDDING     Enables font embedding for Universal Printing and SAS/GRAPH printing.
+ FONTRENDERING=FREETYPE_POINTS
+                   Specifies whether some SAS/GRAPH devices render fonts by using the operating system or by using the Free Type 
+                   engine.
+ FONTSLOC=D:\SAS\BIN\ReportFontsforClients\9.4
+                   Specifies the location of the fonts that are supplied by SAS. Names the default font file location for 
+                   registering fonts that use the FONTREG procedure.
+ FORMCHAR=|----|+|---+=|-/\<>*
+                   Specifies the default output formatting characters.
+ FORMDLIM=         Specifies the character to delimit page breaks in SAS output for the LISTING destination.
+4                                                          Le Système SAS                         16:28 Wednesday, February 17, 2016
+
+ FORMS=DEFAULT     If forms are used for printing, specifies the default form to use.
+ GSTYLE            Uses ODS styles to generate graphs that are stored as GRSEG catalog entries.
+ GWINDOW           Displays SAS/GRAPH output in the GRAPH window.
+ HELPADDR=         Specifies the address of the remote Help system.
+ HELPBROWSER=SAS   Specifies the browser to use for SAS Help and ODS output.
+ HELPENCMD         Uses the English version of the keyword list for the command-line Help.
+ HELPHOST=         Specifies the name of the computer where the remote browser is to send Help and ODS output.
+ HELPINDEX=(/help/common.hlp/index.txt /help/common.hlp/keywords.htm common.hhk)
+                   Specifies one or more index files for SAS Help and Documentation.
+ HELPPORT=0        Specifies the port number for the remote browser client.
+ HELPTOC=(/help/helpnav.hlp/navigation.xml /help/common.hlp/toc.htm common.hhc)
+                   Specifies the table of contents files for the online SAS Help and Documentation.
+ HOSTINFOLONG      Print operating environment information in the SAS log when SAS starts.
+ HTTPSERVERPORTMAX=0
+                   Specifies the highest port number that can be used by the SAS HTTP server for remote browsing.
+ HTTPSERVERPORTMIN=0
+                   Specifies the lowest port number that can be used by the SAS HTTP server for remote browsing.
+ IBUFNO=0          Specifies the number of extra buffers to be allocated for navigating an index file.
+ IBUFSIZE=0        Specifies the buffer page size for an index file.
+ IMLPACKAGEPRIVATE=
+                   Specifies the location for SAS/IML packages in the private collection.
+ IMLPACKAGEPUBLIC= Specifies the location for SAS/IML packages in the public collection.
+ IMLPACKAGESYSTEM= Specifies the location for SAS/IML packages in the system collection.
+ NOIMPLMAC         Does not check for statement-style macros.
+ INITCMD=          Specifies commands to open applications, or windows and text editor commands, after SAS executes the AUTOEXEC= 
+                   file and the INITSTMT= value.
+ INITSTMT=         Specifies SAS statements to execute after any statements in the AUTOEXEC= file and before any statements from 
+                   the SYSIN= file.
+ INSERT=           Specifies an option=value pair to insert the value at the beginning of the existing option value.
+ INTERVALDS=       Specifies interval=library pairs.  Library is a SAS data set that contains a custom interval data set; interval 
+                   can be used in the INTNX and INTCK functions.
+ INVALIDDATA=.     Specifies the value that SAS assigns to a variable when invalid numeric data is encountered.
+ NOIPADDRESS       Disables the IP address to appear in SAS/CONNECT messages when using TCP/IP.
+ JPEGQUALITY=75    Specifies the JPEG quality factor that determines the ratio of image quality to the level of compression for 
+                   JPEG files produced by the JPEG device driver.
+ LABEL             Enables procedures to use labels with variables.
+ NOLABELCHKPT      For batch programs, disables the recording of checkpoint-restart data for labeled code sections.
+ LABELCHKPTLIB=WORK
+                   Specifies the libref of the library where the checkpoint-restart data is saved for labeled code sections.
+ NOLABELRESTART    Disables restart mode, which executes batch programs using checkpoint-restart data collected at labeled code 
+                   sections.
+ LEFTMARGIN=0.000 IN
+                   Specifies the print margin for the left side of the page.
+ LINESIZE=132      Specifies the line size for the SAS log and for SAS procedure output for the LISTING destination.
+ LOCALEDATA=SASLOCALE
+                   Specifies the location of the locale database.
+ NOLOCKDOWN        Specifies that access to files and certain SAS features will not be restricted. This feature is only applicable 
+                   for a SAS session executing in a batch or server processing mode.
+ LOGAPPLNAME=      Specifies a SAS session name for SAS logging.
+ LOGCONFIGLOC=D:\SAS\Config\Lev1\SASApp\WorkspaceServer\logconfig.xml
+                   Specifies the name of the XML configuration file or a basic logging configuration that is used to initialize the 
+                   SAS logging facility.
+ NOLOGLANGCHG      Disables changing the language of the SAS output when the LOCALE= option is changed.
+ NOLOGLANGENG      Write SAS log messages based on the values of the LOGLANGCHG, LSWLANG=, and LOCALE= options when SAS started.
+ LOGPARM=WRITE=BUFFERED ROLLOVER=NONE OPEN=REPLACE
+                   Specifies when SAS log files are opened, closed, and according to the LOG= system option, how they are named.
+ LRECL=32767       Specifies the default logical record length to use for reading and writing external files.
+ LSWLANG=LOCALE    Specifies the language for SAS log and ODS messages when the LOCALE= option is set after SAS starts.
+5                                                          Le Système SAS                         16:28 Wednesday, February 17, 2016
+
+ MACRO             Enables the macro facility.
+ MAPEBCDICTOASCII= Specifies the transcoding table that is used to convert characters from ASCII to EBCDIC and EBCDIC to ASCII.
+ MAPS=!SASROOT\maps
+                   Specifies the location of SAS/GRAPH map data sets.
+ MAPSGFK=!SASROOT\mapsgfk
+                   Specifies the location of GfK maps.
+ MAPSSAS=!SASROOT\maps
+                   Specifies the location of SAS map data sets.
+ NOMAUTOCOMPLOC    Does not display the autocall macro source location in the SAS log when the autocall macro is compiled.
+ NOMAUTOLOCDISPLAY Disables the macro facility from displaying the autocall macro source location in the log.
+ NOMAUTOLOCINDES   Does not prepend the full pathname of the autocall macro source file to the autocall macro catalog entry 
+                   description field in the WORK.SASMACR catalog.
+ MAUTOSOURCE       Enables the macro autocall feature.
+ MAXSEGRATIO=75    Specifies the upper limit for the percentage of index segments that the SPD Engine identifies as containing the 
+                   value referenced in the WHERE expression.
+ MCOMPILE          Allows new macro definitions.
+ MCOMPILENOTE=NONE Specifies what to write to the SAS log when a macro compiles successfully.
+ NOMCOVERAGE       Disables the generation of coverage analysis data for SAS macros.
+ MCOVERAGELOC=     Specifies the location of the macro coverage analysis data file.
+ MERGENOBY=NOWARN  Specifies the type of message that is issued when MERGE processing occurs without an associated BY statement.
+ MERROR            Issues a warning message for an unresolved macro reference.
+ METAAUTORESOURCES=SASApp
+                   Specifies the metadata resources that are assigned when SAS starts.
+ METACONNECT=      Specifies the profile from the metadata user connection profiles that is used to connect to the SAS Metadata 
+                   Server.
+ METAENCRYPTALG=SASPROPRIETARY
+                   Specifies the type of encryption to use to communicate with the SAS Metadata Server.
+ METAENCRYPTLEVEL=CREDENTIALS
+                   Specifies the level of encryption that is used to communicate with the SAS Metadata Server.
+ METAID=           Specifies the ID of the SAS Metadata Server.
+ METAPASS=XXXXXXXX Specifies the SAS Metadata Server password.
+ METAPORT=8561     Specifies the TCP port for the SAS Metadata Server.
+ METAPROFILE=D:\SAS\Config\Lev1\metadataConfig.xml
+                   Specifies the XML document that contains SAS Metadata Server user connection profiles.
+ METAPROTOCOL=BRIDGE
+                   Specifies the network profile to use to connect to the SAS Metadata Server.
+ METAREPOSITORY=Foundation
+                   Specifies the name of the SAS Metadata Server Repository.
+ METASERVER=srv-sasva.photowatt.local
+                   Specifies the host name or address of the SAS Metadata Server.
+ METASPN=          Specifies the service principal name (SPN) for the SAS Metadata Server.
+ METAUSER=         Specifies the user ID that is used to connect to the SAS Metadata Server.
+ NOMEXECNOTE       Does not display the macro execution information in the SAS log when the macro is invoked.
+ MEXECSIZE=65536   Specifies the maximum macro size that can be executed in memory.
+ NOMFILE           Does not write MPRINT output to an external file.
+ MINDELIMITER=     Specifies the character delimiter for the macro IN operator.
+ NOMINOPERATOR     Disables IN logical operators in expressions.
+ MINPARTSIZE=16777216
+                   Specifies the minimum size of the data component partitions for SPD Engine data sets.
+ MISSING=.         Specifies the character to print for missing numeric values.
+ NOMLOGIC          Does not trace macro execution or write the results to the SAS log.
+ NOMLOGICNEST      Does not display the macro nesting information in the SAS log for MLOGIC output.
+ NOMPRINT          Does not display the SAS statements that are generated by macro execution.
+ NOMPRINTNEST      Does not display the macro nesting information from the MPRINT output in the SAS log.
+ NOMRECALL         Searches the autocall libraries only once for a requested macro.
+ MREPLACE          Enables updates to macro definitions in the Work library.
+ MSGLEVEL=N        Specifies the level of detail in SAS log messages.
+ NOMSTORED         Does not search for stored compiled macros.
+6                                                          Le Système SAS                         16:28 Wednesday, February 17, 2016
+
+ MSYMTABMAX=4194304
+                   Specifies the maximum amount of memory available to the macro variable symbol table or tables.
+ NOMULTENVAPPL     List only operating environment fonts in the font selector window of a SAS application.
+ MVARSIZE=65534    Specifies the maximum size for a macro variable that is stored in memory.
+ NONETENCRYPT      Does not require encryption for client/server data transfers.
+ NETENCRYPTALGORITHM=SASPROPRIETARY
+                   Specifies one or more algorithms to use for encrypted client/server data transfers.
+ NETENCRYPTKEYLEN=0
+                   Specifies the key length that is used by the encryption algorithm for encrypted client/server data transfers.
+ NEWS=             Specifies the location of the news file that is to be written to the SAS log immediately after the header.
+ NONLDECSEPARATOR  Disables formatting of numeric output using the decimal separator for the locale.
+ NOTES             SAS writes notes to the SAS log.
+ NUMBER            Prints the page number on the first title line of each page of SAS output.
+ OBJECTSERVER      Enables SAS to run as an Integrated Object Model (IOM) server.
+ OBS=9223372036854775807
+                   Specifies the observation that is used to determine the last observation to process, or specifies the last 
+                   record to process.
+ ODSDEST=AUTO      Specifies the default ODS destination.
+ ODSGRAPHICS=AUTO  Specifies the setting for ODS graphics.
+ NOODSLANGCHG      Disables changing the language of the SAS message text in ODS output when the LOCALE option is set after start 
+                   up.
+ ODSSTYLE=AUTO     Specifies the ODS HTML default style.
+ OLAPCONFIG=       Specifies the name of the XML configuration file that is used to initialize an OLAP server.
+ ORIENTATION=PORTRAIT
+                   Specifies the paper orientation to use when printing to a printer.
+ NOOVP             Disables overprinting of error messages to make them bold.
+ NOPAGEBREAKINITIAL
+                   Does not begin SAS log and procedure output for the LISTING destination on a new page.
+ PAGENO=1          Resets the SAS output page number.
+ PAGESIZE=60       Specifies the number of lines that compose a page of the SAS log and SAS output.
+ PAPERDEST=        Specifies the name of the output bin to receive printed output.
+ PAPERSIZE=LETTER  Specifies the paper size to use for printing.
+ PAPERSOURCE=      Specifies the name of the paper bin to use for printing.
+ PAPERTYPE=PLAIN   Specifies the type of paper to use for printing.
+ PARM=             Specifies a parameter string that is passed to an external program.
+ PARMCARDS=FT15F001
+                   Specifies the file reference to open when SAS encounters the PARMCARDS statement in a procedure.
+ PDFACCESS         Enables screen readers to read PDF text and graphics.
+ NOPDFASSEMBLY     Disables assembly of PDF documents.
+ NOPDFCOMMENT      Disables comments in PDF documents from being modified.
+ NOPDFCONTENT      Disables modification of PDF document content.
+ PDFCOPY           Enables PDF document text and graphics to be copied.
+ PDFFILLIN         Enables PDF forms to be filled in.
+ PDFPAGELAYOUT=DEFAULT
+                   Specifies the page layout for PDF documents.
+ PDFPAGEVIEW=DEFAULT
+                   Specifies the page viewing mode for PDF documents.
+ PDFPASSWORD=XXXXXXXX
+                   Specifies the password to use to open a PDF document and the password used by a PDF document owner.
+ PDFPRINT=HRES     Specifies the resolution to print PDF documents.
+ PDFSECURITY=NONE  Specifies the level of encryption to use for PDF documents.
+ NOPRESENV         Specifies that collecting data for the preservation of the SAS environment is disabled.
+ PRIMARYPROVIDERDOMAIN=
+                   Specifies the domain name of the primary authentication provider.
+ PRINTERPATH=      Specifies the name of a registered printer to use for Universal Printing.
+ NOPRINTINIT       Preserves the procedure output file for the LISTING destination if no new output is created.
+ PRINTMSGLIST      Specifies to print the entire list of messages to the SAS log.
+ QUOTELENMAX       Writes a warning message to the SAS log if a quoted string exceeds the maximum length allowed.
+7                                                          Le Système SAS                         16:28 Wednesday, February 17, 2016
+
+ REPLACE           Enables replacement of permanent SAS data sets.
+ REUSE=NO          Specifies whether SAS reuses space when observations are added to a compressed SAS data set.
+ RIGHTMARGIN=0.000 IN
+                   Specifies the print margin for the right side of the page.
+ NORLANG           Disables SAS from executing R language statements.
+ RSASIOTRANSERROR  Displays a transcoding error when illegal values are read from a remote application.
+ RSASUSER          Opens the Sasuser library in Read-Only mode.
+ S=0               Specifies the length of statements on each line of a source statement, and the length of data on lines that 
+                   follow a DATALINES statement.
+ S2=0              Specifies the length of statements of each line of a source statement from an %INCLUDE statement, an AUTOEXEC= 
+                   file, or an autocall macro file.
+ S2V=0             Specifies the column to begin reading a file with variable length records that is specified in an %INCLUDE 
+                   statement, an autoexec file, or an autocall macro.
+ SASAUTOS=SASAUTOS Specifies the location of one or more autocall libraries.
+ SASCMD=           Specifies the command that starts a server session on a symmetric multiprocessing (SMP) computer.
+ SASFRSCR=         A read-only option that contains the fileref, generated by the SASSCRIPT option,  for SAS/CONNECT server sign-on 
+                   script files.
+ SASHELP=(            "!SASCFG\SASCFG"          "!SASROOT\nls\fr\sashelp"          "!SASROOT\core\sashelp"          
+"!SASROOT\aacomp\sashelp"          "!SASROOT\bimva\sashelp"          "!SASROOT\cmp\sashelp"          "!SASROOT\graph\sashelp"       
+   "!SASROOT\inttech\sashelp"          "!SASROOT\lasr\sashelp"          "!SASROOT\spdsclient\sashelp"          )
+                   Specifies the location of the Sashelp library.
+ SASMSTORE=        Specifies the libref of a SAS catalog for stored compiled SAS macros.
+ SASSCRIPT=        Specifies one or more locations of SAS/CONNECT server sign-on script files.
+ SASUSER=C:\Users\pwsasprod\Documents\My SAS Files\9.4
+                   Specifies a libref or a path that identifies a library for the user's profile catalog.
+ SECPACKAGE=Negotiate
+                   Specifies the security package that the IOM server uses to authenticate incoming client connections.
+ SECPACKAGELIST=Kerberos,NTLM
+                   Specifies the security authentication packages that are used by the server.
+ SEQ=8             Specifies the length of the numeric portion of the sequence field in input source lines or data lines.
+ SERROR            Issues a warning message when a macro variable reference does not match a macro variable.
+ NOSETINIT         Disables PROC SETINIT to prevent updating site licensing information.
+ SHARESESSIONCNTL=SERVER
+                   Specifies whether the SAS/SHARE server has one or multiple connections to clients.
+ SIGNONWAIT        Executes the SIGNON statement synchronously, signing on clients to the server one at a time.
+ SKIP=0            Specifies the number of lines to skip at the top of each page of SAS output for the LISTING destination.
+ SOLUTIONS         Displays the Solutions menu in SAS windows.
+ SORTDUP=PHYSICAL  Specifies whether PROC SORT removes duplicate variables based on the DROP and KEEP options or on all data set 
+                   variables.
+ SORTEQUALS        PROC SORT maintains the relative position in the output data set for observations with identical BY-variable 
+                   values.
+ SORTSEQ=          Specifies a language-specific collating sequence for the SORT and SQL procedures.
+ SORTSIZE=1073741824
+                   Specifies the amount of memory that is available to the SORT procedure.
+ NOSORTVALIDATE    SORT does not verify whether a data set is sorted according to the variables in the BY statement.
+ SOURCE            Writes program source statements to the SAS log.
+ NOSOURCE2         Does not write secondary source statements from included files to the SAS log.
+ NOSPDEFILECACHE   Disables caching of opened SPD Engine files.
+ SPDEINDEXSORTSIZE=33554432
+                   Specifies the memory size for sorting index values.
+ SPDEMAXTHREADS=0  Specifies the maximum number of threads that the SPD Engine can spawn for I/O processing.
+ SPDEPARALLELREAD=NO
+                   Enables or disables SPD Engine parallel reads when no WHERE clause is in effect.
+ SPDESORTSIZE=33554432
+                   Specifies the memory size that is used for sorting by the SPD Engine.
+ SPDEUTILLOC=      Specifies one or more locations where the SPD Engine can temporarily store utility files.
+ SPDEWHEVAL=COST   Specifies the WHERE statement evaluation process for the SPD Engine.
+ NOSPOOL           Does not write SAS statements to a utility data set in the Work library.
+8                                                          Le Système SAS                         16:28 Wednesday, February 17, 2016
+
+ SQLCONSTDATETIME  PROC SQL replaces references to the DATE, TIME, DATETIME, and TODAY functions with their equivalent constant 
+                   values before a query executes.
+ SQLGENERATION=(NONE DBMS='TERADATA DB2 ORACLE NETEZZA ASTER GREENPLM HADOOP SAPHANA IMPALA HAWQ')
+                   Specifies whether and when SAS procedures generate SQL for in-database processing of source data.
+ NOSQLIPONEATTEMPT Allows an SQL query to continue processing when an implicit pass-through request fails.
+ SQLMAPPUTTO=SAS_PUT
+                   Specifies the PUT function mapping to SQL.
+ SQLREDUCEPUT=DBMS For PROC SQL, specifies the engine type to use to optimize a PUT function in a query.
+ SQLREDUCEPUTOBS=0 For PROC SQL, specifies the minimum number of observations that must be in a table for PROC SQL to optimize the 
+                   PUT function in a query.
+ SQLREDUCEPUTVALUES=0
+                   For PROC SQL, specifies the maximum number of SAS format values that can exist in a PUT function expression to 
+                   optimize the PUT function in a query.
+ SQLREMERGE        PROC SQL processes queries that use remerged data.
+ SQLUNDOPOLICY=REQUIRED
+                   Specifies how PROC SQL handles updated data if errors occur while you are updating data.
+ NOSSLCLIENTAUTH   Does not require the server to perform client authentication for a server connection.
+ NOSSLCRLCHECK     Does not check the Certificate Revocation List (CRL) when a digital certificate is validated.
+ NOSSPI            Does not use Security Support Provider Interface for single sign-on connections to IOM servers.
+ NOSTARTLIB        Does not assign user-defined permanent librefs when SAS starts.
+ NOSTEPCHKPT       Disables recording of checkpoint-restart data for DATA and PROC steps for batch programs.
+ STEPCHKPTLIB=WORK Specifies the libref of the library where checkpoint-restart data for DATA and PROC steps is saved.
+ NOSTEPRESTART     Disables restart mode which executes batch programs using checkpoint-restart data collected for DATA and PROC 
+                   steps in a prior execution.
+ STRIPESIZE=       Specifies path and size pairs to identify I/O device stripe size.  Stripe size indicates page size when creating 
+                   a data set or utility file.
+ SUMSIZE=0         Specifies a limit on the amount of memory that is available for data summarization procedures when class 
+                   variables are active.
+ SVGAUTOPLAY       Starts animation when the page is loaded in the browser.
+ NOSVGCONTROLBUTTONS
+                   Does not display the paging control buttons and an index in a multipage SVG document.
+ SVGFADEIN=0       Specifies the number of seconds for the fade-in effect for a graph.
+ SVGFADEMODE=OVERLAP
+                   Specifies whether to use sequential frames or to overlap frames for the fade-in effect of a graph.
+ SVGFADEOUT=0      Specifies the number of seconds for a graph to fade out of view.
+ SVGHEIGHT=        Specifies the height of the viewport. Specifies the value of the height attribute of the outermost SVG element.
+ NOSVGMAGNIFYBUTTON
+                   Disables the SVG magnifier tool.
+ SVGPRESERVEASPECTRATIO=
+                   Specifies whether to force uniform scaling of SVG output. Specifies the preserveAspectRatio attribute on the 
+                   outermost SVG element.
+ SVGTITLE=         Specifies the text in the title bar of the SVG output. Specifies the value of the TITLE element in the SVG file.
+ SVGVIEWBOX=       Specifies the coordinates, width, and height that are used to set the viewBox attribute on the outermost SVG 
+                   element.
+ SVGWIDTH=         Specifies the width of the viewport. Specifies the value of the width attribute of the outermost SVG element.
+ SVGX=             Specifies the x-axis coordinate of one corner of the rectangular region for an embedded SVG element. Specifies 
+                   the x attribute in the outermost SVG element.
+ SVGY=             Specifies the y-axis coordinate of one corner of the rectangular region for an embedded SVG element. Specifies 
+                   the y attribute in the outermost SVG element.
+ NOSYMBOLGEN       Does not display the results of resolving macro variable references in the SAS log.
+ SYNCHIO           Requires that data set I/O must be completed before other logical SAS tasks can be executed.
+ NOSYNTAXCHECK     Disables syntax check mode for multiple steps in non-interactive or batch SAS sessions.
+ SYSPARM=          Specifies a character string that can be passed to SAS programs.
+ SYSPRINTFONT=     Specifies the default font to use for printing.
+ NOSYSRPUTSYNC     Sets the %SYSRPUT macro variables in the client session when a synchronization point is encountered.
+ TBUFSIZE=0        Specifies the size of the buffer that is used by SAS applications to transfer client/server data across a 
+                   network.
+ TCPLISTENTIME=0   Specifies the amount of time that a SAS/CONNECT server listens for a client to connect before terminating the 
+9                                                          Le Système SAS                         16:28 Wednesday, February 17, 2016
+
+                   CONNECT server session.
+ TCPPORTFIRST=0    Specifies the first value in a range of TCP/IP ports for a client to use to connect to a server.
+ TCPPORTLAST=0     Specifies the last value in a range of TCP/IP ports for a client to use to connect to a server.
+ TENANTID=         Specifies a name that identifies a tenant in a multi-tenant environment.
+ NOTERMINAL        Does not associate a terminal with a SAS session.
+ TERMSTMT=         Specifies the SAS statement to execute when SAS terminates.
+ TEXTURELOC=!SASROOT\common\textures
+                   Specifies the location of textures and images that are used by ODS styles.
+ THREADS           Uses threaded processing for SAS applications that support it.
+ TIMEZONE=         Specifies a time zone.
+ TOOLSMENU         Displays the Tools menu in SAS windows.
+ TOPMARGIN=0.000 IN
+                   Specifies the print margin at the top of the page.
+ TRAINLOC=         Specifies the URL for SAS online training courses.
+ TRANTAB=(lat1lat1,lat1lat1,wlt1_ucs,wlt1_lcs,wlt1_ccl,,,)
+                   Specifies the translation table catalog entries.
+ TSID=             Specifies a logical server metadata object that identifies a table service definition.
+ UBUFNO=0          Specifies the number of utility file buffers.
+ UBUFSIZE=0        Specifies the size of utility file buffers.
+ NOUNIVERSALPRINT  Disables Universal Printing and uses Windows printing.
+ UPRINTCOMPRESSION Enables compression of files that are created by some Universal Printers and SAS/GRAPH devices.
+ URLENCODING=SESSION
+                   Specifies whether the argument to the URLENCODE function and to the URLDECODE function is interpreted using the 
+                   SAS session encoding or UTF-8 encoding.
+ USER=             Specifies the default permanent library to use for one-level SAS data set names.
+ UTILLOC=WORK      Specifies one or more file system locations in which threaded applications can store utility files.
+ UUIDCOUNT=100     Specifies the number of UUIDs to acquire from the UUID Generator Daemon.
+ UUIDGENDHOST=     Specifies the host and port, or the LDAP URL that the UUID Generator Daemon runs on.
+ V6CREATEUPDATE=NOTE
+                   Specifies the type of message to write to the SAS log when Version 6 data sets are created or updated.
+ VALIDFMTNAME=LONG Specifies the maximum size that user-created formats and informat names can be before an error or warning is 
+                   issued.
+ VALIDMEMNAME=EXTEND
+                   Specifies the rules for naming SAS data sets, SAS data views, and item stores.
+ VALIDVARNAME=ANY  Specifies the rules for valid SAS variable names that can be created and processed during a SAS session.
+ VARINITCHK=NOTE   Specifies the type of message to write to the SAS log when a variable is not initialized.
+ VARLENCHK=WARN    Specifies the type of message to write to the SAS log when the length of the variable that is being read is 
+                   longer than the length that is defined for the variable.
+ VBUFSIZE=65536    Specifies the buffer size for a view.
+ VIEWMENU          Displays the View menu in SAS windows.
+ VNFERR            SAS issues an error message when a BY variable exists in one data set but not another when the other data set is 
+                   _NULL_.
+ WORK=E:\SAS\_TD18252_SRV-SASVA_\Prc2
+                   Specifies the libref or location of the Work library.
+ WORKINIT          At SAS invocation, erases files that exist from a previous SAS session in an existing Work library.
+ WORKTERM          Erases the Work files when SAS terminates.
+ YEARCUTOFF=1926   Specifies the first year of a 100-year span that is used by date informats and functions to read a two-digit 
+                   year.
+ _LAST_=WORK._PRODSAVAIL
+                   Specifies the most recently created data set.
+
+Options système hôte :
+
+ ACCESSIBILITY=STANDARD
+                   Specifies whether accessibility features are enabled in the Customize Tool dialog box and in some Properties 
+                   dialog boxes.
+ ALIGNSASIOFILES   Aligns SAS files on a page boundary for improved performance.
+ ALTLOG=           Specifies the location for a copy of the SAS log when SAS is running in batch mode.
+10                                                         Le Système SAS                         16:28 Wednesday, February 17, 2016
+
+ ALTPRINT=         Specifies the location for a copy of the SAS procedure output when SAS is running in batch mode.
+ AUTHPROVIDERDOMAIN=
+                   Specifies the authentication provider that is associated with a domain.
+ AUTHSERVER=       Specifies the domain server that finds and authenticates secure server logins.
+ AWSCONTROL=(SYSTEMMENU MINMAX TITLE)
+                   Specifies whether the main SAS window includes a title bar, a system control menu, and minimize and maximize 
+                   buttons.
+ AWSDEF=0 0 100 100
+                   Specifies the location and dimensions of the main SAS window when SAS initializes.
+ AWSMENU           Displays the menu bar in the main SAS window.
+ AWSMENUMERGE      Embeds menu items that are specific to Windows in the main menus.
+ AWSTITLE=         Specifies the text that appears in the title bar of the main SAS window.
+ COMAUX1=          Specifies the first alternate communications access method.
+ COMAUX2=          Specifies the second alternate communications access method.
+ COMDEF=(BOTTOM CENTER)
+                   Specifies the location where the SAS Command window is displayed by default.
+ CONFIG=( "D:\SAS\Config\Lev1\SASApp\WorkspaceServer\sasv9.cfg" "D:\SAS\Config\Lev1\SASApp\sasv9.cfg" 
+"D:\SAS\BIN\SASFoundation\9.4\sasv9.cfg" "D:\SAS\BIN\SASFoundation\9.4\nls\fr\sasv9.cfg" 
+"D:\SAS\Config\Lev1\SASApp\sasv9_usermods.cfg" "D:\SAS\Config\Lev1\SASApp\WorkspaceServer\sasv9_usermods.cfg" )
+                   Specifies the configuration file that is used when initializing or overriding the values of SAS system options.
+ NODBCS            Disables double-byte character sets.
+ DBCSLANG=NONE     Specifies a double-byte character set language.
+ DBCSTYPE=NONE     Specifies the encoding method to use for a double-byte character set.
+ ECHO=             Specifies the message to be echoed to the SAS log while initializing SAS.
+ EMAILDLG=NATIVE   Specifies whether to use the native e-mail dialog box that is provided by your e-mail application or the e-mail 
+                   dialog box that is provided by SAS.
+ EMAILSYS=SMTP     Specifies the e-mail protocol to use for sending electronic mail.
+ ENCODING=WLATIN1  Specifies the default character-set encoding for the SAS session.
+ ENHANCEDEDITOR    Invokes the Enhanced Editor when SAS starts.
+ FILELOCKWAIT=0    Specifies the number of seconds that SAS will wait for a locked file.
+ FILELOCKWAITMAX=600
+                   Specifies the number of seconds that SAS waits for a locked file to become available.
+ FILTERLIST=       Specifies an alternative set of file filter specifications to use for the Open and Save As dialog boxes.
+ FONT=             Specifies a font to use for SAS windows.
+ FONTALIAS=        Assigns a Windows font to one of the SAS fonts.
+ NOFULLSTIMER      Does not write performance statistics to the SAS log.
+ HELPLOC=(            "!SASROOT\core\help"          "!MYSASFILES\classdoc"          )
+                   Specifies the location of the text and index files for the facility that is used to view the online SAS Help and 
+                   Documentation.
+ HELPREGISTER=     Registers help files to access from the main SAS window Help menu.
+ HOSTPRINT         Prints using Windows printing.
+ NOICON            Restores the main SAS window.
+ JREOPTIONS=(             -DPFS_TEMPLATE=D:\SAS\BIN\SASFoundation\9.4\tkjava\sasmisc\qrpfstpt.xml          
+-Djava.class.path=D:\SAS\BIN\SASVersionedJarRepository\eclipse\plugins\sas.launcher.jar          
+-Djava.security.auth.login.config=D:\SAS\BIN\SASFoundation\9.4\tkjava\sasmisc\sas.login.config          
+-Djava.security.policy=D:\SAS\BIN\SASFoundation\9.4\tkjava\sasmisc\sas.policy          
+-Djava.system.class.loader=com.sas.app.AppClassLoader          
+-Dlog4j.configuration=file:/D:/SAS/BIN/SASFoundation/9.4/tkjava/sasmisc/sas.log4j.properties          
+-Dsas.app.class.path=D:\SAS\BIN\SASVersionedJarRepository\eclipse\plugins\tkjava.jar          
+-Dsas.ext.config=D:\SAS\BIN\SASFoundation\9.4\tkjava\sasmisc\sas.java.ext.config          
+-Dsas.jre.libjvm=D:\SAS\BIN\SASPrivateJavaRuntimeEnvironment\9.4\jre\bin\server\jvm.dll          
+-Dtkj.app.launch.config=D:\SAS\BIN\SASVersionedJarRepository\picklist          -Xms128m          -Xmx128m           )
+                   Specifies the Java Runtime Environment options for SAS.
+ LOADMEMSIZE=0     Specifies a suggested amount of memory that is needed for executable programs loaded by SAS.
+ LOCALE=FR_FR      Specifies a set of attributes in a SAS session that reflect the language, local conventions, and culture for a 
+                   geographical region.
+ LOG=              Specifies a location for the SAS log when SAS is running in batch mode.
+ MAXMEMQUERY=0     Specifies the maximum amount of memory that is allocated for procedures.
+11                                                         Le Système SAS                         16:28 Wednesday, February 17, 2016
+
+ MEMBLKSZ=16777216 Specifies the memory block size for Windows memory-based libraries.
+ MEMCACHE=0        Specifies to use the memory-based libraries as a SAS file cache.
+ NOMEMLIB          Does not process the Work library as a memory-based library.
+ MEMMAXSZ=2147483648
+                   Specifies the maximum amount of memory to allocate for using memory-based libraries.
+ MEMSIZE=4742634240
+                   Specifies the limit on the amount of virtual memory that can be used during a SAS session.
+ MSG=(            "!SASROOT\nls\fr\sasmsg"          "!SASROOT\core\sasmsg"          "!SASROOT\accelmva\sasmsg"          
+"!SASROOT\access\sasmsg"          "!SASROOT\cmp\sasmsg"          "!SASROOT\graph\sasmsg"          "!SASROOT\inttech\sasmsg"         
+ "!SASROOT\lasreng\sasmsg"          "!SASROOT\spdsclient\sasmsg"          )
+                   Specifies the path to the library that contains SAS messages.
+ NOMSGCASE         Specifies that SAS writes notes, warning, and error messages in mixed casing.
+ NONLSCOMPATMODE   Encodes data using the SAS session encoding.
+ NUMKEYS=12        Specifies the number of available function keys.
+ NUMMOUSEKEYS=3    Specifies the number of mouse buttons that SAS displays in the KEYS window.
+ NOOPLIST          Does not write SAS system option settings to the SAS log.
+ PATH=(             "!SASROOT\core\sasexe"          "!SASROOT\aacomp\sasexe"          "!SASROOT\accelmva\sasexe"          
+"!SASROOT\access\sasexe"          "!SASROOT\baseui\sasexe"          "!SASROOT\bimva\sasexe"          "!SASROOT\cmp\sasexe"          
+"!SASROOT\dmscore\sasexe"          "!SASROOT\graph\sasexe"          "!SASROOT\hadoopbasics\sasexe"          "!SASROOT\hps\sasexe"   
+       "!SASROOT\inttech\sasexe"          "!SASROOT\lasr\sasexe"          "!SASROOT\lasreng\sasexe"          
+"!SASROOT\lasrstat\sasexe"          "!SASROOT\spdsclient\sasexe"          "!SASROOT\tklasr\sasexe"           )
+                   Specifies one or more search paths for SAS executable files.
+ PFKEY=(WIN)       Specifies which set of function keys to designate as the primary set of function keys.
+ PRINT=            Specifies a location for SAS output when running in batch mode.
+ NOPRNGETLIST      Does not recognize printers that are attached to the system.
+ PRTABORTDLGS=BOTH Specifies when to display the Print Abort dialog box.
+ NOPRTPERSISTDEFAULT
+                   SAS uses the default printer.
+ PRTSETFORMS       Include the Use Forms checkbox in the Print Setup dialog box.
+ REALMEMSIZE=0     Specifies the amount of real memory SAS can expect to allocate.
+ REGISTER=         Adds an application to the Tools menu in the main SAS window.
+ RESOURCESLOC=(             "D:\SAS\BIN\SASFoundation\9.4\nls\fr\resource"          "D:\SAS\BIN\SASFoundation\9.4\core\resource"    
+       )
+                   Specifies a directory location of the files that contain SAS resources.
+ RTRACE=NONE       Produces a list of resources that are read or loaded during a SAS session.
+ RTRACELOC=        Specifies the pathname of the file to which the list of resources that are read or loaded during a SAS session 
+                   is written.
+ SASCONTROL=(SYSTEMMENU MINMAX)
+                   Specifies whether the SAS application windows include system and control menus, and minimize and maximize 
+                   buttons.
+ SASINITIALFOLDER=D:\SAS\Config\Lev1\SASApp
+                   When SAS starts, changes the working folder and the default folder for the Open and Save As dialog boxes to a 
+                   specified folder.
+ NOSCROLLBARFLASH  Disables mouse and keyboard focus on the scroll bar to eliminate cursor flashing.
+ SET=[FT15F001 = 'FT15F001.DAT'] [SASROOT = "D:\SAS\BIN\SASFoundation\9.4"] [SASHOME = "D:\SAS\BIN"] [SASAUTOS = (                  
+  "!SASROOT\core\sasmacro"          "!SASROOT\aacomp\sasmacro"          "!SASROOT\accelmva\sasmacro"          
+"!SASROOT\bidbldmva\sasmacro"          "!SASROOT\bimva\sasmacro"          "!SASROOT\dmscore\sasmacro"          
+"!SASROOT\graph\sasmacro"          "!SASROOT\hps\sasmacro"          "!SASROOT\inttech\sasmacro"          
+"!SASROOT\lasreng\sasmacro"          )] [SAMPSIO = (                    "!SASROOT\core\sample"          "!SASROOT\access\sample"    
+      "!SASROOT\accesssample\sample"          "!SASROOT\bimva\sample"          "!SASROOT\graph\sample"          
+"!SASROOT\hps\sample"          "!SASROOT\inttech\sample"          )] [SAMPSRC = (                    "!SASROOT\core\sample"         
+ "!SASROOT\access\sample"          "!SASROOT\accesssample\sample"          "!SASROOT\bimva\sample"          "!SASROOT\graph\sample" 
+         "!SASROOT\hps\sample"          "!SASROOT\inttech\sample"          )] [INSTALL = (                    )] [MYSASFILES = 
+"?FOLDERID_Documents\My SAS Files\9.4"] [SASCFG = "D:\SAS\BIN\SASFoundation\9.4\nls\fr"] [SAS_NO_RANDOM_ACCESS = "1"] [APFMTLIB = 
+"SASEnvironment/SASFormats"]
+                   Defines a SAS environment variable.
+ NOSGIO            Disables the Scatter/Gather I/O feature.
+ SLEEPCNTL=NO      Specifies whether SAS prevents Windows from going into sleep mode.
+12                                                         Le Système SAS                         16:28 Wednesday, February 17, 2016
+
+ SLEEPWINDOW       Enables the SLEEP window.
+ SORTANOM=         Specifies options for the host sort utility.
+ SORTCUT=0         Specifies the data size in number of observations above which SAS uses the host sort instead of the internal SAS 
+                   sort.
+ SORTCUTP=0        Specifies the data size in bytes above which SAS uses the host sort instead of the internal SAS sort.
+ SORTDEV=          Specifies the pathname that is used for temporary files that are created by the host sort utility.
+ SORTNAME=         Specifies the name of the host sort utility.
+ SORTPARM=         Specifies the parameters for the host sort utility.
+ SORTPGM=BEST      Specifies whether to use the SAS sort utility or the host sort utility or to let SAS choose the sort utility.
+ NOSPLASH          Does not display the splash screen (logo screen) when SAS starts.
+ SPLASHLOC=        Specifies the location of the splash screen (logo screen) bitmap that appears when SAS starts.
+ SSLCERTISS=       Specifies the name of the issuer of the digital certificate that SSL should use.
+ SSLCERTSERIAL=    Specifies the serial number of the digital certificate that SSL should use.
+ SSLCERTSUBJ=      Specifies the subject name of the digital certificate that SSL should use.
+ STIMEFMT=(NLDATM2. HMS TIMEAMPM KB MEMFULL TSFULL NC)
+                   Specifies the format that is used to display the FULLSTIMER and STIMER output for timestamp, memory, CPU and 
+                   elapsed time statistics.
+ STIMER            Writes real and CPU time to the SAS log.
+ SYSGUIFONT=       Specifies a font to use for the button text and the descriptive text.
+ SYSIN=            Specifies the SAS program to execute in batch.
+ SYSPRINT=         Specifies a destination printer for printing SAS output.
+ TOOLDEF=(TOP RIGHT)
+                   Specifies the Toolbox display location.
+ NOUPRINTMENUSWITCH
+                   Disables the Universal Printing commands on the File menu.
+ USERCONFIG        Process .sasv9.cfg and sasv9.cfg configuration files in user's home directory.
+ USERICON=         Specifies the pathname of the resource file that is associated with the user-defined icon.
+ NOVERBOSE         Does not write start-up system options to the SAS log.
+ NOWEBUI           Disables Web enhancements.
+ NOWINDOWSMENU     Disables the Window menu in the main window if NOAWSMENUMERGE is specified.
+ XCMD              Enables the X command in SAS.
+ NOXMIN            Starts the application that is specified in the X command in the default active state.
+ XSYNC             Windows commands execute synchronously with SAS.
+ XWAIT             The DOS shell closes and returns to SAS after EXIT is entered on the command line.
+NOTE: PROCEDURE OPTIONS used (Total process time):
+      real time           0.25 seconds
+      cpu time            0.03 seconds
+      
+
+17         
+18         
+19         
+20         GOPTIONS NOACCESSIBLE;
+21         %LET _CLIENTTASKLABEL=;
+22         %LET _CLIENTPROJECTPATH=;
+23         %LET _CLIENTPROJECTNAME=;
+24         %LET _SASPROGRAMFILE=;
+25         
+26         ;*';*";*/;quit;run;
+27         ODS _ALL_ CLOSE;
+28         
+29         
+30         QUIT; RUN;
+31         

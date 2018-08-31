@@ -1,0 +1,106 @@
+PROC SQL;
+   CREATE TABLE STATS.CUBE_HENNECKE_DEPUIS_180814_JA(label="CUBE_HENNECKE_DEPUIS_180814_JA") AS 
+   SELECT t1.BOW, 
+          t1.LATF, 
+          t1.N_Assemblage, 
+          t1.N_Import, 
+          t1.NbImport, 
+          t1.Qual, 
+          t1.Recipe, 
+          t1.SawEdge, 
+          t1.WaferId, 
+          t1.Waf_Ctrl_Equipement, 
+          t1.Ass_Sci_Sem_Poste_Fin, 
+          t1.Ass_Sci_Mois_Poste_Fin, 
+          t1.Ass_Sci_Cause_Casse_Fil_1, 
+          t1.Ass_Sci_Equipement, 
+          t1.Ass_Sci_Fil_Num_Bobine, 
+          t1.Ass_Sci_Fil_Num_Livr, 
+          t1.Ass_Sci_Km_apres_Tension, 
+          t1.Ass_Sci_Nb_Double, 
+          t1.Ass_Sci_Num_Decoupe, 
+          t1.Ass_Sci_Position, 
+          t1.Ass_Sci_Slurry_Densite, 
+          t1.Ass_Sci_Slurry_Nb_Util, 
+          t1.Ass_Sci_Vitesse_Fil_m_par_s, 
+          t1.Ass_Sci_Vitesse_Table_microns_pa, 
+          t1.Type_assemblage, 
+          /* Defaut_Thickness */
+            (CASE  
+               WHEN t1.Thickn Between 180 AND 220 
+               THEN 0
+               ELSE 1
+            END) LABEL="Defaut_Thickness" AS Defaut_Thickness, 
+          /* Defaut_TTV_40 */
+            (CASE  
+               WHEN t1.TTV < 40
+               THEN 0
+               ELSE 1
+            END
+            ) LABEL="Defaut_TTV_40" AS Defaut_TTV_40, 
+          /* Defaut_Strie_32 */
+            (CASE  
+               WHEN t1.SawGroove < 32
+               THEN 0
+               ELSE 1
+            END
+            ) LABEL="Defaut_Strie_32" AS Defaut_Strie_32, 
+          /* Defaut_Ondulation_32 */
+            (CASE  
+               WHEN t1.SawStep < 32
+               THEN 0
+               ELSE 1
+            END
+            ) LABEL="Defaut_Ondulation_32" AS Defaut_Ondulation_32, 
+          /* Defaut_Ondulation_40 */
+            (CASE  
+               WHEN t1.SawStep < 40
+               THEN 0
+               ELSE 1
+            END
+            ) LABEL="Defaut_Ondulation_40" AS Defaut_Ondulation_40, 
+          /* Ratio_Thickness */
+            ((CASE  
+               WHEN t1.Thickn Between 180 AND 220 
+               THEN 0
+               ELSE 1
+            END)/ t1.NbImport) LABEL="Ratio_Thickness" AS Ratio_Thickness, 
+          /* Ratio_Defaut_TTV_40 */
+            ((CASE  
+               WHEN t1.TTV < 40
+               THEN 0
+               ELSE 1
+            END) / t1.NbImport
+            ) LABEL="Ratio_Defaut_TTV_40" AS Ratio_Defaut_TTV_40, 
+          /* Ratio_Defaut_Strie_32 */
+            ((CASE  
+               WHEN t1.SawGroove < 32
+               THEN 0
+               ELSE 1
+            END) / t1.NbImport
+            ) LABEL="Ratio_Defaut_Strie_32" AS Ratio_Defaut_Strie_32, 
+          /* Ratio_Defaut_Ondulation_32 */
+            ((CASE  
+               WHEN t1.SawStep < 32
+               THEN 0
+               ELSE 1
+            END) / t1.NbImport
+            ) LABEL="Ratio_Defaut_Ondulation_32" AS Ratio_Defaut_Ondulation_32, 
+          /* Ratio_Defaut_Ondulation_40 */
+            ((CASE  
+               WHEN t1.SawStep < 40
+               THEN 0
+               ELSE 1
+            END) / t1.NbImport
+            ) LABEL="Ratio_Defaut_Ondulation_40" AS Ratio_Defaut_Ondulation_40, 
+          /* Numero_Test_Upcase */
+            (CASE  
+               WHEN t1.Ass_Sci_Num_Test is missing
+               THEN 'Non Renseigné'
+               ELSE  Upcase(strip(COMPBL(t1.Ass_Sci_Num_Test)))
+            END
+            ) LABEL="Numero_Test_Upcase" AS Numero_Test_Upcase, 
+          /* Date_Actualisation */
+            (DATETIME()) FORMAT=FRSDFDT16. LABEL="Date_Actualisation" AS Date_Actualisation
+      FROM STATS.HENNECKE_SCIE_DEPUIS_180814_JA t1;
+QUIT;

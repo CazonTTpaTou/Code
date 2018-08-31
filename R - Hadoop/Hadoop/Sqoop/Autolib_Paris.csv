@@ -1,0 +1,848 @@
+identifiant_dsp;code_postal;ville;field13;type_de_station;emplacement;nom_de_la_station;places_autolib;places_recharge_tiers;nombre_total_de_places
+75120-35;75020;Paris;48.8518536, 2.3982137;Station;Voirie;Paris/Charonne/52;4;1;5
+92023-13;92140;Clamart;48.7813871, 2.2271271;Station;Voirie;Clamart/Bourcillière/137;6;0;6
+92032-08;92260;Fontenay-aux-Roses;48.78919, 2.293033;Station;Voirie;Fontenay-aux-Roses/Lombard/20;6;0;6
+92036-13;92230;Gennevilliers;48.9269437, 2.3143339;Station;Voirie;Gennevilliers/Louis Roche/125;6;0;6
+92040-13;92130;Issy-les-Moulineaux;48.8295855, 2.2836035;Station;Voirie;Issy-les-Moulineaux/Ernest Renan/9;6;0;6
+92040-22;92130;Issy-les-Moulineaux;48.8167, 2.260423;Station;Voirie;Issy-les-Moulineaux/Égalité/57;6;0;6
+92044-PG;92300;Levallois-Perret;48.8953575, 2.2922568;Station;Parking;Levallois-Perret/Pierre Brossolette/21;6;0;6
+92044-PJ;92300;Levallois-Perret;48.8873092, 2.2844274;Station;Parking;Levallois-Perret/Louise Michel/8;6;0;6
+92046-02;92240;Malakoff;48.8192396, 2.3040697;Station;Voirie;Malakoff/Gabriel Péri/120;6;0;6
+92048-09;92190;Meudon;48.787686, 2.2277686;Station;Voirie;Meudon/De Gaulle/19;6;0;6
+92050-04;92000;Nanterre;48.89231, 2.214089;Station;Voirie;Nanterre/Pablo Picasso/20;6;0;6
+92062-06;92800;Puteaux;48.8761876, 2.2361346;Station;Voirie;Puteaux/Francis de Pressensé/12;6;0;6
+92063-18;92500;Rueil-Malmaison;48.8871, 2.181057;Station;Voirie;Rueil-Malmaison/Colmar/17;6;0;6
+93006-05;93170;Bagnolet;48.8611263, 2.4181508;Station;Voirie;Bagnolet/République/58;6;0;6
+94044-02;94450;Limeil-Brévannes;48.73963, 2.490184;Station;Voirie;Limeil-Brévannes/Lavoisier/12;5;0;5
+75120-38;75020;Paris;48.8495131, 2.4061582;Station;Voirie;Paris/Frédérique Loliée/5;4;1;5
+92004-03;92600;Asnières-sur-Seine;48.9059332, 2.2852074;Station;Voirie;Asnières-sur-Seine/Normandie/22;6;1;7
+92004-09;92600;Asnières-sur-Seine;48.9152642, 2.2767942;Station;Voirie;Asnières-sur-Seine/Henri Say/11;6;0;6
+92012-08;92100;Boulogne-Billancourt;48.840169, 2.229398;Station;Voirie;Boulogne-Billancourt/André Morizet/121;6;0;6
+92012-11;92100;Boulogne-Billancourt;48.83975, 2.2400622;Station;Voirie;Boulogne-Billancourt/Jean Jaurès/61;6;0;6
+92012-13;92100;Boulogne-Billancourt;48.836581, 2.239424;Espace;Voirie;Boulogne-Billancourt/Gallieni/114;6;0;6
+92019-04;92290;Châtenay-Malabry;48.7622887, 2.2838864;Station;Voirie;Châtenay-Malabry/Division Leclerc/81;6;0;6
+92019-07;92290;Châtenay-Malabry;48.768495, 2.250599;Station;Voirie;Châtenay-Malabry/Cyrano de Bergerac/6;6;0;6
+92022-03;92370;Chaville;48.80551, 2.184925;Station;Voirie;Chaville/Pavé des Gardes/33;6;0;6
+92023-12;92140;Clamart;48.78468, 2.237137;Station;Voirie;Clamart/Porte de Trivaux/130;6;0;6
+92063-12;92500;Rueil-Malmaison;48.8839089, 2.1919207;Station;Voirie;Rueil-Malmaison/Paul Doumer/3;6;0;6
+92073-09;92150;Suresnes;48.8618708, 2.2133061;Station;Voirie;Suresnes/Tuilerie/33;6;0;6
+92075-03;92170;Vanves;48.8169686, 2.2810709;Station;Voirie;Vanves/Larmeroux/12;5;0;5
+92075-06;92170;Vanves;48.82101, 2.28876;Station;Voirie;Vanves/Antoine Fratacci/34;6;0;6
+93006-06;93170;Bagnolet;48.87215, 2.43015;Station;Voirie;Bagnolet/Stalingrad/49;6;0;6
+93006-07;93170;Bagnolet;48.85764, 2.415732;Station;Voirie;Bagnolet/Edouard Vaillant/60;6;0;6
+93029-14;93700;Drancy;48.9216032, 2.4411713;Station;Voirie;Drancy/Roger Salengro/3;4;0;4
+93055-12;93500;Pantin;48.90915, 2.398654;Station;Voirie;Pantin/Jean Jaurès/150;6;0;6
+93055-14;93500;Pantin;48.8946957, 2.4254593;Station;Voirie;Pantin/Anatole France/1;6;0;6
+93064-03;93110;Rosny-sous-Bois;48.876218, 2.475338;Station;Voirie;Rosny-sous-Bois/Rome/8;6;0;6
+93064-06;93110;Rosny-sous-Bois;48.8798646, 2.4931178;Station;Voirie;Rosny-sous-Bois/Variot/40;6;0;6
+93070-09;93400;Saint-Ouen;48.9018633, 2.3341342;Station;Voirie;Saint-Ouen/Édouard Vaillant/28;7;0;7
+93070-11;93400;Saint-Ouen;48.9102315, 2.3441112;Station;Voirie;Saint-Ouen/Michelet/42;5;1;6
+94002-02;94140;Alfortville;48.8026584, 2.4254131;Espace;Voirie;Alfortville/Malleret-Joinville/16;6;0;6
+94003-06;94110;Arcueil;48.8042795, 2.3288429;Station;Voirie;Arcueil/Paul Bert/21;6;0;6
+94016-01;94230;Cachan;48.7942674, 2.3345857;Espace;Voirie;Cachan/Camille Desmoulins/3;5;0;5
+94028-13;94000;Créteil;48.7706043, 2.4707901;Station;Voirie;Créteil/Cotonou/4;4;0;4
+94042-02;94340;Joinville-le-Pont;48.8202532, 2.4745761;Station;Voirie;Joinville-le-Pont/Galliéni/1;6;0;6
+94042-03;94340;Joinville-le-Pont;48.8168, 2.466862;Espace;Voirie;Joinville-le-Pont/Paris/39;6;0;6
+75101-05;75001;Paris;48.8648594, 2.3329713;Station;Voirie;Paris/Pyramides/12;4;1;5
+75102-06;75002;Paris;48.8696994, 2.3423247;Station;Voirie;Paris/Notre-Dame des Victoires/21;4;0;4
+75102-13;75002;Paris;48.868181, 2.335097;Station;Voirie;Paris/Dalayrac/19;4;1;5
+75102-16;75002;Paris;48.8660947, 2.3433342;Station;Voirie;Paris/Louvre/31;4;0;4
+75103-04;75003;Paris;48.8653769, 2.3573678;Station;Voirie;Paris/Réaumur/38;4;1;5
+75103-13;75003;Paris;48.8681421, 2.360276;Station;Voirie;Paris/Saint-Martin/17;4;0;4
+75104-07;75004;Paris;48.8557271, 2.3562976;Station;Voirie;Paris/Pont Louis-Philippe/24;4;1;5
+75104-11;75004;Paris;48.8524894, 2.3678127;Espace;Voirie;Paris/Bourdon/41;4;0;4
+75104-12;75004;Paris;48.84925, 2.362993;Station;Voirie;Paris/Schomberg/1;5;0;5
+75104-14;75004;Paris;48.85378, 2.358089;Station;Voirie;Paris/Nonnains d'Hyères/1;4;1;5
+75105-05;75005;Paris;48.8499024, 2.3444286;Station;Voirie;Paris/Paul Painlevé/7;4;1;5
+75105-11;75005;Paris;48.8452566, 2.3548335;Station;Voirie;Paris/Linné/18;4;1;5
+75105-13;75005;Paris;48.8441945, 2.3507523;Station;Voirie;Paris/Lacépède/38;4;0;4
+75105-15;75005;Paris;48.8479993, 2.3469365;Station;Voirie;Paris/Valette/2;4;1;5
+75105-16;75005;Paris;48.8438007, 2.341924;Station;Voirie;Paris/Saint-Jacques/221;4;0;4
+75106-11;75006;Paris;48.8425631, 2.3363896;Station;Voirie;Paris/Michelet/6;4;1;5
+75106-12;75006;Paris;48.8425101, 2.3292257;Station;Voirie;Paris/Raspail/136;4;0;4
+75106-13;75006;Paris;48.8471079, 2.3321208;Station;Voirie;Paris/Fleurus/2;4;1;5
+75106-15;75006;Paris;48.8524509, 2.3314662;Station;Voirie;Paris/Four/38;4;1;5
+75106-20;75006;Paris;48.85262, 2.342107;Station;Voirie;Paris/Danton/8;4;0;4
+75106-PA;75006;Paris;48.8451283, 2.3252355;Station;Parking;Paris/Rennes/155;6;0;6
+75107-20;75007;Paris;48.8611286, 2.3069867;Station;Voirie;Paris/Jean Nicot/10;4;0;4
+75108-16;75008;Paris;48.8762882, 2.3011232;Station;Voirie;Paris/Hoche/31;4;0;4
+75108-21;75008;Paris;48.8696448, 2.3036203;Station;Voirie;Paris/Pierre Charron/62;4;0;4
+75108-33;75008;Paris;48.8682112, 2.3046348;Station;Voirie;Paris/François 1er/38;4;1;5
+75109-05;75009;Paris;48.8826, 2.3363;Station;Voirie;Paris/Clichy/23;4;1;5
+75109-10;75009;Paris;48.8829733, 2.3454871;Station;Voirie;Paris/Rochechouart/31;4;0;4
+75109-19;75009;Paris;48.875464, 2.342083;Station;Voirie;Paris/La Fayette/56;4;1;5
+75109-22;75009;Paris;48.8723178, 2.3387762;Station;Voirie;Paris/Haussmann/6;4;1;5
+75110-02;75010;Paris;48.88363, 2.351257;Station;Voirie;Paris/Guy Patin/10;5;0;5
+75110-06;75010;Paris;48.8758773, 2.3724186;Station;Voirie;Paris/Villette/55;5;0;5
+75110-17;75010;Paris;48.8740623, 2.3703034;Station;Voirie;Paris/Claude Vellefaux/3;4;1;5
+75110-33;75010;Paris;48.87517, 2.348162;Station;Voirie;Paris/Poissonnière/64;4;0;4
+75111-17;75011;Paris;48.8629398, 2.386178;Station;Voirie;Paris/République/128;4;1;5
+75111-27;75011;Paris;48.8592806, 2.3773563;Espace;Voirie;Paris/Voltaire/106;4;1;5
+75111-29;75011;Paris;48.86023, 2.3719914;Station;Voirie;Paris/Richard Lenoir/63;4;0;4
+75111-32;75011;Paris;48.85579, 2.374203;Station;Voirie;Paris/Commandant Lamy/2;4;0;4
+75111-36;75011;Paris;48.862875, 2.3765261;Station;Voirie;Paris/Parmentier/62;4;0;4
+75112-02;75012;Paris;48.8506483, 2.3754501;Station;Voirie;Paris/Ledru-Rollin/88;4;1;5
+75112-07;75012;Paris;48.84803, 2.3677;Station;Voirie;Paris/Bastille/20;4;0;4
+75112-09;75012;Paris;48.8470504, 2.3815222;Station;Voirie;Paris/Crozatier/33;4;1;5
+75112-10;75012;Paris;48.8391453, 2.3805222;Station;Voirie;Paris/Bercy/108;4;1;5
+75112-12;75012;Paris;48.841876, 2.375976;Espace;Voirie;Paris/Villiot/20;4;0;4
+75112-22;75012;Paris;48.8444, 2.407044;Station;Voirie;Paris/Saint-Mandé/94;4;1;5
+75112-23;75012;Paris;48.8449828, 2.4019623;Station;Voirie;Paris/Saint-Mandé/48;4;0;4
+75112-35;75012;Paris;48.84071, 2.409631;Station;Voirie;Paris/Émile Laurent/1;4;0;4
+75112-36;75012;Paris;48.84756, 2.397014;Station;Voirie;Paris/Nation/26;4;0;4
+75113-08;75013;Paris;48.8262319, 2.3424498;Station;Voirie;Paris/Tolbiac/245;4;1;5
+75113-10;75013;Paris;48.8310493, 2.3460584;Station;Voirie;Paris/Vulpian/24;4;1;5
+75113-12;75013;Paris;48.8204223, 2.3512076;Station;Voirie;Paris/Gouthière/12;4;0;4
+75113-15;75013;Paris;48.83185, 2.354094;Station;Voirie;Paris/Sur Rosalie/4;4;0;4
+75113-21;75013;Paris;48.824068, 2.364308;Station;Voirie;Paris/Ivry/58;4;0;4
+75113-29;75013;Paris;48.84019, 2.362478;Station;Voirie;Paris/Hôpital/47;4;0;4
+75113-30;75013;Paris;48.8362302, 2.3724643;Station;Voirie;Paris/Fernand Braudel/21;4;0;4
+75113-31;75013;Paris;48.8317344, 2.3728943;Station;Voirie;Paris/Chevaleret/131;4;1;5
+75113-34;75013;Paris;48.82934, 2.382635;Station;Voirie;Paris/Françoise Dolto/1;4;0;4
+75101-06;75001;Paris;48.85971, 2.34024;Station;Voirie;Paris/Amiral Coligny/2;4;1;5
+75102-07;75002;Paris;48.8703, 2.349722;Station;Voirie;Paris/Bonne Nouvelle/21;4;0;4
+75102-12;75002;Paris;48.8704209, 2.3454538;Station;Voirie;Paris/Uzès/1;4;0;4
+75103-07;75003;Paris;48.8597916, 2.3613291;Espace;Voirie;Paris/Perle/18;4;0;4
+75104-10;75004;Paris;48.8510439, 2.3563199;Station;Voirie;Paris/Béthunes/36;4;1;5
+75104-15;75004;Paris;48.8484226, 2.366004;Station;Voirie;Paris/Bourdon/9;4;1;5
+75105-02;75005;Paris;48.8513879, 2.3472476;Station;Voirie;Paris/Dante/1;4;0;4
+75105-07;75005;Paris;48.84934, 2.350152;Station;Voirie;Paris/Bernardins/23;4;0;4
+75105-12;75005;Paris;48.8444276, 2.3522773;Station;Voirie;Paris/Monge/58;4;1;5
+75105-21;75005;Paris;48.8397733, 2.3476575;Station;Voirie;Paris/Claude Bernard/16;4;1;5
+75106-03;75006;Paris;48.8507628, 2.3319002;Station;Voirie;Paris/Madame/18;4;0;4
+75106-04;75006;Paris;48.847875, 2.3239783;Station;Voirie;Paris/Bérite/3;4;0;4
+75107-02;75007;Paris;48.85807, 2.299582;Station;Voirie;Paris/Bourdonnais/45;4;1;5
+75107-10;75007;Paris;48.8482825, 2.315725;Station;Voirie;Paris/Duroc/2;4;1;5
+75107-12;75007;Paris;48.8508194, 2.3237968;Station;Voirie;Paris/Bac/142;4;1;5
+75107-15;75007;Paris;48.8593659, 2.3195393;Station;Voirie;Paris/Martignac/2;5;0;5
+75108-03;75008;Paris;48.872759, 2.3080661;Station;Voirie;Paris/Artois/11;5;0;5
+75108-06;75008;Paris;48.87006, 2.312597;Station;Voirie;Paris/Matignon/2;4;0;4
+75108-09;75008;Paris;48.881834, 2.32056;Station;Voirie;Paris/Rome/73;4;0;4
+75108-10;75008;Paris;48.8662011, 2.3156932;Station;Voirie;Paris/Dutuit/1;4;1;5
+75108-11;75008;Paris;48.8724475, 2.3041662;Station;Voirie;Paris/Berri/10;4;1;5
+75108-14;75008;Paris;48.8797479, 2.3214351;Station;Voirie;Paris/Constantinople/4;4;1;5
+75108-18;75008;Paris;48.878351, 2.3044935;Station;Voirie;Paris/Courcelles/69;4;1;5
+75108-20;75008;Paris;48.8800947, 2.3134453;Station;Voirie;Paris/Malesherbes/113;4;0;4
+75108-30;75008;Paris;48.8706486, 2.3012817;Station;Voirie;Paris/George V/44;4;1;5
+75108-32;75008;Paris;48.8721041, 2.3259728;Station;Voirie;Paris/Tronchet/19;4;0;4
+75109-01;75009;Paris;48.883011, 2.329596;Station;Voirie;Paris/Adolphe Max/6;4;0;4
+75109-09;75009;Paris;48.8716413, 2.3338862;Station;Voirie;Paris/Chaussée d'Antin/5;4;0;4
+75109-16;75009;Paris;48.87357, 2.3348418;Station;Voirie;Paris/La Fayette/7;4;0;4
+75110-04;75010;Paris;48.8837053, 2.3600404;Station;Voirie;Paris/Louis Blanc/67;4;0;4
+75110-13;75010;Paris;48.8820721, 2.3664877;Station;Voirie;Paris/Saint-Martin/242;4;0;4
+75110-20;75010;Paris;48.87119, 2.364206;Station;Voirie;Paris/Beaurepaire/31;4;1;5
+75111-07;75011;Paris;48.8505136, 2.3823163;Espace;Voirie;Paris/Saint-Antoine/199;4;0;4
+75111-10;75011;Paris;48.8690795, 2.371679;Station;Voirie;Paris/Parmentier/125;4;1;5
+75111-13;75011;Paris;48.8553267, 2.3783382;Station;Voirie;Paris/Ledru Rollin/155;4;1;5
+75111-15;75011;Paris;48.8656694, 2.3721102;Station;Voirie;Paris/République/36;4;0;4
+75112-05;75012;Paris;48.8431847, 2.3837959;Station;Voirie;Paris/Charles Bossut/4;4;1;5
+75112-14;75012;Paris;48.8472143, 2.3717355;Station;Voirie;Paris/Lyon/19;4;0;4
+75112-15;75012;Paris;48.8493367, 2.3895684;Station;Voirie;Paris/Saint-Antoine/238;4;1;5
+75112-17;75012;Paris;48.84154, 2.389211;Station;Voirie;Paris/Henard/3;4;1;5
+75112-25;75012;Paris;48.840277, 2.3946269;Station;Voirie;Paris/Reuilly/116;4;1;5
+75112-27;75012;Paris;48.8415951, 2.4050137;Station;Voirie;Paris/Arnold Netter/10;4;1;5
+75112-29;75012;Paris;48.8351899, 2.4002905;Station;Voirie;Paris/Claude Decaen/26;4;1;5
+75112-30;75012;Paris;48.839191, 2.3878529;Station;Voirie;Paris/Charolais/2;4;1;5
+75112-32;75012;Paris;48.8355193, 2.3850356;Station;Voirie;Paris/Pommard/7;4;0;4
+75112-34;75012;Paris;48.8373149, 2.4022445;Station;Voirie;Paris/Picpus/122;4;1;5
+75113-02;75013;Paris;48.8351639, 2.3446053;Station;Voirie;Paris/Arago/52;5;0;5
+75113-05;75013;Paris;48.83164, 2.342243;Station;Voirie;Paris/Auguste Blanqui/120;4;1;5
+75113-14;75013;Paris;48.8299453, 2.3499186;Station;Voirie;Paris/Auguste Blanqui/50;4;0;4
+75113-18;75013;Paris;48.82223, 2.358905;Station;Voirie;Paris/Caillaux/24;4;1;5
+75113-32;75013;Paris;48.82881, 2.376281;Station;Voirie;Paris/Chevaleret/79;4;0;4
+75114-04;75014;Paris;48.8348549, 2.3297831;Station;Voirie;Paris/Boulard/1;4;0;4
+75114-10;75014;Paris;48.83126, 2.313088;Station;Voirie;Paris/Raymond Losserand/145;4;0;4
+75114-25;75014;Paris;48.8367951, 2.3186569;Espace;Voirie;Paris/Catalogne/2;4;1;5
+75114-32;75014;Paris;48.8383124, 2.3408664;Station;Voirie;Paris/Port-Royal/97;4;0;4
+75114-PD;75014;Paris;48.8418362, 2.3297916;Station;Parking;Paris/Montparnasse/120;6;0;6
+75115-04;75015;Paris;48.851832, 2.2997986;Station;Voirie;Paris/Suffren/78;4;1;5
+75115-13;75015;Paris;48.8451076, 2.287503;Station;Voirie;Paris/Lourmel/79;4;0;4
+75115-19;75015;Paris;48.8412037, 2.2977543;Station;Voirie;Paris/Lecourbe/178;5;0;5
+75115-22;75015;Paris;48.8389208, 2.2824849;Espace;Voirie;Paris/Félix Faure/109;4;1;5
+75115-28;75015;Paris;48.8335103, 2.2987201;Station;Voirie;Paris/Dantzig/37;4;1;5
+75115-32;75015;Paris;48.8383125, 2.2943442;Station;Voirie;Paris/Convention/171;4;0;4
+75115-33;75015;Paris;48.8471694, 2.2953347;Station;Voirie;Paris/Émile Zola/143;4;0;4
+75115-34;75015;Paris;48.8338872, 2.3081344;Station;Voirie;Paris/Vouillé/47;4;0;4
+75115-41;75015;Paris;48.8512259, 2.2912934;Station;Voirie;Paris/Finlay/43;4;0;4
+75115-43;75015;Paris;48.8426446, 2.3132661;Station;Voirie;Paris/Pasteur/41;4;1;5
+75115-57;75015;Paris;48.857, 2.2917;Station;Voirie;Paris/Suffren/2;4;0;4
+75115-59;75015;Paris;48.8319972, 2.3048474;Station;Voirie;Paris/Morillons/95;4;0;4
+75115-61;75015;Paris;48.8478735, 2.2847016;Station;Voirie;Paris/Beaugrenelle/4;4;1;5
+75116-01;75016;Paris;48.874641, 2.2915841;Espace;Voirie;Paris/Grande Armée/13;5;0;5
+75116-04;75016;Paris;48.8724415, 2.2915577;Station;Voirie;Paris/Victor Hugo/18;4;0;4
+75116-06;75016;Paris;48.87683, 2.284882;Station;Voirie;Paris/Grande Armée/81;4;1;5
+75116-09;75016;Paris;48.8669712, 2.2858795;Station;Voirie;Paris/Raymond Poincaré/51;4;1;5
+75116-14;75016;Paris;48.8602593, 2.2740467;Station;Voirie;Paris/Émile Augier/20;4;1;5
+75116-17;75016;Paris;48.8579379, 2.2811121;Station;Voirie;Paris/Chernoviz/12;4;0;4
+75116-21;75016;Paris;48.8585701, 2.2851211;Station;Voirie;Paris/Delessert/23;4;0;4
+75116-29;75016;Paris;48.8515283, 2.2678125;Station;Voirie;Paris/Mozart/101;4;0;4
+75116-32;75016;Paris;48.8389361, 2.2567427;Station;Voirie;Paris/Murat/98;4;0;4
+75116-PG;75016;Paris;48.8396733, 2.2628916;Station;Parking;Paris/Versailles/178;6;0;6
+75117-01;75017;Paris;48.8781047, 2.2851178;Station;Voirie;Paris/Pereire/271;4;1;5
+75117-03;75017;Paris;48.8955462, 2.3282817;Station;Voirie;Paris/Navier/1;4;1;5
+75117-04;75017;Paris;48.8754776, 2.2945178;Station;Voirie;Paris/Mac Mahon/5;4;0;4
+75117-06;75017;Paris;48.8794622, 2.2899947;Espace;Voirie;Paris/Ternes/73;4;1;5
+75117-11;75017;Paris;48.8957574, 2.3242009;Station;Voirie;Paris/Navier/47;5;0;5
+75117-13;75017;Paris;48.8817521, 2.317631;Station;Voirie;Paris/Batignolles/92;4;0;4
+75117-14;75017;Paris;48.8863019, 2.3151179;Station;Voirie;Paris/Dulong/67;5;0;5
+75117-21;75017;Paris;48.8799479, 2.2993184;Station;Voirie;Paris/Wagram/77;4;0;4
+75117-37;75017;Paris;48.8832659, 2.3127515;Station;Voirie;Paris/Legendre/22;4;0;4
+75117-40;75017;Paris;48.8823377, 2.3018911;Station;Voirie;Paris/Jouffroy d'Abbans/108;4;0;4
+75117-42;75017;Paris;48.8782587, 2.2967633;Station;Voirie;Paris/Ternes/6;4;0;4
+75117-PM;75017;Paris;48.8834652, 2.2880891;Station;Parking;Paris/Gouvion Saint-Cyr/26;6;0;6
+75118-04;75018;Paris;48.8945152, 2.3412577;Station;Voirie;Paris/Poteau/40;4;0;4
+75118-38;75018;Paris;48.8996, 2.351156;Station;Voirie;Paris/Jean Cocteau/2;4;1;5
+75119-10;75019;Paris;48.8799263, 2.4004487;Station;Voirie;Paris/Algérie/7;4;0;4
+75119-26;75019;Paris;48.88947, 2.398229;Station;Voirie;Paris/Sept Arpents/9;4;1;5
+75119-30;75019;Paris;48.8780077, 2.3966042;Station;Voirie;Paris/Bois/1;4;0;4
+75120-05;75020;Paris;48.87083, 2.403597;Station;Voirie;Paris/Gambetta/161;4;0;4
+75120-06;75020;Paris;48.8674784, 2.3965939;Station;Voirie;Paris/Pyrénées/236;4;1;5
+75120-07;75020;Paris;48.86191, 2.388035;Station;Voirie;Paris/Ménilmontant/30;4;0;4
+75120-43;75020;Paris;48.867322, 2.3906964;Station;Voirie;Paris/Sorbier/14;4;0;4
+92004-12;92600;Asnières-sur-Seine;48.92852, 2.27253;Station;Voirie;Asnières-sur-Seine/Robert Lavergne/11;6;0;6
+92004-15;92600;Asnières-sur-Seine;48.9179468, 2.3189865;Station;Voirie;Asnières-sur-Seine/Olympe de Gouge/1;6;0;6
+92004-22;92600;Asnières-sur-Seine;48.926, 2.273943;Station;Voirie;Asnières-sur-Seine/Ménil/273;6;0;6
+92007-03;92220;Bagneux;48.8019167, 2.321829;Station;Voirie;Bagneux/Verdun/127;6;0;6
+92007-05;92220;Bagneux;48.79006, 2.313115;Station;Voirie;Bagneux/Schweitzer/1;6;0;6
+92012-15;92100;Boulogne-Billancourt;48.831826, 2.254098;Station;Voirie;Boulogne-Billancourt/République/24;6;0;6
+92019-02;92290;Châtenay-Malabry;48.76587, 2.290613;Station;Voirie;Châtenay-Malabry/Sully Prudhomme/33;6;0;6
+92020-06;92320;Châtillon;48.7991859, 2.2846898;Espace;Voirie;Châtillon/Division Leclerc/12;6;0;6
+92023-01;92140;Clamart;48.804098, 2.2673976;Station;Voirie;Clamart/Victor Hugo/40;7;0;7
+92025-05;92700;Colombes;48.92257, 2.25258;Station;Voirie;Colombes/Henri Barbusse/16;6;0;6
+92025-06;92700;Colombes;48.9236174, 2.2483611;Station;Voirie;Colombes/Gounod/1;6;0;6
+92025-08;92700;Colombes;48.92701, 2.2457526;Station;Voirie;Colombes/Europe/5;6;0;6
+92025-09;92700;Colombes;48.9236342, 2.2368586;Station;Voirie;Colombes/Renouillers/183;6;0;6
+92025-12;92700;Colombes;48.914886, 2.2535759;Station;Voirie;Colombes/Félix Faure/7;6;0;6
+92025-17;92700;Colombes;48.93586, 2.257037;Station;Voirie;Colombes/Valmy/160;7;0;7
+92025-18;92700;Colombes;48.92648, 2.234716;Station;Voirie;Colombes/Parc Lagravère/1;7;0;7
+92026-07;92400;Courbevoie;48.897827, 2.23817;Station;Voirie;Courbevoie/Arche/49;6;0;6
+92035-02;92250;La Garenne-Colombes;48.9086393, 2.2374151;Station;Voirie;La Garenne-Colombes/National/90;6;0;6
+92035-04;92250;La Garenne-Colombes;48.9047803, 2.2558349;Station;Voirie;La Garenne-Colombes/Colombes/126;7;0;7
+92035-05;92250;La Garenne-Colombes;48.90347, 2.239274;Station;Voirie;La Garenne-Colombes/National/31;6;0;6
+92035-06;92250;La Garenne-Colombes;48.90387, 2.230934;Station;Voirie;La Garenne-Colombes/Verdun/41;6;0;6
+92040-03;92130;Issy-les-Moulineaux;48.824901, 2.2752102;Espace;Voirie;Issy-les-Moulineaux/Leclerc/46;6;0;6
+92040-08;92130;Issy-les-Moulineaux;48.8226736, 2.2498224;Station;Voirie;Issy-les-Moulineaux/Îles/21;6;0;6
+92040-15;92130;Issy-les-Moulineaux;48.827482, 2.267632;Station;Voirie;Issy-les-Moulineaux/Gallieni/72;6;0;6
+92044-PI;92300;Levallois-Perret;48.8913559, 2.291001;Station;Parking;Levallois-Perret/Wilson/37;6;0;6
+92046-03;92240;Malakoff;48.8142269, 2.2878426;Station;Voirie;Malakoff/Stalingrad/27;7;0;7
+92046-05;92240;Malakoff;48.8137426, 2.2959516;Station;Voirie;Malakoff/Paul Vaillant Couturier/49;5;0;5
+92048-02;92190;Meudon;48.8169462, 2.2480148;Station;Voirie;Meudon/Paris/6;6;0;6
+92048-04;92190;Meudon;48.8204172, 2.23413;Espace;Voirie;Meudon/Verrerie/10;6;0;6
+92050-01;92000;Nanterre;48.89709, 2.220012;Station;Voirie;Nanterre/Pesaro/2;7;0;7
+92050-06;92000;Nanterre;48.88811, 2.191361;Station;Voirie;Nanterre/Lenine/65;6;0;6
+92050-22;92000;Nanterre;48.8951698, 2.1743332;Station;Voirie;Nanterre/Lavoisier/14;7;0;7
+92050-26;92000;Nanterre;48.8998826, 2.2242026;Station;Voirie;Nanterre/Lens/13;6;0;6
+92050-28;92000;Nanterre;48.8936159, 2.1862673;Station;Voirie;Nanterre/Guilleraies/5;4;0;4
+92050-29;92000;Nanterre;48.8803944, 2.2105524;Station;Voirie;Nanterre/Luaps/17;4;0;4
+92050-32;92000;Nanterre;48.898941, 2.1927044;Station;Voirie;Nanterre/Union/13;6;0;6
+92060-02;92350;Plessis-Robinson;48.78378, 2.271527;Station;Voirie;Plessis-Robinson/Chaussée de l'Etang/109;5;0;5
+92063-07;92500;Rueil-Malmaison;48.87339, 2.182237;Station;Voirie;Rueil-Malmaison/Richelieu/3;6;0;6
+92063-14;92500;Rueil-Malmaison;48.8650741, 2.2053436;Station;Voirie;Rueil-Malmaison/18 Juin 1940/175;6;0;6
+92063-22;92500;Rueil-Malmaison;48.8713591, 2.20283;Station;Voirie;Rueil-Malmaison/8 mai 1945/2;6;0;6
+92072-13;92310;Sèvres;48.812502, 2.213332;Station;Voirie;Sèvres/Wolfenbüttel/1;6;0;6
+92072-14;92310;Sèvres;48.82682, 2.22331;Station;Voirie;Sèvres/Cristallerie/2;6;0;6
+92073-03;92150;Suresnes;48.871036, 2.2276552;Espace;Voirie;Suresnes/Verdun/15;4;1;5
+92073-04;92150;Suresnes;48.86847, 2.223116;Station;Voirie;Suresnes/Henri Sellier/50;6;0;6
+92073-11;92150;Suresnes;48.8683519, 2.2255443;Station;Voirie;Suresnes/Charles Péguy/1;6;0;6
+92073-14;92150;Suresnes;48.86121, 2.224382;Station;Voirie;Suresnes/Marcel Monge/2;5;1;6
+92075-04;92170;Vanves;48.8235138, 2.2967875;Espace;Voirie;Vanves/Jean Bleuzen/77;6;0;6
+92077-01;92410;Ville-d'Avray;48.826, 2.18935;Espace;Voirie;Ville-d'Avray/Charles de Gaulle/1;6;0;6
+92077-02;92410;Ville-d'Avray;48.81805, 2.164893;Station;Voirie;Ville-d'Avray/Versailles/211;5;0;5
+93006-03;93170;Bagnolet;48.8777608, 2.4267206;Station;Voirie;Bagnolet/Sadi Carnot/213;6;0;6
+93013-01;93350;Le Bourget;48.9311, 2.424912;Station;Voirie;Le Bourget/Chevalier de la Barre/7;6;0;6
+93013-03;93350;Le Bourget;48.938103, 2.4286035;Station;Voirie;Le Bourget/John Fitzgerald Kennedy/2;5;1;6
+93029-12;93700;Drancy;48.9166381, 2.4362063;Station;Voirie;Drancy/Roger Salengro/97;6;0;6
+93029-13;93700;Drancy;48.9241686, 2.4358951;Station;Voirie;Drancy/Nouvelle/7;5;1;6
+93045-02;93260;Les Lilas;48.8783253, 2.413255;Station;Voirie;Les Lilas/Bruyères/10;7;0;7
+93045-03;93260;Les Lilas;48.8810551, 2.4223705;Station;Voirie;Les Lilas/Léon Renault/19;7;0;7
+93055-03;93500;Pantin;48.890711, 2.4030061;Espace;Voirie;Pantin/Pré Saint Gervais/1;6;0;6
+93063-02;93230;Romainville;48.89449, 2.432462;Station;Voirie;Romainville/Commune de Paris/100;6;0;6
+93064-01;93110;Rosny-sous-Bois;48.8728916, 2.4872191;Espace;Voirie;Rosny-sous-Bois/Claude Pernès/1;5;0;5
+93064-05;93110;Rosny-sous-Bois;48.88126, 2.480821;Station;Voirie;Rosny-sous-Bois/Léon Blum/10;7;0;7
+93070-03;93400;Saint-Ouen;48.9072038, 2.3314347;Station;Voirie;Saint-Ouen/Louis Blanc/35;6;0;6
+93070-08;93400;Saint-Ouen;48.901404, 2.327399;Station;Voirie;Saint-Ouen/Lafontaine/1;5;0;5
+93070-10;93400;Saint-Ouen;48.9034828, 2.3470283;Station;Voirie;Saint-Ouen/Entrepôts/2;5;0;5
+94003-01;94110;Arcueil;48.8053328, 2.3375355;Station;Voirie;Arcueil/François Raspail/32;6;0;6
+94016-04;94230;Cachan;48.785493, 2.3288415;Station;Voirie;Cachan/Division Leclerc/58;6;0;6
+94028-09;94000;Créteil;48.787356, 2.446767;Station;Voirie;Créteil/De Gaulle/61;6;0;6
+94028-14;94000;Créteil;48.7913, 2.44625;Station;Voirie;Créteil/Maréchal Lyautey/16;6;0;6
+94028-18;94000;Créteil;48.8007041, 2.4568599;Station;Voirie;Créteil/Laferrière/142;6;0;6
+94028-20;94000;Créteil;48.76895, 2.456477;Station;Voirie;Créteil/Magellan/27;6;0;6
+94042-04;94340;Joinville-le-Pont;48.8245149, 2.4753934;Station;Voirie;Joinville-le-Pont/Mozart/18;6;0;6
+94044-01;94450;Limeil-Brévannes;48.75014, 2.489249;Espace;Voirie;Limeil-Brévannes/Louis Sallé/4;6;0;6
+94067-02;94160;Saint-Mandé;48.8435084, 2.4171838;Station;Voirie;Saint-Mandé/Mongenot/3;4;1;5
+94067-09;94160;Saint-Mandé;48.83369, 2.414124;Station;Voirie;Saint-Mandé/Daumesnil/11;7;0;7
+94076-04;94800;Villejuif;48.794223, 2.363047;Station;Voirie;Villejuif/Eugène Varlin/11;6;0;6
+94076-06;94800;Villejuif;48.7906029, 2.3613621;Station;Voirie;Villejuif/René Hamon/30;6;0;6
+94076-07;94800;Villejuif;48.78447, 2.36088;Station;Voirie;Villejuif/Karl Marx/51;6;0;6
+94076-08;94800;Villejuif;48.78148, 2.354342;Station;Voirie;Villejuif/Épi d'Or/2;6;0;6
+94076-09;94800;Villejuif;48.7893752, 2.3685212;Station;Voirie;Villejuif/Maxime Gorki/144;6;0;6
+95210-01;95880;Enghien-les-Bains;48.9727125, 2.3067895;Espace;Voirie;Enghien-les-Bains/Arrivée/19;6;0;6
+75102-05;75002;Paris;48.8705626, 2.3408933;Station;Voirie;Paris/Vivienne/43;4;0;4
+75102-15;75002;Paris;48.86781, 2.34525;Station;Voirie;Paris/Réaumur/116;4;0;4
+75103-03;75003;Paris;48.8674504, 2.3630074;Station;Voirie;Paris/République/17;4;0;4
+75103-08;75003;Paris;48.8628, 2.3660304;Station;Voirie;Paris/Filles du Calvaire/19;4;0;4
+75103-15;75003;Paris;48.8589682, 2.3673798;Station;Voirie;Paris/Beaumarchais/87;4;1;5
+75104-01;75004;Paris;48.8553672, 2.3591939;Station;Voirie;Paris/François Miron/80;4;0;4
+75104-03;75004;Paris;48.855842, 2.354055;Station;Voirie;Paris/Saint Gervais/1;4;1;5
+75104-09;75004;Paris;48.8504593, 2.3615731;Station;Voirie;Paris/Henri IV/46;4;0;4
+75104-16;75004;Paris;48.853574, 2.363958;Station;Voirie;Paris/Neuve Saint-Pierre/2;4;1;5
+75106-05;75006;Paris;48.8430076, 2.3280363;Station;Voirie;Paris/Péguy/2;4;1;5
+75106-08;75006;Paris;48.8448931, 2.3292576;Station;Voirie;Paris/Notre-Dame des Champs/39;4;0;4
+75106-09;75006;Paris;48.84189, 2.333149;Station;Voirie;Paris/Joseph Bara/15;4;0;4
+75106-17;75006;Paris;48.85273, 2.335816;Station;Voirie;Paris/Montfaucon/4;4;0;4
+75107-01;75007;Paris;48.8618934, 2.3029282;Station;Voirie;Paris/Cognacq Jay/20;4;0;4
+75107-03;75007;Paris;48.8587263, 2.314834;Station;Voirie;Paris/Constantine/25;4;0;4
+75107-05;75007;Paris;48.8553541, 2.305473;Station;Voirie;Paris/Bosquet/81;4;1;5
+75107-07;75007;Paris;48.85806, 2.310588;Station;Voirie;Paris/Grenelle/152;4;1;5
+75107-13;75007;Paris;48.85478, 2.32588;Station;Voirie;Paris/Raspail/9;4;0;4
+75107-17;75007;Paris;48.856725, 2.3270428;Station;Voirie;Paris/Bac/42;4;0;4
+75107-22;75007;Paris;48.85461, 2.329982;Station;Voirie;Paris/Saint-Germain/188;4;0;4
+75108-12;75008;Paris;48.870601, 2.3226488;Station;Voirie;Paris/Malesherbes/7;4;1;5
+75101-08;75001;Paris;48.8624631, 2.3393006;Station;Voirie;Paris/Croix des Petits Champs/4;4;0;4
+75101-09;75001;Paris;48.857882, 2.346828;Station;Voirie;Paris/Victoria/17;4;1;5
+75101-13;75001;Paris;48.8589371, 2.347433;Espace;Voirie;Paris/Halles/3;4;0;4
+75102-04;75002;Paris;48.869353, 2.3382066;Station;Voirie;Paris/Quatre septembre/10;4;1;5
+75102-09;75002;Paris;48.8700633, 2.3340228;Station;Voirie;Paris/Quatre Septembre/26;4;1;5
+75102-11;75002;Paris;48.8699261, 2.3320835;Station;Voirie;Paris/Paix/24;4;0;4
+75103-01;75003;Paris;48.8580079, 2.3644786;Station;Voirie;Paris/Turenne/46;4;1;5
+75103-05;75003;Paris;48.8650901, 2.3609551;Station;Voirie;Paris/Perrée/18;4;1;5
+75103-06;75003;Paris;48.8665042, 2.3578808;Station;Voirie;Paris/Volta/39;4;0;4
+75103-09;75003;Paris;48.862833, 2.3593315;Station;Voirie;Paris/Pastourelle/27;4;1;5
+75104-04;75004;Paris;48.8596689, 2.3542653;Station;Voirie;Paris/Temple/36;4;0;4
+75104-06;75004;Paris;48.85648, 2.361378;Station;Voirie;Paris/Malher/13;4;0;4
+75105-03;75005;Paris;48.850032, 2.3544309;Station;Voirie;Paris/Tournelle/21;4;0;4
+75105-04;75005;Paris;48.8469, 2.343399;Station;Voirie;Paris/Saint Jacques/133;4;1;5
+75105-06;75005;Paris;48.8420054, 2.3430684;Espace;Voirie;Paris/Gay-Lussac/66;4;1;5
+75105-08;75005;Paris;48.84196, 2.347262;Station;Voirie;Paris/Pierre Brossolette/1;4;1;5
+75105-22;75005;Paris;48.8414353, 2.3389935;Station;Voirie;Paris/Henri Barbusse/25;4;0;4
+75106-01;75006;Paris;48.8552045, 2.3371078;Station;Voirie;Paris/Jacques Callot/5;4;0;4
+75106-07;75006;Paris;48.8489613, 2.3287351;Station;Voirie;Paris/Rennes/105;4;0;4
+75106-19;75006;Paris;48.84893, 2.340624;Station;Voirie;Paris/Vaugirard/3;4;1;5
+75106-21;75006;Paris;48.8473691, 2.3182091;Station;Voirie;Paris/Mayet/2;4;0;4
+75107-08;75007;Paris;48.8511276, 2.3106373;Station;Voirie;Paris/Duquesne/26;4;1;5
+75107-18;75007;Paris;48.8558178, 2.3152447;Station;Voirie;Paris/Invalides/21;4;1;5
+75107-21;75007;Paris;48.8492973, 2.3077697;Station;Voirie;Paris/Ségur/55;4;1;5
+75108-27;75008;Paris;48.8795963, 2.3263307;Station;Voirie;Paris/Liège/24;4;1;5
+75108-29;75008;Paris;48.87405, 2.325726;Station;Voirie;Paris/Haussmann/61;4;0;4
+75109-06;75009;Paris;48.874155, 2.338559;Station;Voirie;Paris/Provence/35;4;0;4
+75109-08;75009;Paris;48.8768536, 2.3302084;Station;Voirie;Paris/Londres/6;4;0;4
+75109-23;75009;Paris;48.878643, 2.3347774;Station;Voirie;Paris/Aumale/28;4;0;4
+75109-24;75009;Paris;48.8805732, 2.3317546;Station;Voirie;Paris/Paul Escudier/2;4;0;4
+75110-05;75010;Paris;48.8791341, 2.3560476;Station;Voirie;Paris/La Fayette/143;4;0;4
+75110-09;75010;Paris;48.87383, 2.365097;Station;Voirie;Paris/Grange aux Belles/11;4;0;4
+75110-15;75010;Paris;48.87893, 2.36908;Station;Voirie;Paris/Louis Blanc/6;4;0;4
+75110-28;75010;Paris;48.87569, 2.36801;Station;Voirie;Paris/Grange aux Belles/47;4;0;4
+75110-29;75010;Paris;48.8836044, 2.3643056;Station;Voirie;Paris/Château Landon/52;4;0;4
+75110-30;75010;Paris;48.879791, 2.350855;Station;Voirie;Paris/Belzunce/10;4;1;5
+75110-32;75010;Paris;48.8740698, 2.3551424;Station;Voirie;Paris/Saint-Denis/91;4;0;4
+75110-34;75010;Paris;48.87179, 2.372482;Station;Voirie;Paris/Buisson Saint Louis/2;4;0;4
+75111-03;75011;Paris;48.8493744, 2.395332;Station;Voirie;Paris/Philippe Auguste/1;4;1;5
+75111-09;75011;Paris;48.852023, 2.389719;Station;Voirie;Paris/Voltaire/236;4;1;5
+75111-16;75011;Paris;48.8641096, 2.3799691;Station;Voirie;Paris/République/86;4;0;4
+75111-23;75011;Paris;48.853661, 2.3923486;Station;Voirie;Paris/Philippe Auguste/65;4;1;5
+75111-25;75011;Paris;48.8525733, 2.3830368;Station;Voirie;Paris/Faidherbe/27;4;1;5
+75112-01;75012;Paris;48.8526773, 2.3710901;Station;Voirie;Paris/Saint-Antoine/16;4;1;5
+75112-03;75012;Paris;48.8515769, 2.369445;Station;Voirie;Paris/Bastille/50;4;1;5
+75112-18;75012;Paris;48.8334137, 2.388111;Station;Voirie;Paris/Pirogues de Bercy/44;4;1;5
+75112-19;75012;Paris;48.8480068, 2.3940643;Espace;Voirie;Paris/Diderot/172;4;1;5
+75112-21;75012;Paris;48.8461408, 2.4104799;Station;Voirie;Paris/Soult/137;4;0;4
+75112-26;75012;Paris;48.8406851, 2.400428;Station;Voirie;Paris/Picpus/7;4;0;4
+75113-03;75013;Paris;48.8186561, 2.3623864;Station;Voirie;Paris/Paulin Enfert/6;4;1;5
+75113-06;75013;Paris;48.82195, 2.345853;Station;Voirie;Paris/Rungis/2;4;0;4
+75113-11;75013;Paris;48.8356, 2.350015;Station;Voirie;Paris/Berbier du Mets/26;4;0;4
+75114-05;75014;Paris;48.83912, 2.337229;Station;Voirie;Paris/Henri Barbusse/66;4;1;5
+75114-09;75014;Paris;48.8343392, 2.3178674;Station;Voirie;Paris/Pernety/46;4;0;4
+75114-13;75014;Paris;48.83072, 2.325855;Station;Voirie;Paris/Maine/185;4;0;4
+75114-21;75014;Paris;48.8249705, 2.3382509;Station;Voirie;Paris/Sibelle/29;4;0;4
+75114-23;75014;Paris;48.8345527, 2.3361913;Station;Voirie;Paris/Arago/85;4;0;4
+75115-07;75015;Paris;48.8395783, 2.2986453;Station;Voirie;Paris/Gerbert/11;4;0;4
+75115-11;75015;Paris;48.83492, 2.302564;Station;Voirie;Paris/Cronstadt/2;4;0;4
+75115-12;75015;Paris;48.8467033, 2.2844167;Station;Voirie;Paris/Émile Zola/65;4;0;4
+75115-18;75015;Paris;48.8406886, 2.2876391;Station;Voirie;Paris/Houdart de Lamotte/2;4;1;5
+75115-29;75015;Paris;48.8304, 2.295999;Station;Voirie;Paris/Dantzig/80;4;0;4
+75115-39;75015;Paris;48.842111, 2.3091306;Station;Voirie;Paris/Émile Duclaux/19;4;0;4
+75115-45;75015;Paris;48.8539296, 2.2964095;Station;Voirie;Paris/Suffren/44;4;0;4
+75115-48;75015;Paris;48.8445403, 2.2771564;Espace;Voirie;Paris/Balard/18;4;1;5
+75115-55;75015;Paris;48.8404209, 2.3042578;Station;Voirie;Paris/Vaugirard/230;4;0;4
+75115-58;75015;Paris;48.8385459, 2.3126749;Station;Voirie;Paris/Cotentin/29;4;1;5
+75116-05;75016;Paris;48.8684739, 2.2926576;Station;Voirie;Paris/États-Unis/16;4;1;5
+75116-07;75016;Paris;48.87031, 2.275537;Station;Voirie;Paris/Flandrin/83;4;1;5
+75116-13;75016;Paris;48.8639536, 2.2806137;Station;Voirie;Paris/Georges Mandel/42;4;0;4
+75116-15;75016;Paris;48.8612923, 2.28423;Station;Voirie;Paris/Pétrarque/2;4;1;5
+75116-20;75016;Paris;48.8658188, 2.2762194;Station;Voirie;Paris/Victor Hugo/180;4;0;4
+75116-22;75016;Paris;48.8629938, 2.2857836;Station;Voirie;Paris/Georges Mandel/1;4;0;4
+75117-05;75017;Paris;48.88556, 2.296562;Station;Voirie;Paris/Courcelles/188;4;0;4
+75117-09;75017;Paris;48.88676, 2.311893;Station;Voirie;Paris/Jouffroy d'Abbans/14;4;0;4
+75117-22;75017;Paris;48.87959, 2.303352;Station;Voirie;Paris/Chazelles/1;4;0;4
+75117-28;75017;Paris;48.8854246, 2.2849721;Station;Voirie;Paris/Porte de Villiers/28;4;1;5
+75117-38;75017;Paris;48.88093, 2.309852;Station;Voirie;Paris/Georges Berger/2;4;1;5
+75117-44;75017;Paris;48.8887616, 2.3257382;Station;Voirie;Paris/Saint-Ouen/19;4;0;4
+75117-PG;75017;Paris;48.8789949, 2.2934366;Station;Parking;Paris/Ternes/38;6;0;6
+75118-07;75018;Paris;48.895422, 2.3499795;Station;Voirie;Paris/Championnet/28;4;1;5
+75118-08;75018;Paris;48.898303, 2.3423252;Station;Voirie;Paris/Fernand Labori/1;4;0;4
+75118-09;75018;Paris;48.8895441, 2.3365418;Station;Voirie;Paris/Caulaincourt/71;4;0;4
+75118-16;75018;Paris;48.8916426, 2.3449781;Station;Voirie;Paris/Ramey/62;4;1;5
+75118-17;75018;Paris;48.8955833, 2.3457215;Station;Voirie;Paris/Duhesme/113;4;1;5
+75118-18;75018;Paris;48.8913517, 2.3507171;Station;Voirie;Paris/Ordener/65;4;1;5
+75118-22;75018;Paris;48.8850068, 2.3475914;Station;Voirie;Paris/Sofia/16;4;1;5
+75118-27;75018;Paris;48.8861019, 2.3594071;Station;Voirie;Paris/Jean-François Lépine/1;4;0;4
+75118-30;75018;Paris;48.890234, 2.359843;Station;Voirie;Paris/Ordener/1;4;0;4
+75118-33;75018;Paris;48.8967147, 2.3591686;Station;Voirie;Paris/Chapelle/75;4;0;4
+75118-40;75018;Paris;48.8822728, 2.3395493;Station;Voirie;Paris/Clichy/2;4;0;4
+75119-07;75019;Paris;48.8829, 2.376374;Station;Voirie;Paris/Armand Carrel/46;4;0;4
+75119-09;75019;Paris;48.8862071, 2.3665248;Station;Voirie;Paris/Aubervilliers/38;4;0;4
+75119-15;75019;Paris;48.8886727, 2.378104;Station;Voirie;Paris/Seine/77;4;0;4
+75119-17;75019;Paris;48.8817709, 2.3938462;Station;Voirie;Paris/David d'Angers/54;4;0;4
+75119-20;75019;Paris;48.8893057, 2.3835673;Station;Voirie;Paris/Meurthe/1;4;1;5
+75119-28;75019;Paris;48.899335, 2.371162;Station;Voirie;Paris/Porte d'Aubervilliers/10;4;0;4
+75119-33;75019;Paris;48.87869, 2.409082;Station;Voirie;Paris/René Fonck/2;4;1;5
+75120-04;75020;Paris;48.8624944, 2.4096676;Station;Voirie;Paris/Jean Veber/3;4;0;4
+75120-08;75020;Paris;48.8699519, 2.3952568;Station;Voirie;Paris/Ménilmontant/122;4;0;4
+75120-40;75020;Paris;48.8757323, 2.4060008;Station;Voirie;Paris/Gambetta/249;4;0;4
+75120-42;75020;Paris;48.87559, 2.399738;Station;Voirie;Paris/Belleville/265;4;1;5
+75120-44;75020;Paris;48.8657, 2.408668;Station;Voirie;Paris/Mortier/15;4;0;4
+92004-14;92600;Asnières-sur-Seine;48.9094941, 2.2754817;Station;Voirie;Asnières-sur-Seine/Benoît Malon/8;6;0;6
+92007-02;92220;Bagneux;48.79932, 2.304576;Station;Voirie;Bagneux/René Cros/65;6;0;6
+92007-10;92220;Bagneux;48.7962, 2.319759;Station;Voirie;Bagneux/Albert Petit/89;6;0;6
+92012-07;92100;Boulogne-Billancourt;48.833663, 2.258714;Station;Voirie;Boulogne-Billancourt/Abel Gance/6;6;0;6
+92012-16;92100;Boulogne-Billancourt;48.82851, 2.246519;Station;Voirie;Boulogne-Billancourt/Jean Jaurès/245;6;0;6
+92020-01;92320;Châtillon;48.8111362, 2.298583;Station;Voirie;Châtillon/Stalingrad/5;5;0;5
+92020-03;92320;Châtillon;48.8097437, 2.2827504;Station;Voirie;Châtillon/Vanves/98;6;0;6
+92023-02;92140;Clamart;48.8080853, 2.2679023;Station;Voirie;Clamart/Jean Jaurès/137;5;0;5
+92023-03;92140;Clamart;48.8136037, 2.2719303;Station;Voirie;Clamart/Jean Jaurès/255;6;0;6
+92023-05;92140;Clamart;48.8050223, 2.2599305;Station;Voirie;Clamart/Paul Vaillant Couturier/68;6;0;6
+92023-08;92140;Clamart;48.7905884, 2.2639525;Station;Voirie;Clamart/De Gaulle/118;6;0;6
+92025-02;92700;Colombes;48.9314, 2.2599;Station;Voirie;Colombes/Facel Vega/1;6;0;6
+92025-03;92700;Colombes;48.93237, 2.270769;Station;Voirie;Colombes/Jules Michelet/77;6;0;6
+92025-13;92700;Colombes;48.9201379, 2.2271027;Station;Voirie;Colombes/Seine/52;5;0;5
+92025-16;92700;Colombes;48.92087, 2.264111;Station;Voirie;Colombes/Victor Hugo/42;6;0;6
+92026-04;92400;Courbevoie;48.8983625, 2.2475158;Station;Voirie;Courbevoie/Sébastopol/4;7;0;7
+92026-10;92400;Courbevoie;48.90076, 2.261656;Station;Voirie;Courbevoie/Paix/2;6;0;6
+92035-03;92250;La Garenne-Colombes;48.91354, 2.25703;Station;Voirie;La Garenne-Colombes/Transvaal/3;6;0;6
+92036-05;92230;Gennevilliers;48.93025, 2.301087;Station;Voirie;Gennevilliers/Camélinat/66;6;0;6
+92036-12;92230;Gennevilliers;48.9226538, 2.320639;Station;Voirie;Gennevilliers/Louise Michel/36;6;0;6
+92040-05;92130;Issy-les-Moulineaux;48.81855, 2.25291;Station;Voirie;Issy-les-Moulineaux/Verdun/135;6;0;6
+92040-06;92130;Issy-les-Moulineaux;48.8284904, 2.2748136;Station;Voirie;Issy-les-Moulineaux/Guynemer/50;6;0;6
+92040-12;92130;Issy-les-Moulineaux;48.8229419, 2.2755104;Station;Voirie;Issy-les-Moulineaux/Jean Jaurès/22;6;0;6
+92040-14;92130;Issy-les-Moulineaux;48.8310957, 2.2665501;Station;Voirie;Issy-les-Moulineaux/Joseph Frantz/46;6;0;6
+92040-19;92130;Issy-les-Moulineaux;48.821914, 2.252089;Station;Voirie;Issy-les-Moulineaux/Champ Chardon/44;6;0;6
+92040-21;92130;Issy-les-Moulineaux;48.81961, 2.265943;Station;Voirie;Issy-les-Moulineaux/Bachaga Boualam/1;6;0;6
+92044-PD;92300;Levallois-Perret;48.8970781, 2.2761987;Station;Parking;Levallois-Perret/Ernest Cognacq/33;6;0;6
+92044-PK;92300;Levallois-Perret;48.89313, 2.298737;Station;Parking;Levallois-Perret/Alsace/29;6;0;6
+92046-06;92240;Malakoff;48.8139, 2.302489;Station;Voirie;Malakoff/Pierre Brossolette/192;6;0;6
+92046-07;92240;Malakoff;48.8242495, 2.3038947;Station;Voirie;Malakoff/Legrand/1;5;0;5
+92048-07;92360;Meudon-la-Forêt;48.7886841, 2.2114032;Station;Voirie;Meudon/Jeanne Braconnier/3;6;0;6
+92050-05;92000;Nanterre;48.886018, 2.215877;Station;Voirie;Nanterre/Georges Clémenceau/205;7;0;7
+92050-07;92000;Nanterre;48.88807, 2.199446;Espace;Voirie;Nanterre/Gambetta/20;6;0;6
+92050-10;92000;Nanterre;48.8926309, 2.2063258;Station;Voirie;Nanterre/8 mai 1945/109;6;0;6
+92050-14;92000;Nanterre;48.889311, 2.220071;Station;Voirie;Nanterre/Pablo Picasso/74;6;0;6
+92050-19;92000;Nanterre;48.89586, 2.216845;Station;Voirie;Nanterre/Pablo Neruda/6;6;0;6
+92050-20;92000;Nanterre;48.8953323, 2.1910555;Station;Voirie;Nanterre/Jules Quentin/33;6;0;6
+92050-24;92000;Nanterre;48.89184, 2.22834;Station;Voirie;Nanterre/Aimé Césaire/5;7;0;7
+92050-25;92000;Nanterre;48.8854172, 2.2116588;Station;Voirie;Nanterre/Suresnes/19;6;0;6
+92050-31;92000;Nanterre;48.9088989, 2.215978;Station;Voirie;Nanterre/République/326;6;0;6
+92050-33;92000;Nanterre;48.8957277, 2.214156;Station;Voirie;Nanterre/Émile Zola/61;6;0;6
+92062-01;92800;Puteaux;48.8807168, 2.2450631;Espace;Voirie;Puteaux/Dion Bouton/30;4;0;4
+92063-09;92500;Rueil-Malmaison;48.8893048, 2.1678526;Station;Voirie;Rueil-Malmaison/Auguste Perret/4;4;0;4
+92063-13;92500;Rueil-Malmaison;48.8727271, 2.1947784;Station;Voirie;Rueil-Malmaison/Bons Raisins/52;6;0;6
+92063-16;92500;Rueil-Malmaison;48.87586, 2.169697;Station;Voirie;Rueil-Malmaison/Napoléon Bonaparte/26;6;0;6
+92063-21;92500;Rueil-Malmaison;48.87651, 2.200921;Station;Voirie;Rueil-Malmaison/Lieutenant Colonel Driant/11;5;0;5
+92073-08;92150;Suresnes;48.8766119, 2.2218839;Station;Voirie;Suresnes/Huché/26;6;0;6
+92075-05;92170;Vanves;48.8258129, 2.2906328;Station;Voirie;Vanves/Jean Jaurès/101;6;0;6
+92099-02;92400;Courbevoie;48.89238, 2.245286;Espace;Voirie;Courbevoie/André Prothin/12;5;0;5
+93029-11;93700;Drancy;48.92347, 2.460301;Station;Voirie;Drancy/Henri Barbusse/236;4;0;4
+93063-01;93230;Romainville;48.87798, 2.44464;Station;Voirie;Romainville/Marcel Ethis/15;6;0;6
+93064-02;93110;Rosny-sous-Bois;48.87052, 2.486372;Station;Voirie;Rosny-sous-Bois/Jean Jaurès/5;6;0;6
+93064-04;93110;Rosny-sous-Bois;48.88093, 2.472356;Station;Voirie;Rosny-sous-Bois/Lisbonne/16;6;0;6
+93070-06;93400;Saint-Ouen;48.9178855, 2.3323373;Station;Voirie;Saint-Ouen/Moutier/1;4;0;4
+93070-07;93400;Saint-Ouen;48.912077, 2.333149;Espace;Voirie;Saint-Ouen/Paul Lafargue/13;6;0;6
+94003-04;94110;Arcueil;48.807283, 2.3339929;Espace;Voirie;Arcueil/République/39;5;0;5
+94028-03;94000;Créteil;48.778891, 2.455066;Espace;Voirie;Créteil/France Libre/38;6;0;6
+94028-08;94000;Créteil;48.78363, 2.456881;Station;Voirie;Créteil/Archives/5;6;0;6
+94028-11;94000;Créteil;48.7784312, 2.4623984;Station;Voirie;Créteil/Gabriel Fauré/18;6;0;6
+94028-16;94000;Créteil;48.7912032, 2.4504989;Station;Voirie;Créteil/Denfert Rochereau/12;6;0;6
+94044-05;94450;Limeil-Brévannes;48.7508, 2.473075;Station;Voirie;Limeil-Brévannes/Ruelle de Paris/5;7;0;7
+94046-09;94700;Maisons-Alfort;48.8094628, 2.4344314;Station;Voirie;Maisons-Alfort/Leclerc/145;6;0;6
+94069-PA;94410;Saint-Maurice;48.814875, 2.4592711;Station;Parking;Saint-Maurice/Montgolfier/Parking;6;0;6
+94076-03;94800;Villejuif;48.795504, 2.367414;Espace;Voirie;Villejuif/Paul Vaillant Couturier/9;6;0;6
+75101-14;75001;Paris;48.8588109, 2.3449501;Station;Voirie;Paris/Bertin Poirée/14;4;0;4
+75102-01;75002;Paris;48.8680082, 2.3508835;Station;Voirie;Paris/Alexandrie/7;4;0;4
+75102-10;75002;Paris;48.86502, 2.344388;Station;Voirie;Paris/Étienne Marcel/36;4;1;5
+75103-02;75003;Paris;48.865753, 2.3533572;Station;Voirie;Paris/Saint Martin/243;4;1;5
+75103-11;75003;Paris;48.8635527, 2.3612023;Espace;Voirie;Paris/Bretagne/51;4;1;5
+75103-14;75003;Paris;48.8633367, 2.3526978;Station;Voirie;Paris/Saint-Martin/204;4;0;4
+75104-13;75004;Paris;48.8541989, 2.345341;Station;Voirie;Paris/Marché Neuf/8;4;1;5
+75105-20;75005;Paris;48.8410649, 2.352048;Station;Voirie;Paris/Monge/99;4;1;5
+75106-06;75006;Paris;48.8473613, 2.3263246;Station;Voirie;Paris/Saint Placide/58;4;1;5
+75107-11;75007;Paris;48.85206, 2.314345;Station;Voirie;Paris/Invalides/32;4;0;4
+75108-02;75008;Paris;48.87593, 2.314194;Station;Voirie;Paris/Messine/12;4;1;5
+75108-04;75008;Paris;48.8657733, 2.3084191;Station;Voirie;Paris/Francois 1er/7;5;0;5
+75108-07;75008;Paris;48.872047, 2.3131252;Station;Voirie;Paris/Saint-Honoré/91;4;0;4
+75108-08;75008;Paris;48.8731075, 2.3097967;Station;Voirie;Paris/Saint-Honoré/123;4;0;4
+75108-13;75008;Paris;48.8746335, 2.3062488;Station;Voirie;Paris/Saint-Honoré/161;4;0;4
+75108-15;75008;Paris;48.8683003, 2.3237257;Station;Voirie;Paris/Saint-Honoré/422;4;0;4
+75108-25;75008;Paris;48.875556, 2.319321;Station;Voirie;Paris/Saint-Augustin/9;4;0;4
+75109-02;75009;Paris;48.8699421, 2.32731;Station;Voirie;Paris/Madeleine/8;5;0;5
+75109-03;75009;Paris;48.8774174, 2.3465915;Station;Voirie;Paris/Rochambeau/6;4;0;4
+75109-04;75009;Paris;48.8800786, 2.3455235;Station;Voirie;Paris/Turgot/4;4;1;5
+75110-08;75010;Paris;48.8750753, 2.3523208;Station;Voirie;Paris/Paradis/28;4;0;4
+75110-10;75010;Paris;48.8702567, 2.3600462;Station;Voirie;Paris/Pierre Chausson/1;4;0;4
+75111-02;75011;Paris;48.8584385, 2.3800903;Espace;Voirie;Paris/Parmentier/2;4;1;5
+75111-04;75011;Paris;48.85189, 2.376434;Station;Voirie;Paris/Ledru Rollin/104;4;1;5
+75111-05;75011;Paris;48.8657658, 2.3664376;Station;Voirie;Paris/Voltaire/8;4;0;4
+75111-06;75011;Paris;48.8546037, 2.3851992;Station;Voirie;Paris/Voltaire/182;4;1;5
+75111-12;75011;Paris;48.8619069, 2.3735705;Station;Voirie;Paris/Voltaire/59;4;1;5
+75111-19;75011;Paris;48.8686522, 2.374656;Station;Voirie;Paris/Saint-Maur/157;4;0;4
+75111-20;75011;Paris;48.857259, 2.37139;Station;Voirie;Paris/Richard Lenoir/36;4;0;4
+75111-30;75011;Paris;48.8640621, 2.3713985;Station;Voirie;Paris/Richard Lenoir/110;4;1;5
+75111-33;75011;Paris;48.8615346, 2.3809277;Station;Voirie;Paris/Saint-Maur/36;4;0;4
+75112-11;75012;Paris;48.8476733, 2.377312;Station;Voirie;Paris/Charenton/97;4;0;4
+75112-13;75012;Paris;48.8419525, 2.3728276;Station;Voirie;Paris/Rapée/46;4;0;4
+75113-36;75013;Paris;48.8303916, 2.356917;Station;Voirie;Paris/Choisy/188;4;0;4
+75113-PH;75013;Paris;48.8394311, 2.3711076;Station;Parking;Paris/Austerlitz/29;6;0;6
+75114-02;75014;Paris;48.83273, 2.32608;Station;Voirie;Paris/Castagnou/10;4;1;5
+75114-17;75014;Paris;48.8256986, 2.3263394;Station;Voirie;Paris/Leclerc/101;4;1;5
+75114-20;75014;Paris;48.8236394, 2.3319004;Station;Voirie;Paris/Reille/59;4;1;5
+75114-27;75014;Paris;48.8207604, 2.3370783;Station;Voirie;Paris/Jourdan/26;4;0;4
+75114-PA;75014;Paris;48.8389, 2.3202;Station;Parking;Paris/Commandant René Mouchotte/15;6;0;6
+75115-01;75015;Paris;48.854819, 2.2904053;Station;Voirie;Paris/Fédération/10;4;0;4
+75115-05;75015;Paris;48.8483434, 2.3010296;Station;Voirie;Paris/Grenelle/139;4;0;4
+75115-17;75015;Paris;48.8425947, 2.2920513;Espace;Voirie;Paris/Etienne Pernet/26;4;1;5
+75115-23;75015;Paris;48.83731, 2.278682;Station;Voirie;Paris/Balard/108;4;0;4
+75115-25;75015;Paris;48.835427, 2.2851648;Station;Voirie;Paris/Vasco de Gama/74;4;0;4
+75115-53;75015;Paris;48.8435537, 2.3061617;Station;Voirie;Paris/Lecourbe/63;4;0;4
+75115-PD;75015;Paris;48.8397806, 2.3124999;Station;Parking;Paris/Falguière/81;6;0;6
+75115-PI;75015;Paris;48.8416996, 2.2996144;Station;Parking;Paris/Lecourbe/141;6;0;6
+75116-03;75016;Paris;48.870343, 2.286851;Espace;Voirie;Paris/Victor Hugo/60;4;1;5
+75116-08;75016;Paris;48.8534164, 2.2685249;Station;Voirie;Paris/Mozart/68;4;1;5
+75116-12;75016;Paris;48.84744, 2.258728;Station;Voirie;Paris/Murat/1;4;1;5
+75116-19;75016;Paris;48.8538134, 2.2768772;Station;Voirie;Paris/Ranelagh/33;4;1;5
+75116-28;75016;Paris;48.845175, 2.2641594;Station;Voirie;Paris/Molitor/16;4;1;5
+75116-33;75016;Paris;48.8437929, 2.2698931;Station;Voirie;Paris/Versailles/112;4;1;5
+75117-12;75017;Paris;48.884737, 2.321309;Station;Voirie;Paris/Batignolles/27;4;1;5
+75117-16;75017;Paris;48.8832876, 2.3080623;Station;Voirie;Paris/Villiers/46;4;0;4
+75117-18;75017;Paris;48.8876949, 2.3050366;Espace;Voirie;Paris/Pereire/50;4;1;5
+75117-34;75017;Paris;48.8901162, 2.2964035;Station;Voirie;Paris/Raymond Pitet/7;4;0;4
+75117-35;75017;Paris;48.88576, 2.299225;Station;Voirie;Paris/Pereire/115;4;1;5
+75117-43;75017;Paris;48.8920729, 2.32707;Station;Voirie;Paris/Saint Ouen/67;4;0;4
+75118-13;75018;Paris;48.8872522, 2.3330069;Station;Voirie;Paris/Caulaincourt/17;4;0;4
+75118-43;75018;Paris;48.8984293, 2.3347923;Station;Voirie;Paris/Henry Brisson/5;4;1;5
+75118-44;75018;Paris;48.8990509, 2.3649827;Station;Voirie;Paris/Charles Hermite/52;4;1;5
+75119-01;75019;Paris;48.894802, 2.372075;Station;Voirie;Paris/Crimée/251;4;1;5
+75119-03;75019;Paris;48.8911334, 2.3725951;Station;Voirie;Paris/Mathis/35;4;0;4
+75119-06;75019;Paris;48.888195, 2.3730799;Station;Voirie;Paris/Flandre/61;4;1;5
+75119-14;75019;Paris;48.886098, 2.3936;Station;Voirie;Paris/Manin/159;4;1;5
+75119-16;75019;Paris;48.8848179, 2.3901243;Station;Voirie;Paris/Goubet/8;5;0;5
+75119-18;75019;Paris;48.87808, 2.371484;Espace;Voirie;Paris/Mathurin Moreau/6;4;1;5
+75119-22;75019;Paris;48.8794816, 2.388647;Station;Voirie;Paris/Botzaris/76;4;0;4
+75119-35;75019;Paris;48.8806038, 2.37444;Station;Voirie;Paris/Secrétan/44;4;1;5
+75120-13;75020;Paris;48.8698372, 2.3850271;Station;Voirie;Paris/Julien Lacroix/39;5;0;5
+75120-22;75020;Paris;48.8587455, 2.4101638;Station;Voirie;Paris/Harpignies/3;4;1;5
+75120-23;75020;Paris;48.8477968, 2.4060203;Station;Voirie;Paris/Vincennes/65;4;1;5
+75120-32;75020;Paris;48.8638431, 2.3908816;Station;Voirie;Paris/Gambetta/19;4;0;4
+75120-34;75020;Paris;48.8569151, 2.3941433;Station;Voirie;Paris/Charonne/158;4;1;5
+75120-45;75020;Paris;48.8679058, 2.3826171;Station;Voirie;Paris/Belleville/22;4;0;4
+92004-07;92600;Asnières-sur-Seine;48.91587, 2.291084;Espace;Voirie;Asnières-sur-Seine/Georges Guynemer/97;6;0;6
+92004-08;92600;Asnières-sur-Seine;48.9175117, 2.281802;Station;Voirie;Asnières-sur-Seine/Argenteuil/152;6;0;6
+92004-11;92600;Asnières-sur-Seine;48.9164, 2.295224;Espace;Voirie;Asnières-sur-Seine/Bas/6;6;0;6
+92004-13;92600;Asnières-sur-Seine;48.9069487, 2.2694015;Station;Voirie;Asnières-sur-Seine/Denfert Rochereau/8;6;0;6
+92007-07;92220;Bagneux;48.7991008, 2.3177148;Station;Voirie;Bagneux/Louis Pasteur/17;6;0;6
+92007-08;92220;Bagneux;48.8059298, 2.3143019;Station;Voirie;Bagneux/Jean Marin Naudin/5;6;0;6
+92012-12;92100;Boulogne-Billancourt;48.8365078, 2.2524132;Station;Voirie;Boulogne-Billancourt/Henri Martin/2;6;0;6
+92012-18;92100;Boulogne-Billancourt;48.83162, 2.230167;Station;Voirie;Boulogne-Billancourt/Sèvres/80;6;0;6
+92012-30;92100;Boulogne-Billancourt;48.8388074, 2.2505008;Station;Voirie;Boulogne-Billancourt/Reine/12;6;0;6
+92012-34;92100;Boulogne-Billancourt;48.8281027, 2.2422542;Station;Voirie;Boulogne-Billancourt/Meudon/40;6;0;6
+92012-50;92100;Boulogne-Billancourt;48.83545, 2.225633;Station;Voirie;Boulogne-Billancourt/Alphonse Le Gallo/35;6;0;6
+92020-05;92320;Châtillon;48.798768, 2.294377;Station;Voirie;Châtillon/Liberté/100;7;0;7
+92022-02;92370;Chaville;48.8038815, 2.1883009;Station;Voirie;Chaville/Anatole France/28;6;0;6
+92022-04;92370;Chaville;48.8149125, 2.1935315;Station;Voirie;Chaville/Roger Salengro/705;6;0;6
+92023-04;92140;Clamart;48.813219, 2.258785;Station;Voirie;Clamart/Verdun/1;6;0;6
+92023-09;92140;Clamart;48.7870782, 2.255763;Station;Voirie;Clamart/De Gaulle/233;6;0;6
+92023-11;92140;Clamart;48.78123, 2.238153;Station;Voirie;Clamart/République/2;6;0;6
+92023-19;92140;Clamart;48.7990591, 2.2625392;Station;Voirie;Clamart/Ferrari/1;6;0;6
+92025-01;92700;Colombes;48.9219814, 2.2550527;Espace;Voirie;Colombes/Maréchal Joffre/30;6;0;6
+92025-04;92700;Colombes;48.9246525, 2.259313;Station;Voirie;Colombes/Ménelotte/8;6;0;6
+92025-14;92700;Colombes;48.9151379, 2.2284904;Station;Voirie;Colombes/Charles de Gaulle/156;6;0;6
+92032-04;92260;Fontenay-aux-Roses;48.795005, 2.274407;Station;Voirie;Fontenay-aux-Roses/Division Leclerc/31;7;0;7
+92032-05;92260;Fontenay-aux-Roses;48.794247, 2.297986;Station;Voirie;Fontenay-aux-Roses/Marx Dormoy/71;6;0;6
+92035-01;92250;La Garenne-Colombes;48.90628, 2.249208;Espace;Voirie;La Garenne-Colombes/République/52;5;1;6
+92036-10;92230;Gennevilliers;48.91757, 2.307151;Espace;Voirie;Gennevilliers/Georges Corete/1;6;0;6
+92040-07;92130;Issy-les-Moulineaux;48.82497, 2.267735;Station;Voirie;Issy-les-Moulineaux/Gallieni/84;6;0;6
+92040-10;92130;Issy-les-Moulineaux;48.8215502, 2.2613183;Station;Voirie;Issy-les-Moulineaux/Garibaldi/18;6;0;6
+92040-17;92130;Issy-les-Moulineaux;48.8326967, 2.2682505;Station;Voirie;Issy-les-Moulineaux/Bara/28;6;0;6
+92040-20;92130;Issy-les-Moulineaux;48.8187533, 2.2778594;Station;Voirie;Issy-les-Moulineaux/De Gaulle/88;6;0;6
+92044-PA;92300;Levallois-Perret;48.89324, 2.288878;Station;Parking;Levallois-Perret/République/1;6;0;6
+92044-PC;92300;Levallois-Perret;48.8987082, 2.2813485;Station;Parking;Levallois-Perret/Georges Pompidou/1;6;0;6
+92046-01;92240;Malakoff;48.82027, 2.301874;Station;Voirie;Malakoff/Wilson/2;6;0;6
+92046-08;92240;Malakoff;48.8180219, 2.2918859;Station;Voirie;Malakoff/Arblade/9;6;0;6
+92048-03;92190;Meudon;48.82148, 2.22769;Station;Voirie;Meudon/Marcel Allégot/12;6;0;6
+92048-05;92190;Meudon;48.8077664, 2.2350182;Station;Voirie;Meudon/Terre Neuve/3;6;0;6
+92048-08;92360;Meudon-la-Forêt;48.788083, 2.216266;Station;Voirie;Meudon/Maréchal Juin/18;6;0;6
+92049-16;92120;Montrouge;48.8102056, 2.3170366;Station;Voirie;Montrouge/Verdun/36;6;0;6
+92050-09;92000;Nanterre;48.89591, 2.198215;Station;Voirie;Nanterre/Gare/9;6;0;6
+92050-11;92000;Nanterre;48.91221, 2.223302;Station;Voirie;Nanterre/République/403;6;0;6
+92050-15;92000;Nanterre;48.8829721, 2.2040354;Station;Voirie;Nanterre/Paul Vaillant Couturier/94;6;0;6
+92050-16;92000;Nanterre;48.8855529, 2.1959224;Station;Voirie;Nanterre/Maréchal Joffre/28;5;0;5
+92050-27;92000;Nanterre;48.8963559, 2.2076635;Station;Voirie;Nanterre/Vincent Raspail/5;6;0;6
+92062-05;92800;Puteaux;48.887385, 2.232151;Station;Voirie;Puteaux/Charles De Gaulle/70;6;0;6
+92063-01;92500;Rueil-Malmaison;48.8876242, 2.1693918;Station;Voirie;Rueil-Malmaison/Édouard Belin/8;4;0;4
+92063-06;92500;Rueil-Malmaison;48.87681, 2.173765;Station;Voirie;Rueil-Malmaison/Bois Préau/1;6;0;6
+92063-15;92500;Rueil-Malmaison;48.8573584, 2.1933594;Station;Voirie;Rueil-Malmaison/De Montbrison/188;6;0;6
+92063-17;92500;Rueil-Malmaison;48.8926928, 2.1725973;Station;Voirie;Rueil-Malmaison/Henri Sainte-Claire Déville/12;6;0;6
+92063-24;92500;Rueil-Malmaison;48.8680715, 2.1930392;Station;Voirie;Rueil-Malmaison/18 juin 1940/63;5;0;5
+92071-03;92330;Sceaux;48.7771124, 2.2965901;Espace;Voirie;Sceaux/Franklin Roosevelt/60;6;0;6
+92071-04;92330;Sceaux;48.7842765, 2.3027628;Station;Voirie;Sceaux/Bagneux/52;6;0;6
+92072-04;92310;Sèvres;48.821593, 2.2050638;Station;Voirie;Sèvres/Grande Rue/123;6;0;6
+92072-06;92310;Sèvres;48.8261, 2.20015;Station;Voirie;Sèvres/Riocreux/1;6;0;6
+92073-05;92150;Suresnes;48.8636819, 2.208944;Station;Voirie;Suresnes/Jean Jaurès/21;6;0;6
+92073-13;92150;Suresnes;48.8699508, 2.218031;Station;Voirie;Suresnes/Fontaine du Tertre/21;6;0;6
+92075-01;92170;Vanves;48.82097, 2.29165;Station;Voirie;Vanves/René Sahors/9;6;0;6
+92078-01;92390;Villeneuve-la-Garenne;48.9354388, 2.3261213;Station;Voirie;Villeneuve-la-Garenne/Saint-Exupéry/1;6;0;6
+93006-02;93170;Bagnolet;48.87608, 2.418952;Station;Voirie;Bagnolet/Pasteur/124;6;0;6
+93006-04;93170;Bagnolet;48.86504, 2.417886;Espace;Voirie;Bagnolet/De Gaulle/33;6;0;6
+93013-02;93350;Le Bourget;48.9350451, 2.424831;Espace;Voirie;Le Bourget/Anizan Cavillon/10;6;0;6
+93013-04;93350;Le Bourget;48.93211, 2.426913;Station;Voirie;Le Bourget/Élise Deroche/10;6;0;6
+93029-01;93700;Drancy;48.91845, 2.418932;Station;Voirie;Drancy/Saint Stenay/29;7;0;7
+93029-02;93700;Drancy;48.9222845, 2.4476628;Espace;Voirie;Drancy/Couturier/24;6;0;6
+93029-04;93700;Drancy;48.93327, 2.455181;Station;Voirie;Drancy/Latéral/20;5;1;6
+93045-01;93260;Les Lilas;48.8793959, 2.4156066;Espace;Voirie;Les Lilas/Georges Pompidou/3;5;1;6
+93070-02;93400;Saint-Ouen;48.90573, 2.321015;Station;Voirie;Saint-Ouen/Dulcie September/3;6;0;6
+93070-04;93400;Saint-Ouen;48.9082928, 2.3400493;Station;Voirie;Saint-Ouen/Dieumegard/1;6;0;6
+93070-12;93400;Saint-Ouen;48.90382, 2.329175;Station;Voirie;Saint-Ouen/Capitaine Glaner/44;6;0;6
+94002-09;94140;Alfortville;48.80542, 2.421282;Station;Voirie;Alfortville/Joseph Franceschi/1;6;0;6
+94016-03;94230;Cachan;48.7929328, 2.3217392;Station;Voirie;Cachan/Pont Royal/24;6;0;6
+94016-05;94230;Cachan;48.7985337, 2.3269032;Station;Voirie;Cachan/Carnot/36;6;1;7
+94016-06;94230;Cachan;48.7862756, 2.3403992;Station;Voirie;Cachan/Saussaies/36;6;0;6
+94018-04;94220;Charenton-le-Pont;48.82214, 2.413997;Espace;Voirie;Charenton-le-Pont/Jean Jaurès/4;4;0;4
+94028-01;94000;Créteil;48.7886205, 2.4550166;Station;Voirie;Créteil/Maurice Déménitroux/25;;;
+94028-04;94000;Créteil;48.766, 2.470911;Station;Voirie;Créteil/Claude-Nicolas Ledoux/4;6;0;6
+94028-07;94000;Créteil;48.77664, 2.467872;Station;Voirie;Créteil/Juliette Savar/102;6;0;6
+94028-10;94000;Créteil;48.79663, 2.44808;Station;Voirie;Créteil/De Gaulle/70;6;0;6
+94028-15;94000;Créteil;48.7738474, 2.4600815;Station;Voirie;Créteil/Jean-Baptiste Oudry/32;6;0;6
+94044-03;94450;Limeil-Brévannes;48.74356, 2.504422;Station;Voirie;Limeil-Brévannes/Valenton/55;6;0;6
+94046-04;94700;Maisons-Alfort;48.79878, 2.433635;Station;Voirie;Maisons-Alfort/Léon Blum/16;6;0;6
+94046-11;94700;Maisons-Alfort;48.8138166, 2.4212353;Espace;Voirie;Maisons-Alfort/De Gaulle/42;6;0;6
+94067-01;94160;Saint-Mandé;48.8468108, 2.4175419;Espace;Voirie;Saint-Mandé/Galliéni/178;6;0;6
+94076-02;94800;Villejuif;48.80543, 2.362543;Station;Voirie;Villejuif/René Thibert/7;6;0;6
+94076-05;94800;Villejuif;48.8003, 2.356283;Station;Voirie;Villejuif/Marcel Paul/6;6;0;6
+94076-10;94800;Villejuif;48.7891489, 2.3670245;Station;Voirie;Villejuif/Jean Jaurès/153;6;0;6
+94076-11;94800;Villejuif;48.787963, 2.3512833;Station;Voirie;Villejuif/Auguste Perret/11;6;0;6
+75108-19;75008;Paris;48.8778333, 2.310832;Station;Voirie;Paris/Monceau/43;4;0;4
+75108-24;75008;Paris;48.8741642, 2.2976358;Station;Voirie;Paris/Friedland/42;4;0;4
+75108-26;75008;Paris;48.8830163, 2.325922;Station;Voirie;Paris/Batignolles/9;4;0;4
+75108-PD;75008;Paris;48.8671133, 2.3206859;Station;Parking;Paris/Gabriel/2;6;0;6
+75109-07;75009;Paris;48.8804478, 2.3283632;Station;Voirie;Paris/Jules Lefèbvre/1;4;1;5
+75109-12;75009;Paris;48.8810493, 2.3409204;Espace;Voirie;Paris/Trudaine/26;4;1;5
+75109-13;75009;Paris;48.8753135, 2.332521;Station;Voirie;Paris/Victoire/76;4;0;4
+75109-18;75009;Paris;48.875921, 2.3382898;Station;Voirie;Paris/Chateaudun/21;4;0;4
+75109-25;75009;Paris;48.8738324, 2.3425629;Station;Voirie;Paris/Montmartre/31;4;0;4
+75109-26;75009;Paris;48.8777212, 2.3409177;Station;Voirie;Paris/Milton/12;4;0;4
+75110-01;75010;Paris;48.87484, 2.36289;Station;Voirie;Paris/Valmy/107;4;1;5
+75110-03;75010;Paris;48.8800771, 2.3637098;Station;Voirie;Paris/Saint-Martin/203;4;0;4
+75110-07;75010;Paris;48.877257, 2.3612551;Station;Voirie;Paris/Saint-Martin/168;4;0;4
+75110-12;75010;Paris;48.8814921, 2.3629571;Station;Voirie;Paris/Château Landon/24;4;1;5
+75110-25;75010;Paris;48.87081, 2.354076;Station;Voirie;Paris/Metz/6;4;0;4
+75111-01;75011;Paris;48.8545026, 2.370183;Station;Voirie;Paris/Richard Lenoir/8;4;0;4
+75111-08;75011;Paris;48.8586443, 2.3841089;Station;Voirie;Paris/Roquette/162;5;0;5
+75111-18;75011;Paris;48.8667728, 2.3674134;Station;Voirie;Paris/République/5;4;0;4
+75111-22;75011;Paris;48.8577957, 2.390264;Station;Voirie;Paris/Philippe Auguste/126;4;0;4
+75111-24;75011;Paris;48.84948, 2.397761;Station;Voirie;Paris/Taillebourg/2;4;0;4
+75112-08;75012;Paris;48.8458586, 2.3748769;Espace;Voirie;Paris/Diderot/24;4;1;5
+75112-33;75012;Paris;48.8309152, 2.3990969;Station;Voirie;Paris/Porte de Charenton/2;4;0;4
+75113-09;75013;Paris;48.82847, 2.361255;Station;Voirie;Paris/Charles Moureu/42;4;1;5
+75113-19;75013;Paris;48.8205622, 2.3643333;Station;Voirie;Paris/Choisy/8;4;0;4
+75113-22;75013;Paris;48.8279725, 2.3721949;Station;Voirie;Paris/Tolbiac/41;4;1;5
+75113-24;75013;Paris;48.8304583, 2.3672231;Station;Voirie;Paris/Jeanne D'Arc/45;4;0;4
+75113-26;75013;Paris;48.8332654, 2.3568808;Station;Voirie;Paris/Hôpital/157;4;1;5
+75113-28;75013;Paris;48.8344789, 2.3672062;Station;Voirie;Paris/Vincent Auriol/81;4;1;5
+75113-38;75013;Paris;48.8231521, 2.3753988;Station;Voirie;Paris/Darmesteter/12;4;0;4
+75114-01;75014;Paris;48.822183, 2.3248774;Station;Voirie;Paris/25 Août 1944/8;4;0;4
+75114-06;75014;Paris;48.8388247, 2.3221905;Espace;Voirie;Paris/Maine/78;4;1;5
+75114-11;75014;Paris;48.842173, 2.323305;Station;Voirie;Paris/Départ/23;4;1;5
+75114-14;75014;Paris;48.8370573, 2.3245391;Station;Voirie;Paris/Froideveaux/71;4;0;4
+75114-18;75014;Paris;48.8254486, 2.3117069;Station;Voirie;Paris/Georges Lafenestre/11;4;1;5
+75114-26;75014;Paris;48.8237041, 2.3195528;Station;Voirie;Paris/Nicolas Taunay/7;4;0;4
+75114-29;75014;Paris;48.8230593, 2.322823;Station;Voirie;Paris/Porte de Montrouge/8;4;1;5
+75115-03;75015;Paris;48.843154, 2.321689;Station;Voirie;Paris/Arrivée/16;4;0;4
+75115-08;75015;Paris;48.846148, 2.278533;Station;Voirie;Paris/Emile Zola/6;4;0;4
+75115-09;75015;Paris;48.8490157, 2.2874011;Station;Voirie;Paris/Héricart/54;4;0;4
+75115-20;75015;Paris;48.8458068, 2.3038076;Station;Voirie;Paris/Miollis/21;4;1;5
+75115-24;75015;Paris;48.8373119, 2.2847182;Station;Voirie;Paris/Lecourbe/336;4;1;5
+75115-26;75015;Paris;48.8425678, 2.2848904;Station;Voirie;Paris/Convention/75;4;0;4
+75115-27;75015;Paris;48.8351985, 2.2914295;Station;Voirie;Paris/Olier/15;4;1;5
+75115-31;75015;Paris;48.8454505, 2.292136;Station;Voirie;Paris/Commerce/5;4;0;4
+75115-38;75015;Paris;48.8434786, 2.2994811;Station;Voirie;Paris/Mademoiselle/67;4;1;5
+75115-42;75015;Paris;48.8447061, 2.3198109;Station;Voirie;Paris/Maine/4;4;0;4
+75115-46;75015;Paris;48.8373656, 2.3059905;Station;Voirie;Paris/Paul Barruel/44;4;0;4
+75116-10;75016;Paris;48.8639711, 2.2880679;Station;Voirie;Paris/Kléber/89;4;0;4
+75116-23;75016;Paris;48.8487919, 2.2661693;Station;Voirie;Paris/Jean de la Fontaine/77;4;0;4
+75116-25;75016;Paris;48.8509978, 2.2719012;Station;Voirie;Paris/Jean de la Fontaine/42;4;0;4
+75116-30;75016;Paris;48.8412643, 2.2643832;Station;Voirie;Paris/Exelmans/32;4;0;4
+75116-34;75016;Paris;48.8654617, 2.2995713;Station;Voirie;Paris/Marceau/1;4;1;5
+75116-PA;75016;Paris;48.873676, 2.292006;Station;Parking;Paris/Foch/37;6;0;6
+75117-02;75017;Paris;48.8975767, 2.3232481;Station;Voirie;Paris/Porte Pouchet/1;4;1;5
+75117-10;75017;Paris;48.88879, 2.32219;Station;Voirie;Paris/Legendre/126;4;1;5
+75117-24;75017;Paris;48.8867348, 2.2955406;Station;Voirie;Paris/Courcelles/210;4;0;4
+75117-27;75017;Paris;48.881032, 2.2956282;Station;Voirie;Paris/Niel/28;4;1;5
+75117-30;75017;Paris;48.876042, 2.288446;Station;Voirie;Paris/Grande Armée/40;4;0;4
+75117-41;75017;Paris;48.8884456, 2.3160603;Station;Voirie;Paris/Charles Fillion/22;4;1;5
+75118-05;75018;Paris;48.8836276, 2.3339857;Station;Voirie;Paris/Clichy/70;4;0;4
+75118-10;75018;Paris;48.8913286, 2.3385496;Station;Voirie;Paris/Marcadet/150;5;0;5
+75118-11;75018;Paris;48.8948847, 2.3355224;Station;Voirie;Paris/Championnet/162;4;1;5
+75118-32;75018;Paris;48.895148, 2.3595823;Station;Voirie;Paris/Boucry/35;4;0;4
+75118-35;75018;Paris;48.8883596, 2.3480345;Station;Voirie;Paris/Custine/17;4;1;5
+75119-02;75019;Paris;48.8792228, 2.3839164;Station;Voirie;Paris/Botzaris/50;4;0;4
+75119-05;75019;Paris;48.90176, 2.38589;Station;Voirie;Paris/Émile Reynaud/4;4;1;5
+75119-12;75019;Paris;48.8857, 2.3833508;Station;Voirie;Paris/Lorraine/22;4;0;4
+75119-13;75019;Paris;48.888588, 2.3888175;Station;Voirie;Paris/Adolphe Mille/8;4;1;5
+75119-19;75019;Paris;48.877449, 2.374112;Station;Voirie;Paris/Simon Bolivar/96;4;0;4
+75119-21;75019;Paris;48.8768667, 2.3811899;Station;Voirie;Paris/Botzaris/16;4;1;5
+75119-23;75019;Paris;48.88075, 2.397629;Espace;Voirie;Paris/Sérurier/54;4;1;5
+75119-29;75019;Paris;48.8846108, 2.3697594;Station;Voirie;Paris/Flandre/6;4;1;5
+75119-34;75019;Paris;48.894, 2.380947;Espace;Voirie;Paris/Flandre/169;4;1;5
+75119-36;75019;Paris;48.8821756, 2.3708912;Station;Voirie;Paris/Secrétan/4;4;0;4
+75120-02;75020;Paris;48.8732135, 2.3903853;Espace;Voirie;Paris/Pyrénées/330;4;1;5
+75120-11;75020;Paris;48.8632187, 2.388968;Station;Voirie;Paris/Gambetta/1;5;0;5
+75120-12;75020;Paris;48.8656837, 2.3929721;Station;Voirie;Paris/Sorbier/40;4;1;5
+75120-14;75020;Paris;48.85317, 2.412055;Station;Voirie;Paris/Charles et Robert/6;4;0;4
+75120-15;75020;Paris;48.8614319, 2.4056437;Station;Voirie;Paris/Bagnolet/142;4;1;5
+75120-20;75020;Paris;48.8557933, 2.4079711;Station;Voirie;Paris/Orteaux/92;4;0;4
+75120-26;75020;Paris;48.865359, 2.405207;Station;Voirie;Paris/Capitaine Ferber/5;4;1;5
+75120-09;75020;Paris;48.86959, 2.400348;Station;Voirie;Paris/Pelleport/105;4;1;5
+75120-10;75020;Paris;48.8730881, 2.4092069;Station;Voirie;Paris/Guébriant/6;4;1;5
+75120-21;75020;Paris;48.854194, 2.405656;Station;Voirie;Paris/Pyrénées/89;4;0;4
+75120-28;75020;Paris;48.8650994, 2.3963304;Station;Voirie;Paris/Gambetta/65;4;1;5
+92004-01;92600;Asnières-sur-Seine;48.9100165, 2.2897023;Station;Voirie;Asnières-sur-Seine/Sadi Carnot/10;6;0;6
+92004-04;92600;Asnières-sur-Seine;48.9073637, 2.2830507;Station;Voirie;Asnières-sur-Seine/Marne/44;5;0;5
+92004-05;92600;Asnières-sur-Seine;48.9125949, 2.2948209;Station;Voirie;Asnières-sur-Seine/Jean-Jacques Rousseau/2;6;0;6
+92004-06;92600;Asnières-sur-Seine;48.9120069, 2.2863503;Station;Voirie;Asnières-sur-Seine/Colombes/4;5;0;5
+92004-18;92600;Asnières-sur-Seine;48.9233235, 2.2853356;Station;Voirie;Asnières-sur-Seine/Émile Zola/17;6;0;6
+92007-01;92220;Bagneux;48.7941792, 2.3017033;Station;Voirie;Bagneux/Léon Blum/13;6;0;6
+92007-06;92220;Bagneux;48.8018111, 2.3157545;Espace;Voirie;Bagneux/Henri Barbusse/43;6;0;6
+92007-13;92220;Bagneux;48.7920857, 2.3065992;Station;Voirie;Bagneux/Mathurins/2;6;0;6
+92012-01;92100;Boulogne-Billancourt;48.8344135, 2.2464756;Station;Voirie;Boulogne-Billancourt/Édouard Vaillant/81;6;0;6
+92019-01;92290;Châtenay-Malabry;48.76739, 2.255521;Station;Voirie;Châtenay-Malabry/Jean Jaurès/280;6;0;6
+92019-05;92290;Châtenay-Malabry;48.7637779, 2.2725155;Station;Voirie;Châtenay-Malabry/Division Leclerc/215;6;0;6
+92020-02;92320;Châtillon;48.8064005, 2.2982685;Station;Voirie;Châtillon/République/140;5;0;5
+92020-04;92320;Châtillon;48.8048765, 2.2898962;Station;Voirie;Châtillon/Paris/21;6;0;6
+92020-08;92320;Châtillon;48.79988, 2.281576;Station;Voirie;Châtillon/Verdun/76;6;0;6
+92025-07;92700;Colombes;48.9278206, 2.2530496;Station;Voirie;Colombes/Audra/7;6;0;6
+92025-10;92700;Colombes;48.9108414, 2.2356811;Station;Voirie;Colombes/Estienne d'Orves/348;6;0;6
+92025-11;92700;Colombes;48.9172575, 2.2365491;Station;Voirie;Colombes/Gabriel Péri/335;5;0;5
+92025-15;92700;Colombes;48.9095825, 2.2387774;Station;Voirie;Colombes/Pierre Brosselette/42;6;0;6
+92026-15;92400;Courbevoie;48.8963773, 2.256579;Espace;Voirie;Courbevoie/Hérold/6;5;1;6
+92032-01;92260;Fontenay-aux-Roses;48.7906824, 2.28727;Espace;Voirie;Fontenay-aux-Roses/Jean Jaurès/3;4;0;4
+92032-06;92260;Fontenay-aux-Roses;48.7835391, 2.2830741;Station;Voirie;Fontenay-aux-Roses/Paul Langevin/70;6;0;6
+92036-07;92230;Gennevilliers;48.9242205, 2.2942668;Espace;Voirie;Gennevilliers/Gabriel Péri/169;6;0;6
+92036-11;92230;Gennevilliers;48.91985, 2.314065;Station;Voirie;Gennevilliers/Grésillons/215;6;0;6
+92040-01;92130;Issy-les-Moulineaux;48.8294072, 2.2644545;Station;Voirie;Issy-les-Moulineaux/Camille Desmoulins/31;6;0;6
+92040-11;92130;Issy-les-Moulineaux;48.81731, 2.27009;Station;Voirie;Issy-les-Moulineaux/Promenade du Verger/166;6;0;6
+92040-16;92130;Issy-les-Moulineaux;48.8238961, 2.2621859;Station;Voirie;Issy-les-Moulineaux/René Jacques/1;4;1;5
+92040-18;92130;Issy-les-Moulineaux;48.83073, 2.278246;Station;Voirie;Issy-les-Moulineaux/Guynemer/16;6;0;6
+92044-PB;92300;Levallois-Perret;48.8944531, 2.2883803;Station;Parking;Levallois-Perret/Wilson/80;6;0;6
+92046-04;92240;Malakoff;48.82317, 2.29935;Espace;Voirie;Malakoff/Charles de Gaulle/47;6;0;6
+92046-09;92240;Malakoff;48.8118151, 2.2811943;Station;Voirie;Malakoff/Malleret Joinville/2;6;0;6
+92048-01;92190;Meudon;48.8124566, 2.2378816;Station;Voirie;Meudon/Ponceau/2;4;0;4
+92049-02;92120;Montrouge;48.81634, 2.311644;Station;Voirie;Montrouge/Jean Jaurès/51;6;0;6
+92049-10;92120;Montrouge;48.81737, 2.327974;Station;Voirie;Montrouge/Barbès/24;6;0;6
+92049-12;92120;Montrouge;48.81909, 2.319941;Espace;Voirie;Montrouge/République/43;6;0;6
+92050-02;92000;Nanterre;48.8956, 2.224588;Station;Voirie;Nanterre/Pésaro/22;6;0;6
+92050-13;92000;Nanterre;48.8886703, 2.213053;Espace;Voirie;Nanterre/Champs Pierreux/29;4;0;4
+92050-17;92000;Nanterre;48.8900677, 2.1857686;Station;Voirie;Nanterre/Lamartine/41;6;0;6
+92050-18;92000;Nanterre;48.8906294, 2.1983695;Station;Voirie;Nanterre/Waldeck Rochet/8;6;0;6
+92050-23;92000;Nanterre;48.89334, 2.198058;Station;Voirie;Nanterre/Rigault/1;6;0;6
+92050-30;92000;Nanterre;48.89406, 2.22547;Station;Voirie;Nanterre/Salvador Allende/123;7;0;7
+92050-34;92000;Nanterre;48.91278, 2.215178;Station;Voirie;Nanterre/Peupliers/13;6;0;6
+92062-03;92800;Puteaux;48.8830992, 2.2330423;Station;Voirie;Puteaux/Fernand Pelloutier/2;6;0;6
+92062-04;92800;Puteaux;48.8860877, 2.2478443;Station;Voirie;Puteaux/Arago/52;5;0;5
+92063-02;92500;Rueil-Malmaison;48.8855277, 2.1719487;Station;Voirie;Rueil-Malmaison/Albert 1er/98;6;0;6
+92063-04;92500;Rueil-Malmaison;48.88034, 2.180216;Station;Voirie;Rueil-Malmaison/Albert 1er/2;6;0;6
+92063-20;92500;Rueil-Malmaison;48.876218, 2.187679;Station;Voirie;Rueil-Malmaison/Charles Drot/21;6;0;6
+92063-23;92500;Rueil-Malmaison;48.86324, 2.181831;Station;Voirie;Rueil-Malmaison/Empereur/174;6;0;6
+92071-02;92330;Sceaux;48.7793414, 2.2814988;Espace;Voirie;Sceaux/Gare/3;6;0;6
+92071-05;92330;Sceaux;48.779037, 2.2891934;Station;Voirie;Sceaux/Houdan/118;6;0;6
+92073-02;92150;Suresnes;48.87301, 2.232485;Station;Voirie;Suresnes/Salomon de Rothschild/3;6;0;6
+92073-06;92150;Suresnes;48.8741, 2.227249;Station;Voirie;Suresnes/Carnot/52;6;0;6
+92073-07;92150;Suresnes;48.8755464, 2.2319905;Station;Voirie;Suresnes/Georges Pompidou/37;6;0;6
+92073-10;92150;Suresnes;48.86322, 2.201247;Station;Voirie;Suresnes/Stalingrad/11;6;0;6
+92075-02;92170;Vanves;48.8222061, 2.283721;Station;Voirie;Vanves/Pruvot/7;7;0;7
+92078-02;92390;Villeneuve-la-Garenne;48.9418303, 2.3235384;Station;Voirie;Villeneuve-la-Garenne/Pompidou/29;5;1;6
+93029-03;93700;Drancy;48.9258333, 2.4403004;Station;Voirie;Drancy/Sadi Carnot/116;5;1;6
+93029-05;93700;Drancy;48.92155, 2.445802;Station;Voirie;Drancy/Marcelin Berthelot/2;6;0;6
+93029-08;93700;Drancy;48.919047, 2.453108;Station;Voirie;Drancy/Jean Jaurès/105;6;0;6
+93029-09;93700;Drancy;48.9177255, 2.4464355;Station;Voirie;Drancy/Marcelin Berthelot/73;4;0;4
+93029-10;93700;Drancy;48.9207972, 2.4559699;Station;Voirie;Drancy/Auguste Blanqui/22;6;0;6
+93029-15;93700;Drancy;48.9196895, 2.4288043;Station;Voirie;Drancy/Diderot/125;5;0;5
+93055-04;93500;Pantin;48.8929204, 2.4138507;Station;Voirie;Pantin/Église/44;6;0;6
+93063-03;93230;Romainville;48.8826947, 2.4435891;Espace;Voirie;Romainville/Pierre Kerautret/40;6;0;6
+94002-01;94140;Alfortville;48.81456, 2.413135;Station;Voirie;Alfortville/Charles de Gaulle/16;6;0;6
+94002-04;94140;Alfortville;48.79611, 2.427023;Station;Voirie;Alfortville/Verdun/39;6;0;6
+94018-08;94220;Charenton-le-Pont;48.8232903, 2.3967025;Station;Voirie;Charenton-le-Pont/Nouveau Bercy/2;6;0;6
+94028-17;94000;Créteil;48.79177, 2.459949;Station;Voirie;Créteil/Mesly/5;6;0;6
+94028-19;94000;Créteil;48.7803, 2.469707;Station;Voirie;Créteil/Paul Casalis/49;6;0;6
+94044-04;94450;Limeil-Brévannes;48.7486341, 2.4788056;Station;Voirie;Limeil-Brévannes/Emile Zola/5;6;0;6
+94076-12;94800;Villejuif;48.79917, 2.3657254;Station;Voirie;Villejuif/Paris/149;6;0;6
+75112-16;75012;Paris;48.84283, 2.39217;Station;Voirie;Paris/Reuilly/103;4;0;4
+75112-24;75012;Paris;48.8455775, 2.3953738;Station;Voirie;Paris/Fabre d'Églantine/2;4;1;5
+75112-28;75012;Paris;48.8345778, 2.4076458;Station;Voirie;Paris/Laperrine/15;4;0;4
+75112-PC;75012;Paris;48.8465494, 2.399841;Station;Parking;Paris/Picpus/65;6;0;6
+75113-13;75013;Paris;48.8268565, 2.3665764;Station;Voirie;Paris/Nationale/77;4;1;5
+75113-16;75013;Paris;48.8257617, 2.3512073;Station;Voirie;Paris/Tolbiac/189;4;0;4
+75113-17;75013;Paris;48.8260824, 2.3580488;Station;Voirie;Paris/Tolbiac/145;4;1;5
+75113-20;75013;Paris;48.8216717, 2.3690099;Station;Voirie;Paris/Ivry/3;4;0;4
+75113-23;75013;Paris;48.8250327, 2.3725162;Station;Voirie;Paris/Eugène Oudiné/51;4;0;4
+75113-25;75013;Paris;48.8328237, 2.3624101;Espace;Voirie;Paris/Vincent Auriol/143;4;1;5
+75113-27;75013;Paris;48.8365583, 2.3592348;Station;Voirie;Paris/Jeanne D'Arc/157;4;0;4
+75113-33;75013;Paris;48.8292818, 2.3744385;Station;Voirie;Paris/Tolbiac/15;4;0;4
+75113-35;75013;Paris;48.823196, 2.354218;Station;Voirie;Paris/Jean Delay/1;4;1;5
+75113-PL;75013;Paris;48.8351586, 2.3730473;Station;Parking;Paris/Abel Gance/21;6;0;6
+75114-03;75014;Paris;48.8395108, 2.3301676;Station;Voirie;Paris/Edgar Quinet/2;4;1;5
+75114-07;75014;Paris;48.8318566, 2.3202972;Station;Voirie;Paris/Didot/41;4;0;4
+75114-15;75014;Paris;48.8283698, 2.3216963;Station;Voirie;Paris/Plantes/56;3;1;4
+75114-16;75014;Paris;48.827687, 2.3330017;Station;Voirie;Paris/Alésia/33;4;0;4
+75114-19;75014;Paris;48.828, 2.306022;Station;Voirie;Paris/Raymond Losserand/229;4;1;5
+75114-22;75014;Paris;48.8307703, 2.3338877;Station;Voirie;Paris/René Coty/11;4;1;5
+75114-24;75014;Paris;48.834286, 2.3338533;Station;Voirie;Paris/Arago/99;4;0;4
+75114-28;75014;Paris;48.8287242, 2.3165845;Station;Voirie;Paris/Didot/80;4;0;4
+75115-02;75015;Paris;48.8522422, 2.2861675;Station;Voirie;Paris/Grenelle/37;4;0;4
+75115-15;75015;Paris;48.8325995, 2.2788853;Station;Voirie;Paris/Colonel Pierre Avia/1;4;1;5
+75115-16;75015;Paris;48.8415895, 2.3183413;Station;Voirie;Paris/Vaugirard/20;4;0;4
+75115-21;75015;Paris;48.83984, 2.273328;Station;Voirie;Paris/Leblanc/19;4;1;5
+75115-44;75015;Paris;48.845907, 2.309597;Station;Voirie;Paris/Suffren/161;4;1;5
+75115-47;75015;Paris;48.8412857, 2.2813956;Station;Voirie;Paris/Lacordaire/56;4;1;5
+75115-60;75015;Paris;48.848923, 2.3045476;Station;Voirie;Paris/Suffren/112;4;1;5
+75115-PK;75015;Paris;48.8393383, 2.2756878;Station;Parking;Paris/Leblanc/37;6;0;6
+75115-PM;75015;Paris;48.8455506, 2.3012843;Station;Parking;Paris/Villa Croix-Nivert/26;6;0;6
+75116-02;75016;Paris;48.8653828, 2.2945784;Station;Voirie;Paris/Iéna/24;4;0;4
+75116-11;75016;Paris;48.8673767, 2.2988559;Station;Voirie;Paris/Pierre 1er de Serbie/33;4;0;4
+75116-18;75016;Paris;48.85791, 2.273956;Station;Voirie;Paris/Mozart/2;4;0;4
+75116-27;75016;Paris;48.8478478, 2.2723059;Espace;Voirie;Paris/Rémusat/8;4;1;5
+75116-31;75016;Paris;48.8432612, 2.259497;Station;Voirie;Paris/Exelmans/77;4;0;4
+75116-35;75016;Paris;48.8713288, 2.295196;Station;Voirie;Paris/Iéna/63;4;0;4
+75116-PE;75016;Paris;48.8474576, 2.257008;Station;Parking;Paris/Sarrail/1;6;0;6
+75117-07;75017;Paris;48.8916817, 2.318781;Station;Voirie;Paris/Pouchet/4;4;1;5
+75117-32;75017;Paris;48.89351, 2.314814;Station;Voirie;Paris/Clichy/181;4;0;4
+75117-45;75017;Paris;48.88112, 2.284095;Station;Voirie;Paris/Koënig/12;4;1;5
+75118-01;75018;Paris;48.89919, 2.330375;Station;Voirie;Paris/Henri Huchard/48;4;0;4
+75118-06;75018;Paris;48.8893322, 2.3442809;Station;Voirie;Paris/Custine/45;4;0;4
+75118-12;75018;Paris;48.8856198, 2.3531328;Station;Voirie;Paris/Polonceau/19;4;0;4
+75118-14;75018;Paris;48.8932768, 2.3394999;Station;Voirie;Paris/Ordener/120;4;1;5
+75118-20;75018;Paris;48.8844148, 2.3305461;Station;Voirie;Paris/Rachel/1;4;1;5
+75118-31;75018;Paris;48.8945881, 2.3668072;Station;Voirie;Paris/Évangile/45;4;1;5
+75118-34;75018;Paris;48.8903813, 2.3548773;Station;Voirie;Paris/Marcadet/7;4;1;5
+75119-04;75019;Paris;48.891659, 2.3775942;Station;Voirie;Paris/Flandre/119;4;0;4
+75119-08;75019;Paris;48.8917059, 2.3690678;Station;Voirie;Paris/Aubervilliers/126;4;0;4
+75119-11;75019;Paris;48.8821153, 2.3814316;Station;Voirie;Paris/Manin/69;4;0;4
+75119-24;75019;Paris;48.8727407, 2.3782985;Espace;Voirie;Paris/Jules Romains/1;4;1;5
+75120-01;75020;Paris;48.8738701, 2.3864659;Station;Voirie;Paris/Pyrénées/356;4;1;5
+75120-17;75020;Paris;48.85844, 2.402911;Espace;Voirie;Paris/Pyrénées/137;4;1;5
+75120-18;75020;Paris;48.8552253, 2.3984912;Station;Voirie;Paris/Monte Cristo/24;5;0;5
+75120-24;75020;Paris;48.8500605, 2.4019645;Station;Voirie;Paris/Plaine/25;4;1;5
+75120-27;75020;Paris;48.8638511, 2.3991848;Station;Voirie;Paris/Pyrénées/231;4;0;4
+75120-29;75020;Paris;48.8676044, 2.4021436;Station;Voirie;Paris/Pelleport/86;4;0;4
+75101-04;75001;Paris;48.8642939, 2.3314856;Station;Voirie;Paris/Saint Roch/3;4;0;4
+75101-11;75001;Paris;48.8633915, 2.3403966;Station;Voirie;Paris/Colonel Driant/7;4;0;4
+75104-02;75004;Paris;48.8548459, 2.3505278;Station;Voirie;Paris/Fleurs/23;4;1;5
+75105-01;75005;Paris;48.8403227, 2.3562719;Station;Voirie;Paris/Geoffroy-Saint-Hilaire/27;4;1;5
+75105-10;75005;Paris;48.8478612, 2.3509722;Station;Voirie;Paris/Écoles/19;4;1;5

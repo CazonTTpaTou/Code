@@ -1,0 +1,29 @@
+CREATE INDEX Index_Recommande_1 ON [GMAO_DB].[dbo].[PieceJointe]([idIntervention]) ;
+CREATE INDEX Index_Recommande_2 ON [GMAO_DB].[dbo].[PieceJointe]([idFichePrev]) ;
+
+CREATE INDEX Index_Recommande_3 ON [GMAO_DB].[dbo].[ActionMaster]([idFichePreventive]) ;
+CREATE INDEX Index_Recommande_4 ON [GMAO_DB].[dbo].[PriseEnCompte]([idIntervention]) ;
+
+CREATE INDEX Index_Recommande_6 ON [GMAO_DB].[dbo].[Demande]([idFichePreventive])  INCLUDE ([idDemande],[DatePrevision]);
+CREATE INDEX Index_Recommande_9 ON [GMAO_DB].[dbo].[Demande]([EtatDemande], [idFichePreventive]) INCLUDE ([idFichePreventive], [DatePrevision]);
+CREATE INDEX Index_Recommande_14 ON [GMAO_DB].[dbo].[Demande]([idUAP], [idSecteur])  INCLUDE ([idDemande], [idDemandeur], [idTypeDemande], [idPiece], [idEquipement], [idSousEnsemble], [idUrgence], [Description], [EstRonde]);
+CREATE INDEX Index_Recommande_11 ON [GMAO_DB].[dbo].[Demande]([idUAP], [idSecteur], [idPiece], [idEquipement], [idSousEnsemble]) INCLUDE ([idDemande], [idDemandeur], [idTypeDemande], [idSecteur], [idSousEnsemble], [idUrgence], [Description], [EstRonde]) ;
+CREATE INDEX Index_Recommande_25 ON [GMAO_DB].[dbo].[Demande]([idTypeDemande])  INCLUDE ([idDemande], [idDemandeur], [idUAP], [idSecteur], [idPiece], [idEquipement], [idSousEnsemble], [idUrgence], [Description], [EstRonde]);
+CREATE INDEX Index_Recommande_24 ON [GMAO_DB].[dbo].[Demande]([idTypeDemande], [idUAP], [idSecteur], [idPiece], [idEquipement], [idSousEnsemble])  INCLUDE ([idDemande], [idDemandeur], [idUrgence], [Description], [EstRonde]);
+
+CREATE INDEX Index_Recommande_28 ON [GMAO_DB].[dbo].[ActionIntervenant]([RefAction])  INCLUDE ([idIntervenant], [TpsPasse],[idActionIntervenant]);
+
+CREATE INDEX Index_Recommande_32 ON [GMAO_DB].[dbo].[Action]([idIntervention])  INCLUDE ([Numero], [Libelle], [idCompteur], [ValeurCompteur], [EstRealise], [Observation], [Intervenants]);
+
+CREATE INDEX Index_Recommande_33 ON [GMAO_DB].[dbo].[FiltreIntervention]([idUtilisateur], [FiltreActif]) ;
+
+CREATE INDEX Index_Recommande_36 ON [GMAO_DB].[dbo].[Realisation]([idIntervention])  INCLUDE ([DebutInter], [FinInter], [DebutPiece], [FinPiece], [TempsArretSaisie],[TpsArret]);
+
+CREATE INDEX Index_Recommande_38 ON [GMAO_DB].[dbo].[Intervention]([DateCreation])  INCLUDE ([idIntervention], [idDemande], [idService], [idEtat], [idDetail], [DateCloture]);
+CREATE INDEX Index_Recommande_40 ON [GMAO_DB].[dbo].[Intervention]([idDetail])  INCLUDE ([idDemande], [idService], [idEtat], [DateCloture],[DateCreation]);
+CREATE INDEX Index_Recommande_42 ON [GMAO_DB].[dbo].[Intervention]([DateCloture])  INCLUDE ([idDemande], [DateCreation]);
+CREATE INDEX Index_Recommande_47 ON [GMAO_DB].[dbo].[Intervention]([idDemande])  INCLUDE ([idIntervention], [idService],[idEtat],[idDetail], [DateCloture], [Sysdhc], [DateCreation]);
+CREATE INDEX Index_Recommande_46 ON [GMAO_DB].[dbo].[Intervention]([idDemande], [idService], [idDetail])  INCLUDE ([idEtat], [DateCloture], [DateCreation]);
+CREATE INDEX Index_Recommande_56 ON [GMAO_DB].[dbo].[Intervention]([idService])  INCLUDE ([idDemande], [idEtat], [idEtat], [DateCloture], [DateCreation]);
+
+

@@ -1,0 +1,76 @@
+Créer une collection :
+
+Dim NomCollection as New Collection()
+
+NomCollection.Add(TextBox1.Text)
+	For each NomURL in NomCollection
+		MsgBox NomURL
+	Next NomURL
+
+For each ctrl in Controls
+
+Créer une classe : 
+
+Public Class Personne
+
+Dim leNom as string
+Dim prenom as string
+Dim date-naiss as date
+
+End Class
+
+Public Property nom() as string
+Get 
+	return leNom
+End Get
+Set(ByVal Value as string)
+	leNom = Value
+End set
+End Property
+
+Public function Calcul-Age As Integer
+	Return DateDiff(Date,Now())
+End function
+
+End Class
+
+Dim p as new Personne
+
+p.nom("Dupond")
+MsgBox p.nom
+
+Dim fils as Personne
+If TypeName(p.getEnfant(0).equels("Personne") Then
+	fils = CType(p.getEnfant(0),Personne)
+End if
+
+Dim fils as personne
+if typeOf p.getenfant(0) is Personne then
+	fils.CType(p.getenfant(0),Personne)
+End if
+
+Evènement
+
+A créer dans la classe génératrice de l'évènement
+
+Public Event NouvelleCommande(ByVal nbCommande As Integer)
+	nbCommande = nbCommande + 1
+	Raise Event NouvelleCommande(nbCommande)
+End Sub
+
+A créer dans la classe réceptrice de l'évènement
+
+Public sub NvClient
+
+Dim unClient as Client
+unclient = New Client("Dupond",1234567)
+AddHandler unClient.nouvelleCommande,AddressOf gestionCommande
+
+unClient.AjouteCommande(10)
+
+End sub
+
+Public sub gestionCommande(ByVal nbCmd as integer)
+	MsgBox ("Nombre commandes " & nbCmd)
+End sub
+

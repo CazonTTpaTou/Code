@@ -1,0 +1,8 @@
+'Count(CrossJoin({      [Measures].[Nb_Intervention]}, {Descendants(      [inter_domaine].[inter_domaine].CurrentMember,       [inter_domaine].[Code_Intervention], SELF)}), ExcludeEmpty)', FORMAT_STRING = 'best20.2'
+
+'Count(CrossJoin({      [Measures].[Nb_Intervention]}, {Descendants(      [inter_domaine].[inter_domaine].CurrentMember,       [inter_domaine].[Code_Intervention], SELF)}), ExcludeEmpty)', FORMAT_STRING = 'best20.2'
+
+'SUM( DESCENDANTS( [key].[key].CurrentMember,  [key].[key].[Surrogatekey]), [Measures].[Duree_Traitement]*[Measures].[Poids])'
+
+'AVG( DESCENDANTS( [key].[key].CurrentMember,  [key].[key].[Surrogatekey]), [Measures].[Duree_Traitement]*[Measures].[Poids])', FORMAT_STRING="BEST15."
+

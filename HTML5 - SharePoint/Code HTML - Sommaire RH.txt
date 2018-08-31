@@ -1,0 +1,47 @@
+<h3 style="color: black; font-size: 3em; font-weight: bold;" unselectable="on">
+				Ressources Humaines</h3>
+<br unselectable="on">
+                                <ul style="padding: 0.1em 1.4em; color: black; font-size: 1.2em; font-weight: bold; background-color: white;" unselectable="on">
+                                    <li unselectable="on">
+                                        <a href="/RH/SitePages/Formulaires_RH.aspx" unselectable="on" style="color:rgb(0,149,216);">1. Formulaires RH
+                                        
+                                        </a>
+                                    </li>
+<br>
+                                    <li unselectable="on">
+                                        <a href="/RH/SitePages/Accords_collectifs.aspx" unselectable="on" style="color:rgb(0,149,216);">2. Accords collectifs
+                                        
+                                        </a>
+                                    </li>
+<br>
+                                    <li unselectable="on">
+                                        <a href="/RH/SitePages/Reglements.aspx" unselectable="on" style="color:rgb(0,149,216);">3. Réglements
+                                        
+                                        </a>
+                                    </li>
+<br>
+                                    <li unselectable="on">
+                                        <a href="/RH/SitePages/Espace_Mobilite.aspx" unselectable="on" style="color:rgb(0,149,216);">4. Espace mobilité
+                                        
+                                        </a>
+                                    </li>
+<br>
+                                    <li unselectable="on">
+                                        <a href="/RH/SitePages/Delegue_Personnel.aspx" unselectable="on" style="color:rgb(0,149,216);">5. Délégués personnel
+                                        
+                                        </a>
+                                    </li>
+<br>
+                                    <li unselectable="on">
+                                        <a href="/RH/SitePages/Formation.aspx" unselectable="on" style="color:rgb(0,149,216);">6. Formation
+                                        
+                                        </a>
+                                    </li>
+<br>
+                                    <li unselectable="on">
+                                        <a href="/RH/SitePages/Demande_Conges.aspx" unselectable="on" style="color:rgb(0,149,216);">7. Demande de congés
+                                        
+                                        </a>
+                                    </li>
+                                </ul>
+

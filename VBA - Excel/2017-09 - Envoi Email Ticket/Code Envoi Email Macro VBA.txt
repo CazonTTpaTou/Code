@@ -1,0 +1,18 @@
+Sub mail()
+Dim i As Integer
+Dim ol  As Object, olmail As Object
+Set ol = CreateObject("Outlook.Application")
+Set olmail = ol.Application.CreateItem(olMailItem)
+PathName = ThisWorkbook.FullName
+ 
+With olmail
+        i = ActiveCell.Row
+        .To = "Hotline@photowatt.com"
+        .Subject = "Demande d'accès Informatique pour " & [G5] & " " & [U5] & " " & "Pour le " & [G7]
+        .Attachments.Add PathName
+        .Display
+    End With
+ 
+End Sub
+
+

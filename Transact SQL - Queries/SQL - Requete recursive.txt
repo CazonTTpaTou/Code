@@ -1,0 +1,59 @@
+use transport
+go
+
+CREATE TABLE T_JOURNEY 
+(JNY_FROM_TOWN  VARCHAR(32), 
+  JNY_TO_TOWN    VARCHAR(32), 
+  JNY_MILES      INTEGER) 
+
+GO
+
+INSERT INTO T_JOURNEY VALUES ('PARIS',            'NANTES',           385) 
+INSERT INTO T_JOURNEY VALUES ('PARIS',            'CLERMONT-FERRAND', 420) 
+INSERT INTO T_JOURNEY VALUES ('PARIS',            'LYON',             470) 
+INSERT INTO T_JOURNEY VALUES ('CLERMONT-FERRAND', 'MONTPELLIER',      335) 
+INSERT INTO T_JOURNEY VALUES ('CLERMONT-FERRAND', 'TOULOUSE',         375) 
+INSERT INTO T_JOURNEY VALUES ('LYON',             'MONTPELLIER',      305) 
+INSERT INTO T_JOURNEY VALUES ('LYON',             'MARSEILLE',        320) 
+INSERT INTO T_JOURNEY VALUES ('MONTPELLIER',      'TOULOUSE',         240) 
+INSERT INTO T_JOURNEY VALUES ('MARSEILLE',        'NICE',             205) 
+
+GO
+
+---------------------------------------------------------------------------------------
+
+WITH 
+   journey (DESTINATION, ETAPES, DISTANCE, CHEMIN) 
+   AS 
+      (SELECT DISTINCT JNY_FROM_TOWN, 0, 0, CAST('PARIS' AS VARCHAR(MAX)) 
+       FROM   T_JOURNEY 
+       WHERE  JNY_FROM_TOWN = 'PARIS' 
+       UNION  ALL 
+       SELECT JNY_TO_TOWN, departure.ETAPES + 1, 
+              departure.DISTANCE + arrival.JNY_MILES, 
+              departure.CHEMIN + ', ' + arrival.JNY_TO_TOWN 
+       FROM   T_JOURNEY AS arrival 
+              INNER JOIN journey AS departure 
+                    ON departure.DESTINATION = arrival.JNY_FROM_TOWN), 
+   short (DISTANCE) 
+   AS 
+      (SELECT MIN(DISTANCE) 
+       FROM   journey 
+       WHERE  DESTINATION = 'TOULOUSE') 
+SELECT * 
+FROM   journey j 
+       INNER JOIN short s 
+             ON j.DISTANCE = s.DISTANCE 
+WHERE  DESTINATION = 'TOULOUSE' 
+
+--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+

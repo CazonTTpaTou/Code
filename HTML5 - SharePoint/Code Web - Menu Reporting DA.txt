@@ -1,0 +1,33 @@
+<ul>
+<li>
+<h2 unselectable="on"><b unselectable="on">Statistiques d'utilisation de l'Intranet :</b></h2>
+<br unselectable="on">
+<ul unselectable="on">
+<li unselectable="on">
+<a href="https://sas.photowatt.com/SASVisualAnalytics/report?location=%2F_Intranet%2FIntranet_Stats_Utilisation&type=Report.BI&section=vi1" unselectable="on">Accès et clics utilisateurs</a>
+</li>
+<br unselectable="on">
+<br unselectable="on">
+<li unselectable="on">
+<a href="https://sas.photowatt.com/SASVisualAnalytics/report?location=%2F_Intranet%2FIntranet_Utilisation_Globale&type=Report.BI&section=vi136" unselectable="on">Consultation des documents</a>
+</li>
+<br unselectable="on">
+<br unselectable="on">
+<li unselectable="on"><a href="https://sas.photowatt.com/SASVisualAnalytics/report?location=%2F_Intranet%2FIntranet_Acces_Sites&type=Report.BI&section=vi47" unselectable="on">Mots clés des recherches</a>
+</li>
+</ul>
+<br unselectable="on">
+
+
+Stats utilisation
+
+https://sas.photowatt.com/SASVisualAnalytics/report?location=%2F_Intranet%2FIntranet_Stats_Utilisation&type=Report.BI&section=vi1
+
+Documents
+
+https://sas.photowatt.com/SASVisualAnalytics/report?location=%2F_Intranet%2FIntranet_Utilisation_Globale&type=Report.BI&section=vi136
+
+Mots clés
+
+https://sas.photowatt.com/SASVisualAnalytics/report?location=%2F_Intranet%2FIntranet_Acces_Sites&type=Report.BI&section=vi47
+

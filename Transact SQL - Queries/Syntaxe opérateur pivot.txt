@@ -1,0 +1,36 @@
+SELECT <colonne non-pivotée>,
+
+    [première colonne pivotée] AS <nom de colonne>,
+
+    [seconde colonne pivotée] AS <nom de colonne>,
+
+    ...
+
+    [dernière colonne pivotée] AS <nom de colonne>
+
+FROM
+
+    (<Requête SELECT qui produit les données>) 
+
+    AS <alias pour la requête source>
+
+PIVOT
+
+(
+
+    <fonction d'agrégation>(<colonne qui est regroupée>)
+
+FOR 
+
+[<colonne qui contient les valeurs qui deviendront des en-tête de colonne>] 
+
+    IN ( [première colonne pivotée], [seconde colonne pivotée],
+
+    ... [dernière colonne pivotée])
+
+) AS <alias pour le tableau croisé dynamique>
+
+<clause ORDER BY facultative> ;
+
+
+

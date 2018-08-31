@@ -1,0 +1,41 @@
+<h3 style="color: black; font-size: 3em; font-weight: bold;" unselectable="on">
+				Informations générales</h3>
+<br unselectable="on">
+                                <ul style="padding: 0.1em 1.4em; color: black; font-size: 1.2em; font-weight: bold; background-color: white;" unselectable="on">
+                                    <li unselectable="on">
+                                        <a href="/IG/SitePages/Organigramme.aspx" unselectable="on" style="color:rgb(0,149,216);">1. Organigramme
+                                        
+                                        </a>
+                                    </li>
+<br>
+                                    <li unselectable="on">
+                                        <a href="/IG/SitePages/Liste_Telephonique.aspx" unselectable="on" style="color:rgb(0,149,216);">2. Liste téléphonique
+                                        
+                                        </a>
+                                    </li>
+<br>
+                                    <li unselectable="on">
+                                        <a href="/IG/SitePages/Plan_Acces.aspx" unselectable="on" style="color:rgb(0,149,216);">3. Plan d'accès
+                                        
+                                        </a>
+                                    </li>
+<br>
+                                    <li unselectable="on">
+                                        <a href="/IG/SitePages/Autorisation_Prestataire.aspx" unselectable="on" style="color:rgb(0,149,216);">4. Autorisation prestataire
+                                        
+                                        </a>
+                                    </li>
+<br>
+                                    <li unselectable="on">
+                                        <a href="/IG/SitePages/Calendrier_Astreintes.aspx" unselectable="on" style="color:rgb(0,149,216);">5. Calendrier astreintes
+                                        
+                                        </a>
+                                    </li>
+<br>
+                                    <li unselectable="on">
+                                        <a href="/IG/SitePages/Secouristes.aspx" unselectable="on" style="color:rgb(0,149,216);">6. Secouristes de garde
+                                        
+                                        </a>
+                                    </li>
+                                </ul>
+

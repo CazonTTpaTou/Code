@@ -1,0 +1,2 @@
+proc printto log="C:\Users\pwsasprod\Desktop\Logs.txt" new;
+run;

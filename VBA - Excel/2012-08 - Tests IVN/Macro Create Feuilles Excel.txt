@@ -1,0 +1,25 @@
+
+Public Sub CreateSheets()
+
+    For i = 21 To 25
+            
+            Cells(i, 1).Select
+            Name = ActiveCell.Value
+            
+            NbSheets = Sheets.Count + 8
+            TransitionName = "Sheet" & NbSheets
+            
+            Sheets.Add After:=Sheets(Sheets.Count)
+            
+            Sheets(TransitionName).Select
+            Sheets(TransitionName).Name = Name
+            
+            Sheets("Sheet2").Select
+    
+    Next
+
+End Sub
+
+
+
+

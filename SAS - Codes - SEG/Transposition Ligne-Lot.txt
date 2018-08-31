@@ -1,0 +1,100 @@
+/*%let Num_Lot='H16502452';*/
+
+DATA _NULL_;
+SET WORK.V_LOTS_SYNTHESE1 END=EOF;
+Call symputx(cat('Num_Lot',_N_),Lot);
+IF EOF THEN Call Symput('Nbre_Lot',_N_);
+RUN;
+
+%Macro Transposition();
+%do i = 1 %to 3;
+/*%let NumLot = %bquote(')&&Num_Lot&i%bquote(');*/
+%let NumLot = &&Num_Lot&i;
+
+PROC SQL;
+   CREATE TABLE WORK.QUERY_FOR_V_LOTS_SYNTHESE1 AS 
+   SELECT t1.Lot, 
+          t1.'Tri Qte Entr'n, 
+          t1.'Tri Qte Sort'n, 
+          t1.'Tri Rej Total'n, 
+          t1.'Tri Qte Ecart'n, 
+          t1.'Tri Qte M'n, 
+          t1.'Tri Qte Eme'n, 
+          t1.'Tri Qte Rsh'n, 
+          t1.'Tri Qte Idk'n, 
+          t1.'Tri Qte Div'n, 
+          t1.'Tri Qte L-16_4'n, 
+          t1.'Tri Qte L-16_6'n, 
+          t1.'Tri Qte L-16_8'n, 
+          t1.'Tri Qte L-17_2'n, 
+          t1.'Tri Qte L-17_4'n, 
+          t1.'Tri Qte L-17_6'n, 
+          t1.'Tri Qte L-17_8'n, 
+          t1.'Tri Qte L-18_2'n, 
+          t1.'Tri Qte L-18_4'n, 
+          t1.'Tri Qte L-18_6'n, 
+          t1.'Tri Qte L-18_8'n, 
+          t1.'Tri Qte L-16_0'n, 
+          t1.'Tri Qte 16_0'n, 
+          t1.'Tri Qte 16_2'n, 
+          t1.'Tri Qte 16_4'n, 
+          t1.'Tri Qte 16_6'n, 
+          t1.'Tri Qte 16_8'n, 
+          t1.'Tri Qte L-17_0'n, 
+          t1.'Tri Qte 17_0'n, 
+          t1.'Tri Qte 17_2'n, 
+          t1.'Tri Qte 17_4'n, 
+          t1.'Tri Qte 17_6'n, 
+          t1.'Tri Qte 17_8'n, 
+          t1.'Tri Qte L-18_0'n, 
+          t1.'Tri Qte 18_0'n, 
+          t1.'Tri Qte 18_2'n, 
+          t1.'Tri Qte 18_4'n, 
+          t1.'Tri Qte 18_6'n, 
+          t1.'Tri Qte 18_8'n, 
+          t1.'Tri Qte 19_0'n, 
+          t1.'Tri Qte 19_2'n, 
+          t1.'Tri Qte 19_4'n, 
+          t1.'Tri Qte 19_6'n, 
+          t1.'Tri Qte 19_8'n, 
+          t1.'Tri Qte 20_0'n, 
+          t1.'Tri Qte 20_2'n, 
+          t1.'Tri Qte 20_4'n, 
+          t1.'Tri Qte 20_6'n
+      FROM WORK.V_LOTS_SYNTHESE1 t1
+      WHERE t1.Lot="&NumLot";
+QUIT;
+
+PROC SORT
+	DATA=WORK.QUERY_FOR_V_LOTS_SYNTHESE1(KEEP="Tri Qte Entr"n "Tri Qte Sort"n "Tri Rej Total"n "Tri Qte Ecart"n "Tri Qte M"n "Tri Qte Eme"n "Tri Qte Rsh"n "Tri Qte Idk"n "Tri Qte Div"n "Tri Qte L-16_4"n "Tri Qte L-16_6"n
+	  "Tri Qte L-16_8"n "Tri Qte L-17_2"n "Tri Qte L-17_4"n "Tri Qte L-17_6"n "Tri Qte L-17_8"n "Tri Qte L-18_2"n "Tri Qte L-18_4"n "Tri Qte L-18_6"n "Tri Qte L-18_8"n "Tri Qte L-16_0"n "Tri Qte 16_0"n
+	  "Tri Qte 16_2"n "Tri Qte 16_4"n "Tri Qte 16_6"n "Tri Qte 16_8"n "Tri Qte L-17_0"n "Tri Qte 17_0"n "Tri Qte 17_2"n "Tri Qte 17_4"n "Tri Qte 17_6"n "Tri Qte 17_8"n "Tri Qte L-18_0"n "Tri Qte 18_0"n
+	  "Tri Qte 18_2"n "Tri Qte 18_4"n "Tri Qte 18_6"n "Tri Qte 18_8"n "Tri Qte 19_0"n "Tri Qte 19_2"n "Tri Qte 19_4"n "Tri Qte 19_6"n "Tri Qte 19_8"n "Tri Qte 20_0"n "Tri Qte 20_2"n
+	  "Tri Qte 20_4"n "Tri Qte 20_6"n Lot)
+	OUT=WORK.SORTTempTableSorted
+	;
+	BY Lot;
+RUN;
+
+PROC TRANSPOSE DATA=WORK.SORTTempTableSorted
+	OUT=WORK.&NumLot (LABEL="&NumLot")
+	PREFIX='Quantité'n
+	NAME=Source
+	LABEL='Libellé'n
+;
+	BY Lot;
+	VAR "Tri Qte Entr"n "Tri Qte Sort"n "Tri Rej Total"n "Tri Qte Ecart"n "Tri Qte M"n "Tri Qte Eme"n "Tri Qte Rsh"n "Tri Qte Idk"n "Tri Qte Div"n "Tri Qte L-16_4"n "Tri Qte L-16_6"n "Tri Qte L-16_8"n "Tri Qte L-17_2"n "Tri Qte L-17_4"n "Tri Qte L-17_6"n
+	  "Tri Qte L-17_8"n "Tri Qte L-18_2"n "Tri Qte L-18_4"n "Tri Qte L-18_6"n "Tri Qte L-18_8"n "Tri Qte L-16_0"n "Tri Qte 16_0"n "Tri Qte 16_2"n "Tri Qte 16_4"n "Tri Qte 16_6"n "Tri Qte 16_8"n "Tri Qte L-17_0"n "Tri Qte 17_0"n "Tri Qte 17_2"n
+	  "Tri Qte 17_4"n "Tri Qte 17_6"n "Tri Qte 17_8"n "Tri Qte L-18_0"n "Tri Qte 18_0"n "Tri Qte 18_2"n "Tri Qte 18_4"n "Tri Qte 18_6"n "Tri Qte 18_8"n "Tri Qte 19_0"n "Tri Qte 19_2"n "Tri Qte 19_4"n "Tri Qte 19_6"n "Tri Qte 19_8"n "Tri Qte 20_0"n
+	  "Tri Qte 20_2"n "Tri Qte 20_4"n "Tri Qte 20_6"n;
+RUN; 
+QUIT;
+
+%end;
+%mend;
+
+%Transposition();
+
+
+
+

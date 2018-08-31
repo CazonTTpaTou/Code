@@ -1,0 +1,13 @@
+DATA STATS.HENNECKE_LOGS;
+SET CDSN.TL_HENNECKE;
+WHERE DatePart(Time) >= IntNX('YEAR',Date(),0);
+RUN;
+
+proc sql;
+create index N_Assemblage on STATS.HENNECKE_LOGS;
+create index Time on STATS.HENNECKE_LOGS;
+create index Schnitt on STATS.HENNECKE_LOGS;
+create index Pos on STATS.HENNECKE_LOGS;
+/*create index WaferId on STATS.HENNECKE_LOGS;
+create index Ingot on STATS.HENNECKE_LOGS;*/
+quit;

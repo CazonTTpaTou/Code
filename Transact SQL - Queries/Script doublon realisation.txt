@@ -1,0 +1,10 @@
+Select * from realisation
+where idintervention in
+(select idintervention
+from realisation
+Group by idintervention
+Having (count(*) >=2))
+GO
+
+
+

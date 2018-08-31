@@ -1,0 +1,113 @@
+%macro PackingIntervall_EQU();
+
+%let _nb_Inter = 1;
+%let i=0;
+
+%do %while(&_nb_Inter >0 and &_nb_Inter ^=.);
+
+	%let i=%eval(&i+1);
+
+	DATA WORK.Liste_Arret_Trie (keep=Code_Emplacement Avant Apres debutArret FinArret2 Intersection);
+		Format Avant Datetime23.
+		       Apres Datetime23.;       
+	SET Work.Liste_Arret;
+		Avant0=Lag(DebutArret);
+		Avant2 = intck('Day',datepart(Lag(DebutArret)),datepart(FinArret2));
+		avant = Max(Lag(FinArret2),DebutArret);
+		apres = Max(Avant,FinArret2);
+		if avant ^= debutArret Then Intersection = 1;
+	RUN;
+
+	PROC SQL Noprint;
+	SELECT SUM(Intersection) Into: _nb_Inter FROM Work.Liste_Arret_Trie;
+	RUN;
+
+	DATA Work.Liste_Arret2 (keep=Code_Emplacement DebutArret FinArret2);
+	SET WORK.Liste_Arret_Trie;
+	DebutArret = Avant;
+	FinArret2 = Apres;
+	IF (avant ^= apres) Then Output;
+	RUN;
+
+	PROC SORT data=Work.Liste_Arret2 out=Work.Liste_Arret;
+	BY DebutArret;
+	RUN;
+
+%put Nombre intersection pour itération n° &i ---> &_nb_Inter;
+%end;
+
+%mend;
+
+%macro Selectionn(Emplacement,TableDest);
+	%let Code ="&Emplacement.";
+	%put --> Code : &Code;
+	DATA &TableDest (keep=Code_Emplacement DebutArret FinArret2);
+	SET RE_GMAO.LISTE_ARRET_EQU;
+	IF Code_Emplacement = &Code Then Output;
+	RUN;
+%mend;
+
+%macro TableGenerationEQU();
+
+%do equ=1 %to &nobss;
+
+	%Selectionn(&&Code_Equipe_&equ.,&&Tablee_&equ.);
+	%put --> Exécution du Packing Interval sur équipement : &&Code_Equipe_&equ. --------------;
+
+	%PackingIntervall_EQU();
+
+	%put ******************* Itération n° &equ.;
+	%put ******************* ******************* ******************* ******************* *******************;
+	%put ******************* Ajout des dates pour équipement &&Code_Equipe_&equ. ********************;
+
+	proc append base=RE_GMAO.ARRET_EQU force
+	     data=Work.Liste_Arret;     
+	run;
+
+%end;
+
+%mend;
+
+%let Date_J = %sysfunc(date(),worddate.);
+%let DateJ = %sysfunc(translate(&Date_J,'-',','));
+
+%let Heure_J = %sysfunc(time(),time5.);
+%let HeureJ = %sysfunc(translate(&Heure_J,'-',':'));
+
+%let Prefixe = C:\Users\pwsasdev\Desktop\Logs_EQU_;
+%let Suffixe = .txt;
+%let Separateur = _;
+
+%let FichierLog = &Prefixe.&DateJ.&Separateur.&HeureJ.&Suffixe;
+
+proc printto log="&FichierLog" new;
+run;
+
+DATA RE_GMAO.ARRET_EQU;
+Format 
+   Code_Emplacement $CHAR200.
+   DebutArret DATETIME23.
+   Finarret2  DATETIME23.;
+RUN;
+
+PROC SORT data=RE_GMAO.LISTE_ARRET_EQU Out=Work.Liste_EQU Nodupkey;
+BY Code_Emplacement;
+RUN;
+
+DATA _NULL_;
+SET Work.liste_EQU end=last;
+	Call Symputx(cats('Tablee_',_N_),'Work.Liste_Arret');
+	Call Symputx(cats('Code_Equipe_',_n_),Code_Emplacement);
+    if last then call symputx('nobss',_n_);	
+RUN;
+
+%TableGenerationEQU();
+
+
+
+
+
+
+
+
+

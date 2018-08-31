@@ -1,0 +1,107 @@
+PROC SQL; 
+CREATE TABLE Work.CumulArret_SSE AS
+SELECT T1.DebutArret AS ITV_DEBUT,T1.FinArret2 AS ITV_FIN,T1.Code_Emplacement AS ITV_ITEM
+FROM RE_GMAO.ARRET_SSE AS T1;
+RUN;
+
+/*INTNX(’MONTH’,’21OCT2007’D,1) 
+INTCK(’YEAR’,DATE1,DATE2)*/
+
+PROC SQL;
+CREATE TABLE Work.TpsArret_SSE AS
+SELECT 
+			J.DateJour,
+            V.ITV_ITEM,
+			V.ITV_DEBUT,
+			V.ITV_FIN,			
+
+			Case When ITV_DEBUT>=DateJour 
+				Then ITV_Debut 
+				Else DateJour 
+				End as DateDebut format DateTime23.,
+			
+			Case When ITV_FIN <= dhms(INTNX('day',datepart(J.DateJour),1),0,0,0)
+				Then ITV_FIN 
+				Else dhms(INTNX('day',datepart(J.DateJour),1),0,0,0) 
+				End as DateFin format DateTime23.,
+				
+			intck('minute',
+							Case When ITV_DEBUT>=DateJour 
+							Then ITV_Debut 
+							Else DateJour 
+							End ,
+
+							Case When ITV_FIN <= dhms(INTNX('day',datepart(J.DateJour),1),0,0,0)
+							Then ITV_FIN 
+							Else dhms(INTNX('day',datepart(J.DateJour),1),0,0,0)
+							End)	
+					AS Duree
+					
+			FROM GMAO.Vue_Calendrier as J,
+			
+			     Work.CumulArret_SSE  as V
+	                
+			 WHERE J.DateJour < V.ITV_Fin 
+			   and datepart(J.DateJour) >= 
+				   Datepart(V.ITV_Debut)
+
+			 ORDER BY  V.ITV_ITEM,J.DateJour;
+
+RUN;
+
+PROC SQL;
+CREATE TABLE Work.Cumul_Tps_Arret_SSE AS
+	Select ITV_ITEM,DateJour,SUM(Duree) as Duree_Arret
+			FROM Work.TpsArret_SSE
+			GROUP BY ITV_ITEM,DateJour;
+RUN;
+
+PROC SQL;
+CREATE TABLE RE_GMAO.Tps_Fonctionnement_SSE AS
+SELECT 
+
+	'SSE' AS Arborescence,
+	VE.DateJour,
+	VE.Unite,
+	VE.Secteur,
+	VE.Procede,
+	VE.Equipement,
+	VE.Sous_Equipement,	
+		   
+		   1440 as Temps_Ouverture,
+		   
+		   1440-coalesce(CTN.duree_Arret,0) AS Temps_Bon_Fonctionnement		   
+
+	FROM 
+
+		(select 
+	            V.DateJour,
+				E.Code_Emplacement,
+	            E.Sous_Equipement,
+	            E.Equipement,
+	            E.Procede,
+	            E.Secteur,
+	            E.Unite
+			FROM GMAO.Vue_Calendrier as V,
+                 Work.Emplacement_Sous_Equipement as E
+			) as VE
+
+	LEFT OUTER JOIN 
+
+			Cumul_Tps_Arret_SSE as CTN
+				on VE.DateJour = CTN.DateJour
+				and VE.Code_Emplacement = CTN.ITV_ITEM
+
+	ORDER BY 
+			VE.DateJour,
+			VE.Unite,
+			VE.Secteur,
+			VE.Procede,
+			VE.Equipement,
+			VE.Sous_Equipement;
+RUN;
+
+
+				
+
+

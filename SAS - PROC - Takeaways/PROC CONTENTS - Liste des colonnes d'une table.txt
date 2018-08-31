@@ -1,0 +1,7 @@
+PROC CONTENTS Data=CDSN.V_Assemblage;
+RUN;
+
+PROC SQL;
+SELECT name FROM SASHELP.VCOLUMN
+WHERE memname = 'V_Assemblage';
+RUN;

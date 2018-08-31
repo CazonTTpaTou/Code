@@ -1,0 +1,23 @@
+SELECT * FROM Ligne
+	WHERE n°ligne IN (
+				SELECT Ligne.n°ligne
+					FROM (
+
+						SELECT n°ligne, MIN( ligne.rang ) AS rank
+							FROM Ligne
+						GROUP BY Ligne.n°ligne
+						) AS departs, Ligne
+				WHERE Ligne.gare = 'Angers'
+					AND Ligne.n°ligne = departs.n°ligne
+					AND Ligne.rang = departs.rank)
+	AND n°ligne IN (
+				SELECT Ligne.n°ligne
+					FROM (
+
+						SELECT n°ligne, MAX( ligne.rang ) AS rank
+							FROM Ligne
+						GROUP BY Ligne.n°ligne
+						) AS arrivees, Ligne
+				WHERE Ligne.gare = 'Beziers'
+					AND Ligne.n°ligne = arrivees.n°ligne
+					AND Ligne.rang = arrivees.rank)

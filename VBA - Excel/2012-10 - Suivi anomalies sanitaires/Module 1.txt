@@ -1,0 +1,347 @@
+Public MonRuban As IRibbonUI
+
+Public Navigation() As String
+Public Afficher_La_Navigation As Integer
+Public Intitule() As String
+Public Comment_Value As String
+
+Public Const NbColumn = 9
+
+Public Const Decalage = 11
+Public Const Debut = 2
+Public Const Date_Cloture = 10
+Public Const Emp_Verrou = 11
+
+Public Const Col_Benchmark = 13
+Public Const Lig_N_Anom_Clot = 2
+Public Const Lig_N_Anom_Non_Clot = 3
+Public Const Last_Locked = 4
+Public Const Notice_Locked = 5
+
+Public Const Lig_Password = 1
+Public Const Col_Password = 26
+
+Public Const Taille_Largeur = 4.16
+Public Const Taille_Longueur = 2.49
+
+Public Const PasswordVeto = "Alligator"
+
+Sub Sur_Chargement(ribbon As IRibbonUI)
+    
+    Set MonRuban = ribbon
+    
+    Call BuildNavigator
+    Afficher_La_Navigation = False
+    
+    ReDim Intitule(NbColumn)
+    
+    Intitule(1) = "N° Fiche Anomalie"
+    Intitule(2) = "Date de détection"
+     Intitule(3) = "Zone"
+      Intitule(4) = "Numéro Etude"
+       Intitule(5) = "N° Fiche Autopsie"
+        Intitule(6) = "N° Fiche Examen clinique"
+         Intitule(7) = "N° Fiche Traitement"
+          Intitule(8) = "N° Fiche Mesure Sanitaire"
+           Intitule(9) = "Date de clôture"
+    
+End Sub
+
+'Callback for F31 onAction
+Sub Selection_Navigation(control As IRibbonControl, id As String, index As Integer)
+    
+   'MsgBox ("Valeur index :" & index)
+    
+    'If index = 0 Then
+    '    Exit Sub
+    'End If
+    
+    Cells(index + Cells(Lig_N_Anom_Clot, Col_Benchmark).Value + Decalage - 1, Debut).Select
+    Afficher_La_Navigation = index
+    MonRuban.Invalidate
+    
+    Call MotDePasse(ActiveCell.Value)
+    
+End Sub
+
+'Callback for F31 getItemCount
+Sub N_Item_Navigation(control As IRibbonControl, ByRef returnedVal)
+    returnedVal = Cells(Lig_N_Anom_Non_Clot, Col_Benchmark).Value + 1
+End Sub
+
+'Callback for F31 getItemLabel
+Sub Label_Navigation(control As IRibbonControl, index As Integer, ByRef returnedVal)
+    On Error Resume Next
+    returnedVal = Navigation(index)
+End Sub
+
+'Callback for F31 getSelectedItemIndex
+Sub Default_Navigation(control As IRibbonControl, ByRef returnedVal)
+     returnedVal = 0
+End Sub
+
+'Callback for button First Anomalie
+Sub First_Anomalie(control As IRibbonControl)
+    On Error GoTo GestionErreur
+    Position = Cells(Lig_N_Anom_Clot, Col_Benchmark).Value + Decalage
+    Cells(Position, Debut).Select
+    Exit Sub
+GestionErreur:
+    Resume Next
+End Sub
+
+'Callback for button Last Anomalie
+Sub Last_Anomalie(control As IRibbonControl)
+    On Error GoTo GestionErreur
+    Position = Cells(Lig_N_Anom_Clot, Col_Benchmark).Value + Cells(Lig_N_Anom_Non_Clot, Col_Benchmark).Value + Decalage - 1
+    Cells(Position, Debut).Select
+    Exit Sub
+GestionErreur:
+    Resume Next
+End Sub
+
+'Callback for button Navigation
+Sub Affiche_Navigation(control As IRibbonControl)
+     
+Call BuildNavigator
+Afficher_La_Navigation = True
+MonRuban.Invalidate
+
+End Sub
+
+'Callback for group Navigation
+Sub Visible_Navigation(control As IRibbonControl, ByRef returnedVal)
+     returnedVal = Afficher_La_Navigation
+End Sub
+
+Sub BuildNavigator()
+i = 0
+Start = Cells(Lig_N_Anom_Clot, Col_Benchmark).Value + Decalage
+
+Taille = Cells(Lig_N_Anom_Non_Clot, Col_Benchmark).Value
+ReDim Navigation(Taille + 1)
+
+Do While (Not (IsEmpty(Cells(Start, Debut))))
+    i = i + 1
+    'MsgBox "N° " & num & " - " & "Saut de ligne n° " & i & " - Position : " & InStr(Start, cont, Chr(10))
+        Navigation(i) = Cells(Start, Debut).Value
+        Start = Start + 1
+Loop
+
+'MsgBox ("Start : " & Start)
+
+End Sub
+
+'Callback for button Modification
+Sub Modifier(control As IRibbonControl)
+        
+        num = Cells(ActiveCell.Row, Debut).Value
+        col = Intitule(ActiveCell.Column - Debut + 1)
+        
+        If Cells(ActiveCell.Row, Emp_Verrou).Value <> "x" Then
+            MsgBox ("L'anomalie n° " & num & " n'a pas encore été verrouillée. " & Chr(10) & Chr(10) & "L'opération de modification est donc inutile !!!")
+            Exit Sub
+        End If
+        
+        reponse = InputBox("Veuillez rentrer le mot de passe vous autorisant à renseigner un commentaire pour l'anomalie n° " & num)
+            If reponse = Cells(Lig_Password, Col_Password).Value Then
+            
+                    Call DeProtection
+                    
+                    UserForm2.Caption = "Modification de l'anomalie n° " & num
+                    UserForm2.Label1 = "ANOMALIE n° " & num
+                    UserForm2.Label2 = "Colonne : " & col
+                    UserForm2.Label3 = "Valeur actuelle : " & Chr(10) & ActiveCell.Value
+                    UserForm2.Show
+                    
+                    Commentaire = Comment_Value
+                    'Commentaire = InputBox("Veuillez saisir la modification concernant la colonne " & col & " de l'anomalie n° " & num & " :")
+                    
+                    Set C = Range(Cells(ActiveCell.Row, ActiveCell.Column), Cells(ActiveCell.Row, ActiveCell.Column))
+                    Set com = C.Comment
+                        If Not (com Is Nothing) Then
+                             Message = com.Text
+                        End If
+                        
+                    ' Code à décommenter pour remplacer les anciennes valeurs par les nouvelles rentrées par l'utilisateur (actuellement les nouvelles valeurs sont uniquement insérées en commentaires)
+                    'AncientValue = ActiveCell.Value
+                    'If AncientValue = " " Then
+                        'AncientValue = " Aucune valeur n'avait été saisie "
+                        'Else: AncientValue = " L'ancienne valeur saisie était : " & AncientValue
+                    'End If
+                    'ActiveCell.Value = Commentaire
+                    'Commentaire = AncientValue
+
+                    Message = Message & Chr(10) & Commentaire & Chr(10) & Chr(10) & "Commentaire de modification renseigné le " & Date & " à " & Time & " par " & Application.UserName & Chr(10)
+                    
+                    ActiveCell.ClearComments
+                    ActiveCell.AddComment
+                    ActiveCell.Comment.Visible = False
+                    ActiveCell.Comment.Text Text:=Message
+                    
+                    Selection.Comment.Shape.ScaleWidth Taille_Largeur, msoFalse, msoScaleFromTopLeft
+                    Selection.Comment.Shape.ScaleHeight Taille_Longueur, msoFalse, msoScaleFromTopLeft
+                    
+                    Call Quick_Protection
+                    ActiveWorkbook.Save
+                
+            Else: retry = MsgBox("Votre mot de passe n'est pas valide. Voulez vous recommencer ???", vbYesNo)
+                If (retry = 6) Then
+                    Call MotDePasse(num)
+                Else: Exit Sub
+                End If
+            End If
+            
+End Sub
+
+Sub DeplacerAnomalie()
+
+Position = Cells(Lig_N_Anom_Clot, Col_Benchmark).Value + Decalage
+Lig_Deleted = ActiveCell.Row
+'MsgBox ("Lig deleted :" & Lig_Delete & Chr(10) & "Position : " & Position)
+'Rows(ActiveCell.Row & ":" & ActiveCell.Row).Select
+'Application.CutCopyMode = False
+'Selection.Cut
+
+    Rows(Position & ":" & Position).Select
+    Selection.Insert Shift:=xlDown, CopyOrigin:=True
+    
+    For i = Debut To (Debut + NbColumn - 1)
+        Cells(Position, i).Locked = True
+        Cells(Position, i).Value = Cells(Lig_Deleted + 1, i).Value
+    Next i
+    
+    Cells(Position, Emp_Verrou).Value = "x"
+    Rows(Lig_Deleted + 1 & ":" & Lig_Deleted + 1).Select
+    Selection.Delete Shift:=xlUp
+    
+Cells(Last_Locked, Col_Benchmark).Value = Date
+Cells(Cells(Lig_N_Anom_Clot, Col_Benchmark).Value + Cells(Lig_N_Anom_Non_Clot, Col_Benchmark).Value + Decalage - 1, Debut).Select
+    
+End Sub
+    
+Sub MotDePasse(ByVal num As Variant)
+
+reponse = InputBox("Veuillez rentrer le mot de passe vous autorisant à déclôturer l'anomalie n° " & num)
+
+If reponse = Cells(Lig_Password, Col_Password).Value Then
+    ' On détermine l'heure et la date courante
+    annee = Year(Date) - 2007
+    mois = Month(Date) - 1
+    jour = Day(Date) - 1
+    
+    Call Init
+    Call DeProtection
+    
+    UserForm1.Caption = "Saisie de la date de clôture de l'anomalie n° " & num
+    UserForm1.Label1.Caption = "Anomalie n° " & num
+    UserForm1.Label5.Caption = "Choisissez la date de clôture de l'anomalie n° " & num & " : "
+    
+    UserForm1.ComboBox1.ListIndex = mois
+    UserForm1.ComboBox2.ListIndex = jour
+    UserForm1.ComboBox3.ListIndex = annee
+    UserForm1.Show
+    
+    Call DeplacerAnomalie
+    Call BuildNavigator
+    MonRuban.Invalidate
+    Call Quick_Protection
+    ActiveWorkbook.Save
+    
+Else: retry = MsgBox("Votre mot de passe n'est pas valide. Voulez vous recommencer ???", vbYesNo)
+      If (retry = 6) Then
+        Call MotDePasse(num)
+      Else: Exit Sub
+      End If
+End If
+
+End Sub
+ 
+'Callback for L21 onAction
+Sub Refresh(control As IRibbonControl)
+
+    Call BuildNavigator
+    MonRuban.Invalidate
+
+End Sub
+ 
+Sub Init()
+
+UserForm1.ComboBox1.AddItem ("Janvier")
+UserForm1.ComboBox1.AddItem ("Février")
+UserForm1.ComboBox1.AddItem ("Mars")
+UserForm1.ComboBox1.AddItem ("Avril")
+UserForm1.ComboBox1.AddItem ("Mai")
+UserForm1.ComboBox1.AddItem ("Juin")
+UserForm1.ComboBox1.AddItem ("Juillet")
+UserForm1.ComboBox1.AddItem ("Août")
+UserForm1.ComboBox1.AddItem ("Septembre")
+UserForm1.ComboBox1.AddItem ("Octobre")
+UserForm1.ComboBox1.AddItem ("Novembre")
+UserForm1.ComboBox1.AddItem ("Décembre")
+
+UserForm1.ComboBox2.AddItem ("1")
+UserForm1.ComboBox2.AddItem ("2")
+UserForm1.ComboBox2.AddItem ("3")
+UserForm1.ComboBox2.AddItem ("4")
+UserForm1.ComboBox2.AddItem ("5")
+UserForm1.ComboBox2.AddItem ("6")
+UserForm1.ComboBox2.AddItem ("7")
+UserForm1.ComboBox2.AddItem ("8")
+UserForm1.ComboBox2.AddItem ("9")
+UserForm1.ComboBox2.AddItem ("10")
+UserForm1.ComboBox2.AddItem ("11")
+UserForm1.ComboBox2.AddItem ("12")
+UserForm1.ComboBox2.AddItem ("13")
+UserForm1.ComboBox2.AddItem ("14")
+UserForm1.ComboBox2.AddItem ("15")
+UserForm1.ComboBox2.AddItem ("16")
+UserForm1.ComboBox2.AddItem ("17")
+UserForm1.ComboBox2.AddItem ("18")
+UserForm1.ComboBox2.AddItem ("19")
+UserForm1.ComboBox2.AddItem ("20")
+UserForm1.ComboBox2.AddItem ("21")
+UserForm1.ComboBox2.AddItem ("22")
+UserForm1.ComboBox2.AddItem ("23")
+UserForm1.ComboBox2.AddItem ("24")
+UserForm1.ComboBox2.AddItem ("25")
+UserForm1.ComboBox2.AddItem ("26")
+UserForm1.ComboBox2.AddItem ("27")
+UserForm1.ComboBox2.AddItem ("28")
+UserForm1.ComboBox2.AddItem ("29")
+UserForm1.ComboBox2.AddItem ("30")
+UserForm1.ComboBox2.AddItem ("31")
+
+UserForm1.ComboBox3.AddItem ("2007")
+UserForm1.ComboBox3.AddItem ("2008")
+UserForm1.ComboBox3.AddItem ("2009")
+UserForm1.ComboBox3.AddItem ("2010")
+UserForm1.ComboBox3.AddItem ("2011")
+UserForm1.ComboBox3.AddItem ("2012")
+UserForm1.ComboBox3.AddItem ("2013")
+UserForm1.ComboBox3.AddItem ("2014")
+UserForm1.ComboBox3.AddItem ("2015")
+UserForm1.ComboBox3.AddItem ("2016")
+UserForm1.ComboBox3.AddItem ("2017")
+UserForm1.ComboBox3.AddItem ("2018")
+UserForm1.ComboBox3.AddItem ("2019")
+UserForm1.ComboBox3.AddItem ("2020")
+UserForm1.ComboBox3.AddItem ("2021")
+UserForm1.ComboBox3.AddItem ("2022")
+
+End Sub
+
+' Verrouille uniquement la feuille active sans traitement sur les cellules
+Sub Quick_Protection()
+
+ActiveSheet.EnableSelection = xlNoRestrictions
+ActiveSheet.Protect Password = PasswordVeto
+
+End Sub
+
+' Déverrouille la feuille active et rétablit les boutons d'option à leur état d'origine
+Sub DeProtection()
+
+ActiveSheet.Unprotect Password = PasswordVeto
+
+End Sub

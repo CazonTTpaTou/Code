@@ -1,0 +1,53 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm1.aspx.cs" Inherits="WebApplication2.WebForm1" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <br />
+        <asp:ListBox ID="ListBox1" runat="server"></asp:ListBox>
+	<br />
+    </div>
+    </form>
+</body>
+</html>
+
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace WebApplication2
+{
+    public partial class WebForm1 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            using(var donnees = new GMAO_DBEntities())
+            {
+                var q = from d in donnees.UAP 
+                        select d;
+                foreach(var c in q.ToList())
+                {
+                    string unite = c.Libelle;
+                    ListBox1.Items.Add(unite);
+                }
+                
+            }
+        }
+    }
+}
+

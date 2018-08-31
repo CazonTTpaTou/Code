@@ -1,0 +1,630 @@
+-- phpMyAdmin SQL Dump
+-- version 3.2.1
+-- http://www.phpmyadmin.net
+--
+-- Serveur: localhost
+-- Généré le : Mar 10 Août 2010 à 22:22
+-- Version du serveur: 5.1.37
+-- Version de PHP: 5.3.0
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+--
+-- Base de données: 'ctnum'
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'ad_livraison'
+--
+
+CREATE TABLE IF NOT EXISTS ad_livraison (
+  numero_l smallint(6) DEFAULT NULL,
+  Qualite varchar(15) DEFAULT NULL,
+  Nom varchar(30) DEFAULT NULL,
+  Prenom varchar(30) DEFAULT NULL,
+  Adresse_1 varchar(30) DEFAULT NULL,
+  Adresse_2 varchar(30) DEFAULT NULL,
+  Code_Postal varchar(5) DEFAULT NULL,
+  Ville varchar(30) DEFAULT NULL,
+  Date_Etat varchar(30) DEFAULT NULL,
+  NPAI varchar(15) DEFAULT NULL,
+  Nature_Client varchar(15) DEFAULT NULL,
+  fichiers varchar(30) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'auteurs'
+--
+
+CREATE TABLE IF NOT EXISTS auteurs (
+  id_auteur smallint(6) NOT NULL AUTO_INCREMENT,
+  prenom varchar(50) DEFAULT NULL,
+  nom varchar(50) DEFAULT NULL,
+  auteur varchar(100) DEFAULT NULL,
+  biographie text,
+  naissance date DEFAULT NULL,
+  mort date DEFAULT NULL,
+  photo varchar(50) DEFAULT NULL,
+  PRIMARY KEY (id_auteur),
+  FULLTEXT KEY _ft_mots_cles3 (biographie),
+  FULLTEXT KEY _ft_mots_cles_3 (biographie)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=76 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'catalogue'
+--
+
+CREATE TABLE IF NOT EXISTS catalogue (
+  num_cat smallint(4) NOT NULL AUTO_INCREMENT,
+  nom varchar(50) DEFAULT NULL,
+  date_debut date DEFAULT NULL,
+  date_fin date DEFAULT NULL,
+  Nb_envoi smallint(7) unsigned DEFAULT NULL,
+  PRIMARY KEY (num_cat)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'clients'
+--
+
+CREATE TABLE IF NOT EXISTS clients (
+  numero smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  Qualite varchar(15) DEFAULT NULL,
+  Nom varchar(30) DEFAULT NULL,
+  Prenom varchar(30) DEFAULT NULL,
+  Adresse_1 varchar(30) DEFAULT NULL,
+  Adresse_2 varchar(30) DEFAULT NULL,
+  Code_Postal varchar(5) DEFAULT NULL,
+  Ville varchar(30) DEFAULT NULL,
+  Date_Etat varchar(30) DEFAULT NULL,
+  NPAI varchar(15) DEFAULT NULL,
+  Nature_Client varchar(15) DEFAULT NULL,
+  fichiers varchar(30) DEFAULT NULL,
+  telephone varchar(20) DEFAULT NULL,
+  e_mail varchar(50) DEFAULT NULL,
+  PRIMARY KEY (numero)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19337 ;
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue 'com'
+--
+CREATE TABLE IF NOT EXISTS `com` (
+`date` date
+,`id_commande` smallint(6)
+,`id_client` smallint(6) unsigned
+,`qualite` varchar(15)
+,`nom` varchar(30)
+,`prenom` varchar(30)
+,`adresse_1` varchar(30)
+,`adresse_2` varchar(30)
+,`code_postal` varchar(5)
+,`ville` varchar(30)
+,`id_livre` smallint(4) unsigned
+,`auteur` varchar(100)
+,`titre` varchar(100)
+,`prix` decimal(6,2)
+,`Port` decimal(6,2)
+,`quant` smallint(5)
+,`nbl` smallint(4)
+);
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue 'comi'
+--
+CREATE TABLE IF NOT EXISTS `comi` (
+`id_commande` smallint(6)
+,`id_client` smallint(6) unsigned
+,`date` date
+,`nom` varchar(30)
+,`prenom` varchar(30)
+,`code_postal` varchar(5)
+,`ville` varchar(30)
+,`montant` decimal(34,2)
+,`nb_livre` bigint(21)
+);
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'commande'
+--
+
+CREATE TABLE IF NOT EXISTS commande (
+  numero_com smallint(6) NOT NULL AUTO_INCREMENT,
+  Numero_Client smallint(6) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `port` decimal(6,2) DEFAULT '0.00',
+  catalogue smallint(4) DEFAULT '1',
+  livraison smallint(6) unsigned DEFAULT NULL,
+  PRIMARY KEY (numero_com)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3044 ;
+
+--
+-- Déclencheurs 'commande'
+--
+DROP TRIGGER IF EXISTS `ctnum`.`DEL_lig`;
+DELIMITER //
+CREATE TRIGGER `ctnum`.`DEL_lig` AFTER DELETE ON `ctnum`.`commande`
+ FOR EACH ROW delete from ligne_commande where old.numero_com=ligne_commande.numero_com
+//
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'commentaires'
+--
+
+CREATE TABLE IF NOT EXISTS commentaires (
+  id_livre smallint(6) DEFAULT NULL,
+  id_cat smallint(6) DEFAULT NULL,
+  commentaire text,
+  num_ligne smallint(6) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (num_ligne),
+  FULLTEXT KEY _ft_mots_cles3 (commentaire)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'departement'
+--
+
+CREATE TABLE IF NOT EXISTS departement (
+  numero varchar(2) DEFAULT NULL,
+  departement varchar(50) DEFAULT NULL,
+  prefecture varchar(50) DEFAULT NULL,
+  region varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'droits'
+--
+
+CREATE TABLE IF NOT EXISTS droits (
+  privilege_type varchar(50) DEFAULT NULL,
+  table_name varchar(50) DEFAULT NULL,
+  grantee0 varchar(50) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue 'fournisseurs'
+--
+CREATE TABLE IF NOT EXISTS `fournisseurs` (
+`numero` smallint(6) unsigned
+,`Qualite` varchar(15)
+,`Nom` varchar(30)
+,`Prenom` varchar(30)
+,`Adresse_1` varchar(30)
+,`Adresse_2` varchar(30)
+,`Code_Postal` varchar(5)
+,`Ville` varchar(30)
+,`Date_Etat` varchar(30)
+,`NPAI` varchar(15)
+,`Nature_Client` varchar(15)
+,`fichiers` varchar(30)
+,`telephone` varchar(20)
+,`e_mail` varchar(50)
+);
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'four_edit'
+--
+
+CREATE TABLE IF NOT EXISTS four_edit (
+  num_four smallint(6) DEFAULT NULL,
+  nom_edit varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'genre'
+--
+
+CREATE TABLE IF NOT EXISTS genre (
+  num smallint(4) NOT NULL AUTO_INCREMENT,
+  titre varchar(50) DEFAULT NULL,
+  PRIMARY KEY (num)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'lieu'
+--
+
+CREATE TABLE IF NOT EXISTS lieu (
+  num smallint(4) NOT NULL AUTO_INCREMENT,
+  titre varchar(50) DEFAULT NULL,
+  PRIMARY KEY (num)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'ligne_commande'
+--
+
+CREATE TABLE IF NOT EXISTS ligne_commande (
+  Numero_com smallint(6) DEFAULT NULL,
+  numero_livre smallint(4) DEFAULT NULL,
+  quantite smallint(5) DEFAULT '0',
+  num_ligne smallint(6) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (num_ligne)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2673 ;
+
+--
+-- Déclencheurs 'ligne_commande'
+--
+DROP TRIGGER IF EXISTS `ctnum`.`MAJ_stock`;
+DELIMITER //
+CREATE TRIGGER `ctnum`.`MAJ_stock` AFTER INSERT ON `ctnum`.`ligne_commande`
+ FOR EACH ROW update livres set livres.stock=livres.stock-new.quantite where new.numero_livre=livres.numero
+//
+DELIMITER ;
+DROP TRIGGER IF EXISTS `ctnum`.`MAJ_stock_2`;
+DELIMITER //
+CREATE TRIGGER `ctnum`.`MAJ_stock_2` AFTER UPDATE ON `ctnum`.`ligne_commande`
+ FOR EACH ROW update livres set livres.stock=livres.stock-new.quantite+old.quantite where new.numero_livre=livres.numero
+//
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'ligne_livraison'
+--
+
+CREATE TABLE IF NOT EXISTS ligne_livraison (
+  Numero_com smallint(6) DEFAULT NULL,
+  numero_livre smallint(4) DEFAULT NULL,
+  quantite smallint(5) DEFAULT '0',
+  num_ligne smallint(6) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (num_ligne)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'ligne_reassortiment'
+--
+
+CREATE TABLE IF NOT EXISTS ligne_reassortiment (
+  numero_com smallint(6) DEFAULT NULL,
+  numero_livre smallint(6) DEFAULT NULL,
+  quantite smallint(6) DEFAULT NULL,
+  num_ligne smallint(6) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (num_ligne)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=150 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'livraison'
+--
+
+CREATE TABLE IF NOT EXISTS livraison (
+  numero_com smallint(6) NOT NULL AUTO_INCREMENT,
+  Numero_Client smallint(6) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `port` decimal(6,2) DEFAULT '0.00',
+  catalogue smallint(4) DEFAULT '1',
+  livraison smallint(6) unsigned DEFAULT NULL,
+  PRIMARY KEY (numero_com)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'livres'
+--
+
+CREATE TABLE IF NOT EXISTS livres (
+  numero smallint(4) unsigned NOT NULL AUTO_INCREMENT,
+  Auteur varchar(50) DEFAULT NULL,
+  Titre varchar(100) DEFAULT NULL,
+  Prix decimal(6,2) DEFAULT NULL,
+  Pages int(11) DEFAULT NULL,
+  ISBN varchar(30) DEFAULT NULL,
+  stock smallint(6) DEFAULT '0',
+  nb_livre smallint(4) DEFAULT NULL,
+  id_auteur smallint(6) DEFAULT NULL,
+  image varchar(100) DEFAULT NULL,
+  sous_titre varchar(100) DEFAULT NULL,
+  editeur varchar(50) DEFAULT NULL,
+  PRIMARY KEY (numero)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=357 ;
+
+--
+-- Déclencheurs 'livres'
+--
+DROP TRIGGER IF EXISTS `ctnum`.`MAJ_prix`;
+DELIMITER //
+CREATE TRIGGER `ctnum`.`MAJ_prix` AFTER INSERT ON `ctnum`.`livres`
+ FOR EACH ROW insert into prix (id_livre,d_begin,d_end,prix) values (new.numero,curdate(),'2100-07-01',new.prix)
+//
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'liv_aut'
+--
+
+CREATE TABLE IF NOT EXISTS liv_aut (
+  id_livre smallint(6) DEFAULT NULL,
+  id_auteur smallint(6) DEFAULT NULL,
+  num_ligne smallint(6) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (num_ligne)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=276 ;
+
+--
+-- Déclencheurs 'liv_aut'
+--
+DROP TRIGGER IF EXISTS `ctnum`.`MAJ_auteur`;
+DELIMITER //
+CREATE TRIGGER `ctnum`.`MAJ_auteur` AFTER INSERT ON `ctnum`.`liv_aut`
+ FOR EACH ROW update livres set livres.id_auteur=new.id_auteur
+//
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'liv_genre'
+--
+
+CREATE TABLE IF NOT EXISTS liv_genre (
+  id_livre smallint(6) DEFAULT NULL,
+  id_cat smallint(6) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'liv_lieu'
+--
+
+CREATE TABLE IF NOT EXISTS liv_lieu (
+  id_livre smallint(6) DEFAULT NULL,
+  id_cat smallint(6) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'liv_marque'
+--
+
+CREATE TABLE IF NOT EXISTS liv_marque (
+  id_livre smallint(6) DEFAULT NULL,
+  id_cat smallint(6) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'liv_periode'
+--
+
+CREATE TABLE IF NOT EXISTS liv_periode (
+  id_livre smallint(6) DEFAULT NULL,
+  id_cat smallint(6) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'liv_rubrique'
+--
+
+CREATE TABLE IF NOT EXISTS liv_rubrique (
+  id_livre smallint(6) DEFAULT NULL,
+  id_cat smallint(6) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'liv_sujet'
+--
+
+CREATE TABLE IF NOT EXISTS liv_sujet (
+  id_livre smallint(6) DEFAULT NULL,
+  id_cat smallint(6) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'marque'
+--
+
+CREATE TABLE IF NOT EXISTS marque (
+  num smallint(4) NOT NULL AUTO_INCREMENT,
+  titre varchar(50) DEFAULT NULL,
+  PRIMARY KEY (num)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'menu'
+--
+
+CREATE TABLE IF NOT EXISTS menu (
+  num smallint(3) NOT NULL AUTO_INCREMENT,
+  menu varchar(50) DEFAULT NULL,
+  sous_menu varchar(50) DEFAULT NULL,
+  droit smallint(3) unsigned DEFAULT NULL,
+  ref smallint(3) DEFAULT NULL,
+  PRIMARY KEY (num)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'mots_cles'
+--
+
+CREATE TABLE IF NOT EXISTS mots_cles (
+  id_livre smallint(6) DEFAULT NULL,
+  mots text,
+  surplus text,
+  FULLTEXT KEY _ft_mots_cles (mots),
+  FULLTEXT KEY _ft_mots_cles2 (surplus)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'periode'
+--
+
+CREATE TABLE IF NOT EXISTS periode (
+  num smallint(4) NOT NULL AUTO_INCREMENT,
+  titre varchar(50) DEFAULT NULL,
+  PRIMARY KEY (num)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'prix'
+--
+
+CREATE TABLE IF NOT EXISTS prix (
+  id_livre smallint(6) DEFAULT NULL,
+  d_begin date DEFAULT NULL,
+  d_end date DEFAULT NULL,
+  num_ligne smallint(6) NOT NULL AUTO_INCREMENT,
+  prix decimal(6,2) DEFAULT NULL,
+  PRIMARY KEY (num_ligne)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=189 ;
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue 'prix_today'
+--
+CREATE TABLE IF NOT EXISTS `prix_today` (
+`id_livre` smallint(6)
+,`prix` decimal(6,2)
+);
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue 'reas'
+--
+CREATE TABLE IF NOT EXISTS `reas` (
+`numero` smallint(6)
+,`date` date
+,`nom` varchar(30)
+);
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'reassortiment'
+--
+
+CREATE TABLE IF NOT EXISTS reassortiment (
+  numero smallint(6) NOT NULL AUTO_INCREMENT,
+  fournisseur smallint(6) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  livraison smallint(6) DEFAULT NULL,
+  etat tinyint(4) DEFAULT '0',
+  PRIMARY KEY (numero)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'rubrique'
+--
+
+CREATE TABLE IF NOT EXISTS rubrique (
+  num smallint(4) NOT NULL AUTO_INCREMENT,
+  titre varchar(50) DEFAULT NULL,
+  PRIMARY KEY (num)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'sujet'
+--
+
+CREATE TABLE IF NOT EXISTS sujet (
+  num smallint(4) NOT NULL AUTO_INCREMENT,
+  titre varchar(50) DEFAULT NULL,
+  PRIMARY KEY (num)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table 'v_liv'
+--
+
+CREATE ALGORITHM=UNDEFINED DEFINER=root@localhost SQL SECURITY DEFINER VIEW ctnum.v_liv AS select c.numero_com AS numero_com,li.numero AS numero,li.Qualite AS Qualite,li.Nom AS nom,li.Prenom AS prenom,li.Adresse_1 AS adresse_1,li.Adresse_2 AS adresse_2,li.Code_Postal AS code_postal,li.Ville AS ville from (ctnum.ad_livraison li join ctnum.commande c on((li.numero = c.livraison)));
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue 'com'
+--
+DROP TABLE IF EXISTS `com`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=root@localhost SQL SECURITY DEFINER VIEW ctnum.com AS select c.`date` AS `date`,c.numero_com AS id_commande,cl.numero AS id_client,cl.Qualite AS qualite,cl.Nom AS nom,cl.Prenom AS prenom,cl.Adresse_1 AS adresse_1,cl.Adresse_2 AS adresse_2,cl.Code_Postal AS code_postal,cl.Ville AS ville,li.numero AS id_livre,ctnum.auteurs.auteur AS auteur,li.Titre AS titre,prix_today.prix AS prix,c.`port` AS `Port`,lig.quantite AS quant,li.nb_livre AS nbl from (((((ctnum.commande c join ctnum.clients cl on((cl.numero = c.Numero_Client))) join ctnum.ligne_commande lig on((lig.Numero_com = c.numero_com))) join ctnum.livres li on((li.numero = lig.numero_livre))) join ctnum.prix_today on((li.numero = prix_today.id_livre))) join ctnum.auteurs on((li.id_auteur = ctnum.auteurs.id_auteur)));
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue 'comi'
+--
+DROP TABLE IF EXISTS `comi`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=root@localhost SQL SECURITY DEFINER VIEW ctnum.comi AS select com.id_commande AS id_commande,com.id_client AS id_client,com.`date` AS `date`,com.nom AS nom,com.prenom AS prenom,com.code_postal AS code_postal,com.ville AS ville,(sum((com.quant * com.prix)) + com.`Port`) AS montant,count(com.quant) AS nb_livre from ctnum.com group by com.id_commande;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue 'fournisseurs'
+--
+DROP TABLE IF EXISTS `fournisseurs`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=root@localhost SQL SECURITY DEFINER VIEW ctnum.fournisseurs AS select ctnum.clients.numero AS numero,ctnum.clients.Qualite AS Qualite,ctnum.clients.Nom AS Nom,ctnum.clients.Prenom AS Prenom,ctnum.clients.Adresse_1 AS Adresse_1,ctnum.clients.Adresse_2 AS Adresse_2,ctnum.clients.Code_Postal AS Code_Postal,ctnum.clients.Ville AS Ville,ctnum.clients.Date_Etat AS Date_Etat,ctnum.clients.NPAI AS NPAI,ctnum.clients.Nature_Client AS Nature_Client,ctnum.clients.fichiers AS fichiers,ctnum.clients.telephone AS telephone,ctnum.clients.e_mail AS e_mail from ctnum.clients where (ctnum.clients.fichiers like 'Fournisseur%');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue 'prix_today'
+--
+DROP TABLE IF EXISTS `prix_today`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=root@localhost SQL SECURITY DEFINER VIEW ctnum.prix_today AS select ctnum.prix.id_livre AS id_livre,ctnum.prix.prix AS prix from ctnum.prix where (curdate() between ctnum.prix.d_begin and ctnum.prix.d_end);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue 'reas'
+--
+DROP TABLE IF EXISTS `reas`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=root@localhost SQL SECURITY DEFINER VIEW ctnum.reas AS select r.numero AS numero,r.`date` AS `date`,c.Nom AS nom from (ctnum.reassortiment r join ctnum.clients c) where ((c.numero = r.fournisseur) and (r.etat < 2));

@@ -1,0 +1,90 @@
+###############################################################
+
+print((90+81+92)/3)
+
+###############################################################
+
+print((84+95+79)/3)
+
+print((95+86+93)/3)
+
+###############################################################
+
+history = (77 + 85 + 90)/3
+print(history)
+
+music = (92 + 90 + 91)/3
+print(music)
+
+physical_education = (85+88+95)/3
+print(physical_education)
+
+###############################################################
+
+expression = 88 - ((88 + 87.66667 + 86 + 91.33333 + 84 + 91 + 89.33333)/7) 
+
+print(expression)
+
+###############################################################
+
+# We substract the mean of other classes to our result
+print(
+    88 - ((88 + 87.66667 + 86 + 91.33333 + 84 + 91 + 89.33333)/7) 
+)
+
+###############################################################
+
+math <- 88 
+
+# Add your code below
+chemistry <- 87.66667
+writing <- 86
+art <- 91.33333
+history <- 84
+music <- 91
+physical_education <- 89.33333
+
+###############################################################
+
+math <- 88 
+chemistry <- 87.66667
+writing <-  86
+art <- 91.33333
+history <- 84
+music <- 91
+physical_education <- 89.33333
+
+gpa = (math + chemistry + writing + art + history + music + physical_education)/7
+
+history_difference = history - gpa
+
+###############################################################
+
+math <- 88 
+chemistry <- 87.66667
+writing <-  86
+art <- 91.33333
+history <- 84
+music <- 91
+physical_education <- 89.33333
+
+final_scores <- c(math,chemistry,writing,art,history,music,physical_education)
+
+###############################################################
+
+final_scores <- c(math, chemistry, writing, art, history, music, physical_education)
+
+gpa <- mean(final_scores)
+
+###############################################################
+
+final_scores <- c(math, chemistry, writing, art, history, music, physical_education)
+
+highest_score = max(final_scores)
+
+lowest_score = min(final_scores)
+
+num_classes = length(final_scores)
+
+###############################################################
+

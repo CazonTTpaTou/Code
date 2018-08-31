@@ -1,0 +1,160 @@
+/****** Object:  View [dbo].[Vue_Tps_Arret_Liste]    Script Date: 04/19/2013 10:23:12 ******/
+
+create view Vue_Tps_Arret_Liste
+
+AS
+
+select r.idRealisation as ITV_ID,
+       r.DebutArret AS ITV_DEBUT,
+       CASE WHEN r.FinArret is null Then getdate() Else r.FinArret END AS ITV_FIN,
+       d.idEquipement AS ITV_ITEM
+       
+FROM Realisation as r inner join Intervention as i 
+		ON r.idIntervention = i.idINTERVENTION
+		INNER JOIN Demande as d 
+		ON d.idDemande = i.idDemande
+
+WHERE r.DebutArret is NOT null
+
+GO
+
+/****** Object:  View [dbo].[Vue_Tps_Arret_Liste]    Script Date: 04/19/2013 10:23:12 ******/
+
+create view Vue_Tps_Arret_AutoJointure
+
+AS
+
+SELECT F.ITV_DEBUT, L.ITV_FIN, F.ITV_ITEM 
+    FROM   Vue_Tps_Arret_Liste AS F  
+           JOIN Vue_Tps_Arret_Liste AS L  
+                ON F.ITV_FIN <= L.ITV_FIN 
+                   AND F.ITV_ITEM = L.ITV_ITEM 
+           INNER JOIN Vue_Tps_Arret_Liste AS E       
+                 ON F.ITV_ITEM = E.ITV_ITEM  
+    GROUP  BY F.ITV_DEBUT, L.ITV_FIN,  F.ITV_ITEM  
+    HAVING COUNT(CASE  
+                    WHEN (E.ITV_DEBUT < F.ITV_DEBUT AND F.ITV_DEBUT <= E.ITV_FIN)  
+                          OR (E.ITV_DEBUT <= L.ITV_FIN AND L.ITV_FIN < E.ITV_FIN) 
+                    THEN 1   
+                 END) = 0
+
+GO
+
+/****** Object:  View [dbo].[Vue_Tps_Arret_Global]    Script Date: 04/19/2013 10:23:12 ******/
+
+create view Vue_Tps_Arret_Global
+
+AS
+
+SELECT ITV_ITEM, ITV_DEBUT, MIN(ITV_FIN) AS ITV_FIN  
+FROM   Vue_Tps_Arret_AutoJointure 
+GROUP  BY ITV_ITEM, ITV_DEBUT
+
+GO
+
+/****** Object:  Table [dbo].[Vue_Tps_Arret_Journ_Brut]    Script Date: 04/30/2013 14:14:27 ******/
+
+Create view  Vue_Tps_Arret_Journ_Brut
+
+AS
+
+select 
+		J.DateJour,V.ITV_ITEM,
+		
+		Case When ITV_DEBUT>=DateJour 
+			Then ITV_Debut 
+			Else DateJour 
+			End as DateDebut,
+		
+		Case When ITV_FIN <= DateAdd(day,1,J.DateJour) 
+			Then ITV_FIN 
+			Else DateAdd(day,1,J.DateJour) 
+			End as DateFin			
+		
+		FROM T_TableJour as J,
+		Vue_Tps_Arret_Global as V
+		
+		WHERE J.DateJour <= V.ITV_Fin 
+			  and DateAdd(day,1,J.DateJour) >= V.ITV_Debut
+
+GO
+			  
+/****** Object:  Table [dbo].[Vue_Tps_Arret_Journ_Net]    Script Date: 04/30/2013 14:14:27 ******/
+create view Vue_Tps_Arret_Journ_Net
+
+AS
+
+select V.DateJour,
+	V.ITV_ITEM,
+	Datediff(hour,Datedebut,DateFin) as TpsArret
+From Vue_Tps_Arret_Journ_Brut as v
+
+GO
+
+/****** Object:  Table [dbo].[Vue_Tps_Arret_Journ_Cumul]    Script Date: 04/30/2013 14:14:27 ******/
+
+
+Create view vue_Tps_Arret_Journ_Cumul
+
+AS
+
+select DateJour,ITV_ITEM,Sum(TpsArret) as TpsArretH 
+	FROM Vue_Tps_Arret_Journ_Net
+Group BY DateJour,ITV_ITEM
+
+GO
+
+/****** Object:  Table [dbo].[Vue_Nb_Arret_Journ_Net]    Script Date: 04/30/2013 14:14:27 ******/
+
+
+create view Vue_Nb_Arret_Journ_Net
+
+AS
+
+select 
+		J.DateJour,V.ITV_ITEM,
+		V.ITV_Debut,
+		V.ITV_Fin,
+		datediff(ss,J.DateJour,V.ITV_FIN) as duree
+		
+		FROM T_TableJour as J,
+		Vue_Tps_Arret_Liste as V
+		
+		WHERE J.DateJour <= V.ITV_Fin 
+			  and DateAdd(day,1,J.DateJour) >= V.ITV_Debut
+			  and datediff(ss,J.DateJour,V.ITV_FIN) > 0
+			  
+GO		
+	  
+/****** Object:  Table [dbo].[Vue_Nb_Arret_Journ_Cumul]    Script Date: 04/30/2013 14:14:27 ******/
+			  
+create view Vue_Nb_Arret_Journ_Cumul
+
+AS
+
+select 
+V.DateJour,V.ITV_ITEM,Count(V.ITV_ITEM)	as NbArret
+from vue_Nb_Arret_Journ_Net as v
+group by V.DateJour,V.ITV_ITEM
+
+GO
+
+	
+/****** Object:  Table [dbo].[Vue_Performance_Equipement_Master]    Script Date: 04/30/2013 14:14:27 ******/
+
+create view Vue_Performance_Equipement_Master
+
+AS
+
+select T_JE.idEquipement,T_JE.DateJour,T_JE.Libelle,
+case When V.TpsArretH > 0 Then V.TpsArretH Else 0 End as TpsArretsH,
+case When VN.NbArret > 0 Then VN.NbArret Else 0 End as NbArrets,
+case When V.TpsArretH > 0 Then (24 - TpsArretH)  Else 24 End as TpsFonct
+from Vue_Tps_Arret_Journ_Cumul as v
+right outer join  (select * from T_TableJour as J, Equipement as E) as T_JE
+on   T_JE.DateJour = v.DateJour and T_JE.idEquipement = V.ITV_ITEM 
+left outer join Vue_Nb_Arret_Journ_Cumul as VN
+on T_JE.DateJour = VN.DateJour and T_JE.idEquipement = VN.ITV_ITEM 
+
+GO
+

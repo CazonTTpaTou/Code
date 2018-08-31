@@ -1,0 +1,45 @@
+/*Définition de la police de l'ensemble du document */
+
+* { font-size:12px; font-family:Verdana; } 
+
+/*Définition de la position du formulaire, de sa taille, de son encadré et de sa couleur d'arrière plan */
+
+.menus1 {position: absolute; 
+	 top:157px; right:237px;
+	 width:380px; margin:10px auto 10px auto; 
+	 padding:10px; border:#AAC solid 2px; 
+	 list-style-type:none; background:#DDF; }
+
+/* Le formulaire est inséré dans une section div */
+/* Cette section est divisée en autant de sous parties span qu'il y a de libellés, champs et boutons qui composent ce formulaire */
+/* On crée donc une catégorie générique des span qui s'appliquent aux libellés et une autre qui s'applique aux champs. */
+
+/* Cette catégorie générique de span s'applique aux libellés qui seront alignés sur la gauche de la bordure du formulaire */
+
+div span.label {
+ 	float:left;
+ 	text-align: left;
+ }
+
+/* Cette catégorie générique de span s'applique aux champs qui seront alignés sur la droite de la bordure du formulaire */
+
+div span.formw {
+	float:right;
+ 	text-align: right;
+ }
+
+/* Définition de la position de l'image calculatrice et de sa taille */
+
+.picture {position: absolute; 
+	  top:57px; left:87px;
+	  width: 122px; height: 207px;}
+
+/* Définition de la position titre et de sa police */
+
+.titre {position: absolute; 
+	top:17px; right:237px;
+	text-align:center;
+	font-size:32px; 
+	font-family:Verdana;
+	font-weight:bold;}
+

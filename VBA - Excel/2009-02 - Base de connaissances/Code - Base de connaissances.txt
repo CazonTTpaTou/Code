@@ -1,0 +1,459 @@
+1) Procédures VBA Access.
+
+Option Compare Database
+
+Private Sub Commande0_Click()
+
+Dim abc, def, ghi, jkl, answer As String
+Dim Beige As Long
+Dim stDocName, stLinkCriteria, stglustre As String
+
+Beige = RGB(245, 245, 245)
+
+abc = "Questions - Onglets"
+def = "[Interlocuteur]=" & "'BP- MOBIL'"
+ghi = "[View As AcFormView]=acNormal"
+jkl = "Forms![" & abc & "!Etat"
+
+DoCmd.OpenForm abc, , , def
+
+Forms![Questions - Onglets]![Etat].SetFocus
+Forms![Questions - Onglets]![Interlocuteur].Enabled = False
+Forms![Questions - Onglets]![Etat].ForeColor = vbGreen
+
+With Forms![Questions - Onglets]![Etat]
+            .BackStyle = 1
+            .FontBold = True
+            .FontSize = 15
+            .BackColor = Beige
+            .Value = "CLUSTREFM"
+            End With
+            
+        
+answer = MsgBox("Fermer le formulaire", vbOKOnly, "Fermeture")
+If answer = vbOK Then DoCmd.Close acForm, abc, acPrompt
+
+stDocName = "Formulaire2"
+    stglustre = Forms![Questions - Onglets]![Nom].Value
+    
+    stLinkCriteria = "[Nom]=" & "'" & stglustre & "'"
+    answer = MsgBox(stLinkCriteria, vbOKOnly, "Fermeture")
+    DoCmd.OpenForm stDocName, , , stLinkCriteria
+
+
+
+
+
+End Sub
+ 
+
+
+Private Sub Commande2_Click()
+
+Dim abc, def, ghi, jkl, answer As String
+Dim Beige As Long
+Dim stDocName, stLinkCriteria, stglustre, MySQL, MySQLbis, MySQLter As String
+Dim Obj As AllTables
+
+abc = "Formulaire2"
+def = "[Retraite Chapeau]=" & "'NC'"
+ghi = "[View As AcFormView]=acNormal"
+jkl = "Forms![" & abc & "!Etat"
+
+'DoCmd.OpenForm abc, , , def
+
+'answer = MsgBox("Fermer le formulaire", vbOKOnly, "Fermeture")
+'DoCmd.Close acForm, abc, acPrompt
+
+'DoCmd.RunSQL "Update[Table2] SET [Retraite Chapeau] = 'NC' WHERE [Retraite Chapeau] = 'NON'"
+'DoCmd.SetWarnings False
+
+'DoCmd.OpenForm abc, , , def
+
+MySQL = "Create Table Mytable"
+MySQL = MySQL + "([Code Benefit] text (20),"
+MySQL = MySQL + "[Name Benefit] text (255),"
+MySQL = MySQL + "[System Retirement] text (20))"
+
+answer = MsgBox(MySQL, vbOKOnly, "Fermeture")
+       
+    If Tables![MyTable].IsLoaded = True Then DoCmd.Close acTable, "MyTable", acSaveNo
+    
+'DoCmd.RunSQL MySQL
+
+MySQLbis = "Insert Into Mytable "
+MySQLbis = MySQLbis + "([Code Benefit],[Name Benefit],[System Retirement])"
+MySQLbis = MySQLbis + "VALUES ('A','IFC','Retraite Chapeau')"
+
+DoCmd.SetWarnings False
+
+DoCmd.RunSQL MySQLbis
+
+MySQLter = "UPDATE [MyTable]"
+MySQLter = MySQLter + "SET [System Retirement]='Cap Retirement'"
+MySQLter = MySQLter + "Where [Code Benefit] = 'A'"
+
+DoCmd.RunSQL MySQLter
+
+Private Sub Commande8_Click()
+On Error GoTo Err_Commande8_Click
+
+    Dim stDocName As String
+    Dim stLinkCriteria As String
+
+    stDocName = "Questions - Onglets"
+    
+    stLinkCriteria = "[N° Question]=" & Me![N° Question]
+    DoCmd.OpenForm stDocName, , , stLinkCriteria
+
+Exit_Commande8_Click:
+    Exit Sub
+
+Err_Commande8_Click:
+    MsgBox Err.Description
+    Resume Exit_Commande8_Click
+    
+End Sub
+
+
+Private Sub Commande3_Click()
+
+Dim cnnl As ADODB.Connection
+Dim Myrecordset, Myrecordset_B As New ADODB.Recordset
+Dim MySQL, Answer, Answer_Bis As String
+
+Set cnnl = CurrentProject.Connection
+Myrecordset.ActiveConnection = cnnl
+'Myrecordset_B.ActiveConnection = cnnl
+
+'Myrecordset_A.Open "[MyTable]", CurrentProject.Connection, adOpenForwardOnly, adLockReadOnly
+
+MySQL = "SELECT [Code Benefit]"
+MySQL = MySQL + "FROM [MyTable]"
+MySQL = MySQL + "Where [Name Benefit] = 'ABC'"
+
+MyRecord.Set.Open MySQL
+Answer = Myrecordset.BOF
+
+Answer_Bis = MsgBox(Answer, vbOKOnly, "Verdict")
+
+End Sub
+
+ 
+Private Sub Commande4_Click()
+
+Dim RecSource, MySQL, Answer As String
+
+For Each AccessObject In CurrentProject.AllForms
+    
+    Debug.Print AccessObject.Name
+    
+Next
+
+    DoCmd.CopyObject , "LabelsTempreport", acForm, "Formulaire2"
+    DoCmd.OpenForm "LabelsTempreport", acViewDesign
+    RecSource = Forms![LabelsTempreport].RecordSource
+    
+    DoCmd.Close acReport, "LabelsTempreport", acSaveNo
+    
+
+MySQL = "SELECT * FROM [" + RecSource + "]"
+Answer = MsgBox(MySQL, vbOKOnly, "Verdict")
+
+DoCmd.RunSQL MySQL
+
+
+    
+End Sub
+
+
+Option Compare Database
+
+Private Sub Commande1_Click()
+
+If Me![Compteur].Value < 10 Then Me![Compteur].Value = Me![Compteur].Value + 1
+
+
+
+End Sub
+
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+If X > 100 Then Me![Compteur].Value = Me![Compteur].Value + 1
+
+End Sub
+
+
+
+
+
+
+
+Private Sub Form_Open(Cancel As Integer)
+
+Dim MyControl As Control
+Dim Tb1Name As String
+Dim Tb1 As AccessObject
+
+Set MyControl = Forms![Formulaire3]![Modifiable4]
+
+For Each Tb1 In CurrentData.AllTables
+
+    Tb1Name = Tb1Name + Chr(34) + Tb1.Name + Chr(34) + ";"
+    
+Next Tb1
+
+MyControl.RowSourceType = "Value List"
+MyControl.RowSource = Tb1Name
+MyControl.Value = MyControl.ItemData(0)
+MyControl.LimitToList = True
+
+
+
+End Sub
+
+
+Private Sub Modifiable4_BeforeUpdate(Cancel As Integer)
+
+Forms![Formulaire3]![Name Benefit].Requery
+
+End Sub
+
+
+Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+
+If Shift = 1 Then Me![Compteur].Value = Me![Compteur].Value + 1
+
+End Sub
+
+
+
+Private Sub Commande6_Click()
+
+Dim Answer As String
+
+If CurrentProject.AllForms("Formulaire3").IsLoaded Then Answer = MsgBox("Bonjour", vbOKCancel, "Vérification")
+
+
+End Sub
+
+ 
+
+
+Public Function SalesTax(AnyNum As Currency) As Currency
+
+SalesTax = AnyNum * 0.196
+
+End Function
+
+
+Public Function PCase(AnyText As String) As String
+
+Dim FixedText As String
+
+FixedText = StrConv(AnyText, 3)
+If Left(FixedText, 2) = "Mc" Then FixedText = Left(FixedText, 2) + UCase(Mid(FixedText, 3, 1)) + Mid(FixedText, 4)
+End If
+PCase = FixedText
+
+End Function
+
+
+
+Private Sub Commande0_Click()
+
+Dim mot1, mot2, mot3, mot4 As String
+Dim Numb As Currency
+
+DoCmd.OpenForm "Formulaire3", acNormal
+Forms![Formulaire3].[Compteur].SetFocus
+
+mot1 = Forms![Formulaire3].RecordSource
+mot2 = "Mac Donald"
+'mot2 = PCase(mot2)
+
+Numb = SalesTax(100)
+
+mot3 = MsgBox(mot2, vbOK, mot1)
+
+mot4 = MsgBox(Numb, vbOKCancel, mot1)
+
+
+End Sub
+
+
+
+
+ 
+2) Code SQL de création de table.
+
+Option Compare Database
+
+Private Sub Commande3_Click()
+
+Dim MySQL, mySQL1, MySQL2, MySQL3, MySQL4, MySQL5, MySQL6 As String
+Dim MySQL7, MySQL8, MySQL9 As String
+Dim Chiffre As Integer
+
+MySQL = "CREATE TABLE Alligator"
+MySQL = MySQL + "([Age] integer,"
+MySQL = MySQL + "[Nom] text (20),"
+MySQL = MySQL + "[Nombre] integer)"
+
+'DoCmd.RunSQL MySQL
+
+mySQL1 = "Insert Into Alligator"
+mySQL1 = mySQL1 + "([Age],[Nom],[Nombre])"
+MySQL2 = mySQL1 + "VALUES('21','Gavial','100')"
+MySQL3 = mySQL1 + "VALUES('22','Caïman','200')"
+MySQL4 = mySQL1 + "VALUES('23','crocodile','400')"
+
+MySQL5 = "UPDATE  Alligator Set Nombre = ( Nombre * 3)"
+MySQL5 = MySQL5 + " WHERE Age =22"
+
+MySQL6 = "Alter Table Alligator "
+MySQL6 = MySQL6 + "Add Column [Divers] integer"
+
+MySQL7 = "UPDATE Alligator Set Divers = Age * 2"
+
+MySQL8 = "UPDATE Alligator Set Divers = CASE "
+MySQL8 = MySQL8 + "Where Age = 22 Then 100 "
+MySQL8 = MySQL8 + "Where age = 23 Then 300 Else age = 500 End"
+
+MySQL9 = "UPDATE Alligator Set Divers = Nullif(Divers = 44)"
+
+DoCmd.RunSQL MySQL2
+DoCmd.RunSQL MySQL3
+DoCmd.RunSQL MySQL4
+
+DoCmd.RunSQL MySQL5
+'DoCmd.RunSQL MySQL6
+'DoCmd.RunSQL MySQL7
+'DoCmd.RunSQL MySQL8
+DoCmd.RunSQL MySQL9
+
+DoCmd.RunSQL MySQLStatement, Use
+
+End Sub
+3) Code VBA des commandes de lancement de formulaire dans note de synthèse.
+
+Option Compare Database
+
+Private Sub Commande165_Click()
+On Error GoTo Err_Commande165_Click
+
+    Screen.PreviousControl.SetFocus
+    DoCmd.DoMenuItem acFormBar, acEditMenu, 10, , acMenuVer70
+
+Exit_Commande165_Click:
+    Exit Sub
+
+Err_Commande165_Click:
+    MsgBox Err.Description
+    Resume Exit_Commande165_Click
+    End Sub
+
+Private Sub Commande167_Click()
+
+On Error GoTo Err_Commande167_Click
+
+    Dim stDocName As String
+
+    stDocName = "Macro1"
+    DoCmd.RunMacro stDocName
+
+Exit_Commande167_Click:
+    Exit Sub
+Err_Commande167_Click:
+    MsgBox Err.Description
+    Resume Exit_Commande167_Click
+    End Sub
+
+Private Sub Commande169_Click()
+On Error GoTo Err_Commande169_Click
+
+    Dim stDocName As String
+
+    stDocName = "Macro1"
+    DoCmd.RunMacro stDocName
+
+Exit_Commande169_Click:
+    Exit Sub
+
+Err_Commande169_Click:
+    MsgBox Err.Description
+    Resume Exit_Commande169_Click
+    
+End Sub
+
+4) Code VBA des liens d’ouverture de formulaire dans note de synthèse.
+
+Private Sub Commande8_Click()
+
+On Error GoTo Err_Commande8_Click
+
+    Dim stDocName As String
+    Dim stLinkCriteria As String
+
+    stDocName = "Questions - Onglets"
+    
+    stLinkCriteria = "[N° Question]=" & Me![N° Question]
+    DoCmd.OpenForm stDocName, , , stLinkCriteria
+
+Exit_Commande8_Click:
+    Exit Sub
+
+Err_Commande8_Click:
+    MsgBox Err.Description
+    Resume Exit_Commande8_Click
+    
+End Sub
+
+ 
+5) Functions diverses dans Module.
+
+Option Compare Database
+
+Sub Clustre()
+
+Dim abc, def, ghi As String
+
+abc = "Notes de Synthèse - Calcul des Liabilities BP Mobil"
+def = "[Récurence]:=" & "Monthly"
+ghi = "[View As AcFormView]:=acNormal"
+
+DoCmd.OpenForm abc, ghi, , def
+
+End Sub
+
+Public Function PCase(AnyText As String) As String
+
+Dim FixedText As String
+
+FixedText = StrConv(AnyText, 3)
+If Left(FixedText, 2) = "Mc" Then FixedText = Left(FixedText, 2) + UCase(Mid(FixedText, 3, 1)) + Mid(FixedText, 4)
+End If
+PCase = FixedText
+
+End Function
+
+
+Public Function SalesTax(AnyNum As Currency) As Currency
+
+SalesTax = AnyNum * 0.196
+
+End Function
+
+
+
+Condition Where de la Macro n°1 permettant d’ouvrir  les formulaires de questions associées au sujet sélectionné.
+
+Action OuvrirFormulaire
+
+Nom Formulaires : Questions-Onglets
+Affichage : Formulaire
+
+Condition Where :
+[Requête2]![Nom]=[Formulaires]![Notes de Synthèse - Calcul des Liabilities BP Mobil]![Nom]
+
+

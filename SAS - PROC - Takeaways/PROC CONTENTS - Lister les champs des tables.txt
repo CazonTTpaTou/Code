@@ -1,0 +1,3 @@
+PROC CONTENTS Data=CDSN.TL_Hennecke_Stat;
+RUN;
+

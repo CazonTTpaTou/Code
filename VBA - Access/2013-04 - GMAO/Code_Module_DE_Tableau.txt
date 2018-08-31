@@ -1,0 +1,213 @@
+Option Compare Database
+
+' Message pour les valeurs vide des champs de formulaire de paramétrage
+Public Const Message_valeur_vide = "Vous devez impérativement rentrer une valeur dans ce champ." & vbCr & vbCr
+Public Const Message_valeur_vide2 = "Voulez vous poursuivre l'enregistrement ???"
+
+' Message pour les doublons dans les champs de formulaire de paramétrage
+Public Const Message_doublon_BDD_part1 = " existe déjà dans la base de données" & vbCr & vbCr
+Public Const Message_doublon_BDD_part2 = "Veuillez saisir une nouvelle valeur."
+
+' Message pour demander si l'utilisateur souhaite ajouter un nouvel enregsitrement
+Public Const Message_nouvel_enregistrement = "Votre saisie a été validée." & vbCr & vbCr _
+             & "Voulez vous saisir un nouvel enregistrement ???"
+
+'------------------------------------------------
+' Déclaration de la structure des tables utilisées pour l'application
+' afin de pouvoir faciliter certains traitements de contrôle
+
+Public StructureTable(1 To 46, 1 To 2) As String
+Public ForeignKey(1 To 17, 1 To 4) As String
+
+'-------------------------------------------------
+' Initialisation des noms de table
+
+Public Sub InitStructureTable()
+
+StructureTable(1, 1) = "Action"
+StructureTable(2, 1) = "ActionIntervenant"
+StructureTable(3, 1) = "ActionPreventive"
+StructureTable(4, 1) = "Activite"
+StructureTable(5, 1) = "ActiviteIntervenant"
+StructureTable(6, 1) = "CategorieEquip"
+StructureTable(7, 1) = "Compteur"
+StructureTable(8, 1) = "ContactFourn"
+StructureTable(9, 1) = "CouleurPolice"
+StructureTable(10, 1) = "DegreUrgence"
+StructureTable(11, 1) = "Demande"
+StructureTable(12, 1) = "DependanceEquipSSEnsem"
+StructureTable(13, 1) = "Domaine"
+StructureTable(14, 1) = "Equipement"
+StructureTable(15, 1) = "EtatIntervention"
+StructureTable(16, 1) = "FichePreventive"
+StructureTable(17, 1) = "FiltreFichePrev"
+StructureTable(18, 1) = "FiltreIntervention"
+StructureTable(19, 1) = "Fournisseur"
+StructureTable(20, 1) = "GD_droit"
+StructureTable(21, 1) = "GD_droit_groupe"
+StructureTable(22, 1) = "GD_Droit_Menu"
+StructureTable(23, 1) = "GD_Droit_SousMenu"
+StructureTable(24, 1) = "GD_droit_utilisateur"
+StructureTable(25, 1) = "GD_groupe"
+StructureTable(26, 1) = "GD_utilisateur"
+StructureTable(27, 1) = "GD_utilisateur_groupe"
+StructureTable(28, 1) = "Intervenant"
+StructureTable(29, 1) = "Intervention"
+StructureTable(30, 1) = "ModeleEquip"
+StructureTable(31, 1) = "ParamGeneraux"
+StructureTable(32, 1) = "Piece"
+StructureTable(33, 1) = "PieceJointe"
+StructureTable(34, 1) = "Priorite"
+StructureTable(35, 1) = "PriseEnCompte"
+StructureTable(36, 1) = "Realisation"
+StructureTable(37, 1) = "Secteur"
+StructureTable(38, 1) = "Service"
+StructureTable(39, 1) = "SourceDemande"
+StructureTable(40, 1) = "SousEnsemble"
+StructureTable(41, 1) = "TypeDemande"
+StructureTable(42, 1) = "TypeIntervention"
+StructureTable(43, 1) = "TypePJ"
+StructureTable(44, 1) = "TypePlanification"
+StructureTable(45, 1) = "UAP"
+StructureTable(46, 1) = "UtilisateurService"
+
+'--------------------------------------------
+' Initialisations des champs d'Id
+StructureTable(1, 2) = "idAction"
+StructureTable(2, 2) = "idActionIntervenant"
+StructureTable(3, 2) = "idActionPrev"
+StructureTable(4, 2) = "idActivite"
+StructureTable(5, 2) = "idActiviteIntervenant"
+StructureTable(6, 2) = "idCatEquip"
+StructureTable(7, 2) = "idCompteur"
+StructureTable(8, 2) = "idContactFourn"
+StructureTable(9, 2) = "idCouleur"
+StructureTable(10, 2) = "idUrgence"
+StructureTable(11, 2) = "idDemande"
+StructureTable(12, 2) = "idDependanceEquipSSEnsem"
+StructureTable(13, 2) = "idDomaine"
+StructureTable(14, 2) = "idEquipement"
+StructureTable(15, 2) = "idEtat"
+StructureTable(16, 2) = "idFichePreventive"
+StructureTable(17, 2) = "idFiltrePrev"
+StructureTable(18, 2) = "idFiltreInter"
+StructureTable(19, 2) = "idFournisseur"
+StructureTable(20, 2) = "idDroit"
+StructureTable(21, 2) = "idGD_droit_groupe"
+StructureTable(22, 2) = "idMenu"
+StructureTable(23, 2) = "idSousMenu"
+StructureTable(24, 2) = "idGD_droit_utilisateur"
+StructureTable(25, 2) = "idGroupe"
+StructureTable(26, 2) = "idUtilisateur"
+StructureTable(27, 2) = "idGD_utilisateur_groupe"
+StructureTable(28, 2) = "idIntervenant"
+StructureTable(29, 2) = "idIntervention"
+StructureTable(30, 2) = "idModeleEquipe"
+StructureTable(31, 2) = "idParametre"
+StructureTable(32, 2) = "idPiece"
+StructureTable(33, 2) = "idPJ"
+StructureTable(34, 2) = "idPriorite"
+StructureTable(35, 2) = "idPEC"
+StructureTable(36, 2) = "idRealisation"
+StructureTable(37, 2) = "idSecteur"
+StructureTable(38, 2) = "idService"
+StructureTable(39, 2) = "idSourceDemande"
+StructureTable(40, 2) = "idSousEnsemble"
+StructureTable(41, 2) = "idTypeDemande"
+StructureTable(42, 2) = "idTypeIntervention"
+StructureTable(43, 2) = "idTypePJ"
+StructureTable(44, 2) = "idPlanification"
+StructureTable(45, 2) = "idUAP"
+StructureTable(46, 2) = "idUtilisateurService"
+
+End Sub
+
+Public Sub InitForeignKey()
+'-------------------------------------------------
+' Initialisation des noms de table
+
+ForeignKey(1, 1) = "ContactFourn"
+ForeignKey(2, 1) = "DegreUrgence"
+ForeignKey(3, 1) = "DependanceEquipSSEnsem"
+ForeignKey(4, 1) = "DependanceEquipSSEnsem"
+ForeignKey(5, 1) = "DependanceEquipSSEnsem"
+ForeignKey(6, 1) = "DependanceEquipSSEnsem"
+ForeignKey(7, 1) = "Equipement"
+ForeignKey(8, 1) = "Equipement"
+ForeignKey(9, 1) = "Equipement"
+ForeignKey(10, 1) = "Equipement"
+ForeignKey(11, 1) = "EtatIntervention"
+ForeignKey(12, 1) = "Intervenant"
+ForeignKey(13, 1) = "ModeleEquip"
+ForeignKey(14, 1) = "Piece"
+ForeignKey(15, 1) = "Piece"
+ForeignKey(16, 1) = "Secteur"
+ForeignKey(17, 1) = "SousEnsemble"
+
+'-------------------------------------------------
+' Initialisation des noms de champs possédant une liste déroulante
+
+ForeignKey(1, 2) = "idFournisseur"
+ForeignKey(2, 2) = "idPriorite"
+ForeignKey(3, 2) = "idEquipementMaster"
+ForeignKey(4, 2) = "idEquipementChild"
+ForeignKey(5, 2) = "idSousEnsemMaster"
+ForeignKey(6, 2) = "idSousEnsemChild"
+ForeignKey(7, 2) = "idUAP"
+ForeignKey(8, 2) = "idSecteur"
+ForeignKey(9, 2) = "idCategorie"
+ForeignKey(10, 2) = "idModele"
+ForeignKey(11, 2) = "idCouleur"
+ForeignKey(12, 2) = "idService"
+ForeignKey(13, 2) = "idFournisseur"
+ForeignKey(14, 2) = "idEquipement"
+ForeignKey(15, 2) = "idSousEnsemble"
+ForeignKey(16, 2) = "idUAP"
+ForeignKey(17, 2) = "idEquipement"
+
+'-------------------------------------------------
+' Initialisation des noms de tables liées
+
+ForeignKey(1, 3) = "Fournisseur"
+ForeignKey(2, 3) = "Priorite"
+ForeignKey(3, 3) = "Equipement"
+ForeignKey(4, 3) = "SousEnsemble"
+ForeignKey(5, 3) = "Equipement"
+ForeignKey(6, 3) = "SousEnsemble"
+ForeignKey(7, 3) = "UAP"
+ForeignKey(8, 3) = "Secteur"
+ForeignKey(9, 3) = "CategorieEquip"
+ForeignKey(10, 3) = "ModeleEquip"
+ForeignKey(11, 3) = "Couleur"
+ForeignKey(12, 3) = "Service"
+ForeignKey(13, 3) = "Fournisseur"
+ForeignKey(14, 3) = "Equipement"
+ForeignKey(15, 3) = "SousEnsemble"
+ForeignKey(16, 3) = "UAP"
+ForeignKey(17, 3) = "Equipement"
+
+'-------------------------------------------------
+' Initialisation des noms de champs de la table liée
+
+ForeignKey(1, 4) = "Libelle"
+ForeignKey(2, 4) = "Libelle"
+ForeignKey(3, 4) = "Libelle"
+ForeignKey(4, 4) = "Libelle"
+ForeignKey(5, 4) = "Libelle"
+ForeignKey(6, 4) = "Libelle"
+ForeignKey(7, 4) = "Libelle"
+ForeignKey(8, 4) = "Libelle"
+ForeignKey(9, 4) = "Libelle"
+ForeignKey(10, 4) = "Libelle"
+ForeignKey(11, 4) = "Libelle"
+ForeignKey(12, 4) = "Libelle"
+ForeignKey(13, 4) = "Libelle"
+ForeignKey(14, 4) = "Libelle"
+ForeignKey(15, 4) = "Libelle"
+ForeignKey(16, 4) = "Libelle"
+ForeignKey(17, 4) = "Libelle"
+
+
+End Sub
+
+

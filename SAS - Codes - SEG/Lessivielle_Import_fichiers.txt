@@ -1,0 +1,223 @@
+%macro recup_log (table=,source=);
+
+/***********************************************************/
+/*************** CREATION MOIS A SCANNER  ******************/
+/***********************************************************/
+
+
+/* Création de la liste des fichiers à importer dans une table */
+data _null_;
+call symput ("nb_tour",12-(6 -month(today())));
+call symput ("mois",month(today()));
+call symput ("moism6",month(today())-6);
+run;
+
+%put --------> &moism6;
+
+data work.periode;
+format mois Z2.;
+if &mois =< 6 then do ;
+	if &mois < 6 then do;
+		%do i=&nb_tour %to 12;
+			mois=&i;
+			annee=compress(put(year(today())-1,$4.));
+			output;
+		%end;
+	end;
+	%do i=1 %to &mois;
+		mois=&i;
+		annee=compress(put(year(today()),$4.));
+		output;
+	%end;
+end;
+else do;
+	%do i=&moism6 %to &mois;
+		mois=&i;
+		annee=compress(put(year(today()),$4.));
+		output;
+	%end;
+end;
+run;
+
+/* lecture du fichier */
+data work.&table._00;
+	infile &source. truncover;
+	input fichier $100.;
+run;
+/***********************************************************/
+/********************** SCAN DES LOGS  *********************/
+/***********************************************************/
+
+/* création du nb de mois à prendre en compte pour la recherche des logs */
+proc sql noprint;
+select count(*) into: nb_mois from work.periode;
+quit;
+
+/* création de la liste des mois à prendre en compte pour la recherche des logs */
+proc sql noprint;;
+select mois into: liste_mois separated by "_" from work.periode;
+quit;
+
+/* création de la liste des année à prendre en compte pour la recherche des logs */
+proc sql noprint;
+select annee into: liste_annee separated by "_" from work.periode;
+quit;
+
+
+%do j=1 %to &nb_mois;
+
+%let mois2=%scan("&liste_mois",&j,"_");
+%let annee=%scan("&liste_annee",&j,"_");
+
+
+%put --> "_&mois2._&annee..csv";
+
+	proc sql;
+		create table work.temp&j. as
+		select * from work.&table._00
+		where fichier contains "_Data_" and fichier contains "_&mois2._&annee..csv"
+		;
+	quit;
+
+	proc append base=work.&table. data=work.temp&j. force nowarn;
+	run;quit;
+
+%end;
+%mend;
+
+
+/* Création d'un lecteur réseau temporaire par commande dos */
+
+x 'net use q: \\office\users';
+
+%let path0B=%bquote(")\\office\users\Bases_de_donnees\Machines\Lessiviel\L0B%bquote(");
+%let path1B=%bquote(")\\office\users\Bases_de_donnees\Machines\Lessiviel\L1B%bquote(");
+
+filename liste0B pipe "dir &path0B /b /s";
+filename liste1B pipe "dir &path1B /b /s";
+
+
+
+/* Création des tables de listes de fichiers à importer */
+
+
+%recup_log(table=log_L0B_a_imp, source=liste0B);
+%recup_log(table=log_L1B_a_imp, source=liste1B);
+
+
+/* Import des fichiers L0B dans une seule table */
+
+data re_proc.T_IMP_FICHIERS_L0B_DATA;
+
+	set work.log_L0B_a_imp;
+	infile dummy filevar=fichier truncover end=done  dlm=';' dsd /*missover*/ truncover firstobs=2;
+
+	do while (not done);
+
+		format Date_heure_import datetime22.3;
+		format Fichier_origine $100.;
+
+		Date_heure_import = datetime(); 
+		Fichier_origine=fichier;
+
+		informat 'Date'n ddmmyy10.; format 'Date'n ddmmyy8.;
+   		informat 'Heure'n time18.; format 'Heure'n time5.;
+		informat 'N_assemblage_1'n 8.;
+		informat 'N_assemblage_2'n 8.;
+		informat 'N_assemblage_3'n 8.;
+		informat 'N_de_cuve'n 8.;
+		informat 'Position'n 8.;
+		informat 'Temps_reel'n 8.;
+		informat 'Temps_de_cycle'n 8.;
+		informat 'Libre'n 8.;
+		informat 'Libre'n 8.;
+		informat 'Libre'n 8.;
+
+		input 	
+			'Date'n
+			'Heure'n
+			'N_assemblage_1'n
+			'N_assemblage_2'n
+			'N_assemblage_3'n
+			'N_de_cuve'n
+			'Position'n
+			'Temps_reel'n
+			'Temps_de_cycle'n
+			'Libre'n
+			'Libre'n
+			'Libre'n
+			;
+
+	    output;
+
+	end;
+
+run;
+
+/* Import des fichiers L1B dans une seule table */
+
+data re_proc.T_IMP_FICHIERS_L1B_DATA;
+
+	set work.log_L1B_a_imp;
+	infile dummy filevar=fichier truncover end=done  dlm=';' dsd /*missover*/ truncover firstobs=2;
+
+	do while (not done);
+
+		format Date_heure_import datetime22.3;
+		format Fichier_origine $100.;
+
+		Date_heure_import = datetime(); 
+		Fichier_origine=fichier;
+
+		informat 'Date'n ddmmyy10.; format 'Date'n ddmmyy8.;
+   		informat 'Heure'n time18.; format 'Heure'n time5.;
+		informat 'N_assemblage_1'n 8.;
+		informat 'N_assemblage_2'n 8.;
+		informat 'N_assemblage_3'n 8.;
+		informat 'N_de_cuve'n 8.;
+		informat 'Temps_de_cycle'n 8.;
+		informat 'Temps_reel'n 8.;
+		informat 'T'n 8.;
+		informat 'T_reel'n 8.;
+		informat 'Conductivite'n 8.;
+		informat 'Libre'n 8.;
+
+		input 	
+			'Date'n
+			'Heure'n
+			'N_assemblage_1'n
+			'N_assemblage_2'n
+			'N_assemblage_3'n
+			'N_de_cuve'n
+			'Temps_de_cycle'n
+			'Temps_reel'n
+			'T'n
+			'T_reel'n
+			'Conductivite'n
+			'Libre'n
+			;
+
+	    output;
+
+	end;
+
+run; 
+
+/* Suppression du lecteur réseau temporaire par commande dos */
+
+x 'net use q: /delete';
+
+
+/* Supression des tables temporaires */
+
+proc datasets lib=WORK nolist memtype=(data view);
+
+	delete  log_L0B_a_imp log_L1B_a_imp 
+			log_L0B_a_imp_00 log_L1B_a_imp_00 
+			temp:
+			;
+
+run; 
+
+quit;
+

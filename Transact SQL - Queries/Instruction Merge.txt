@@ -1,0 +1,73 @@
+-- Create a new trigger Ajout_Intervenant ---------------------------------------------------------------------
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TRIGGER dbo.Ajout_Intervenant 
+   ON  dbo.ActionIntervenant 
+   AFTER INSERT,UPDATE
+AS 
+BEGIN
+	
+	SET NOCOUNT ON;
+
+   With CumulTps As
+	(select ACT.idIntervention,ACI.idIntervenant,SUM(ACI.TpsPasse) as TempsP
+
+	FROM dbo.ActionIntervenant as ACI
+	INNER JOIN Action as ACT
+	ON ACI.RefAction = ACT.RefAction
+	
+	GROUP BY ACT.idIntervention,ACI.idIntervenant)
+	
+MERGE dbo.ActiviteIntervenant AS target
+    USING  CumulTps AS source 
+    ON (target.idIntervention = source.idIntervention 
+        AND target.idIntervenant = source.idIntervenant)
+    WHEN MATCHED THEN 
+        UPDATE SET TempsPasse = source.TempsP
+	WHEN NOT MATCHED THEN	
+	    INSERT (idIntervention,idIntervenant,TempsPasse)
+	    VALUES (source.idIntervention, source.idIntervenant,source.TempsP);
+
+END
+GO
+
+-- Create a new trigger Suppr_Intervenant ---------------------------------------------------------------------
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TRIGGER dbo.Suppr_Intervenant 
+   ON  dbo.ActionIntervenant 
+   AFTER DELETE
+AS 
+BEGIN
+	
+	SET NOCOUNT ON;
+
+	With CumulTps As
+	(select ACT.idIntervention,ACI.idIntervenant,SUM(ACI.TpsPasse) as TempsP
+
+	FROM dbo.ActionIntervenant as ACI
+	INNER JOIN Action as ACT
+	ON ACI.RefAction = ACT.RefAction
+	
+	GROUP BY ACT.idIntervention,ACI.idIntervenant)
+	
+MERGE dbo.ActiviteIntervenant AS target
+    USING  CumulTps AS source 
+    ON (target.idIntervention = source.idIntervention 
+        AND target.idIntervenant = source.idIntervenant)
+    WHEN MATCHED THEN 
+        UPDATE SET TempsPasse = source.TempsP
+    WHEN NOT MATCHED BY SOURCE THEN	
+	    DELETE;
+
+END
+
+GO

@@ -1,0 +1,46 @@
+%let Repertoire = %bquote(')\\Office\Users\Marketing et communication\Commun-marketing\03-Marketing\Marketing Mix 4P\Product\01- Modules\*.*%bquote(');
+%put --> PathFile: &Repertoire;
+/*Filename filelist pipe "dir /b /s ""\\office\users\Bases_de_donnees\Reporting""";*/
+
+Filename filelist pipe "dir /b /s ""\\Office\Users\Marketing et communication\Commun-marketing\03-Marketing\Marketing Mix 4P\Product\01- Modules\*.pdf""";
+ 
+Data Work.Recette;                                        
+ Infile filelist truncover;
+ Input filename $500.;
+ Put filename=;
+Run; 
+
+DATA Work.Tampon_Bis (keep=Nom_fichier Dossier Tag Extension URI Nom Actualisation);
+   length Nom_Fichier $200
+	      Tag $30
+		  Nom $200
+		  Extension $10
+	      Nom_Fichier $200
+	      Dossier $150		  
+		  URI $500;
+	Format
+	      Actualisation DATETIME22.;
+
+	SET Work.Recette;
+
+	Position = find(filename,'\','i',-length(filename));
+	Nom_Fichier = substr(filename,find(filename,'\','i',-length(filename))+1,length(filename)-find(filename,'\','i',-length(filename)));
+
+	Dossier = substr(filename,1,find(filename,'\','i',-length(filename))-1);
+	Tag = "Module";
+	Extension = "pdf";
+	URI = filename;
+	Actualisation = datetime();
+	Nom = substr(Nom_Fichier,1,index(Nom_Fichier,'.')-1);
+RUN;
+
+PROC APPEND 
+	BASE=RE_LOG.DTM_PUR_LISTE_FICHIERS
+	DATA=Work.Tampon_Bis;
+RUN;
+
+PROC APPEND 
+	BASE=DTM_PUR.DTM_PUR_LISTE_FICHIERS
+	DATA=Work.Tampon_Bis;
+RUN;
+

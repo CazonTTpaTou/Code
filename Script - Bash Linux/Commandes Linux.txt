@@ -1,0 +1,225 @@
+Commandes Linux
+
+ls
+ls -a 
+ls - all --> affiche dossiers cachés
+ls -l --> affiche détails
+ls -lh --> affiche détails en Mo
+ls -lt --> affiche par ordre de modification
+ls -lart --> toutes les options
+
+history
+
+Ctrl + r --> Mode recherche
+Shift + PageUp --> Remonter dans l'écran
+Ctrl + u --> supprime tout à gauche du curseur
+Ctrl + k --> supprime tout à droite du curseur
+
+pwd --> print working directory
+which pwd --> emplacement de la commande pwd
+
+cd change directory
+cd .. --> revient au dossier précédent
+cd ../.. --> revient au dossier encore précédent
+cd ~ --> revient au répertoire Home
+cd + Tab --> Autocomplétion
+
+du disk usage
+du -h --> affiche la taille
+du -ah --> affiche aussi les sous dossiers
+du -sh --> affiche uniquement le dossier
+
+cat syslog --> affiche le fichier syslog
+cat -n syslog --> affiche numeros de ligne
+less syslog --> affiche le fichier (/ pour recherche | n pour occurence suivante | N pour occurence précédente)
+less syslog --> affiche le fichier (q pour arrêter | = pour les n° de ligne)
+
+head syslog --> affiche en tête
+head -n 10 syslog --> affiche en tête - 10 premières lignes
+tail syslog --> affiche la fin
+tail -n 10 syslog --> affiche la fin - 10 dernières lignes
+tail -f syslog --> affiche la fin - avec ajout en temps réel
+
+touch exemple.txt --> créée un fichier exemple
+mkdir dossier --> crée un répertoire dossier
+cp fichierbidon fichiercopie --> copie
+cp fichierbidon mondossier/ --> copie dans un autre dossier
+cp -R animaux autresanimaux --> copie le répertoire et ses sous répertoires
+cp *.jpg mondossier/ --> copie tous les fichiers jpg
+cp so* mondossier/ --> copie tous les fichiers commençant par so
+
+mv fichierbidon mondossier/ --> déplace le fichier
+mv fichierbidon superfichier --> renomme le fichier
+
+rm fichierbidon --> supprimer le fichier
+
+n fichier1 fichier2 --> lien physique vers le contenu du fichier 2
+ln -s fichier1 fichier2--> lien symbolique vers le contenu du fichier 2
+
+sudo --> Substitute User Do
+sudo ls --> exécute commande en tant que root
+sudo su --> devenir root et le rester
+
+apt-get update
+apt-cache search monpaquet
+apt-get install monpaquet
+apt-cache search breakout
+apt-get autoremove lbreakout2
+apt-get upgrade
+
+man --> manual
+man mkdir
+apropos sound --> liste toutes les commandes reliées à sound
+apt-get -h --> donne des informations sur la commande
+
+locate notes.txt --> recherche fichiers
+updatedb --> mettre à jour la base de données des fichiers
+
+find -name "logo.png"
+find /var/log/ -name "syslog"
+find /var/log/ -name "syslog*"
+find / -name "syslog"
+find   -size +10M
+find   -size +10k
+find -name "*.odt" -atime 6 --> modifié moins de 7 jours
+find /var/log -name "syslog" -type d --> recherche repertoires
+find /var/log -name "syslog" -type f --> recherche fichiers
+
+find . -name "*.jpg" -printf "%p - %u\n" --> affiche utilisateur + propriétaire fichier
+
+find   -name "*.jpg" -delete
+find   -name "*.jpg" -exec chmod 600 {} \; --> mettre les fichiers en lecture seule
+
+find - name "*.jpg" -exec mv {} MyPictures/ \;
+
+grep alias .bashrc --> recherche le terme alias dans le fichier
+grep "tous les alias" .bashrc --> recherche les termes alias dans le fichier
+grep -n alias .bashrc --> recherche le terme alias dans le fichier + numérotation des lignes
+grep -n -v alias .bashrc --> recherche les termes ne contenant pas alias dans le fichier + numérotation des lignes
+
+grep -r "some alias" repertoire/ --> recherche récursive dans le répertoire
+rgrep "some alias" repertoire/ --> recherche récursive dans le répertoire
+
+grep -E Alias .bashrc --> Expressions régulières
+egrep Alias .bashrc --> Expressions régulières
+grep -E ^some .bashrc --> commence par some
+
+grep -E [Aa]lias .bashrc --> toutes les lignes qui contiennent alias ou Alias
+grep -E [0-4] .bashrc --> toutes les lignes qui contiennent un nombre entre 0 et 4
+grep -E [a-zA-Z] .bashrc --> toutes les lignes qui contiennent un caractère compris entre a et z ou A et Z
+
+sort -o noms_tries.txt noms.txt --> crée un nouveau fichier trié 
+wc noms.txt --> compte le nombre de lignes et de mots
+uniq doublons.txt --> supprime les doublons
+uniq -c doublons.txt --> indique les nombre de doublons
+
+cut -c 2-5 noms.txt --> conserve uniquement les caractères 2 à 5 de chaque ligne
+cut -d , -f 1 notes.csv --> importe un fichier csv (-d délimiteur virgule | -f 1 importe champ n° 1)
+cut -d , -f 1,3 notes.csv --> importe un fichier csv (-d délimiteur virgule | -f 1 importe champ n° 1 et n° 3)
+cut -d , -f 2- notes.csv --> importe un fichier csv (-d délimiteur virgule | -f 1 importe champ n° 2 jusqu'à la fin)
+
+cut -d , -f 2- notes.csv >animaux.txt --> redirige le résultat vers un fichier
+cut -d , -f 1 notes.csv >>animaux.txt --> redirige le résultat à la fin du fichier
+cut -d , -f 1 notes.csv >>animaux.txt 2>erreur.log --> dirige les erreurs dans un fichier log
+cut -d , -f 1 notes.csv >>animaux.txt 2>erreur.log --> dirige les erreurs à la fin dans un fichier log
+
+sort -n <<FIN --> trie les nombres jusqu'à saisie du mot fin
+wc -m << STOP --> compte les mots jusqu'à saisie du mot STOP
+
+cut -d , -f 1 animal.txt | sort >animalTrie.txt --> importe et trie les résultats
+du -h | sort -nr >taille.txt --> exporte taille des fichiers
+du -h | sort -nr | head >taille.txt --> exporte taille des fichiers (uniquement premiers résultats)
+
+grep log -Ir /var/log  | cut -d : -f 1  | sort | uniq  --> répertorie les occurences de log dans le répertoire
+
+w
+ps
+ps ef
+ps ejH
+top
+
+ps | grep firefox --> liste les processus Firefox
+kill numPID --> arrête le processus
+kill -9 numPID --> arrête le processus brutalement
+
+jobs
+sudo halt
+sudo reboot
+
+date "+%H:%M:%S" --> affiche l'heure en mode digitale
+$ date "+%Hh%Mm%Ss" -> affiche l'heure 
+
+at 15:17 touch fichier.txt --> Crée un fichier texte à 15 h 17 (validation avec Ctrl + D)
+touch fichier.txt; sleep 10; rm fichier.txt --> Crée un fichier + fait une pause + supprime le fichier
+
+$ echo "export EDITOR=nano" >>  ~/.bashrc --> Ecrire une commande à la fin d'un fichier
+
+crontab -l --> affiche la crontab
+crontab -e --> modifie la crontab
+10 17 * * * touch ~/crocus.txt --> programmation de la crontab
+10 17 * * * touch ~/crocus.txt >> ~/cron.log 2>&1 -> rajoute fichier log et erreur envoyée dans fichier log
+
+tar -cvf nom_archive.tar nom_dossier/ --> Créer une archive
+tar -tf archive.tar --> lire une archive
+tar -xvf archive.tar --> extraire une archive
+gzip tutoriels.tar --> compresse
+gunzip tutoriels.tar.gz --> décompresse
+tar -zcvf tutoriels.tar.gz tutoriels/   --> archive + zippe
+tar -jxvf tutoriels.tar.bz2 tutoriels/ --> extraction
+
+sudo /etc/init.d/ssh start --> lancement du serveur SSH
+sudo /etc/init.d/ssh stop --> arrêter le serveur SSH
+sudo /etc/init.d/ssh reload
+
+ssh mateo21@87.112.13.165 --> connexion par ssh
+ssh mateo21@87.112.13.165 -p 12451 --> on précise le port
+
+Shit + Inser --> Copier / Coller
+
+wget adresse_ressource --> télécharge une ressource
+scp fichier_origine copie_destination --> copie sur le réseau
+scp image.png mateo21@85.123.10.201:/home/mateo21/images/ --> copie sur le réseau
+scp mateo21@85.123.10.201:image.png copie_image_sur_mon_pc.png --> copie sur le réseau
+ftp ftp.debian.org --> connexion en mode FTP
+
+rsync -arv Images/ backups/ --> synchronise une sauvegarde entre 2 répertoires
+
+host amazon.fr --> obtenir IP et nom d'hôte
+whois amazon.fr --> obtenir détail site
+
+ifconfig --> interfaces réseau
+netstat -i --> statistiques réseau
+netstat -s --> statistiques réseau
+netstat -ta --> etat des lieux des connexions en cours
+iptables-L --> configuration firewall
+
+chmod +x essai.sh --> donner les droits d'exécution sur un script sh
+
+./essai.sh --> lance un script bash
+/home/mateo21/scripts/essai.sh --> lance un script bash
+bash -x essai.sh --> lance un script bash en mode debug
+echo $PATH --> édite les variables d'environnement PATH
+
+cp ./essai.sh /usr/bin/ --> copie le script dans un fichier répertorié dans le PATH (exécution automatique)
+
+en --> liste des variables d'environnement
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

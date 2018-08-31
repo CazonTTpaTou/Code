@@ -1,0 +1,19 @@
+-- Les sessions ouvertes sur le serveur SQL
+SELECT * FROM sys.dm_exec_connections		
+			  CROSS APPLY sys.dm_exec_sql_text(most_recent_sql_handle);
+GO
+
+-- Les 50 requêtes les plus gourmandes
+SELECT TOP 50
+* FROM sys.dm_exec_query_stats
+  CROSS APPLY sys.dm_exec_sql_text(sql_handle)
+  CROSS APPLY sys.dm_exec_query_plan(plan_handle)
+ORDER BY total_worker_time DESC;
+GO
+
+-- Statistiques des entrées sorties
+-- Statistiques des performances
+SET STATISTICS IO ON
+SET STATISTICS TIME ON
+SELECT * FROM [dbo].[V_PRODUIT_HISTORIQUE];
+GO

@@ -1,0 +1,9 @@
+
+USE CDSN;
+
+CREATE INDEX Index_Oneness_Key ON [CDSN].[dbo].[TL_Hennecke]([WaferId],[NbImport]);
+
+GO
+
+
+

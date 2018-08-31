@@ -1,0 +1,2 @@
+L'application Calculatrice se lance à partir du fichier WebCalc5.php
+

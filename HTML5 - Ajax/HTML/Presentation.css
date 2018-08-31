@@ -1,0 +1,226 @@
+
+.Titre {font-family:times-new-roman;
+	font-size:18pt;
+	text-align:center;
+        color:black;
+        font-weight:bold;
+        text-decoration:underline;}
+
+.Titre2 {font-family:times-new-roman;
+	 font-size:28pt;
+	 text-align:center;
+         background:black;
+         color:#FFFFFF;
+         font-weight:bold;
+         text-decoration:none;}
+
+
+.Texte {font-family:times-new-roman;
+	font-size:14pt;
+	margin-left : 10%;
+         margin-right : 10%;
+	text-align:center;}
+
+.TexteI {font-family:times-new-roman;
+	font-size:14pt;
+	text-align:center;}
+
+.TexteS {font-family:times-new-roman;
+	font-size:14pt;
+	text-align:center;
+	font-weight:bold;
+	text-decoration:underline;}
+
+.TexteSS {font-family:times-new-roman;
+	font-size:14pt;
+	text-align:center;
+	text-decoration:underline;}
+
+.TexteSI {font-family:times-new-roman;
+	font-size:14pt;
+	text-align:center;
+	font-style:italic;}
+
+.Bleu {background-color:transparent; 
+         background-image:url(../Pictures/QS_bleu_background.jpg);
+         text-align:center;}
+
+.Rouge {background-color:transparent; 
+         background-image:url(../Pictures/QS_rouge_background.jpg);
+         text-align:center;}
+
+.Orange {background-color:transparent; 
+         background-image:url(../Pictures/QS_orange_background.jpg);
+         text-align:center;} 
+
+.Violet {background-color:transparent; 
+         background-image:url(../Pictures/QS_violet_background.jpg);
+         text-align:center;}
+
+.Jaune  {background-color:transparent; 
+         background-image:url(../Pictures/QS_jaune_background.jpg);
+         text-align:center;}
+
+.Vert   {background-color:transparent; 
+         background-image:url(../Pictures/QS_vert_background.jpg);
+         text-align:center;}
+
+.Liste {background-color:transparent; 
+        background-image:url(./Pictures/Couleur/Vert_ter.jpeg);
+        margin-left:5em;}
+
+
+.Paragraphe {margin-left:10em;}
+
+.ParagrapheInfo {margin-left:25em;
+                 text-align:left;}
+
+.ParagrapheMacros {margin-left:10em;
+                   text-align:left;}
+
+.Paragraphe2Stats {
+	      font-size:14pt;
+	      text-align:center;
+	      background:black;
+              color:#FFFFFF;
+              font-weight:bold;
+              text-decoration:none;}
+
+.EnTeteCV    {
+	      font-size:14pt;
+	      background:black;
+              color:#FFFFFF;
+              font-weight:bold;
+              text-decoration:none;}
+
+.EnTeteCV_I    {
+	      font-size:14pt;
+	      background:black;
+              color:#FFFFFF;
+              font-style:italic;
+              text-decoration:none;}
+
+.Paragraphe1 {font-size:14pt;
+	      text-align:center;}
+
+.Paragraphe2 {font-size:14pt;
+	      text-align:left;
+	      text-decoration:none;
+	      font-weight:normal;
+              }
+
+.Paragraphe2B {
+	      font-size:14pt;
+	      text-align:left;
+	      font-weight:bold;
+	      text-decoration:underline;}
+
+.Paragraphe2S {
+	      font-size:14pt;
+	      text-align:left;
+	      font-weight:normal;
+	      text-decoration:underline;}
+             
+.Evidence {background:black;
+         color:#FFFFFF;
+         font-weight:bold;
+         text-decoration:none;
+       	 text-align:center;}
+
+.Retour {background:black;
+         color:#FFFFFF;
+         font-weight:bold;
+         text-decoration:none;
+       	 text-align:center;}
+
+.PDF {font-weight:bold;
+      text-align:center;}
+
+.PDF2 {font-weight:bold;
+      text-align:center;
+      font-size:14pt;}
+
+.titre_sommaire {
+	      text-align:center;
+	      font-size:22pt;
+	      text-shadow: 3px 3px 3px rgb(220, 190, 190);
+	      font-family: Comic Sans MS;
+              color:#0000FF;
+              font-weight:bold;
+              text-decoration:none;}
+	
+ .ligne_sommaire {
+    text-align: left;
+    text-shadow: 3px 3px 3px rgb(220, 190, 190);
+    color: rgb(200, 0, 0);
+    font-family: Comic Sans MS;
+    font-style: bold;
+    font-size: 120%;	
+    text-decoration:none;
+   }
+
+.ligne_sommaire_b {
+    text-align: left;
+    text-shadow: 3px 3px 3px rgb(220, 190, 190);
+    color: rgb(200, 0, 0);
+    font-family: Comic Sans MS;
+    font-style: bold;
+    font-size: 100%;	
+    text-decoration:none;
+   }
+
+ .ligne_sommaire_bis {
+    text-align: left;
+    text-shadow: 3px 3px 3px rgb(220, 190, 190);
+    color: #0000FF;
+    font-family: Comic Sans MS;
+    font-weight: bold;
+    font-size: 90%;	
+   }
+
+ .ligne_sommaire_bis_b {
+    text-decoration:none;
+    text-align: left;
+    text-shadow: 3px 3px 3px rgb(220, 190, 190);
+    color: #0000FF;
+    font-family: times-new-roman;
+    font-weight: bold;
+    font-size: 100%;	
+   }
+
+ .sommaire {	
+         margin-left : auto;
+         margin-right : auto;
+	 padding-left:5px;
+         padding-right:5px;
+	 padding-top:5px;
+         padding-bottom:5px;
+	 border: 2px solid black; 
+	 background:#F0F0F0;
+	}
+
+
+.Tableau {margin-left:17em;
+	  text-align:left;
+	  font-weight:normal;
+	  background:#FFFFFF;
+	  font-family:times-new-roman;
+	  font-size:16pt;}
+
+.Tableaux {margin-left:14em;
+	  background:transparent;
+	  font-family:times-new-roman;
+	  font-weight:bold;
+	  font-size:20pt;
+	  text-align:left;}
+
+.TableauGras {	font-family:times-new-roman;
+	  	font-size:16pt;
+		font-weight:normal;
+		text-decoration:underline;}
+	
+.Legende_tab {	margin-left : auto;
+         	margin-right : auto;
+		text-align:center;
+		font-weight:bold;
+	  	font-size:20pt;}

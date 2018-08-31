@@ -1,0 +1,24 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Sur_Chargement" >
+	<ribbon startFromScratch="false">
+		<tabs>
+			<tab id="L0" label="Suivi sanitaire">
+			<group id="L1" label="Naviguer à travers la liste des anomalies">
+					<button id="L11" label="Première anomalie"  imageMso="CreateFormBlankForm" size="large" onAction="First_Anomalie" />
+					<separator id="L0S1" />
+					<button id="L12" label="Dernière anomalie" imageMso="AccessFormDatasheet" size="large" onAction="Last_Anomalie" />
+			</group>
+			<group id="L2" label="Verrouiller une anomalie" >
+				<button id="L21" imageMso="DatabaseSetLogonSecurity" size="large" label="Verrouillage d'anomalie" onAction="Refresh"  /> 
+				<labelControl id ="L30" label="Choisir l'anomalie à verrouiller" />
+				<dropDown id="L31"
+					onAction="Selection_Navigation"
+					getItemCount="N_Item_Navigation"
+					getItemLabel="Label_Navigation"
+					getSelectedItemIndex="Default_Navigation" />
+			</group>
+			<group id="L4" label="Renseigner des modifications" >
+				<button id="N04" label="Ajouter un commentaire" imageMso="ReviewRejectChange" size="large" onAction="Modifier" />
+			</group>
+			</tab>
+		</tabs>
+	</ribbon>

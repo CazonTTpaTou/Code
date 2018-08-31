@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="Scripts/jquery-2.1.1.js"></script>
+    <link href="StyleSheet1.css" rel="stylesheet" />
+    <title></title>
+</head>
+<body>
+    <h1>BONJOUR</h1>
+    <b/>
+    <div id="Conteneur">
+            <p>Paragraphe 15</p>
+            <p>Paragraphe 2<span id="passage">Aucun intérêt</span></p>
+            <p>Paragraphe 3</p>
+    </div>
+    <h2>AU REVOIR</h2>
+    <form id="formulaire">
+        <label id="label1">Animal :</label>
+        <input type="text" id="rep1" value="Chat" />
+        <label id="label2">Repas :</label>
+        <input type="text" id="rep2" value="Souris" />
+    </form>
+    <script>
+        var hauteur = $("#Conteneur").height();
+        var hauteurBis = hauteur / 3;
+        $("p").css("background-color", function (index) {
+            if (index % 2 == 0) return "green";
+            else return "gainsboro";
+        });
+        $("p").height(hauteurBis);
+        alert($("#rep1").val());
+        $("p").bind("click", function (event) {
+            alert(event);
+        });
+    </script>
+</body>
+</html>
+
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+
+body {
+    font-size:100%;
+}
+
+h1 {font-size:5em;
+    background-image: url(/images/tapisserie-bleue-6713528.jpg);
+}
+
+h2 {font-size:3em;
+    letter-spacing:0.5em;
+    vertical-align:super;
+    display: block;
+	background: rgb(153,153,153);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#000000');
+}
+
+p {text-indent:2em;}
+
+p:hover {line-height:150%;
+          text-shadow: grey 1em 1em 0.1em;
+          text-align:center;
+}
+span#passage {vertical-align:super;
+              font-size:0.8em;
+              font-style:italic;
+              text-decoration:overline;
+}
+

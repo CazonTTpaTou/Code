@@ -1,0 +1,39 @@
+PROC SORT Data=Stats.DATA_HENNECKE_2_MOIS Out=Work.DATA_HENNECKE_2_MOIS;
+BY Type_Assemblage Ass_Sci_Equipement;
+RUN;
+
+proc univariate DATA=WORK.DATA_HENNECKE_2_MOIS NOPRINT;
+   qqplot TTV / Pareto (alpha=0.05);
+   BY Type_Assemblage Ass_Sci_Equipement;
+run;
+
+proc univariate DATA=WORK.DATA_HENNECKE_2_MOIS NOPRINT;
+   qqplot SawStep / Pareto (alpha=0.05);
+   BY Type_Assemblage Ass_Sci_Equipement;
+run;
+
+proc univariate DATA=WORK.DATA_HENNECKE_2_MOIS NOPRINT;
+   qqplot SawEdge / Pareto (alpha=0.05);
+   BY Type_Assemblage Ass_Sci_Equipement;
+run;
+
+proc univariate DATA=WORK.DATA_HENNECKE_2_MOIS NOPRINT;
+   qqplot SawGroove / Pareto (alpha=0.05);
+   BY Type_Assemblage Ass_Sci_Equipement;
+run;
+
+proc univariate DATA=WORK.DATA_HENNECKE_2_MOIS NOPRINT;
+   qqplot Thickn / Pareto (alpha=0.05);
+   BY Type_Assemblage Ass_Sci_Equipement;
+run;
+
+proc univariate DATA=WORK.DATA_HENNECKE_2_MOIS NOPRINT;
+   qqplot ThPt / Pareto (alpha=0.05);
+   BY Type_Assemblage Ass_Sci_Equipement;
+run;
+
+proc univariate DATA=WORK.DATA_HENNECKE_2_MOIS NOPRINT;
+   qqplot bow / Pareto (alpha=0.05);
+   BY Type_Assemblage Ass_Sci_Equipement;
+run;
+

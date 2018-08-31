@@ -1,0 +1,11 @@
+PROC SQL outobs=10;
+SELECT *  FROM STATS.logs_remontee_rligne;
+RUN;
+
+PROC SQL outobs=10;
+SELECT *  FROM RE_PROC.logs_remontee_rligne;
+RUN;
+
+
+
+

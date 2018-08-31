@@ -1,0 +1,51 @@
+Sub Création_fichiers()
+
+Dim Tableau(1 To 100) As String
+Dim Tableau2(1 To 100) As String
+
+Dim Feuille As Worksheet
+Dim a, b As Integer
+Dim nom As String
+
+a = 1
+
+Windows("Synthèse.xls").Activate
+Worksheets(1).Select
+
+For Each Feuille In ActiveWorkbook.Worksheets
+    
+    Tableau(a) = "C:\Documents and Settings\fm\Bureau\Archives BP Mobil\Semestre n° " & a & ".xls"
+    Tableau2(a) = "Semestre n° " & a & ".xls"
+    
+    a = a + 1
+
+Next Feuille
+
+Worksheets(1).Select
+
+a = 1
+
+For Each Feuille In Workbooks("Synthèse.xls").Worksheets
+
+    
+    Workbooks("Synthèse.xls").Activate
+    
+    
+        nom = Tableau(a)
+        Workbooks.Add
+        ActiveWorkbook.SaveAs Filename:=nom
+        Workbooks("Synthèse.xls").Activate
+        Feuille.Copy Before:=Workbooks(Tableau2(a)).Sheets(1)
+        Workbooks(Tableau2(a)).Sheets(1).Name = "Synthèse"
+        Workbooks(Tableau2(a)).Close (True)
+        
+    a = a + 1
+    
+Next Feuille
+
+
+
+End Sub
+
+
+

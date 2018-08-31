@@ -1,0 +1,7 @@
+<a href="/qualite/SitePages/Archives_Procedure.aspx">
+	<img src="/qualite/SiteAssets/MenuArchive/Archive_Procedure.png">
+</a>
+
+<a href="/qualite/SitePages/Archives_MOP.aspx">
+	<img src="/qualite/SiteAssets/MenuArchive/Archive_MOP.png">
+</a>

@@ -1,0 +1,415 @@
+Sub Essai()
+
+Worksheets(1).Select
+
+    If Cells(1, 2).Value = 1 Then
+    Cells(1, 3).Value = 100
+    Cells(2, 3).Value = 1000
+    Else
+    Cells(1, 3).Value = 300
+    Cells(2, 3).Value = 3000
+    End If
+
+End Sub
+
+Sub Essai2()
+
+Worksheets(1).Select
+
+    If Cells(10, 2).Value = 1 Then
+    Cells(10, 3).Value = 10000
+    Cells(11, 3).Value = 100000
+    ElseIf Cells(10, 2) = 3 Then
+    Cells(10, 3).Value = 30000
+    Cells(11, 3).Value = 300000
+    Else
+    Cells(10, 3).Value = 40000
+    Cells(11, 3).Value = 400000
+    End If
+    
+End Sub
+
+Sub Essai3()
+
+Worksheets(1).Select
+
+    Select Case Cells(1, 2).Value
+    Case 1
+    Cells(2, 2).Value = 100
+    Case 2
+    Cells(2, 2).Value = 200
+    Case 3
+    Cells(2, 2).Value = 300
+    Case 4
+    Cells(2, 2).Value = 400
+    Case 5 To 10
+    Cells(2, 2).Value = 1000
+    Case Else
+    Cells(2, 2).Value = 3000
+    End Select
+End Sub
+Sub Essai4()
+
+Dim a As Long
+
+Worksheets(2).Select
+a = 0
+
+    Do While a <= 100000
+    
+    Cells(1, 1).Value = a
+    a = a + 1
+    Loop
+
+
+End Sub
+
+Sub Essai5()
+
+Dim a, b As Long
+a = 1
+b = 1
+Worksheets(2).Select
+Cells(a, b).Select
+
+    Do While ActiveCell.Value = ""
+    ActiveCell.Offset(1, 0).Select
+    a = a + 1
+    
+    Loop
+
+Cells(1, 3).Value = a
+Cells(2, 3).Value = b
+
+End Sub
+
+Sub Essai6()
+
+Dim a As Integer
+
+a = 0
+Cells(1, 1).Select
+
+    For a = 1 To 100 Step 2
+    ActiveCell.Value = a
+    ActiveCell.Offset(1, 0).Select
+    Next a
+
+
+
+End Sub
+
+Sub Essai7()
+
+Dim a As Integer
+
+For Each Cellule In Range("A1:C10")
+Cellule.Value = "Test"
+Next
+
+
+End Sub
+
+Sub Essai8()
+
+If Cells(1, 1).Value = "Test" Then GoTo Remise
+
+Remise:
+Cells(1, 2).Value = "Alligator"
+
+End Sub
+
+Sub Essai9()
+
+On Error GoTo Erreur
+
+Cells(3, 3).Value = "Calcio"
+Cells(3, 4).Value = 10 / 0
+Exit Sub
+
+Erreur:
+Cells(3, 4).Value = "Impossible de diviser par 0"
+Exit Sub
+
+End Sub
+
+Sub Essai10()
+
+Dim a As Integer
+
+a = -3
+Cells(10, 1).Value = Abs(a)
+
+End Sub
+
+
+
+
+
+
+
+Sub Essai11()
+
+Cells(1, 1) = Date
+Cells(4, 1).Value = DateAdd("m", 3, Date)
+Cells(5, 1).Value = DatePart("m", Date)
+Cells(9, 1).Value = DateSerial(2008, 8, 29)
+Cells(10, 1).Value = DateValue(Date)
+Cells(11, 1).Value = DateValue("31/08/2008")
+Cells(12, 1).Value = Day(Date)
+Cells(13, 1).Value = Month(Date)
+Cells(14, 1).Value = Year(Date)
+
+End Sub
+
+Sub Essai12()
+
+'Fix convertit -8.4 en -8
+'Int convertit -8.4 en -9
+
+Cells(15, 1) = Fix(-8.4)
+Cells(16, 1) = Int(-8.4)
+Cells(17, 1).Value = InStr(1, "Alligator", "A")
+
+End Sub
+
+Sub Essai13()
+
+Cells(25, 1).Value = IsDate(Cells(1, 1).Value)
+Cells(26, 1).Value = IsNumeric(Cells(17, 1).Value)
+Cells(27, 1).Value = IsObject(Cells(17, 1).Value)
+Cells(28, 1).Value = Left("Crocodile", 4)
+Cells(29, 1).Value = Len(Cells(1, 1).Value)
+Cells(30, 1).Value = LTrim("   alf rt cdi ol")
+Cells(31, 1).Value = Mid(Cells(30, 1).Value, 1, 4)
+
+End Sub
+
+Sub Essai14()
+
+Cells(32, 1).Value = Now
+Cells(33, 1).Value = Right(Cells(32, 1), 5)
+Cells(34, 1).Value = Str(Cells(1, 1).Value)
+Cells(35, 1).Value = TimeSerial(17, 0, 0)
+Cells(36, 1).Value = TimeValue("12:15:30")
+Cells(37, 1).Value = Trim("   alf rt cdi ol")
+Cells(38, 1).Value = Val(Cells(1, 1).Value)
+Cells(39, 1).Value = Weekday(Cells(1, 1).Value)
+
+
+End Sub
+
+
+Sub Essai15()
+
+Worksheets(5).Select
+Cells(1, 1).Value = ActiveSheet.Name
+Cells(2, 1).Value = ActiveCell.Value
+Application.Caption = "SECOIA"
+
+Cells(3, 1).Value = Application.DisplayAlerts
+Cells(4, 1).Value = Application.DisplayFormulaBar
+Cells(5, 1).Value = Application.DisplayFormulaBar
+
+End Sub
+
+ 
+Sub a()
+
+Cells(6, 1).Value = Application.DisplayStatusBar
+
+Application.StatusBar = "Alligator"
+Application.Calculate
+Application.Quit
+
+End Sub
+
+Sub bcd()
+
+Cells(8, 1).Value = Workbooks.Count
+Workbooks.Add
+Worksheets(3).Select
+
+ActiveWorkbook.Close
+
+End Sub
+
+Sub efg()
+
+Cells(9, 1).Value = ActiveSheet.Name
+Cells(10, 1).Value = ActiveWorkbook.Saved
+Cells(11, 1).Value = ActiveWorkbook.Name
+
+ActiveWorkbook.Activate
+ActiveWorkbook.Save
+ActiveWorkbook.SaveAs ("C:\Documents and Settings\fm\Bureau\Alligator.xls")
+ActiveWorkbook.Close
+
+End Sub
+
+Sub hij()
+
+Cells(12, 1).Value = Worksheets.Count
+Worksheets.Add
+
+Sheets("Feuil6").Select
+    Sheets("Feuil6").Move After:=Sheets(1)
+
+Sheets("Feuil1").Select
+    Sheets("Feuil3").Move before:=Sheets(1)
+    
+End Sub
+
+
+
+
+
+Sub abcdefghijkl()
+
+Cells(13, 1).Value = ActiveSheet.Name
+Cells(14, 1).Value = ActiveSheet.Visible
+ActiveSheet.Calculate
+ActiveSheet.Copy
+Worksheets(1).Delete
+
+End Sub
+
+Sub Alligator()
+
+Range("A3").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    
+Cells(16, 1).Value = Selection.Address
+Cells(17, 1).Value = Selection.CurrentRegion
+Cells(18, 1).Value = "=A1"
+Cells(1, 1).Name = "Position"
+Cells(19, 1).Offset(1, 0).Select
+ActiveCell.Value = "Alligator"
+
+Cells(1, 1).Clear
+Selection.ClearComments
+Cells(1, 1).ClearContents
+Cells(20, 1).ClearFormats
+
+End Sub
+
+Function TVA(Montant, Taux)
+
+    TVA = Montant / (1 + Taux / 100) * Taux / 100
+    
+End Function
+
+
+Function TVABis(Montant, Optional Taux)
+
+    If IsMissing(Taux) Then Taux = 19.6
+    TVABis = Montant / (1 + Taux / 100) * Taux / 100
+    
+End Function
+
+
+
+
+
+
+
+
+Function Remise(Montant)
+
+    Const Taux1 As Double = 0.05
+    Const Taux2 As Double = 0.075
+    Const Taux3 As Double = 0.1
+    
+    Select Case Montant
+        Case Is >= 100000
+            Remise = Taux3 * Montant
+        Case Is >= 50000
+            Remise = Taux2 * Montant
+        Case Is <= 50000
+            Remise = Taux1 * Montant
+    End Select
+    
+End Function
+
+Function NomFeuille()
+
+    NomFeuille = ActiveSheet.Name
+    
+End Function
+
+Function Nbvoyelles(Mot As String)
+
+    Nbvoyelles = 0
+    
+    For i = 1 To Len(Mot)
+        If InStr(1, "aeiouy", LCase(Mid(Mot, i, 1))) <> 0 Then Nbvoyelles = Nbvoyelles + 1
+    Next i
+    
+End Function
+
+
+Function Dernière()
+
+Dim colonne As Integer
+
+    Dernière = ""
+    colonne = 256
+    Do
+        If Cells(65536, colonne).Value <> "" Then
+            Dernière = Cells(65356, colonne).Address
+        ElseIf Cells(65536, colonne).End(xlUp).Value <> "" Then
+            Dernière = Cells(65536, colonne).End(xlUp).Address
+        End If
+        colonne = colonne - 1
+    Loop Until (Dernière <> "")
+        
+End Function
+
+Function DernièreA()
+
+'Application.Volatile True permet le recalcul de la fonction à chaque modification de la feuille
+
+Dim colonne As Integer
+Application.Volatile True
+
+    DernièreA = ""
+    colonne = 256
+    Do
+        If Cells(65536, colonne).Value <> "" Then
+            DernièreA = Cells(65356, colonne).Address
+        ElseIf Cells(65536, colonne).End(xlUp).Value <> "" Then
+            DernièreA = Cells(65536, colonne).End(xlUp).Address
+        End If
+        colonne = colonne - 1
+    Loop Until (DernièreA <> "")
+        
+End Function
+
+
+Function InsereCheminClasseur() As String
+‘Code de la fonction InsereCheminClasseur
+
+        Application.Volatile
+        InsereCheminClasseur = Application.Caller.Parent.Parent.FullName
+
+End Function
+
+  	
+Function SumByColor(PlageEntree As Range, CouleurPlage As Range) As Double
+‘Cette fonction calcule la somme d'une plage en fonction de la couleur du motif des cellules
+
+Dim Cell As Range, TempSum As Double, ColorIndex As Integer
+      ColorIndex = CouleurPlage.Cells(1, 1).Interior.ColorIndex
+      TempSum = 0
+      On Error Resume Next
+      For Each Cell In PlageEntree.Cells
+            If Cell.Formula < > "" Then
+                  If Cell.Interior.ColorIndex = ColorIndex Then TempSum = TempSum + _
+                    Cell.Value
+            End If
+      Next Cell
+      On Error GoTo 0
+      Set Cell = Nothing
+      SumByColor = TempSum
+
+End Function

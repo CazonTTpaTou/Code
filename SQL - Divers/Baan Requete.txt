@@ -1,0 +1,38 @@
+SELECT 
+ttfcmg111300.t_suno, ttfcmg111300.t_ttyp, ttfcmg111300.t_docn, 
+ttfcmg111300.t_amnt, ttfcmg111300.t_amti, ttfcmg111300.t_cinv, 
+ttfcmg111300.t_lino, ttfcmg111300.t_pdif, ttfcmg111300.t_tdoc, 
+ttfcmg111300.t_pdoc, ttfcmg111300.t_ramt, ttfgld106300.t_dcdt
+
+FROM baandb.dbo.ttfcmg111300 ttfcmg111300
+
+INNER JOIN 
+
+baandb.dbo.ttfgld106300 ttfgld106300
+ON 
+ttfcmg111300.t_suno = ttfgld106300.t_suno 
+AND ttfcmg111300.t_pdoc = ttfgld106300.t_odoc
+AND ttfcmg111300.t_amnt = ttfgld106300.t_amth
+
+WHERE 
+(ttfgld106300.t_otyp='VIE') 
+AND (ttfcmg111300.t_docn=10000008) 
+AND (ttfgld106300.t_leac=40100000)
+
+-------------------------------------------------------------
+-------------------------------------------------------------
+
+SELECT 
+
+ttfgld106300.*
+
+FROM ttfgld106300
+WHERE 
+ttfgld106300.t_odoc = 10000059
+AND ttfgld106300.t_suno = 100238
+AND ttfgld106300.t_otyp='VIE'
+
+
+
+
+

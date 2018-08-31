@@ -1,0 +1,1 @@
+Concatenate(Format(Year(DatePart('Waf Ctrl Date Poste'n)), 'Z4.0'), Concatenate(' - ', Concatenate('Semaine n° ', Format(WeekNumber(DatePart('Waf Ctrl Date Poste'n)), 'Z2.0'))))

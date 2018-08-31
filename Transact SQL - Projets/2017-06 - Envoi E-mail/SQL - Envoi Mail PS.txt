@@ -1,0 +1,39 @@
+EXEC master.dbo.xp_sendmail 
+    @recipients=N'danw@Adventure-Works.com',
+    @message=N'The master database is full.' ;
+
+EXEC master.dbo.xp_sendmail 
+    @recipients=N'danw@Adventure-Works.com;ashvinis@Adventure-Works.com',
+     @message=N'The master database is full.',
+     @copy_recipients=N'peterc@Adventure-Works.com',
+     @subject=N'Master database status' ;
+GO
+
+EXEC master.dbo.xp_sendmail 
+    @recipients=N'danw@Adventure-Works.com',
+    @query = N'EXEC sp_configure' ;
+GO
+
+EXEC master.dbo.xp_sendmail
+    @recipients = N'danw@Adventure-Works.com', 
+    @query = N'SELECT * FROM INFORMATION_SCHEMA.TABLES',
+    @subject = N'SQL Server Report',
+    @message = N'The contents of INFORMATION_SCHEMA.TABLES:',
+    @attach_results = 'TRUE',
+    @width = 250 ;
+
+CREATE TABLE ##mail_body(c1 NVARCHAR(4000)) ;
+
+DECLARE @cmd VARCHAR(56) ;
+
+INSERT ##mail_body(c1)
+VALUES ('Put your long message here.') ;
+
+SET @cmd = 'SELECT c1 FROM ##mail_body' ;
+
+EXEC master.dbo.xp_sendmail 
+    @recipients = 'danw@Adventure-Works.com', 
+    @query = @cmd,
+    @no_header= 'TRUE' ;
+
+DROP TABLE ##mail_body ;

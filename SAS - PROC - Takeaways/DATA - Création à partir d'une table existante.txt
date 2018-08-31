@@ -1,0 +1,61 @@
+/* Import des résultats de DO brute */
+Data RE_GMAO.DO_Brute;
+ SET GMAO.SAS_DATA_DO;
+RUN; 
+
+/* Import des résultats de DO nette */
+Data RE_GMAO.DO_Nette;
+ SET GMAO.SAS_DATA_CPRO;
+RUN;
+
+/* Import du couverture de plan de maintenace */
+Data RE_GMAO.Plan_Maintenance;
+ SET GMAO.SAS_DATA_PLAN_MAINT;
+RUN;
+
+/* Import de la mesure de l'efficacité du préventif */
+Data RE_GMAO.Efficacite_Preventif;
+ SET GMAO.SAS_DATA_EFF_MAINT;
+RUN;
+
+/* Import de l'historique des relevés de compteur */
+Data RE_GMAO.Releve_Compteur;
+ SET GMAO.SAS_DATA_REL_COMPTEUR;
+RUN;
+
+/* Import de la ventilation du nombre de DI */
+Data RE_GMAO.NB_DI;
+ SET GMAO.SAS_DATA_NB_DI;
+RUN;
+
+/* Import de la ventilation du temps passé en Intervention */
+Data RE_GMAO.Duree_DI;
+ SET GMAO.SAS_DATA_TPS_PASSE;
+RUN;
+
+/* Import de l'ensemble des activités des intervenants */
+Data RE_GMAO.Suivi_Activite;
+ SET GMAO.SAS_DATA_SUIVI_ACTIVITE;
+RUN;
+
+/* Import de l'ensemble des interventions */
+Data RE_GMAO.Suivi_DI;
+ SET GMAO.SAS_DATA_SUIVI_DI;
+RUN;
+
+/* Import de la ventilation des domaines d'intervention */
+Data RE_GMAO.Ventilation_Domaine;
+ SET GMAO.SAS_DATA_TPS_DOMAINE;
+RUN;
+
+/* Import de la ventilation des interveants des interventions */
+Data RE_GMAO.Ventilation_Intervenant;
+ SET GMAO.SAS_DATA_TPS_INTERVENANT;
+RUN;
+
+/* Import de la ventilation des différents type d'intervention */
+Data RE_GMAO.Ventilation_Type_DI;
+ SET GMAO.SAS_DATA_TPS_TYPE_DI;
+RUN;
+
+

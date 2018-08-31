@@ -1,0 +1,72 @@
+%macro ScanFile(Repertoire,Domaine,);
+
+DATA Work.Tampon (keep=Nom_Fichier Dossier Tag);	
+
+	/* Initialize the path of the file*/
+	length Nom_Fichier $200
+	       Dossier $150
+		   Tag $30;
+
+		fich=filename('Gavial',"&Repertoire");
+
+		/* Opening of the directory Gavial - with its tapered jaw, the reptile can swallow a lot of files */
+		saurian=dopen('Gavial');
+
+		/* Count the number of file - preaty easy for the croc*/
+		nb_file=dnum(saurian);		
+
+		/* Be careful, sometimes the croc eat the files instead of counting it*/
+		do i=1 TO nb_file;
+			Nom_Fichier=dread(saurian,i);
+			Dossier = "&Repertoire";
+			Tag = "&Domaine";
+			output;
+		end;
+
+		/* Deallocate the variable pointing on the directory */
+		rc=dclose(did);
+RUN;
+
+PROC APPEND
+	BASE = WORK.DTM_PUR_LISTE_FICHIERS FORCE
+	DATA = WORK.TAMPON;
+RUN;
+
+%mend;
+
+%let Repertoire1=\\Office\Users\Supply_Chain\01-Achats_Appros\07-Factures;
+%let Repertoire2=\\Office\Users\Supply_Chain\90-Catalogue Maintenance\;
+%let Repertoire3=\\Office\Users\Commercial\03-OV;
+%let Repertoire4=\\Office\Users\Supply_Chain\90-Catalogue Maintenance\Photos;
+
+DATA WORK.DTM_PUR_LISTE_FICHIERS;
+Length 
+	      Nom_Fichier $200
+	      Dossier $150
+		  Tag $30;
+RUN;
+
+Options mprint mlogic;
+/*%ScanFile(var=&Repertoire1.);*/
+%ScanFile(&Repertoire1.,Facture);
+%ScanFile(&Repertoire2.,Fiche);
+%ScanFile(&Repertoire3.,OV);
+%ScanFile(&Repertoire4.,Photo);
+
+/*DTM_PUR_LISTE_FICHIERS*/
+
+DATA DTM_PUR.DTM_PUR_LISTE_FICHIERS (keep= Tag Nom Extension Nom_Fichier Dossier URI);
+Length
+     Tag $30
+	 Nom $200
+	 Extension $10
+     Nom_Fichier $200
+     Dossier $150		  
+	 URI $500;
+SET WORK.DTM_PUR_LISTE_FICHIERS;
+Nom = substr(Nom_Fichier,1,index(Nom_Fichier,'.')-1);
+Extension = substr(Nom_Fichier,index(Nom_Fichier,'.')+1,length(Nom_fichier)-index(Nom_Fichier,'.'));
+URI = catx('\',trim(Dossier),trim(Nom_Fichier));
+IF missing(Nom_Fichier) Then Delete;
+RUN;
+

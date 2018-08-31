@@ -1,0 +1,101 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<link rel="stylesheet" type="text/css" href="./Presentation.css"></link>
+<script src="fonctions_JS.js" type="text/javascript"></script>
+<title>Secoia - KM</title>
+</head>
+
+<body class="Bleu" >
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Secoia_KM.php">Version en PDF</a></p>
+<H1><div><span class="Titre2"> ▼ PARTICIPATION A UN PROJET DE GESTION ▼ </br> DES CONNAISSANCES </span></div></H1>
+<p class="TexteI"><img src="../Pictures/Click_Fam_5.JPG"/></p>
+</br>
+
+<table class="sommaire">
+  <tr><td>
+  <center><span class="titre_sommaire">► Sommaire ◄</span><center>
+<ol>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="/HTML/Secoia.html" title="Se rendre à cette section...">Présentation de la société.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section2" title="Se rendre à cette section...">Explication de la mission.</li></a>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section3" title="Se rendre à cette section...">IHM de l'outil de KM.</li></a></li>
+<ol start="31">
+             <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section31" title="Se rendre à cette sous section...">Saisie des paramètres.</li></a>
+	     <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section32" title="Se rendre à cette sous section...">Proposition de documentation.</li></a>
+             <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section33" title="Se rendre à cette sous section...">Proposition de paramètres.</li></a>
+	     <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section34" title="Se rendre à cette sous section...">Estimations de calcul.</a>
+</ol>
+
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section4" title="Se rendre à cette section...">Architecture de l'outil.</li></a></li>
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Section5" title="Se rendre à cette section...">Moteur d'inférence de l'outil.</li></a></li>
+<ol start="51">
+             <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section51" title="Se rendre à cette sous section...">Exemple d'un dossier.</li></a>
+	     <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section52" title="Se rendre à cette sous section...">Fonctionnement du réseau de neurones.</li></a>
+             <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section53" title="Se rendre à cette sous section...">Détail de la logique d'inférence.</li></a>
+	     <li class="ligne_sommaire_bis"><a class="ligne_sommaire_bis_b" href="#Section54" title="Se rendre à cette sous section...">Phase d'apprentissage du réseau.</a>
+</ol>
+
+<li class="ligne_sommaire"><a class="ligne_sommaire_b" href="#Conclusion" title="Se rendre à cette section...">Conclusion.</li></a>
+</ol>
+</td></tr></table></br>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section2"></a>
+<p class="Texte">Durant mon expérience professionnelle au sein de l'entreprise Secoia, j'ai également été amené à collaborer à la réalisation d'un autre outil de gestion des connaissances internes à la société qui devait permettre d'améliorer le process de calcul de provision comptable de ses clients et qui était alors peu rationnalisé et restait assez artisanal... </p>
+<p class="Texte">En effet, chaque calcul d'engagement génèrait une masse d'informations très volumineuses (conventions collectives, articles de droits, procès verbaux de tribunaux des prudhommes, arrêtés comptables). L'ennui était que toute cette information n'était pas numérisée, peu accessible, et absolument pas hiérarchisée. C'est pourquoi, à problème similaire, les mêmes études et recherches étaient souvent réalisés une deuxième fois, bien souvent faute de savoir que le problème avait déjà été rencontré.</p>
+<p class="Texte">C'est pourquoi, le but de cet outil de KM était d'archiver la documentation accumulée au fil de la réalisation des dossiers de calcul de provision comptable, pour construire une base de cas connus, qui pourrait proposer de la documentation existante par le biais d'un moteur d'inférence lors de la création d'un nouveau dossier.</p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section3"></a>
+<a name="Section31"></a>
+<p class="Texte">Pour illustrer plus précisément le concept, voici quelques captures d'écran de l'outil en question (le dossier traité est factice). Par le biais d'une interface graphique, les différents paramètres de l'évaluation comptable étaient donc saisis par l'utilisateur :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_KM_20.JPG"/></p>
+<a name="Section32"></a>
+<p class="Texte">L'outil proposait alors de la documentation en rapport avec les paramètres rentrés, qui serviraient à constituer le dossier de calcul de la provision comptable :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_KM_21.JPG"/></p>
+<a name="Section33"></a>
+<p class="Texte">L'outil proposait également des paramètres inférés à partir des paramètres saisis et de l'historique des précédents calculs de provisions comptables de dossiers similaires :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_KM_22.JPG"/></p>
+<a name="Section34"></a>
+<p class="Texte">Enfin, l'outil proposait des estimations de résultats calculés à partir de la base de faits constitués de l'historique des précédents dossiers de provision comptable déjà réalisés :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_KM_23.JPG"/></p>
+<p class="Texte">Ces estimations permettaient de vérifier la cohérence des résultats obtenus à partir du calcul réalisés sur les véritables données salariés du dossier de la provision.</p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section4"></a>
+<p class="Texte">Mon rôle consistait donc à faire partager mon expérience acquise dans le domaine du Knowledge Management. Notamment, en proposant et explicitant les méthodes pratiques qui avaient été utilisées avec succès pour le projet BP - Mobil, comme par exemple la façon de cartographier les connaissances qui seraient mobilisées pour le calcul d'un dossier de provision comptable :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_KM_Cartographie.JPG"/></p>
+<p class="Texte">Par ailleurs, j'ai également participé à l'élaboration de la base de données sur laquelle reposait cet outil de gestion des connaissances dont l'architecture se déclinait selon le schéma suivant:</p>
+<p class="TexteI"><img src="../Pictures/Secoia_KM_Architecture_BDD_2.jpg"/></p>
+<p class="Texte">Cette application était ainsi construite selon le modèle d'une architecture de type MVC </br> (Model – Control – View): </p>
+<p class="TexteI"><img src="../Pictures/Secoia_KM_Architecture Outil KM.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Section5"></a>
+<p class="Texte">Cet outil de gestion des connaissances était basé sur un moteur d'inférence qui utilisait un algorithme de type réseaux de neurones de type perceptron multicouches.</p>
+<p class="TexteI"><img src="../Pictures/Secoia_KM_24.JPG"/></p>
+<a name="Section51"></a>
+<p class="Texte">Voilà par exemple l'aperçu d'un dossier dans le cas d'une entreprise évoluant dans le secteur d'activités du jouet :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_KM_25.JPG"/></p>
+<a name="Section52"></a>
+<p class="Texte">Le réseau de neurones fonctionnait comme un classifieur.</p>
+<p class="TexteI"><img src="../Pictures/Secoia_KM_27.JPG"/></p>
+<a name="Section53"></a>
+<p class="Texte">A partir de paramètres d'entrée (type de société, taille, secteur d'activité), il devait permettre d'inférer la convention collective  et les barèmes de droit, dont dépendait l'entreprise :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_KM_26.JPG"/></p>
+<p class="Texte">Une fois le barème de droit inféré, le paramètre était proposé en téléchargement par le biais d'une interface graphique :</p>
+<p class="TexteI"><img src="../Pictures/Secoia_KM_28.JPG"/></p>
+<a name="Section54"></a>
+<p class="Texte">Pour fonctionner de façon optimale, il était nécessaire de saisir le maximum de dossiers de calcul de provisions comptables déjà existants (phase d'apprentissage du réseau de neurones). La phase de saisie des dossiers déjà existants était donc particulèrement importante et nécessitait rigueur et sérieux.</p>
+<p class="TexteI"><img src="../Pictures/Secoia_KM_29.JPG"/></p>
+</br><hr align="center" width="75%" color="black" size="3"></br>
+
+<a name="Conclusion"></a>
+<p class="Texte">Au final, l'installation complète n'eut jamais lieu, car cet outil de gestion de connaissances ne fut pas implémenté. Théoriquement cette application présentait des atouts et aurait pu permettre d'améliorer la productivité de réalisation de certains dossiers de provision. Mais sa mise en place posait certains problèmes d'ordre pratique, c'est pourquoi sa mise en production fut différée et le projet mis en jachère... </p>
+</br>
+<p class="Paragraphe1"><a class="PDF" href="/PHP/Secoia_KM.php">Version en PDF</a></p>
+<p class="Paragraphe1"><a class="Retour" href="/index.html">► RETOUR AU CV ◄</a></p>
+</br>
+</body>
+</html>

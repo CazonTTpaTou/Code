@@ -1,0 +1,6 @@
+DATA STATS.HENNECKE_FILTRE; 
+SET CDSN.TL_HENNECKE (KEEP= N_Import N_Assemblage NbImport WaferId Time Schnitt Pos Ingot Qual Thickn ThPt TTV TTVPt LATF SawGroove SawStep SawEdge BOW Inclusion Life_T Resistivity Area Recipe NEdge SizeX SizeY Diag1 Diag2 Len Rect Ch1 Ch2 Para1 Para2 QThickn QTTV QLATF QSaw1 QSaw2 QSawEdge QChip QEdge QSurf Qcrack QNVCD QInclusion QGlue QBow QSize QdSize Qstain );
+WHERE DatePart(Time) >= mdy(8,18,2014);
+RUN;
+
+

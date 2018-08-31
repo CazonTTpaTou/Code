@@ -1,0 +1,26 @@
+----------------------------------------------------
+Dédoublonnage sur ligne identique
+----------------------------------------------------
+PROC SORT DATA=WORK.QUERY_FOR_DTM_HENNECKE_TAUX_MONO
+	OUT=WORK.SORTSortedQUERY_FOR_DTM_HENNECKE(LABEL="WORK.QUERY_FOR_DTM_HENNECKE_TAUX_MONO trié")
+	DUPOUT=WORK.Doublon(LABEL="Enregistrements en double WORK.QUERY_FOR_DTM_HENNECKE_TAUX_MONO")
+	NODUP
+	;
+	BY Num_Assemblage;
+
+RUN;
+
+----------------------------------------------------
+Dédoublonnage sur identifiant identique
+----------------------------------------------------
+PROC SORT DATA=WORK.QUERY_FOR_DTM_HENNECKE_TAUX_MONO
+	OUT=WORK.SORTSortedQUERY_FOR_DTM_HENNECKE(LABEL="WORK.QUERY_FOR_DTM_HENNECKE_TAUX_MONO trié")
+	DUPOUT=WORK.Doublon(LABEL="Enregistrements en double WORK.QUERY_FOR_DTM_HENNECKE_TAUX_MONO")
+	NODUPKEY
+	;
+	BY Num_Assemblage;
+
+RUN;
+
+
+

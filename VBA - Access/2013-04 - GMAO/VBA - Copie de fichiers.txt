@@ -1,0 +1,47 @@
+http://www.info-3000.com/vbvba/fichiers/index.php
+
+Option Compare Database
+Public Const Bureau = "C:\Documents and Settings\Fabien Monnery\Bureau\"
+Public Const Path = "C:\Documents and Settings\Fabien Monnery\"
+Public Const fichier = "Enhancing_Decision.pdf"
+Public Const Script = "C:\Documents and Settings\Fabien Monnery\Mes documents\Fabien\Work\PhotoWatt\GMAO\SQL\Script SQL\*.*"
+Public Const DossierScript = "C:\Documents and Settings\Fabien Monnery\Mes documents\Fabien\Work\PhotoWatt\GMAO\SQL\Script SQL\"
+
+Sub Fichier1()
+    Dim GestionFichier As Object
+    Dim Name1, Name2 As String
+    
+    Set GestionFichier = CreateObject("Scripting.FileSystemObject")
+    Name2 = Path & "Mes Documents\" & fichier
+    Name1 = Path & "Bureau\" & fichier
+    GestionFichier.CopyFile Name1, Name2
+    Set GestionFichier = Nothing
+End Sub
+
+Sub ParcourtFichier()
+    Dim fichier, SQLscript, Name As String
+    Dim GestionFichier As New Scripting.FileSystemObject
+    Dim FichierTexte, FichierLire As Scripting.TextStream
+    
+    SQLscript = Bureau & "SQLscript.txt"
+    Set FichierTexte = GestionFichier.CreateTextFile(SQLscript)
+    fichier = Dir(Script)
+  
+    While fichier <> ""
+          
+          'Debug.Print fichier
+          Name = DossierScript & fichier
+          Set FichierLire = GestionFichier.OpenTextFile(Name, ForReading)
+            While FichierLire.AtEndOfStream = False
+                FichierTexte.WriteLine (FichierLire.ReadLine)
+            Wend
+          Set FichierLire = Nothing
+         fichier = Dir
+    Wend
+    
+    FichierTexte.Close
+    Set GestionFichier = Nothing
+    
+End Sub
+
+

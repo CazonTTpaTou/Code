@@ -1,0 +1,24 @@
+db.get("chant1")
+
+for cle,valeur in db.items():
+    print(cle)
+    print(valeur)
+
+for cle in db.keys():
+    print(cle)
+
+for v in db.values():
+    print(v)
+    
+ast = pd.DataFrame.from_dict(db,orient='index')
+
+for k,v in ast.iteritems():
+    print(k)
+    print('---------------')
+    print(v)
+
+for k,v in ast.iteritems():
+    print(k)
+    print('---------------')
+    print(v[0])
+

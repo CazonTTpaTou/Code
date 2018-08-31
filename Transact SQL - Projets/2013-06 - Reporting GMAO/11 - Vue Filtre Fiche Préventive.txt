@@ -1,0 +1,62 @@
+ALTER VIEW Vue_Filtre_FichePreventive
+AS
+SELECT 
+
+dbo.FichePreventive.idFichePreventive as [idFichePreventive], 
+dbo.FichePreventive.EstRonde as [EstRonde], 
+dbo.FichePreventive.Actif as [Actif], 
+dbo.FichePreventive.Description as [Description], 
+dbo.Equipement.Libelle AS [Equipement], 
+dbo.SousEnsemble.Libelle AS [Sous-ensemble], 
+dbo.FichePreventive.idUAP as [idUAP], 
+dbo.FichePreventive.idSecteur as [idSecteur], 
+dbo.FichePreventive.idEquipement as [idEquipement], 
+dbo.FichePreventive.idSousEnsemble as [idSousEnsemble],
+dbo.FichePreventive.idTypePlanification,
+dbo.Equipement.Ordre AS OrdreEquipement, 
+dbo.SousEnsemble.Ordre AS OrdreSSEnsemble,
+PAST.DateDerInter,
+PAST.NumDerInter,
+PAST.EtatDerInter,
+POST.futurInter,
+datediff(day,POST.futurInter,GETDATE()) As NBJ
+
+FROM  dbo.FichePreventive 
+
+INNER JOIN dbo.Equipement 
+ON dbo.FichePreventive.idEquipement = dbo.Equipement.idEquipement 
+
+LEFT OUTER JOIN dbo.SousEnsemble 
+ON dbo.FichePreventive.idSousEnsemble = dbo.SousEnsemble.idSousEnsemble
+
+LEFT OUTER JOIN 
+
+(select idFichePreventive,min(DatePrevision) as futurInter from Demande
+where EtatDemande = 0
+group by idFichePreventive) as POST 
+
+on dbo.FichePreventive.idFichePreventive = POST.idFichePreventive
+
+LEFT OUTER JOIN
+
+	(select LastD.idFichePreventive as NumPrev1,
+	lastDE.LastDema as DateDerInter,
+	i.idIntervention as NumDerInter,
+	Etat.libelle as EtatDerInter
+	from intervention as i
+	inner join
+	(select idFichePreventive,max(idDemande) as LastDem 
+	from Demande group by idFichePreventive 
+	having (idFichePreventive  is not null)) as LastD
+	on i.idDemande = LastD.LastDem
+	inner join EtatIntervention as Etat
+	on i.idDetail = Etat.idEtat
+	inner join
+	(select idFichePreventive,max([Date]) as LastDema 
+	from Demande group by idFichePreventive 
+	having (idFichePreventive  is not null)) as LastDe
+	on LastD.idFichePreventive = LastDE.idFichePreventive)
+	AS PAST
+	
+on dbo.FichePreventive.idFichePreventive = PAST.NumPrev1
+

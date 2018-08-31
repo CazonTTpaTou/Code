@@ -1,0 +1,29 @@
+conda install install django
+django-admin startproject disquaire_project
+django-admin startapp store
+
+python manage.py runserver
+python manage.py makemigrations
+python manage.py migrate
+
+python manage.py shell
+
+from store.models import Artist, Album
+
+mozart = Artist(name="Wolfgang Amadeus Mozart")
+mozart.save()
+mozart.delete()
+
+Artist.objects.filter(name="Wolfgang Amadeus Mozart")
+Album.objects.filter(id=3)
+query="Vivaldi"
+albums = Album.objects.filter(artists__name__icontains=query)
+
+Artist.objects.all()
+album_salieri.title="Ode à Mozart"
+album_beethoven = Album.objects.create(title="La neuvième symphonie")
+album_beethoven.artists.add(beethoven)
+
+
+
+

@@ -1,0 +1,173 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+using System.Data.SqlClient; // indique l'emploi des classes du fournisseur SQL Server
+using System.Diagnostics;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
+
+namespace ADO_LINQ_CONSOLE
+{
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+
+            #region "utiliser une fabrique"
+            // instancier une fabrique pour SQL Server
+            DbProviderFactory factory = DbProviderFactories.GetFactory("System.Data.SqlClient");
+
+            // créer une connexion à partir de la fabrique
+            DbConnection cx = factory.CreateConnection();
+
+            // définir une chaine de connexion en rapport avec le fournisseur
+            cx.ConnectionString = @"data source=(local)\SQLEXPRESS;initial catalog=GMAO_DB;integrated security=true";
+            try 
+            {
+                // créer une commande
+                DbCommand sql2 = factory.CreateCommand();
+                
+                sql2.CommandText = "select * from Intervenant";
+
+                cx.Open();
+
+                sql2.Connection = cx;
+
+                DbDataReader reader2 = sql2.ExecuteReader();
+
+                while (reader2.Read())
+                {
+                    int idInter;
+                    string Nom;
+                    string Prenom;
+
+                    idInter = reader2.GetInt32(reader2.GetOrdinal("idIntervenant"));
+                    Nom = (string)reader2["Nom"];
+                    Prenom = (string)reader2["Prenom"];
+
+                    Console.WriteLine(idInter + " - " + Nom + " - " + Prenom);
+                }
+                reader2.Close();
+                cx.Close();
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message);
+            }
+
+            #endregion
+
+            #region "Utilisation d'un dataset"
+            
+            DataTable personnes = new DataTable("Intervenant");
+            DataSet ds = new DataSet();
+            ds.Tables.Add(personnes);
+
+            DataColumn id = new DataColumn("idIntervenant", typeof(int));
+            DataColumn nom = new DataColumn("Nom", typeof(string));
+            
+            personnes.Columns.Add(id);
+            personnes.Columns.Add(nom);
+
+            // Ajouter des lignes
+            DataRow p1 = personnes.NewRow();
+            p1["idIntervenant"] = 150;
+            p1["Nom"] = "Castor";
+            personnes.Rows.Add(p1);
+
+            // Rechercher des lignes
+            string wh = "idIntervenant > 40";
+            DataRow[] lignes = personnes.Select(wh);
+
+            if(lignes!= null)
+                for (int l=0;l < lignes.Length;l++)
+                {
+                    int i = (int)lignes[l]["idIntervenant"];
+                    string n = (string)lignes[l]["nom"];
+                    Console.WriteLine("Identifiant : {0} - Nom : {1}", i, n);
+
+                }
+            Console.WriteLine("Au revoir !!");
+            #endregion
+
+            #region "Construire un adaptateur"
+
+            string cs = @"data source=(local)\SQLEXPRESS;initial catalog=GMAO_DB;integrated security=true";
+
+            SqlDataAdapter da_Intervenant = new SqlDataAdapter();
+            da_Intervenant.SelectCommand = new SqlCommand("Select * from Intervenant", new SqlConnection(cs));
+
+            //Déclaration d'un dataset
+            DataSet ds2 = new DataSet();
+            
+            // Création de la data table avec le nom de la source de données
+            da_Intervenant.Fill(ds2, "Intervenant");
+
+            // Afficher des informations
+            Console.WriteLine("Table {0}: ", ds2.Tables[0].TableName);
+
+            foreach (DataColumn dc in ds2.Tables[0].Columns)
+                Console.WriteLine("\t {0} : {1} ", dc.ColumnName, dc.DataType.Name);
+            
+            // Ajouter les autres commandes
+            SqlCommandBuilder scb = new SqlCommandBuilder(da_Intervenant);
+            Console.WriteLine("Update " + scb.GetUpdateCommand().CommandText);
+
+            // Afficher le schéma source
+            da_Intervenant.FillSchema(ds2.Tables["Intervenant"],SchemaType.Source);
+            string schema = ds2.GetXmlSchema();
+            Console.WriteLine(schema);
+
+            // Insertion d'une nouvelle ligne dans la data table
+            //DataRow nc = ds2.Tables["Intervenant"].NewRow();
+            //nc["Nom"] = "Monnery";
+            //nc["Prenom"]= "Fabien";
+            //nc["NomCourt"] = "FM";
+            //nc["idService"] = 5;
+            
+            //ds2.Tables["Intervenant"].Rows.Add(nc);
+
+            // Mise à jour dans la base cible
+            //da_Intervenant.Update(ds2.Tables["Intervenant"]);
+
+            // Utilisation de DataView
+            DataView vue_Intervenant = new DataView();
+            vue_Intervenant.Table = ds2.Tables["Intervenant"];
+            vue_Intervenant.Sort = "idIntervenant Desc";
+            vue_Intervenant.RowFilter = "idIntervenant > 50";
+
+            Console.WriteLine("Liste des intervenants : ");
+
+            for (int i = 0; i < vue_Intervenant.Count; i++)
+                Console.WriteLine("{0}, {1}, {2}", vue_Intervenant[i]["idIntervenant"],
+                                                   vue_Intervenant[i]["Nom"],
+                                                   vue_Intervenant[i]["Prenom"]);
+
+            #endregion
+
+            #region "DataSet automatique"
+
+            ADO_LINK_CONSOLE.DataSet1 dst = new ADO_LINK_CONSOLE.DataSet1();
+           
+            ADO_LINK_CONSOLE.DataSet1.IntervenantDataTable interv = dst.Intervenant;
+
+            ADO_LINK_CONSOLE.DataSet1TableAdapters.IntervenantTableAdapter
+                inter = new ADO_LINK_CONSOLE.DataSet1TableAdapters.IntervenantTableAdapter();
+
+            inter.Fill(interv);
+
+            ADO_LINK_CONSOLE.DataSet1.IntervenantRow lig = dst.Intervenant[15];
+
+            Console.WriteLine("Identifiant : {0} - Nom : {1}", lig.idIntervenant, lig.Nom);
+
+            #endregion
+        }
+    }
+}
+
+    
+    

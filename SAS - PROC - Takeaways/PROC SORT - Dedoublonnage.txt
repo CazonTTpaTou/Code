@@ -1,0 +1,7 @@
+PROC SORT DATA=DTM_PRO.DTM_PRO_TRAC_CEL_TRIEES FORCE nodupkey Out=Work.No_Doublons_VL dupout=Work.doublons_VL;
+BY Cel_Lot;
+RUN;
+
+PROC SORT DATA=DTM_PRO.DTM_PRO_TRAC_CEL_TRIEES FORCE nodupkey Out=Work.No_Doublons_VLSerig dupout=Work.doublons_VSerig;
+BY Cel_Lot_Serig;
+RUN;

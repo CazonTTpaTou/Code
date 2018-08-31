@@ -1,0 +1,489 @@
+Dim clients(1 To 100, 1 To 7) As Double
+
+Dim file(1 To 100) As Integer
+
+Dim guichet1(1 To 1500) As Integer
+Dim guichet2(1 To 1500) As Integer
+Dim trace_file(1 To 1500) As Integer
+
+Dim simulation(1 To 1500, 1 To 6) As String
+
+Dim number_guichet As Integer
+
+
+Function remplissage()
+
+Dim a As Integer
+Dim b As Integer
+
+Worksheets("Clients").Select
+Range("A2").Select
+
+Calculate
+
+For a = 1 To 100
+    For b = 1 To 6
+        clients(a, b) = Cells(a + 1, b).Value
+        Next b
+    Next a
+
+End Function
+
+Function affichage(ByRef val, taille)
+
+Dim a As Integer
+Dim b As Integer
+
+Worksheets("Statistiques").Select
+Range("A1").Select
+
+For a = 1 To taille
+    For b = 1 To 6
+        Cells(a, b).Value = val(a, b)
+    Next b
+Next a
+
+End Function
+
+Function init(ByRef val, ByRef taille)
+Dim i As Integer
+
+For i = 1 To taille
+    val(i) = 0
+Next i
+
+End Function
+
+
+
+Function sortie_file(ByRef val)
+Dim i As Integer
+Dim a As Integer
+
+a = val(1)
+i = 2
+
+Do While (val(i) <> 0)
+    val(i - 1) = val(i)
+    i = i + 1
+Loop
+
+val(i - 1) = 0
+
+sortie_file = a
+
+End Function
+
+Function insertion_file(ByRef val, ByRef zer)
+
+Dim i As Integer
+i = 1
+
+If file(1) = 0 Then
+    val(i) = zer
+Else
+    Do
+    i = i + 1
+    Loop While (val(i) <> 0)
+    val(i) = zer
+End If
+
+insertion_file = i
+
+End Function
+
+Function guichet_libre(ByRef val, ByRef temps)
+
+If val(temps) = 0 Then
+    guichet_libre = True
+Else: guichet_libre = False
+End If
+    
+End Function
+
+Function file_vide()
+
+If file(1) = 0 Then file_vide = True
+If file(1) <> 0 Then file_vide = False
+
+End Function
+
+Function Dicho(ByVal nbre As Integer, ByVal bi As Integer, ByVal bs As Integer, ByVal vecteur)
+
+Dim Pivot As Integer
+Dim trouve As Boolean
+Dim Number As Integer
+Dim egalite As Boolean
+
+
+    If bi <= bs Then
+           'ActiveCell.Value = "valuer de bi :" & bi
+           'ActiveCell.Offset(1, 0).Select
+           'ActiveCell.Value = "valeur de bs : " & bs
+           'ActiveCell.Offset(1, 0).Select
+           
+           Pivot = (bi + bs) / 2
+           'ActiveCell.Value = "valeur de pivot : " & Pivot
+           'ActiveCell.Offset(1, 0).Select
+           'ActiveCell.Value = "valeur de nombre : " & nbre
+           'ActiveCell.Offset(1, 0).Select
+           'ActiveCell.Value = "valeur de vecteur(pivot) : " & vecteur(Pivot, 1)
+           ' egalite = (vecteur(Pivot, 1) = nbre)
+           'ActiveCell.Offset(1, 0).Select
+           'ActiveCell.Value = "valeur de egalite : " & egalite
+           
+           'ActiveCell.Offset(1, 0).Select
+        If vecteur(Pivot, 4) = nbre Then
+           
+            Number = Pivot
+            Dicho = Pivot
+            'ActiveCell.Offset(1, 0).Select
+            'ActiveCell.Value = "Coucou !!! " & Dicho
+        
+        Else
+            If vecteur(Pivot, 4) < nbre Then
+               Number = Dicho(nbre, Pivot + 1, bs, vecteur)
+                'ActiveCell.Value = "Appel function " & Pivot + 1 & " " & bs
+                'ActiveCell.Offset(1, 0).Select
+            Else
+                Number = Dicho(nbre, bi, Pivot - 1, vecteur)
+               'ActiveCell.Value = "Appel function " & Pivot + 1 & " " & bs
+                'ActiveCell.Offset(1, 0).Select
+            End If
+        End If
+     Else
+     Number = 0
+    End If
+    
+Dicho = Number
+
+ End Function
+
+Function verif_arrive(ByVal temps, arr)
+
+Dim trouve  As Integer
+
+trouve = Dicho(temps, 1, 100, clients)
+
+verif_arrive = trouve
+
+End Function
+
+Function service(ByVal num_client)
+
+service = clients(num_client, 6)
+
+End Function
+
+ 
+Function remplir_Guichet(ByVal temps, service, num_client, val)
+
+Dim i As Integer
+
+For i = temps To (temps + service)
+    val(i) = num_client
+Next i
+
+remplir_Guichet = i
+
+End Function
+
+Function contenu_file()
+
+Dim a, i As Integer
+Dim content, sep As String
+
+sep = ""
+a = 1
+
+Do While (file(a) <> 0) And (a <= 100)
+    If a > 1 Then sep = " - "
+    content = content & sep & file(a)
+    a = a + 1
+Loop
+
+contenu_file = content
+
+End Function
+
+Function generateur(ByVal tmax)
+
+Dim instant, trouve, borne_1, borne_2, tampon, temps_service As Integer
+Dim arrivee As String
+Dim flag_1, flag_2 As Boolean
+
+flag_1 = True
+flag_2 = True
+instant = 0
+
+Do While (instant <= tmax - 2)
+    'Cells(instant + 2, 1).Value = instant
+    simulation(instant + 2, 1) = instant
+    arrivee = ""
+    sep = ""
+    
+    trouve = Dicho(instant, 1, 100, clients)
+
+If (trouve > 0) Then
+    borne_1 = WorksheetFunction.Max(trouve - 1, 1)
+    borne_2 = WorksheetFunction.Min(trouve + 1, 100)
+        For i = borne_1 To borne_2
+            If clients(i, 4) = instant Then
+                'If clients(i, 1) = 100 Then flag = False
+                arrivee = arrivee & sep & clients(i, 1)
+                longueur = insertion_file(file, clients(i, 1))
+                sep = " - "
+            End If
+        Next i
+End If
+    
+    'Cells(instant + 2, 2).Value = arrivee
+    simulation(instant + 2, 2) = arrivee
+    
+    If file(1) > 0 Then
+            If guichet_libre(guichet1, instant + 1) = True Then
+                element = sortie_file(file)
+                longueur = longueur - 1
+                temps_service = service(element)
+                Call remplir_Guichet(instant + 1, temps_service, element, guichet1)
+            End If
+    End If
+    
+    If number_guichet > 1 Then
+        If file(1) <> 0 Then
+              If guichet_libre(guichet2, instant + 1) = True Then
+                 element = sortie_file(file)
+                 longueur = longueur - 1
+                 temps_service = service(element)
+                 Call remplir_Guichet(instant + 1, temps_service, element, guichet2)
+                End If
+        End If
+    End If
+    
+'Cells(instant + 2, 3) = longueur
+simulation(instant + 2, 3) = longueur
+trace_file(instant + 1) = longueur
+'Cells(instant + 2, 4) = guichet1(instant + 1)
+simulation(instant + 2, 4) = guichet1(instant + 1)
+'Cells(instant + 2, 5) = guichet2(instant + 1)
+simulation(instant + 2, 5) = guichet2(instant + 1)
+'If longueur > 0 Then Cells(instant + 2, 6) = contenu_file
+simulation(instant + 2, 6) = contenu_file
+
+instant = instant + 1
+
+Loop
+
+generateur = instant
+
+End Function
+
+Function statistiques(ByVal ligne)
+
+Dim i As Integer
+
+Dim n_client, temps_fonct, n_moy_syst As Double
+Dim duree_file, longueur_file, n_moy_file As Double
+Dim long_moy_file, ecart_type_file, n_ind_dist_file, temps_moy_file As Double
+Dim temps_serv_guich1, temps_serv_guich2, temps_moy_sys As Double
+
+Worksheets("Tests").Select
+
+i = 1
+n_client = 0
+temps_fonct = 0
+n_moy_syst = 0
+duree_file = 0
+longueur_file = 0
+n_moy_file = 0
+long_moy_file = 0
+ecart_type_file = 0
+n_ind_dist_file = 0
+temps_moy_file = 0
+temps_serv_guich1 = 0
+temps_serv_guich2 = 0
+temps_moy_sys = 0
+
+Do While (i <= 1500)
+    'Range("H1").Value = "Bonjour"
+    n_client = WorksheetFunction.Max(n_client, guichet1(i), guichet2(i))
+    If guichet1(i) > 0 Or guichet2(i) > 0 Then temps_fonct = i
+    If trace_file(i) > 0 Then duree_file = duree_file + 1
+    If trace_file(i) > 0 Then longueur_file = longueur_file + trace_file(i)
+    If guichet1(i) > 0 Then temps_serv_guich1 = temps_serv_guich1 + 1
+    If guichet2(i) > 0 Then temps_serv_guich2 = temps_serv_guich1 + 2
+    i = i + 1
+Loop
+    
+    If n_client <> 0 Then temps_moy_file = longueur_file / n_client
+    If temps_fonct <> 0 Then n_moy_syst = (temps_serv_guich1 + temps_serv_guich2 + longueur_file) / temps_fonct
+    If n_moy_syst <> 0 Then n_moy_file = longueur_file / temps_fonct
+    If n_client <> 0 Then temps_moy_sys = (temps_serv_guich1 + temps_serv_guich2 + longueur_file) / n_client
+        
+    Cells(ligne, 3).Value = n_client
+    Cells(ligne, 4).Value = temps_fonct
+    Cells(ligne, 5).Value = duree_file
+    Cells(ligne, 6).Value = longueur_file
+    Cells(ligne, 7).Value = temps_serv_guich1
+    Cells(ligne, 8).Value = temps_serv_guich2
+    Cells(ligne, 9).Value = (temps_serv_guich1 + temps_serv_guich2) / (temps_fonct * number_guichet)
+    
+    Cells(ligne, 11).Value = temps_moy_file
+    Cells(ligne, 12).Value = n_moy_file
+    Cells(ligne, 13).Value = n_moy_syst
+    Cells(ligne, 14).Value = temps_moy_sys
+    
+End Function
+
+Function statistiques_Bis(ByVal ligne)
+
+Dim i As Integer
+
+Dim n_client, temps_fonct, n_moy_syst As Double
+Dim duree_file, longueur_file, n_moy_file As Double
+Dim long_moy_file, ecart_type_file, n_ind_dist_file, temps_moy_file As Double
+Dim temps_serv_guich1, temps_serv_guich2, temps_moy_sys As Double
+
+Worksheets("Files").Select
+
+i = 1
+n_client = 0
+temps_fonct = 0
+n_moy_syst = 0
+duree_file = 0
+longueur_file = 0
+n_moy_file = 0
+long_moy_file = 0
+ecart_type_file = 0
+n_ind_dist_file = 0
+temps_moy_file = 0
+temps_serv_guich1 = 0
+temps_serv_guich2 = 0
+temps_moy_sys = 0
+
+Do While (i <= 1500)
+    'Range("H1").Value = "Bonjour"
+    n_client = WorksheetFunction.Max(n_client, guichet1(i), guichet2(i))
+    If guichet1(i) > 0 Or guichet2(i) > 0 Then temps_fonct = i
+    If trace_file(i) > 0 Then duree_file = duree_file + 1
+    If trace_file(i) > 0 Then longueur_file = longueur_file + trace_file(i)
+    If guichet1(i) > 0 Then temps_serv_guich1 = temps_serv_guich1 + 1
+    If guichet2(i) > 0 Then temps_serv_guich2 = temps_serv_guich2 + 2
+    i = i + 1
+Loop
+    
+    If n_client <> 0 Then temps_moy_file = longueur_file / n_client
+    If temps_fonct <> 0 Then n_moy_syst = (temps_serv_guich1 + temps_serv_guich2 + longueur_file) / temps_fonct
+    If n_moy_syst <> 0 Then n_moy_file = longueur_file / temps_fonct
+    If n_client <> 0 Then temps_moy_sys = (temps_serv_guich1 + temps_serv_guich2 + longueur_file) / n_client
+        
+    Cells(3, ligne).Value = n_client
+    Cells(4, ligne).Value = temps_fonct
+    Cells(5, ligne).Value = duree_file
+    Cells(6, ligne).Value = longueur_file
+    Cells(7, ligne).Value = temps_serv_guich1
+    Cells(8, ligne).Value = temps_serv_guich2
+    Cells(9, ligne).Value = (temps_serv_guich1 + temps_serv_guich2) / (temps_fonct * number_guichet)
+    
+    Cells(11, ligne).Value = temps_moy_file
+    Cells(12, ligne).Value = n_moy_file
+    Cells(13, ligne).Value = n_moy_syst
+    Cells(14, ligne).Value = temps_moy_sys
+    
+    Worksheets("Statistiques").Select
+    
+End Function
+
+Sub test()
+
+Dim taille, i, j As Integer
+Dim flag As Boolean
+
+flag = True
+
+ If flag = True Then number_guichet = Worksheets("Statistiques").Range("D8").Value
+
+'Worksheets("Statistiques").Select
+'Worksheets("Clients").Select
+'taille = WorksheetFunction.Max(Range("D2:D101")) + Range("F101").Value
+'Call affichage(clients, 100)
+
+Call remplissage
+
+Call init(file, 100)
+Call init(guichet1, 1500)
+Call init(guichet2, 1500)
+Call init(trace_file, 1500)
+
+taille = generateur(1500)
+
+If flag = True Then
+    Worksheets("Files").Select
+    Range("A2:F1500").Select
+    'Range(Selection, Selection.End(xlDown)).Select
+    Selection.ClearContents
+    Range("B1:I1").Select
+    For i = 2 To taille
+         For j = 1 To 6
+              Cells(i, j).Value = simulation(i, j)
+         Next j
+    Next i
+    Call statistiques_Bis(9)
+End If
+
+End Sub
+
+Sub simul_test()
+
+Dim i As Integer
+Dim n_syst_moy, n_file_moy, t_syst_moy, t_file_moy, ns, nf, ts, tf As Double
+
+number_guichet = Worksheets("Statistiques").Range("D8").Value
+Worksheets("Tests").Select
+'Calculate
+
+    Range("A2:N22").Select
+    'Range(Selection, Selection.End(xlDown)).Select
+    Selection.ClearContents
+
+For i = 3 To 22
+    Call test
+    Worksheets("Tests").Select
+    Cells(i, 2).Value = "Test n° " & i - 2
+    Call statistiques(i)
+Next i
+
+n_syst_moy = WorksheetFunction.Average(Range("M3:M22"))
+n_file_moy = WorksheetFunction.Average(Range("L3:L22"))
+t_syst_moy = WorksheetFunction.Average(Range("N3:N22"))
+t_file_moy = WorksheetFunction.Average(Range("K3:K22"))
+
+n_syst_moy = WorksheetFunction.RoundUp(n_syst_moy, 2)
+n_file_moy = WorksheetFunction.RoundUp(n_file_moy, 2)
+t_syst_moy = WorksheetFunction.RoundUp(t_syst_moy, 2)
+t_file_moy = WorksheetFunction.RoundUp(t_file_moy, 2)
+
+ns = Worksheets("Statistiques").Range("F14")
+nf = Worksheets("Statistiques").Range("F18")
+ts = Worksheets("Statistiques").Range("L14")
+tf = Worksheets("Statistiques").Range("F23")
+
+ns = WorksheetFunction.RoundUp(ns, 2)
+nf = WorksheetFunction.RoundUp(nf, 2)
+ts = WorksheetFunction.RoundUp(ts, 2)
+tf = WorksheetFunction.RoundUp(tf, 2)
+
+UserForm1.TextBox1.Value = n_syst_moy
+UserForm1.TextBox3.Value = n_file_moy
+UserForm1.TextBox5.Value = t_syst_moy
+UserForm1.TextBox7.Value = t_file_moy
+
+UserForm1.TextBox2 = ns
+UserForm1.TextBox4 = nf
+UserForm1.TextBox6 = ts
+UserForm1.TextBox8 = tf
+
+UserForm1.Show
+
+End Sub
+

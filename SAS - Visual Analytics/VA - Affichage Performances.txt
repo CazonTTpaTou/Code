@@ -1,0 +1,3 @@
+Affichage des performances
+- Sélectionner un champ Propriétés d'objet
+- Appuyer simulatnément sur Ctrl + Alt + P

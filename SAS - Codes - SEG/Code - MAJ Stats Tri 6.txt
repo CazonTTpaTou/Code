@@ -1,0 +1,590 @@
+/*DATA Work.Wafer_Wav (keep=LotID Stepname PFF IDK_6 IDK_10 ISC Grid_Front1 Grid_Front2 Grid_Front3) ;
+SET IN_LINE.WAFER_WAV;
+RUN;
+*/
+
+PROC SQL;
+	CREATE TABLE Work.Delta_WavesLabs
+	AS
+	SELECT 
+			T1.TimeStamp_Flash AS TimeStamp_Flash,
+			T1.LotID AS LotID, 
+			T1.Stepname AS Stepname, 
+			T1.PFF AS PFF, 
+			T1.IDK_6 AS IDK_6, 
+			T1.IDK_10 AS IDK_10, 
+			T1.ISC AS ISC, 
+			T1.Grid_Front1 AS Grid_Front1, 
+			T1.Grid_Front2 AS Grid_Front2, 
+			T1.Grid_Front3 AS Grid_Front3
+
+	FROM IN_LINE.Wafer_Wav AS T1
+	Where T1.TimeStamp_Flash >= (SELECT MAX(T2.TimeStamp_Flash) FROM Stats.historique_waveslabs AS T2);
+RUN;
+
+PROC APPEND 
+Base=Stats.HISTORIQUE_WAVESLABS
+Data=Work.Delta_WavesLabs
+FORCE;
+RUN;
+
+DATA Work.Wafer_Wav (keep=LotID Stepname PFF IDK_6 IDK_10 ISC Grid_Front1 Grid_Front2 Grid_Front3) ;
+SET Stats.HISTORIQUE_WAVESLABS;
+RUN;
+
+DATA Work.Result_Tri_SunsVOC (keep=LotID PFF);
+SET Work.Wafer_Wav;
+IF StepName = 'SunsVoc' THEN OUTPUT;
+IF StepName = 'SUNS-VOC' THEN OUTPUT;
+RUN;
+
+DATA Work.Result_Tri_Dark (keep=LotID IDK_6 IDK_10);
+SET Work.Wafer_Wav;
+IF StepName = 'DARK' THEN OUTPUT;
+RUN;
+
+DATA Work.Result_Tri_LED_IR (Keep=LotId ISC);
+SET Work.Wafer_Wav;
+IF StepName = 'LED-IR' THEN OUTPUT;
+RUN;
+
+DATA Work.Result_Tri_LED_UV (Keep=LotId ISC);
+SET Work.Wafer_Wav;
+IF StepName = 'LED-UV' THEN OUTPUT;
+RUN;
+
+DATA Work.Result_Tri_GRID (keep=LotId Grid_Front1 Grid_Front2 Grid_Front3);
+SET Work.Wafer_Wav;
+IF StepName = 'GRID' THEN OUTPUT;
+RUN;
+
+PROC MEANS DATA=Work.Result_Tri_SunsVOC MEAN MEDIAN; 
+	CLASS LotID;
+	VAR Pff;
+	ods exclude summary;
+	OUTPUT OUT=WORK.Results_Tri_PFF mean=PFF_Mean Median =PFF_Median;
+RUN;
+
+PROC MEANS DATA=Work.Result_Tri_Dark MEAN MEDIAN; 
+	CLASS LotID;
+	VAR IDK_6 IDK_10;
+	ods exclude summary;
+	OUTPUT OUT=WORK.Results_Tri_Dark mean=IDK_6_Mean IDK_10_Mean Median =IDK_6_Median IDK_10_Median;
+RUN;
+
+PROC MEANS DATA=Work.Result_Tri_LED_UV MEAN MEDIAN; 
+	CLASS LotID;
+	VAR ISC;
+	ods exclude summary;
+	OUTPUT OUT=WORK.Results_Tris_LED_UV mean=ISC_UV_Mean Median =ISC_UV_Median;
+RUN;
+
+PROC MEANS DATA=Work.Result_Tri_LED_IR MEAN MEDIAN; 
+	CLASS LotID;
+	VAR ISC;
+	ods exclude summary;
+	OUTPUT OUT=WORK.Results_Tris_LED_IR mean=ISC_IR_Mean Median =ISC_IR_Median;
+RUN;
+
+PROC MEANS DATA=Work.Result_Tri_GRID MEAN MEDIAN; 
+	CLASS LotID;
+	VAR Grid_Front1 Grid_Front2 Grid_Front3;
+	ods exclude summary;
+	OUTPUT OUT=WORK.Results_Tris_GRID mean=Grid_Front1_Mean Grid_Front2_Mean Grid_Front3_Mean Median =Grid_Front1_Median Grid_Front2_Median Grid_Front3_Median;
+RUN;
+/*
+PROC SORT Data=Work.WAFER_WAV OUT=WAFER_WAV_LOT;
+BY LotID;
+RUN;
+
+
+DATA Work.WAFER_WAV_LOTS (keep=LotID);
+SET Work.WAFER_WAV_LOT;
+BY LotID;
+IF first.LotID AND LENGTH(LotID)>4 THEN OUTPUT;
+RUN;
+*/
+
+
+DATA Work.STATS_WAVESLABS;
+/*SET IN_LINE.VUE_MESURES_STATS_WAVESLABS;*/
+SET IN_LINE.V_WAV_STATISTIQUES;
+RUN;
+
+
+PROC SQL;
+CREATE TABLE Work.STATS_MESURES 
+AS
+SELECT
+		 Lot
+		,'FF_ampl'n AS Cel_Tri_FF_ampl
+		,'FF_ect'n AS Cel_Tri_FF_ect
+		,'FF_ectr'n AS Cel_Tri_FF_ectr
+		,'FF_max'n AS Cel_Tri_FF_max
+		,'FF_med'n AS Cel_Tri_FF_med
+		,'FF_min'n AS Cel_Tri_FF_min
+		,'FF_moy'n AS Cel_Tri_FF_moy
+		,'I@Vref_ampl'n AS Cel_Tri_IVref_ampl
+		,'I@Vref_ect'n AS Cel_Tri_IVref_ect
+		,'I@Vref_ectr'n AS Cel_Tri_IVref_ectr
+		,'I@Vref_max'n AS Cel_Tri_IVref_max
+		,'I@Vref_med'n AS Cel_Tri_IVref_med
+		,'I@Vref_min'n AS Cel_Tri_IVref_min
+		,'I@Vref_moy'n AS Cel_Tri_IVref_moy
+		,'Imax_ampl'n AS Cel_Tri_Imax_ampl
+		,'Imax_ect'n AS Cel_Tri_Imax_ect
+		,'Imax_ectr'n AS Cel_Tri_Imax_ectr
+		,'Imax_max'n AS Cel_Tri_Imax_max
+		,'Imax_med'n AS Cel_Tri_Imax_med
+		,'Imax_min'n AS Cel_Tri_Imax_min
+		,'Imax_moy'n AS Cel_Tri_Imax_moy
+		,'Irrad_ampl'n AS Cel_Tri_Irrad_ampl
+		,'Irrad_ect'n AS Cel_Tri_Irrad_ect
+		,'Irrad_ectr'n AS Cel_Tri_Irrad_ectr
+		,'Irrad_max'n AS Cel_Tri_Irrad_max
+		,'Irrad_med'n AS Cel_Tri_Irrad_med
+		,'Irrad_min'n AS Cel_Tri_Irrad_min
+		,'Irrad_moy'n AS Cel_Tri_Irrad_moy
+		,'Isc_ampl'n AS Cel_Tri_Isc_ampl
+		,'Isc_ect'n AS Cel_Tri_Isc_ect
+		,'Isc_ectr'n AS Cel_Tri_Isc_ectr
+		,'Isc_max'n AS Cel_Tri_Isc_max
+		,'Isc_med'n AS Cel_Tri_Isc_med
+		,'Isc_min'n AS Cel_Tri_Isc_min
+		,'Isc_moy'n AS Cel_Tri_Isc_moy
+		,'Pmax_ampl'n AS Cel_Tri_Pmax_ampl
+		,'Pmax_ect'n AS Cel_Tri_Pmax_ect
+		,'Pmax_ectr'n AS Cel_Tri_Pmax_ectr
+		,'Pmax_max'n AS Cel_Tri_Pmax_max
+		,'Pmax_med'n AS Cel_Tri_Pmax_med
+		,'Pmax_min'n AS Cel_Tri_Pmax_min
+		,'Pmax_moy'n AS Cel_Tri_Pmax_moy
+		,'Rend_ampl'n AS Cel_Tri_Rend_ampl
+		,'Rend_ect'n AS Cel_Tri_Rend_ect
+		,'Rend_ectr'n AS Cel_Tri_Rend_ectr
+		,'Rend_max'n AS Cel_Tri_Rend_max
+		,'Rend_med'n AS Cel_Tri_Rend_med
+		,'Rend_min'n AS Cel_Tri_Rend_min
+		,'Rend_moy'n AS Cel_Tri_Rend_moy
+		,'Rs_ampl'n AS Cel_Tri_Rs_ampl
+		,'Rs_ect'n AS Cel_Tri_Rs_ect
+		,'Rs_ectr'n AS Cel_Tri_Rs_ectr
+		,'Rs_max'n AS Cel_Tri_Rs_max
+		,'Rs_med'n AS Cel_Tri_Rs_med
+		,'Rs_min'n AS Cel_Tri_Rs_min
+		,'Rs_moy'n AS Cel_Tri_Rs_moy
+		,'T°cell_ampl'n AS Cel_Tri_T_cell_ampl
+		,'T°cell_ect'n AS Cel_Tri_T_cell_ect
+		,'T°cell_ectr'n AS Cel_Tri_T_cell_ectr
+		,'T°cell_max'n AS Cel_Tri_T_cell_max
+		,'T°cell_med'n AS Cel_Tri_T_cell_med
+		,'T°cell_min'n AS Cel_Tri_T_cell_min
+		,'T°cell_moy'n AS Cel_Tri_T_cell_moy
+		,'Vmax_ampl'n AS Cel_Tri_Vmax_ampl
+		,'Vmax_ect'n AS Cel_Tri_Vmax_ect
+		,'Vmax_ectr'n AS Cel_Tri_Vmax_ectr
+		,'Vmax_max'n AS Cel_Tri_Vmax_max
+		,'Vmax_med'n AS Cel_Tri_Vmax_med
+		,'Vmax_min'n AS Cel_Tri_Vmax_min
+		,'Vmax_moy'n AS Cel_Tri_Vmax_moy
+		,'Voc_ampl'n AS Cel_Tri_Voc_ampl
+		,'Voc_ect'n AS Cel_Tri_Voc_ect
+		,'Voc_ectr'n AS Cel_Tri_Voc_ectr
+		,'Voc_max'n AS Cel_Tri_Voc_max
+		,'Voc_med'n AS Cel_Tri_Voc_med
+		,'Voc_min'n AS Cel_Tri_Voc_min
+		,'Voc_moy'n AS Cel_Tri_Voc_moy
+		,'IDK_ampl'n AS Cel_Tri_IDK_ampl
+		,'IDK_ect'n AS Cel_Tri_IDK_ect
+		,'IDK_ectr'n AS Cel_Tri_IDK_ectr
+		,'IDK_max'n AS Cel_Tri_IDK_max
+		,'IDK_med'n AS Cel_Tri_IDK_med
+		,'IDK_min'n AS Cel_Tri_IDK_min
+		,'IDK_moy'n AS Cel_Tri_IDK_moy
+		,'Rsh_ampl'n AS Cel_Tri_Rsh_ampl
+		,'Rsh_ect'n AS Cel_Tri_Rsh_ect
+		,'Rsh_ectr'n AS Cel_Tri_Rsh_ectr
+		,'Rsh_max'n AS Cel_Tri_Rsh_max
+		,'Rsh_med'n AS Cel_Tri_Rsh_med
+		,'Rsh_min'n AS Cel_Tri_Rsh_min
+		,'Rsh_moy'n AS Cel_Tri_Rsh_moy
+		,'CoeffP_ampl'n AS Cel_Tri_CoeffP_ampl
+		,'CoeffP_ect'n AS Cel_Tri_CoeffP_ect
+		,'CoeffP_ectr'n AS Cel_Tri_CoeffP_ectr
+		,'CoeffP_max'n AS Cel_Tri_CoeffP_max
+		,'CoeffP_med'n AS Cel_Tri_CoeffP_med
+		,'CoeffP_min'n AS Cel_Tri_CoeffP_min
+		,'CoeffP_moy'n AS Cel_Tri_CoeffP_moy
+		,'CoeffV_ampl'n AS Cel_Tri_CoeffV_ampl
+		,'CoeffV_ect'n AS Cel_Tri_CoeffV_ect
+		,'CoeffV_ectr'n AS Cel_Tri_CoeffV_ectr
+		,'CoeffV_max'n AS Cel_Tri_CoeffV_max
+		,'CoeffV_med'n AS Cel_Tri_CoeffV_med
+		,'CoeffV_min'n AS Cel_Tri_CoeffV_min
+		,'CoeffV_moy'n AS Cel_Tri_CoeffV_moy
+		,'CoeffI_ampl'n AS Cel_Tri_CoeffI_ampl
+		,'CoeffI_ect'n AS Cel_Tri_CoeffI_ect
+		,'CoeffI_ectr'n AS Cel_Tri_CoeffI_ectr
+		,'CoeffI_max'n AS Cel_Tri_CoeffI_max
+		,'CoeffI_med'n AS Cel_Tri_CoeffI_med
+		,'CoeffI_min'n AS Cel_Tri_CoeffI_min
+		,'CoeffI_moy'n AS Cel_Tri_CoeffI_moy
+		,'IrrDev_ampl'n AS Cel_Tri_IrrDev_ampl
+		,'IrrDev_ect'n AS Cel_Tri_IrrDev_ect
+		,'IrrDev_ectr'n AS Cel_Tri_IrrDev_ectr
+		,'IrrDev_max'n AS Cel_Tri_IrrDev_max
+		,'IrrDev_med'n AS Cel_Tri_IrrDev_med
+		,'IrrDev_min'n AS Cel_Tri_IrrDev_min
+		,'IrrDev_moy'n AS Cel_Tri_IrrDev_moy
+		,'T°mon_ampl'n AS Cel_Tri_T_mon_ampl
+		,'T°mon_ect'n AS Cel_Tri_T_mon_ect
+		,'T°mon_ectr'n AS Cel_Tri_T_mon_ectr
+		,'T°mon_max'n AS Cel_Tri_T_mon_max
+		,'T°mon_med'n AS Cel_Tri_T_mon_med
+		,'T°mon_min'n AS Cel_Tri_T_mon_min
+		,'T°mon_moy'n AS Cel_Tri_T_mon_moy
+
+FROM WORK.STATS_WAVESLABS;
+
+RUN;
+
+PROC SQL;
+CREATE TABLE Work.STATS_MESURES_OLD_TRI 
+AS
+SELECT
+		 Lot
+		,'FF_ampl'n AS Cel_Tri_FF_ampl
+		,'FF_ect'n AS Cel_Tri_FF_ect
+		,'FF_ectr'n AS Cel_Tri_FF_ectr
+		,'FF_max'n AS Cel_Tri_FF_max
+		,'FF_med'n AS Cel_Tri_FF_med
+		,'FF_min'n AS Cel_Tri_FF_min
+		,'FF_moy'n AS Cel_Tri_FF_moy
+		,'I_Vref_ampl'n AS Cel_Tri_IVref_ampl
+		,'I_Vref_ect'n AS Cel_Tri_IVref_ect
+		,'I_Vref_ectr'n AS Cel_Tri_IVref_ectr
+		,'I_Vref_max'n AS Cel_Tri_IVref_max
+		,'I_Vref_med'n AS Cel_Tri_IVref_med
+		,'I_Vref_min'n AS Cel_Tri_IVref_min
+		,'I_Vref_moy'n AS Cel_Tri_IVref_moy
+		,'Imax_ampl'n AS Cel_Tri_Imax_ampl
+		,'Imax_ect'n AS Cel_Tri_Imax_ect
+		,'Imax_ectr'n AS Cel_Tri_Imax_ectr
+		,'Imax_max'n AS Cel_Tri_Imax_max
+		,'Imax_med'n AS Cel_Tri_Imax_med
+		,'Imax_min'n AS Cel_Tri_Imax_min
+		,'Imax_moy'n AS Cel_Tri_Imax_moy
+		,'Irrad_ampl'n AS Cel_Tri_Irrad_ampl
+		,'Irrad_ect'n AS Cel_Tri_Irrad_ect
+		,'Irrad_ectr'n AS Cel_Tri_Irrad_ectr
+		,'Irrad_max'n AS Cel_Tri_Irrad_max
+		,'Irrad_med'n AS Cel_Tri_Irrad_med
+		,'Irrad_min'n AS Cel_Tri_Irrad_min
+		,'Irrad_moy'n AS Cel_Tri_Irrad_moy
+		,'Isc_ampl'n AS Cel_Tri_Isc_ampl
+		,'Isc_ect'n AS Cel_Tri_Isc_ect
+		,'Isc_ectr'n AS Cel_Tri_Isc_ectr
+		,'Isc_max'n AS Cel_Tri_Isc_max
+		,'Isc_med'n AS Cel_Tri_Isc_med
+		,'Isc_min'n AS Cel_Tri_Isc_min
+		,'Isc_moy'n AS Cel_Tri_Isc_moy
+		,'Pmax_ampl'n AS Cel_Tri_Pmax_ampl
+		,'Pmax_ect'n AS Cel_Tri_Pmax_ect
+		,'Pmax_ectr'n AS Cel_Tri_Pmax_ectr
+		,'Pmax_max'n AS Cel_Tri_Pmax_max
+		,'Pmax_med'n AS Cel_Tri_Pmax_med
+		,'Pmax_min'n AS Cel_Tri_Pmax_min
+		,'Pmax_moy'n AS Cel_Tri_Pmax_moy
+		,'Rend_ampl'n AS Cel_Tri_Rend_ampl
+		,'Rend_ect'n AS Cel_Tri_Rend_ect
+		,'Rend_ectr'n AS Cel_Tri_Rend_ectr
+		,'Rend_max'n AS Cel_Tri_Rend_max
+		,'Rend_med'n AS Cel_Tri_Rend_med
+		,'Rend_min'n AS Cel_Tri_Rend_min
+		,'Rend_moy'n AS Cel_Tri_Rend_moy
+		,'Rs_ampl'n AS Cel_Tri_Rs_ampl
+		,'Rs_ect'n AS Cel_Tri_Rs_ect
+		,'Rs_ectr'n AS Cel_Tri_Rs_ectr
+		,'Rs_max'n AS Cel_Tri_Rs_max
+		,'Rs_med'n AS Cel_Tri_Rs_med
+		,'Rs_min'n AS Cel_Tri_Rs_min
+		,'Rs_moy'n AS Cel_Tri_Rs_moy
+		,'T_cell_ampl'n AS Cel_Tri_T_cell_ampl
+		,'T_cell_ect'n AS Cel_Tri_T_cell_ect
+		,'T_cell_ectr'n AS Cel_Tri_T_cell_ectr
+		,'T_cell_max'n AS Cel_Tri_T_cell_max
+		,'T_cell_med'n AS Cel_Tri_T_cell_med
+		,'T_cell_min'n AS Cel_Tri_T_cell_min
+		,'T_cell_moy'n AS Cel_Tri_T_cell_moy
+		,'Vmax_ampl'n AS Cel_Tri_Vmax_ampl
+		,'Vmax_ect'n AS Cel_Tri_Vmax_ect
+		,'Vmax_ectr'n AS Cel_Tri_Vmax_ectr
+		,'Vmax_max'n AS Cel_Tri_Vmax_max
+		,'Vmax_med'n AS Cel_Tri_Vmax_med
+		,'Vmax_min'n AS Cel_Tri_Vmax_min
+		,'Vmax_moy'n AS Cel_Tri_Vmax_moy
+		,'Voc_ampl'n AS Cel_Tri_Voc_ampl
+		,'Voc_ect'n AS Cel_Tri_Voc_ect
+		,'Voc_ectr'n AS Cel_Tri_Voc_ectr
+		,'Voc_max'n AS Cel_Tri_Voc_max
+		,'Voc_med'n AS Cel_Tri_Voc_med
+		,'Voc_min'n AS Cel_Tri_Voc_min
+		,'Voc_moy'n AS Cel_Tri_Voc_moy
+		,'IDK_ampl'n AS Cel_Tri_IDK_ampl
+		,'IDK_ect'n AS Cel_Tri_IDK_ect
+		,'IDK_ectr'n AS Cel_Tri_IDK_ectr
+		,'IDK_max'n AS Cel_Tri_IDK_max
+		,'IDK_med'n AS Cel_Tri_IDK_med
+		,'IDK_min'n AS Cel_Tri_IDK_min
+		,'IDK_moy'n AS Cel_Tri_IDK_moy
+		,'Rsh_ampl'n AS Cel_Tri_Rsh_ampl
+		,'Rsh_ect'n AS Cel_Tri_Rsh_ect
+		,'Rsh_ectr'n AS Cel_Tri_Rsh_ectr
+		,'Rsh_max'n AS Cel_Tri_Rsh_max
+		,'Rsh_med'n AS Cel_Tri_Rsh_med
+		,'Rsh_min'n AS Cel_Tri_Rsh_min
+		,'Rsh_moy'n AS Cel_Tri_Rsh_moy
+		,'CoeffP_ampl'n AS Cel_Tri_CoeffP_ampl
+		,'CoeffP_ect'n AS Cel_Tri_CoeffP_ect
+		,'CoeffP_ectr'n AS Cel_Tri_CoeffP_ectr
+		,'CoeffP_max'n AS Cel_Tri_CoeffP_max
+		,'CoeffP_med'n AS Cel_Tri_CoeffP_med
+		,'CoeffP_min'n AS Cel_Tri_CoeffP_min
+		,'CoeffP_moy'n AS Cel_Tri_CoeffP_moy
+		,'CoeffV_ampl'n AS Cel_Tri_CoeffV_ampl
+		,'CoeffV_ect'n AS Cel_Tri_CoeffV_ect
+		,'CoeffV_ectr'n AS Cel_Tri_CoeffV_ectr
+		,'CoeffV_max'n AS Cel_Tri_CoeffV_max
+		,'CoeffV_med'n AS Cel_Tri_CoeffV_med
+		,'CoeffV_min'n AS Cel_Tri_CoeffV_min
+		,'CoeffV_moy'n AS Cel_Tri_CoeffV_moy
+		,'CoeffI_ampl'n AS Cel_Tri_CoeffI_ampl
+		,'CoeffI_ect'n AS Cel_Tri_CoeffI_ect
+		,'CoeffI_ectr'n AS Cel_Tri_CoeffI_ectr
+		,'CoeffI_max'n AS Cel_Tri_CoeffI_max
+		,'CoeffI_med'n AS Cel_Tri_CoeffI_med
+		,'CoeffI_min'n AS Cel_Tri_CoeffI_min
+		,'CoeffI_moy'n AS Cel_Tri_CoeffI_moy
+		,'IrrDev_ampl'n AS Cel_Tri_IrrDev_ampl
+		,'IrrDev_ect'n AS Cel_Tri_IrrDev_ect
+		,'IrrDev_ectr'n AS Cel_Tri_IrrDev_ectr
+		,'IrrDev_max'n AS Cel_Tri_IrrDev_max
+		,'IrrDev_med'n AS Cel_Tri_IrrDev_med
+		,'IrrDev_min'n AS Cel_Tri_IrrDev_min
+		,'IrrDev_moy'n AS Cel_Tri_IrrDev_moy
+		,'T_mon_ampl'n AS Cel_Tri_T_mon_ampl
+		,'T_mon_ect'n AS Cel_Tri_T_mon_ect
+		,'T_mon_ectr'n AS Cel_Tri_T_mon_ectr
+		,'T_mon_max'n AS Cel_Tri_T_mon_max
+		,'T_mon_med'n AS Cel_Tri_T_mon_med
+		,'T_mon_min'n AS Cel_Tri_T_mon_min
+		,'T_mon_moy'n AS Cel_Tri_T_mon_moy
+
+FROM DS_SQC.VUE_TRI_STAT;
+
+RUN;
+
+PROC SQL;
+CREATE TABLE WORK.STATS_MESURES_GLOBAL 
+AS 
+	SELECT * FROM WORK.STATS_MESURES_OLD_TRI
+	 OUTER UNION CORR 
+	SELECT * FROM WORK.STATS_MESURES;
+QUIT;
+
+
+
+PROC SQL;
+CREATE TABLE WORK.DTM_LOGS_TRI_6_STATS
+AS
+SELECT 
+
+	T1.Lot AS LotId,
+
+		t1.Cel_Tri_FF_ampl AS Cel_Tri_FF_ampl,
+		t1.Cel_Tri_FF_ect AS Cel_Tri_FF_ect,
+		t1.Cel_Tri_FF_ectr AS Cel_Tri_FF_ectr,
+		t1.Cel_Tri_FF_max AS Cel_Tri_FF_max,
+		t1.Cel_Tri_FF_med AS Cel_Tri_FF_med,
+		t1.Cel_Tri_FF_min AS Cel_Tri_FF_min,
+		t1.Cel_Tri_FF_moy AS Cel_Tri_FF_moy,
+		t1.Cel_Tri_IVref_ampl AS Cel_Tri_IVref_ampl,
+		t1.Cel_Tri_IVref_ect AS Cel_Tri_IVref_ect,
+		t1.Cel_Tri_IVref_ectr AS Cel_Tri_IVref_ectr,
+		t1.Cel_Tri_IVref_max AS Cel_Tri_IVref_max,
+		t1.Cel_Tri_IVref_med AS Cel_Tri_IVref_med,
+		t1.Cel_Tri_IVref_min AS Cel_Tri_IVref_min,
+		t1.Cel_Tri_IVref_moy AS Cel_Tri_IVref_moy,
+		t1.Cel_Tri_Imax_ampl AS Cel_Tri_Imax_ampl,
+		t1.Cel_Tri_Imax_ect AS Cel_Tri_Imax_ect,
+		t1.Cel_Tri_Imax_ectr AS Cel_Tri_Imax_ectr,
+		t1.Cel_Tri_Imax_max AS Cel_Tri_Imax_max,
+		t1.Cel_Tri_Imax_med AS Cel_Tri_Imax_med,
+		t1.Cel_Tri_Imax_min AS Cel_Tri_Imax_min,
+		t1.Cel_Tri_Imax_moy AS Cel_Tri_Imax_moy,
+		t1.Cel_Tri_Irrad_ampl AS Cel_Tri_Irrad_ampl,
+		t1.Cel_Tri_Irrad_ect AS Cel_Tri_Irrad_ect,
+		t1.Cel_Tri_Irrad_ectr AS Cel_Tri_Irrad_ectr,
+		t1.Cel_Tri_Irrad_max AS Cel_Tri_Irrad_max,
+		t1.Cel_Tri_Irrad_med AS Cel_Tri_Irrad_med,
+		t1.Cel_Tri_Irrad_min AS Cel_Tri_Irrad_min,
+		t1.Cel_Tri_Irrad_moy AS Cel_Tri_Irrad_moy,
+		t1.Cel_Tri_Isc_ampl AS Cel_Tri_Isc_ampl,
+		t1.Cel_Tri_Isc_ect AS Cel_Tri_Isc_ect,
+		t1.Cel_Tri_Isc_ectr AS Cel_Tri_Isc_ectr,
+		t1.Cel_Tri_Isc_max AS Cel_Tri_Isc_max,
+		t1.Cel_Tri_Isc_med AS Cel_Tri_Isc_med,
+		t1.Cel_Tri_Isc_min AS Cel_Tri_Isc_min,
+		t1.Cel_Tri_Isc_moy AS Cel_Tri_Isc_moy,
+		t1.Cel_Tri_Pmax_ampl AS Cel_Tri_Pmax_ampl,
+		t1.Cel_Tri_Pmax_ect AS Cel_Tri_Pmax_ect,
+		t1.Cel_Tri_Pmax_ectr AS Cel_Tri_Pmax_ectr,
+		t1.Cel_Tri_Pmax_max AS Cel_Tri_Pmax_max,
+		t1.Cel_Tri_Pmax_med AS Cel_Tri_Pmax_med,
+		t1.Cel_Tri_Pmax_min AS Cel_Tri_Pmax_min,
+		t1.Cel_Tri_Pmax_moy AS Cel_Tri_Pmax_moy,
+		t1.Cel_Tri_Rend_ampl AS Cel_Tri_Rend_ampl,
+		t1.Cel_Tri_Rend_ect AS Cel_Tri_Rend_ect,
+		t1.Cel_Tri_Rend_ectr AS Cel_Tri_Rend_ectr,
+		t1.Cel_Tri_Rend_max AS Cel_Tri_Rend_max,
+		t1.Cel_Tri_Rend_med AS Cel_Tri_Rend_med,
+		t1.Cel_Tri_Rend_min AS Cel_Tri_Rend_min,
+		t1.Cel_Tri_Rend_moy AS Cel_Tri_Rend_moy,
+		t1.Cel_Tri_Rs_ampl AS Cel_Tri_Rs_ampl,
+		t1.Cel_Tri_Rs_ect AS Cel_Tri_Rs_ect,
+		t1.Cel_Tri_Rs_ectr AS Cel_Tri_Rs_ectr,
+		t1.Cel_Tri_Rs_max AS Cel_Tri_Rs_max,
+		t1.Cel_Tri_Rs_med AS Cel_Tri_Rs_med,
+		t1.Cel_Tri_Rs_min AS Cel_Tri_Rs_min,
+		t1.Cel_Tri_Rs_moy AS Cel_Tri_Rs_moy,
+		t1.Cel_Tri_T_cell_ampl AS Cel_Tri_T_cell_ampl,
+		t1.Cel_Tri_T_cell_ect AS Cel_Tri_T_cell_ect,
+		t1.Cel_Tri_T_cell_ectr AS Cel_Tri_T_cell_ectr,
+		t1.Cel_Tri_T_cell_max AS Cel_Tri_T_cell_max,
+		t1.Cel_Tri_T_cell_med AS Cel_Tri_T_cell_med,
+		t1.Cel_Tri_T_cell_min AS Cel_Tri_T_cell_min,
+		t1.Cel_Tri_T_cell_moy AS Cel_Tri_T_cell_moy,
+		t1.Cel_Tri_Vmax_ampl AS Cel_Tri_Vmax_ampl,
+		t1.Cel_Tri_Vmax_ect AS Cel_Tri_Vmax_ect,
+		t1.Cel_Tri_Vmax_ectr AS Cel_Tri_Vmax_ectr,
+		t1.Cel_Tri_Vmax_max AS Cel_Tri_Vmax_max,
+		t1.Cel_Tri_Vmax_med AS Cel_Tri_Vmax_med,
+		t1.Cel_Tri_Vmax_min AS Cel_Tri_Vmax_min,
+		t1.Cel_Tri_Vmax_moy AS Cel_Tri_Vmax_moy,
+		t1.Cel_Tri_Voc_ampl AS Cel_Tri_Voc_ampl,
+		t1.Cel_Tri_Voc_ect AS Cel_Tri_Voc_ect,
+		t1.Cel_Tri_Voc_ectr AS Cel_Tri_Voc_ectr,
+		t1.Cel_Tri_Voc_max AS Cel_Tri_Voc_max,
+		t1.Cel_Tri_Voc_med AS Cel_Tri_Voc_med,
+		t1.Cel_Tri_Voc_min AS Cel_Tri_Voc_min,
+		t1.Cel_Tri_Voc_moy AS Cel_Tri_Voc_moy,
+		t1.Cel_Tri_IDK_ampl AS Cel_Tri_IDK_ampl,
+		t1.Cel_Tri_IDK_ect AS Cel_Tri_IDK_ect,
+		t1.Cel_Tri_IDK_ectr AS Cel_Tri_IDK_ectr,
+		t1.Cel_Tri_IDK_max AS Cel_Tri_IDK_max,
+		t1.Cel_Tri_IDK_med AS Cel_Tri_IDK_med,
+		t1.Cel_Tri_IDK_min AS Cel_Tri_IDK_min,
+		t1.Cel_Tri_IDK_moy AS Cel_Tri_IDK_moy,
+		t1.Cel_Tri_Rsh_ampl AS Cel_Tri_Rsh_ampl,
+		t1.Cel_Tri_Rsh_ect AS Cel_Tri_Rsh_ect,
+		t1.Cel_Tri_Rsh_ectr AS Cel_Tri_Rsh_ectr,
+		t1.Cel_Tri_Rsh_max AS Cel_Tri_Rsh_max,
+		t1.Cel_Tri_Rsh_med AS Cel_Tri_Rsh_med,
+		t1.Cel_Tri_Rsh_min AS Cel_Tri_Rsh_min,
+		t1.Cel_Tri_Rsh_moy AS Cel_Tri_Rsh_moy,
+		t1.Cel_Tri_CoeffP_ampl AS Cel_Tri_CoeffP_ampl,
+		t1.Cel_Tri_CoeffP_ect AS Cel_Tri_CoeffP_ect,
+		t1.Cel_Tri_CoeffP_ectr AS Cel_Tri_CoeffP_ectr,
+		t1.Cel_Tri_CoeffP_max AS Cel_Tri_CoeffP_max,
+		t1.Cel_Tri_CoeffP_med AS Cel_Tri_CoeffP_med,
+		t1.Cel_Tri_CoeffP_min AS Cel_Tri_CoeffP_min,
+		t1.Cel_Tri_CoeffP_moy AS Cel_Tri_CoeffP_moy,
+		t1.Cel_Tri_CoeffV_ampl AS Cel_Tri_CoeffV_ampl,
+		t1.Cel_Tri_CoeffV_ect AS Cel_Tri_CoeffV_ect,
+		t1.Cel_Tri_CoeffV_ectr AS Cel_Tri_CoeffV_ectr,
+		t1.Cel_Tri_CoeffV_max AS Cel_Tri_CoeffV_max,
+		t1.Cel_Tri_CoeffV_med AS Cel_Tri_CoeffV_med,
+		t1.Cel_Tri_CoeffV_min AS Cel_Tri_CoeffV_min,
+		t1.Cel_Tri_CoeffV_moy AS Cel_Tri_CoeffV_moy,
+		t1.Cel_Tri_CoeffI_ampl AS Cel_Tri_CoeffI_ampl,
+		t1.Cel_Tri_CoeffI_ect AS Cel_Tri_CoeffI_ect,
+		t1.Cel_Tri_CoeffI_ectr AS Cel_Tri_CoeffI_ectr,
+		t1.Cel_Tri_CoeffI_max AS Cel_Tri_CoeffI_max,
+		t1.Cel_Tri_CoeffI_med AS Cel_Tri_CoeffI_med,
+		t1.Cel_Tri_CoeffI_min AS Cel_Tri_CoeffI_min,
+		t1.Cel_Tri_CoeffI_moy AS Cel_Tri_CoeffI_moy,
+		t1.Cel_Tri_IrrDev_ampl AS Cel_Tri_IrrDev_ampl,
+		t1.Cel_Tri_IrrDev_ect AS Cel_Tri_IrrDev_ect,
+		t1.Cel_Tri_IrrDev_ectr AS Cel_Tri_IrrDev_ectr,
+		t1.Cel_Tri_IrrDev_max AS Cel_Tri_IrrDev_max,
+		t1.Cel_Tri_IrrDev_med AS Cel_Tri_IrrDev_med,
+		t1.Cel_Tri_IrrDev_min AS Cel_Tri_IrrDev_min,
+		t1.Cel_Tri_IrrDev_moy AS Cel_Tri_IrrDev_moy,
+		t1.Cel_Tri_T_mon_ampl AS Cel_Tri_T_mon_ampl,
+		t1.Cel_Tri_T_mon_ect AS Cel_Tri_T_mon_ect,
+		t1.Cel_Tri_T_mon_ectr AS Cel_Tri_T_mon_ectr,
+		t1.Cel_Tri_T_mon_max AS Cel_Tri_T_mon_max,
+		t1.Cel_Tri_T_mon_med AS Cel_Tri_T_mon_med,
+		t1.Cel_Tri_T_mon_min AS Cel_Tri_T_mon_min,
+		t1.Cel_Tri_T_mon_moy AS Cel_Tri_T_mon_moy,
+
+		PFF.PFF_Mean as Cel_Tri_PFF_Moy,
+		PFF.PFF_Median as Cel_Tri_PFF_Med,
+		DARK.IDK_6_Mean as Cel_Tri_IDK_6_Moy,
+		DARK.IDK_6_Median as Cel_Tri_IDK_6_Med,
+		DARK.IDK_10_Mean as Cel_Tri_IDK_10_Moy,
+		DARK.IDK_10_Median as Cel_Tri_IDK_10_Med,
+		LED_UV.ISC_UV_Mean as Cel_Tri_ISC_UV_Moy,
+		LED_UV.ISC_UV_Median as Cel_Tri_ISC_UV_Med,
+		LED_IR.ISC_IR_Mean as Cel_Tri_ISC_IR_Moy,
+		LED_IR.ISC_IR_Median as Cel_Tri_ISC_IR_Med,
+		GRID.Grid_Front1_Mean as Cel_Tri_Grid_Front_1_Moy,
+		GRID.Grid_Front1_Median as Cel_Tri_Grid_Front_1_Med,
+		GRID.Grid_Front2_Mean as Cel_Tri_Grid_Front_2_Moy,
+		GRID.Grid_Front2_Median as Cel_Tri_Grid_Front_2_Med,
+		GRID.Grid_Front3_Mean as Cel_Tri_Grid_Front_3_Moy,
+		GRID.Grid_Front3_Median as Cel_Tri_Grid_Front_3_Med
+
+			FROM 
+
+				WORK.STATS_MESURES_GLOBAL AS t1				
+
+		        LEFT OUTER JOIN Results_Tri_PFF AS PFF
+				ON T1.Lot = PFF.LotID
+		     
+				LEFT OUTER JOIN Results_Tri_Dark AS DARK
+				ON T1.Lot = DARK.LotID
+
+				LEFT OUTER JOIN Results_Tris_LED_UV AS LED_UV
+				ON T1.Lot = LED_UV.LotID
+
+				LEFT OUTER JOIN Results_Tris_LED_IR AS LED_IR
+				ON T1.Lot = LED_IR.LotID
+
+				LEFT OUTER JOIN Results_Tris_GRID AS GRID
+				ON T1.Lot = GRID.LotID;
+
+RUN;
+
+
+PROC APPEND 
+Base=WORK.DTM_LOGS_TRI_6_STATS 
+data=STATS.mesures_tri6_historique 
+Force;
+RUN;
+
+PROC SORT 
+DATA=WORK.DTM_LOGS_TRI_6_STATS FORCE nodupkey 
+Out=DTM_PRO.DTM_LOGS_TRI_6_STATS  
+dupout=Work.doublons;
+BY LotID;
+RUN;
+
+
+
+
+
+
+
+
+

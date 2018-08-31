@@ -1,0 +1,764 @@
+/* --- Début du code de "Code Planning ". --- */
+/* Définition du paramètre d'historique */
+%let Historique_nb_mois = 7;
+
+/* Création d'une table temporaire glissante des dates et des postes */
+data work.Planning (drop=i);
+
+	format Date_poste ddmmyy8.;
+	format Date_poste_000000 datetime22.3; /* Format de date les jointure avec les datetime de SQL Server. */
+	format Poste $5.;
+	
+	/* Pour la date courante, les postes déependent du jour de la semaine et de l'heure */
+	Date_poste = date();
+	Date_poste_000000 = dhms(Date_poste, 0, 0, 0); 
+
+	if weekday(Date_poste) in (2 ,3, 4, 5, 6) then do;
+		if time() >= '5:00't then do;
+			Poste = 'M';
+			Poste_ordre_tri = 1;
+			output;
+		end;	
+		if time() >= '13:00't then do;
+			Poste = 'S';
+			Poste_ordre_tri = 2;
+			output;
+		end;
+		if time() >= '21:00't then do;
+			Poste = 'N';
+			Poste_ordre_tri = 3;
+			output;
+		end;
+	end;
+	else do;	
+		if time() >= '5:00't then do;
+			Poste = 'WE M';
+			Poste_ordre_tri = 4;
+			output;
+		end;
+		if time() >= '17:00't then do;
+			Poste = 'WE N';
+			Poste_ordre_tri = 5;
+			output;
+		end;
+	end;
+
+	/* Pour les dates passées, les postes sont fonction du jour de la semaine uniquement */
+	i = 1;
+	do while (intck('month', date() - i, date()) <= &Historique_nb_mois);
+
+		Date_poste = date() - i;
+		Date_poste_000000 = dhms(Date_poste, 0, 0, 0); 
+
+		if weekday(Date_poste) in (2 ,3, 4, 5, 6) then do;
+			Poste = 'M';
+			Poste_ordre_tri = 1;
+			output;	
+			Poste = 'S';
+			Poste_ordre_tri = 2;
+			output;
+			Poste = 'N';
+			Poste_ordre_tri = 3;
+			output;
+		end;
+		else do;	
+			Poste = 'WE M';
+			Poste_ordre_tri = 4;
+			output;
+			Poste = 'WE N';
+			Poste_ordre_tri = 5;
+			output;
+		end;
+
+		i = i + 1;
+
+	end;
+
+run; 
+
+/* Création de la table temporaire des sociétés */
+data work.Societe;
+
+	infile datalines delimiter=',';
+	format Societe $20.;
+	input Societe $;
+
+	datalines;
+PV Alliance
+EDF ENR PWT
+;
+
+run;
+
+/* Création de la table temporaire des types de silicium. */
+data work.Type_silicium;
+	length Type_silicium $12.;
+	input Type_silicium $12.;
+	
+	datalines;
+Multi
+Mono
+Multilike
+Monolike
+MULTI PROJET
+FULL MONO
+;
+
+run;
+
+
+
+/* Création de la table temporaire des étapes. */
+data work.Etape;
+
+	infile datalines delimiter=',';
+	format Etape $50.;
+	input Etape $;
+
+	datalines;
+01. Mise en panier
+02. Texturisation
+03. Diffusion
+04. Desoxydation
+05. Pecvd
+06. Sérigraphie
+07. Tri
+;
+
+run;
+ 
+
+/* Croisement des tables temporaires */
+proc sql noprint;
+
+	create table work.Planning_type_si as
+		select *
+		from Planning, Societe, Etape, Type_silicium
+		order by date_poste desc, Poste_ordre_tri desc, Societe, Etape, Type_Silicium;
+
+quit;
+
+/* Supression des tables temporaires */
+proc datasets lib=WORK nolist memtype=(data view);
+
+	delete Societe Planning Type_silicium Etape;
+
+run; 
+
+quit;
+
+
+
+
+/* --- Fin du code de "Code Planning ". --- */
+
+/* --- Début du code de "Définition  biblitothèque DTM_PRO". --- */
+/*LIBNAME DTM_PRO ODBC  DATASRC=DTM_DEV  SCHEMA=DTM_PRO  USER=SASSQL  PASSWORD="{sas001}c0BzLXNxbDIwMDg=" ;*/
+/*
+LIBNAME DTM_PRO ODBC  DATASRC=DTM_DEV  SCHEMA=DTM_PRO  USER=SASSQL  PASSWORD="{sas001}c0BzLXNxbDIwMDg=" ;
+*/
+
+libname DTM_PRO "E:\Donnees_SAS\DTM_PRO";
+/* --- Fin du code de "Définition  biblitothèque DTM_PRO". --- */
+
+/* --- Début du code de "Données Mep". --- */
+%_eg_conditional_dropds(WORK.EXT_LOTS_MEP);
+
+PROC SQL;
+   CREATE VIEW WORK.EXT_LOTS_MEP AS 
+   SELECT DWH_SQC_LOTS.Societe, 
+          DWH_SQC_LOTS.Lot LABEL='', 
+          DWH_SQC_LOTS.Materiau, 
+		  DWH_SQC_LOTS.Fournisseur,
+          DWH_SQC_LOTS.Format, 
+          /* Etape */
+            ('01. Mise en panier') AS Etape, 
+          /* OrdreTri */
+            (1) AS OrdreTri, 
+          DWH_SQC_LOTS.Mep_Date_Poste LABEL='' AS Date, 
+          DWH_SQC_LOTS.Mep_Equipement LABEL='' AS Equipement, 
+          DWH_SQC_LOTS.Mep_Poste LABEL='' AS Poste, 
+          DWH_SQC_LOTS.Mep_Equipe LABEL='' AS Equipe, 
+          DWH_SQC_LOTS.Mep_Qte_Entr LABEL='' AS QteEntree, 
+          DWH_SQC_LOTS.Mep_Qte_Sort LABEL='' AS QteSortie, 
+          DWH_SQC_LOTS.Mep_Rej_Total LABEL='' AS Rejet, 
+          DWH_SQC_LOTS.Mep_Qte_Manq LABEL='' AS Manque, 
+
+          DWH_SQC_LOTS.Mep_Rej_Op_Casse LABEL='' AS RejetCasse, 
+          DWH_SQC_LOTS.Mep_Rej_Op_Asp LABEL='' AS RejetAspect, 
+          /* RejetAutre */
+            (SUM(DWH_SQC_LOTS.Mep_Rej_Op_Ebr, DWH_SQC_LOTS.Mep_Rej_Eq_Ebr, DWH_SQC_LOTS.Mep_Rej_Eq_Epais, 
+            DWH_SQC_LOTS.Mep_Rej_Eq_Dim)) AS RejetAutre, 
+          DWH_SQC_LOTS.Mep_Obs LABEL='' AS Observations, 
+          DWH_SQC_LOTS.DateHeureSAS, 
+          DWH_SQC_LOTS.Mep_Qte_Entr LABEL='' AS MepQteEntree, 
+          DWH_SQC_LOTS.Mep_Qte_Sort LABEL='' AS MepQteSortie
+      FROM DS_DWH.DWH_SQC_LOTS DWH_SQC_LOTS
+      WHERE DWH_SQC_LOTS.Mep_Date_Poste <> . AND DWH_SQC_LOTS.Groupe = 'non' AND intck('month', 
+           datepart(DWH_SQC_LOTS.Mep_Date_Poste), date()) <= &Historique_nb_mois;
+QUIT;
+/* --- Fin du code de "Données Mep". --- */
+
+/* --- Début du code de "Données  Textu". --- */
+%_eg_conditional_dropds(WORK.EXT_LOTS_TEXTU);
+
+PROC SQL;
+   CREATE VIEW WORK.EXT_LOTS_TEXTU AS 
+   SELECT DWH_SQC_LOTS.Societe, 
+          DWH_SQC_LOTS.Lot LABEL='', 
+          DWH_SQC_LOTS.Materiau, 
+		  DWH_SQC_LOTS.Fournisseur,
+          DWH_SQC_LOTS.Format, 
+          /* Etape */
+            ('02. Texturisation') AS Etape, 
+          /* OrdreTri */
+            (2) AS OrdreTri, 
+          DWH_SQC_LOTS.Textu_Date_Poste LABEL='' AS Date, 
+          DWH_SQC_LOTS.Textu_Equipement LABEL='' AS Equipement, 
+          DWH_SQC_LOTS.Textu_Poste LABEL='' AS Poste, 
+          DWH_SQC_LOTS.Textu_Equipe LABEL='' AS Equipe, 
+          DWH_SQC_LOTS.Textu_Qte_Entr LABEL='' AS QteEntree, 
+          DWH_SQC_LOTS.Textu_Qte_Sort LABEL='' AS QteSortie, 
+          DWH_SQC_LOTS.Textu_Rej_Total LABEL='' AS Rejet, 
+          DWH_SQC_LOTS.Textu_Qte_Manq LABEL='' AS Manque, 
+          /* RejetCasse */
+            (SUM(DWH_SQC_LOTS.Textu_Rej_Eq_Casse, DWH_SQC_LOTS.Textu_Rej_Op_Casse)) AS RejetCasse, 
+          DWH_SQC_LOTS.Textu_Rej_Op_Asp LABEL='' AS RejetAspect, 
+          DWH_SQC_LOTS.Textu_Rej_Op_Ebr LABEL='' AS RejetAutre, 
+          DWH_SQC_LOTS.Textu_Obs LABEL='' AS Observations, 
+          DWH_SQC_LOTS.DateHeureSAS, 
+          DWH_SQC_LOTS.Textu_Qte_Entr LABEL='' AS TextuQteEntree, 
+          DWH_SQC_LOTS.Textu_Qte_Sort LABEL='' AS TextuQteSortie
+      FROM DS_DWH.DWH_SQC_LOTS DWH_SQC_LOTS
+      WHERE DWH_SQC_LOTS.Textu_Date_Poste <> . AND DWH_SQC_LOTS.Groupe = 'non' AND intck('month', 
+           datepart(DWH_SQC_LOTS.Textu_Date_Poste), date()) <= &Historique_nb_mois;
+QUIT;
+/* --- Fin du code de "Données  Textu". --- */
+
+/* --- Début du code de "Données  Diff". --- */
+%_eg_conditional_dropds(WORK.EXT_LOTS_DIFF);
+
+PROC SQL;
+   CREATE VIEW WORK.EXT_LOTS_DIFF AS 
+   SELECT DWH_SQC_LOTS.Societe, 
+          DWH_SQC_LOTS.Lot LABEL='', 
+          DWH_SQC_LOTS.Materiau, 
+		  DWH_SQC_LOTS.Fournisseur,
+          DWH_SQC_LOTS.Format, 
+          /* Etape */
+            ('03. Diffusion') AS Etape, 
+          /* OrdreTri */
+            (3) AS OrdreTri, 
+          DWH_SQC_LOTS.Diff_Date_Poste LABEL='' AS Date, 
+          DWH_SQC_LOTS.Diff_Equipement LABEL='' AS Equipement, 
+          DWH_SQC_LOTS.Diff_Poste LABEL='' AS Poste, 
+          DWH_SQC_LOTS.Diff_Equipe LABEL='' AS Equipe, 
+          DWH_SQC_LOTS.Diff_Qte_Entr LABEL='' AS QteEntree, 
+          DWH_SQC_LOTS.Diff_Qte_Sort LABEL='' AS QteSortie, 
+          DWH_SQC_LOTS.Diff_Rej_Total LABEL='' AS Rejet, 
+          DWH_SQC_LOTS.Diff_Qte_Manq LABEL='' AS Manque, 
+          /* RejetCasse */
+            (SUM(DWH_SQC_LOTS.Diff_Rej_Op_Casse, DWH_SQC_LOTS.Diff_Rej_Eq_Casse)) AS RejetCasse, 
+          DWH_SQC_LOTS.Diff_Rej_Op_Asp LABEL='' AS RejetAspect, 
+          DWH_SQC_LOTS.Diff_Rej_Op_Ebr LABEL='' AS RejetAutre, 
+          DWH_SQC_LOTS.Diff_Obs LABEL='' AS Observations, 
+          DWH_SQC_LOTS.DateHeureSAS, 
+          DWH_SQC_LOTS.Diff_Qte_Entr LABEL='' AS DiffQteEntree, 
+          DWH_SQC_LOTS.Diff_Qte_Sort LABEL='' AS DiffQteSortie
+      FROM DS_DWH.DWH_SQC_LOTS DWH_SQC_LOTS
+      WHERE DWH_SQC_LOTS.Diff_Date_Poste <> . AND DWH_SQC_LOTS.Groupe = 'non' AND intck('month', 
+           datepart(DWH_SQC_LOTS.Diff_Date_Poste), date()) <= &Historique_nb_mois;
+QUIT;
+/* --- Fin du code de "Données  Diff". --- */
+
+/* --- Début du code de "Données  Desox". --- */
+%_eg_conditional_dropds(WORK.EXT_LOTS_DESOX);
+
+PROC SQL;
+   CREATE VIEW WORK.EXT_LOTS_DESOX AS 
+   SELECT DWH_SQC_LOTS.Societe, 
+          DWH_SQC_LOTS.Lot LABEL='', 
+          DWH_SQC_LOTS.Materiau, 
+		  DWH_SQC_LOTS.Fournisseur,
+          DWH_SQC_LOTS.Format, 
+          /* Etape */
+            ('04. Desoxydation') AS Etape, 
+          /* OrdreTri */
+            (4) AS OrdreTri, 
+          DWH_SQC_LOTS.Desox_Date_Poste LABEL='' AS Date, 
+          DWH_SQC_LOTS.Desox_Equipement LABEL='' AS Equipement, 
+          DWH_SQC_LOTS.Desox_Poste LABEL='' AS Poste, 
+          DWH_SQC_LOTS.Desox_Equipe LABEL='' AS Equipe, 
+          DWH_SQC_LOTS.Desox_Qte_Entr LABEL='' AS QteEntree, 
+          DWH_SQC_LOTS.Desox_Qte_Sort LABEL='' AS QteSortie, 
+          DWH_SQC_LOTS.Desox_Rej_Total LABEL='' AS Rejet, 
+          DWH_SQC_LOTS.Desox_Qte_Manq LABEL='' AS Manque, 
+          /* RejetCasse */
+            (SUM(DWH_SQC_LOTS.Desox_Rej_Op_Casse, DWH_SQC_LOTS.Desox_Rej_Eq_Casse)) AS RejetCasse, 
+          DWH_SQC_LOTS.Desox_Rej_Op_Asp LABEL='' AS RejetAspect, 
+          DWH_SQC_LOTS.Desox_Rej_Op_Ebr LABEL='' AS RejetAutre, 
+          DWH_SQC_LOTS.Desox_Obs LABEL='' AS Observations, 
+          DWH_SQC_LOTS.DateHeureSAS, 
+          DWH_SQC_LOTS.Desox_Qte_Entr LABEL='' AS DesoxQteEntree, 
+          DWH_SQC_LOTS.Desox_Qte_Sort LABEL='' AS DesoxQteSortie
+      FROM DS_DWH.DWH_SQC_LOTS DWH_SQC_LOTS
+      WHERE DWH_SQC_LOTS.Desox_Date_Poste <> . AND DWH_SQC_LOTS.Groupe = 'non' AND intck('month', 
+           datepart(DWH_SQC_LOTS.Desox_Date_Poste), date()) <= &Historique_nb_mois;
+QUIT;
+/* --- Fin du code de "Données  Desox". --- */
+
+/* --- Début du code de "Données  Pecvd". --- */
+%_eg_conditional_dropds(WORK.EXT_LOTS_PECVD);
+
+PROC SQL;
+   CREATE VIEW WORK.EXT_LOTS_PECVD AS 
+   SELECT DWH_SQC_LOTS.Societe, 
+          DWH_SQC_LOTS.Lot LABEL='', 
+          DWH_SQC_LOTS.Materiau, 
+		  DWH_SQC_LOTS.Fournisseur,
+          DWH_SQC_LOTS.Format, 
+          /* Etape */
+            ('05. Pecvd') AS Etape, 
+          /* OrdreTri */
+            (5) AS OrdreTri, 
+          DWH_SQC_LOTS.Pecvd_Date_Poste LABEL='' AS Date, 
+          DWH_SQC_LOTS.Pecvd_Equipement LABEL='' AS Equipement, 
+          DWH_SQC_LOTS.Pecvd_Poste LABEL='' AS Poste, 
+          DWH_SQC_LOTS.Pecvd_Equipe LABEL='' AS Equipe, 
+          DWH_SQC_LOTS.Pecvd_Qte_Entr LABEL='' AS QteEntree, 
+          DWH_SQC_LOTS.Pecvd_Qte_Sort LABEL='' AS QteSortie, 
+          DWH_SQC_LOTS.Pecvd_Rej_Total LABEL='' AS Rejet, 
+          DWH_SQC_LOTS.Pecvd_Qte_Manq LABEL='' AS Manque, 
+          /* RejetCasse */
+            (SUM(DWH_SQC_LOTS.Pecvd_Rej_Op_Casse, DWH_SQC_LOTS.Pecvd_Rej_Eq_Casse)) AS RejetCasse, 
+          /* RejetAspect */
+            (SUM(DWH_SQC_LOTS.Pecvd_Rej_Op_Asp, DWH_SQC_LOTS.Pecvd_Rej_Eq_B_, DWH_SQC_LOTS.Pecvd_Rej_Eq_B, 
+            DWH_SQC_LOTS.Pecvd_Rej_Eq_C)) AS RejetAspect, 
+          /* RejetAutre */
+            (DWH_SQC_LOTS.Pecvd_Rej_Op_Ebr) AS RejetAutre, 
+          DWH_SQC_LOTS.Pecvd_Obs LABEL='' AS Observations, 
+          DWH_SQC_LOTS.DateHeureSAS, 
+          DWH_SQC_LOTS.Pecvd_Qte_Entr LABEL='' AS PecvdQteEntree, 
+          DWH_SQC_LOTS.Pecvd_Qte_Sort LABEL='' AS PecvdQteSortie
+      FROM DS_DWH.DWH_SQC_LOTS DWH_SQC_LOTS
+      WHERE DWH_SQC_LOTS.Pecvd_Date_Poste <> . AND DWH_SQC_LOTS.Groupe = 'non' AND intck('month', 
+           datepart(DWH_SQC_LOTS.Pecvd_Date_Poste), date()) <= &Historique_nb_mois;
+QUIT;
+/* --- Fin du code de "Données  Pecvd". --- */
+
+/* --- Début du code de "Données  Seri". --- */
+%_eg_conditional_dropds(WORK.EXT_LOTS_SERI);
+
+PROC SQL;
+   CREATE VIEW WORK.EXT_LOTS_SERI AS 
+   SELECT DWH_SQC_LOTS.Societe, 
+          DWH_SQC_LOTS.Lot LABEL='', 
+          DWH_SQC_LOTS.Materiau, 
+		  DWH_SQC_LOTS.Fournisseur,
+          DWH_SQC_LOTS.Format, 
+          /* Etape */
+            ('06. Sérigraphie') AS Etape, 
+          /* OrdreTri */
+            (6) AS OrdreTri, 
+          DWH_SQC_LOTS.Seri_Date_Poste LABEL='' AS Date, 
+          DWH_SQC_LOTS.Seri_Equipement LABEL='' AS Equipement, 
+          DWH_SQC_LOTS.Seri_Poste LABEL='' AS Poste, 
+          DWH_SQC_LOTS.Seri_Equipe LABEL='' AS Equipe, 
+          DWH_SQC_LOTS.Seri_Qte_Entr LABEL='' AS QteEntree, 
+          DWH_SQC_LOTS.Seri_Qte_Sort LABEL='' AS QteSortie, 
+          DWH_SQC_LOTS.Seri_Rej_Total LABEL='' AS Rejet, 
+          DWH_SQC_LOTS.Serig_Qte_Manq LABEL='' AS Manque, 
+          /* RejetChar */
+            (SUM(DWH_SQC_LOTS.Seri_Rej_Chgt_Ebr, DWH_SQC_LOTS.Seri_Rej_Chgt_Asp, DWH_SQC_LOTS.Seri_Rej_Chgt_Casse)) AS 
+            RejetChar, 
+          /* RejetStation1 */
+            (SUM(DWH_SQC_LOTS.Seri_Rej_Station_1_Ebr, DWH_SQC_LOTS.Seri_Rej_Station_1_Asp, 
+            DWH_SQC_LOTS.Seri_Rej_Station_1_Casse, DWH_SQC_LOTS.Seri_Rej_Eq_Vision1,  DWH_SQC_LOTS.Seri_Rej_Eq_Manq1)) 
+            AS RejetStation1, 
+          /* RejetStation2 */
+            (SUM(DWH_SQC_LOTS.Seri_Rej_Station_2_Ebr, DWH_SQC_LOTS.Seri_Rej_Station_2_Asp, 
+             DWH_SQC_LOTS.Seri_Rej_Station_2_Casse, DWH_SQC_LOTS.Seri_Rej_Eq_Vision2, DWH_SQC_LOTS.Seri_Rej_Eq_Manq2)) 
+            AS RejetStation2, 
+          /* RejetStation3 */
+            (SUM(DWH_SQC_LOTS.Seri_Rej_Station_3_Ebr, DWH_SQC_LOTS.Seri_Rej_Station_3_Asp, 
+            DWH_SQC_LOTS.Seri_Rej_Station_3_Casse, DWH_SQC_LOTS.Seri_Rej_Eq_Vision3,  DWH_SQC_LOTS.Seri_Rej_Eq_Manq3)) 
+            AS RejetStation3, 
+          /* RejetStation4 */
+            (SUM(DWH_SQC_LOTS.Seri_Rej_Station_4_Ebr, DWH_SQC_LOTS.Seri_Rej_Station_4_Asp, 
+            DWH_SQC_LOTS.Seri_Rej_Station_4_Casse)) AS RejetStation4, 
+          /* RejetDechar */
+            (SUM(DWH_SQC_LOTS.Seri_Rej_Dechgt_Ebr, DWH_SQC_LOTS.Seri_Rej_Dechgt_Asp, 
+            DWH_SQC_LOTS.Seri_Rej_Dechgt_Casse)) AS RejetDechar, 
+          /* RejetOperateur */
+            (SUM(DWH_SQC_LOTS.Seri_Rej_Op_Ebr, DWH_SQC_LOTS.Seri_Rej_Op_Asp, DWH_SQC_LOTS.Seri_Rej_Op_Casse, 
+            DWH_SQC_LOTS.Seri_Rej_Op_GradeB)) AS RejetOperateur, 
+          DWH_SQC_LOTS.Seri_Obs LABEL='' AS Observations, 
+          DWH_SQC_LOTS.DateHeureSAS, 
+          DWH_SQC_LOTS.Seri_Qte_Entr LABEL='' AS SeriQteEntree, 
+          DWH_SQC_LOTS.Seri_Qte_Sort LABEL='' AS SeriQteSortie
+      FROM DS_DWH.DWH_SQC_LOTS DWH_SQC_LOTS
+      WHERE DWH_SQC_LOTS.Seri_Date_Poste <> . AND intck('month', datepart(DWH_SQC_LOTS.Seri_Date_Poste), date()) <= 
+           &Historique_nb_mois;
+QUIT;
+/* --- Fin du code de "Données  Seri". --- */
+
+/* --- Début du code de "Données  Tri ". --- */
+%_eg_conditional_dropds(WORK.EXT_LOTS_TRI);
+
+PROC SQL;
+   CREATE VIEW WORK.EXT_LOTS_TRI AS 
+   SELECT DWH_SQC_LOTS.Societe, 
+          DWH_SQC_LOTS.Lot LABEL='', 
+          DWH_SQC_LOTS.Materiau, 
+		  DWH_SQC_LOTS.Fournisseur,
+          DWH_SQC_LOTS.Format, 
+          /* Etape */
+            ('07. Tri') AS Etape, 
+          /* OrdreTri */
+            (7) AS OrdreTri, 
+          DWH_SQC_LOTS.Tri_Date_Poste LABEL='' AS Date, 
+          DWH_SQC_LOTS.Tri_Equipement LABEL='' AS Equipement, 
+          DWH_SQC_LOTS.Tri_Poste LABEL='' AS Poste, 
+          DWH_SQC_LOTS.Tri_Equipe LABEL='' AS Equipe, 
+          DWH_SQC_LOTS.Tri_Qte_Entr LABEL='' AS QteEntree, 
+          DWH_SQC_LOTS.Tri_Qte_Sort LABEL='' AS QteSortie, 
+          DWH_SQC_LOTS.Tri_Rej_Total LABEL='' AS Rejet, 
+          DWH_SQC_LOTS.Tri_Qte_Manq LABEL='' AS Manque, 
+          /* RejetCasse */
+            (SUM(DWH_SQC_LOTS.Tri_Rej_Op_Casse, DWH_SQC_LOTS.Tri_Rej_Ep_Casse)) AS RejetCasse, 
+          /* RejetAspect */
+            (SUM(DWH_SQC_LOTS.Tri_Rej_Op_Asp, DWH_SQC_LOTS.Tri_Rej_Op_GradeB)) AS RejetAspect, 
+          /* Rejet Micro-crack - Ajout 16/09/2014 */
+			 DWH_SQC_LOTS.Tri_Rej_Eq_Meca_MC As RejetMicroCrack,
+			 DWH_SQC_LOTS.Tri_Rej_Op_Ebr LABEL='' AS RejetAutre, 
+          DWH_SQC_LOTS.Tri_Obs LABEL='' AS Observations, 
+          DWH_SQC_LOTS.DateHeureSAS, 
+          DWH_SQC_LOTS.Tri_Qte_Entr LABEL='' AS TriQteEntree, 
+          DWH_SQC_LOTS.Tri_Qte_Sort LABEL='' AS TriQteSortie
+      FROM DS_DWH.DWH_SQC_LOTS DWH_SQC_LOTS
+      WHERE DWH_SQC_LOTS.Tri_Date_Poste <> . AND intck('month', datepart(DWH_SQC_LOTS.Tri_Date_Poste), date()) <= 
+           &Historique_nb_mois
+      ORDER BY DWH_SQC_LOTS.Tri_Date_Poste DESC,
+               DWH_SQC_LOTS.Lot;
+QUIT;
+/* --- Fin du code de "Données  Tri ". --- */
+
+/* --- Début du code de "Données Stock av Textu". --- */
+%_eg_conditional_dropds(WORK.EXT_STOCK_AV_TEXTU);
+
+PROC SQL;
+   CREATE VIEW WORK.EXT_STOCK_AV_TEXTU AS 
+   SELECT DWH_SQC_LOTS.Societe, 
+          DWH_SQC_LOTS.Format, 
+          DWH_SQC_LOTS.Materiau, 
+		  DWH_SQC_LOTS.Fournisseur,
+          /* Etape */
+            ("02. Texturisation") AS Etape, 
+          /* Stock */
+            (SUM(DWH_SQC_LOTS.Mep_Qte_Sort)) AS Stock
+      FROM DS_DWH.DWH_SQC_LOTS DWH_SQC_LOTS
+      WHERE DWH_SQC_LOTS.Statut = 'MeP - Terminé S'
+      GROUP BY DWH_SQC_LOTS.Societe,
+               DWH_SQC_LOTS.Format,
+               DWH_SQC_LOTS.Materiau,
+			   DWH_SQC_LOTS.Fournisseur;
+QUIT;
+/* --- Fin du code de "Données Stock av Textu". --- */
+
+/* --- Début du code de "Données Stock av Diff". --- */
+%_eg_conditional_dropds(WORK.EXT_STOCK_AV_DIFF);
+
+PROC SQL;
+   CREATE VIEW WORK.EXT_STOCK_AV_DIFF AS 
+   SELECT DWH_SQC_LOTS.Societe, 
+          DWH_SQC_LOTS.Format, 
+          DWH_SQC_LOTS.Materiau, 
+		  DWH_SQC_LOTS.Fournisseur,
+          /* Etape */
+            ("03. Diffusion") AS Etape, 
+          /* Stock */
+            (SUM(DWH_SQC_LOTS.Textu_Qte_Sort)) AS Stock
+      FROM DS_DWH.DWH_SQC_LOTS DWH_SQC_LOTS
+      WHERE DWH_SQC_LOTS.Statut = 'Textu - Terminé S'
+      GROUP BY DWH_SQC_LOTS.Societe,
+               DWH_SQC_LOTS.Format,
+               DWH_SQC_LOTS.Materiau,
+			   DWH_SQC_LOTS.Fournisseur;
+QUIT;
+/* --- Fin du code de "Données Stock av Diff". --- */
+
+/* --- Début du code de "Données Stock av Desox". --- */
+%_eg_conditional_dropds(WORK.EXT_STOCK_AV_DESOX);
+
+PROC SQL;
+   CREATE VIEW WORK.EXT_STOCK_AV_DESOX AS 
+   SELECT DWH_SQC_LOTS.Societe, 
+          DWH_SQC_LOTS.Format, 
+          DWH_SQC_LOTS.Materiau, 
+		  DWH_SQC_LOTS.Fournisseur,
+          /* Etape */
+            ('04. Desoxydation') AS Etape, 
+          /* Stock */
+            (SUM(DWH_SQC_LOTS.Diff_Qte_Sort)) AS Stock
+      FROM DS_DWH.DWH_SQC_LOTS DWH_SQC_LOTS
+      WHERE DWH_SQC_LOTS.Statut = 'Diffu - Terminé S'
+      GROUP BY DWH_SQC_LOTS.Societe,
+               DWH_SQC_LOTS.Format,
+               DWH_SQC_LOTS.Materiau,
+			   DWH_SQC_LOTS.Fournisseur;
+QUIT;
+/* --- Fin du code de "Données Stock av Desox". --- */
+
+/* --- Début du code de "Données Stock av Pecvd". --- */
+%_eg_conditional_dropds(WORK.EXT_STOCK_AV_PECVD);
+
+PROC SQL;
+   CREATE VIEW WORK.EXT_STOCK_AV_PECVD AS 
+   SELECT DWH_SQC_LOTS.Societe, 
+          DWH_SQC_LOTS.Format, 
+          DWH_SQC_LOTS.Materiau, 
+		  DWH_SQC_LOTS.Fournisseur,
+          /* Etape */
+            ('05. Pecvd') AS Etape, 
+          /* Stock */
+            (SUM(DWH_SQC_LOTS.Diff_Qte_Sort)) AS Stock
+      FROM DS_DWH.DWH_SQC_LOTS DWH_SQC_LOTS
+      WHERE DWH_SQC_LOTS.Statut = 'Desox - Terminé S'
+      GROUP BY DWH_SQC_LOTS.Societe,
+               DWH_SQC_LOTS.Format,
+               DWH_SQC_LOTS.Materiau,
+			   DWH_SQC_LOTS.Fournisseur;
+QUIT;
+/* --- Fin du code de "Données Stock av Pecvd". --- */
+
+/* --- Début du code de "Données Stock av Seri". --- */
+%_eg_conditional_dropds(WORK.EXT_STOCK_AV_SERI);
+
+PROC SQL;
+   CREATE VIEW WORK.EXT_STOCK_AV_SERI AS 
+   SELECT DWH_SQC_LOTS.Societe, 
+          DWH_SQC_LOTS.Format, 
+          DWH_SQC_LOTS.Materiau, 
+		  DWH_SQC_LOTS.Fournisseur,
+          /* Etape */
+            ('06. Sérigraphie') AS Etape, 
+          /* Stock */
+            (SUM(DWH_SQC_LOTS.Pecvd_Qte_Sort)) AS Stock
+      FROM DS_DWH.DWH_SQC_LOTS DWH_SQC_LOTS
+      WHERE DWH_SQC_LOTS.Statut = 'Pecvd - Terminé S'
+      GROUP BY DWH_SQC_LOTS.Societe,
+               DWH_SQC_LOTS.Format,
+               DWH_SQC_LOTS.Materiau,
+			   DWH_SQC_LOTS.Fournisseur;
+QUIT;
+/* --- Fin du code de "Données Stock av Seri". --- */
+
+/* --- Début du code de "Données Stock av Tri". --- */
+%_eg_conditional_dropds(WORK.EXT_STOCK_AV_TRI);
+
+PROC SQL;
+   CREATE VIEW WORK.EXT_STOCK_AV_TRI AS 
+   SELECT DWH_SQC_LOTS.Societe, 
+          DWH_SQC_LOTS.Format, 
+          DWH_SQC_LOTS.Materiau, 
+		  DWH_SQC_LOTS.Fournisseur,
+          /* Etape */
+            ('07. Tri') AS Etape, 
+          /* Stock */
+            (SUM(DWH_SQC_LOTS.Seri_Qte_Sort)) AS Stock
+      FROM DS_DWH.DWH_SQC_LOTS DWH_SQC_LOTS
+      WHERE DWH_SQC_LOTS.Statut = 'Serig - Terminé S'
+      GROUP BY DWH_SQC_LOTS.Societe,
+               DWH_SQC_LOTS.Format,
+               DWH_SQC_LOTS.Materiau,
+			   DWH_SQC_LOTS.Fournisseur;
+QUIT;
+/* --- Fin du code de "Données Stock av Tri". --- */
+
+/* --- Début du code de "Ajouter une table". --- */
+%_eg_conditional_dropds(WORK.EXT_STOCK_AV_ETAPE);
+PROC SQL;
+CREATE TABLE WORK.EXT_STOCK_AV_ETAPE AS 
+SELECT * FROM WORK.EXT_STOCK_AV_TEXTU
+ OUTER UNION CORR 
+SELECT * FROM WORK.EXT_STOCK_AV_DIFF
+ OUTER UNION CORR 
+SELECT * FROM WORK.EXT_STOCK_AV_DESOX
+ OUTER UNION CORR 
+SELECT * FROM WORK.EXT_STOCK_AV_PECVD
+ OUTER UNION CORR 
+SELECT * FROM WORK.EXT_STOCK_AV_SERI
+ OUTER UNION CORR 
+SELECT * FROM WORK.EXT_STOCK_AV_TRI
+;
+Quit;
+
+/* --- Fin du code de "Ajouter une table". --- */
+
+/* --- Début du code de "Code Poste". --- */
+data work.Poste_courant;
+
+	format Date ddmmyy8.;
+	format Date_000000 datetime22.3; /* Format de date les jointure avec les datetime de SQL Server. */
+	format Poste $5.;
+	
+	Date = date();
+	Date_000000 = dhms(Date(), 0, 0, 0); 
+
+	if weekday(Date) in (2 ,3, 4, 5, 6) then do;
+		if time() >= '21:00't then do;
+			Poste = 'N';
+			Poste_ordre_tri = 3;
+			output;
+			end;
+			else do;
+			if time() >= '13:00't then do;
+				Poste = 'S';
+				Poste_ordre_tri = 2;
+				output;
+				end;
+				else do;
+				if time() >= '5:00't then do;
+					Poste = 'M';
+					Poste_ordre_tri = 1;
+					output;
+				end;	
+			end;
+		end;
+	end;
+	else do;	
+		if time() >= '5:00't then do;
+			Poste = 'WE M';
+			Poste_ordre_tri = 4;
+			output;
+			end;
+			else do;
+			if time() >= '17:00't then do;
+				Poste = 'WE N';
+				Poste_ordre_tri = 5;
+				output;
+			end;
+		end;
+	end;
+
+run;
+/* --- Fin du code de "Code Poste". --- */
+
+/* --- Début du code de "Requête pour EXT_STOCK_AV_ETAPE". --- */
+%_eg_conditional_dropds(WORK.EXT_STOCK_AV_ETAPE_2);
+
+PROC SQL;
+   CREATE TABLE WORK.EXT_STOCK_AV_ETAPE_2 AS 
+   SELECT POSTE_COURANT.Date_000000 AS Date, 
+          POSTE_COURANT.Poste, 
+          POSTE_COURANT.Poste_ordre_tri, 
+          EXT_STOCK_AV_ETAPE.Societe, 
+          EXT_STOCK_AV_ETAPE.Format, 
+          EXT_STOCK_AV_ETAPE.Materiau, 
+		  EXT_STOCK_AV_ETAPE.Fournisseur,
+          /* Lot */
+            ('STOCK AVANT') AS Lot, 
+          EXT_STOCK_AV_ETAPE.Etape, 
+          EXT_STOCK_AV_ETAPE.Stock AS QteStock
+      FROM WORK.EXT_STOCK_AV_ETAPE EXT_STOCK_AV_ETAPE,WORK.POSTE_COURANT POSTE_COURANT;
+QUIT;
+/* --- Fin du code de "Requête pour EXT_STOCK_AV_ETAPE". --- */
+
+/* --- Début du code de "Ajouter une table". --- */
+%_eg_conditional_dropds(WORK.EXT_LOTS_ETAPES);
+PROC SQL;
+CREATE TABLE WORK.EXT_LOTS_ETAPES AS 
+SELECT * FROM WORK.EXT_LOTS_MEP
+ OUTER UNION CORR 
+SELECT * FROM WORK.EXT_LOTS_DESOX
+ OUTER UNION CORR 
+SELECT * FROM WORK.EXT_LOTS_DIFF
+ OUTER UNION CORR 
+SELECT * FROM WORK.EXT_LOTS_PECVD
+ OUTER UNION CORR 
+SELECT * FROM WORK.EXT_LOTS_SERI
+ OUTER UNION CORR 
+SELECT * FROM WORK.EXT_LOTS_TEXTU
+ OUTER UNION CORR 
+SELECT * FROM WORK.EXT_LOTS_TRI
+ OUTER UNION CORR 
+SELECT * FROM WORK.EXT_STOCK_AV_ETAPE_2
+;
+Quit;
+
+/* --- Fin du code de "Ajouter une table". --- */
+
+/* --- Début du code de "Mise en forme". --- */
+%_eg_conditional_dropds(WORK.SORTIE);
+
+PROC SQL;
+   CREATE TABLE WORK.SORTIE AS 
+   SELECT PLANNING_TYPE_SI.Societe FORMAT=$20. AS Societe, 
+          EXT_LOTS_ETAPES.Lot FORMAT=$50., 
+          PLANNING_TYPE_SI.Type_silicium FORMAT=$12. AS TypeSilicium, 
+		  EXT_LOTS_ETAPES.Fournisseur AS Fournisseur,
+          EXT_LOTS_ETAPES.Format FORMAT=12. LABEL='' AS Format, 
+          PLANNING_TYPE_SI.Etape FORMAT=$50. AS Etape, 
+          /* Date */
+            (dhms(PLANNING_TYPE_SI.Date_poste, 0,0,0)
+            ) FORMAT=datetime22.3 LABEL="Date" AS Date, 
+          /* Annee */
+            (YEAR(PLANNING_TYPE_SI.Date_poste)) AS Annee, 
+          /* Trimestre */
+            (PUT(YEAR(PLANNING_TYPE_SI.Date_poste), 4.)||'Q'||PUT(QTR(PLANNING_TYPE_SI.Date_poste), 1.)) FORMAT=$6. AS 
+            Trimestre, 
+          /* Mois */
+            (PUT(YEAR(PLANNING_TYPE_SI.Date_poste), 4.)||'M'||PUT(MONTH(PLANNING_TYPE_SI.Date_poste), z2.)) FORMAT=$7. 
+            AS Mois, 
+          /* Semaine */
+            (PUT(YEAR(PLANNING_TYPE_SI.Date_poste), 4.)||'S'||PUT(WEEK(PLANNING_TYPE_SI.Date_poste, 'V'), z2.)) 
+            FORMAT=$7. AS Semaine, 
+          EXT_LOTS_ETAPES.Equipement FORMAT=$50., 
+          PLANNING_TYPE_SI.Poste FORMAT=$5., 
+          PLANNING_TYPE_SI.Poste_ordre_tri AS PosteOrdreTri, 
+          EXT_LOTS_ETAPES.Equipe, 
+          EXT_LOTS_ETAPES.Observations FORMAT=$255., 
+          EXT_LOTS_ETAPES.QteStock, 
+          EXT_LOTS_ETAPES.QteEntree, 
+          EXT_LOTS_ETAPES.QteSortie, 
+          EXT_LOTS_ETAPES.Rejet, 
+          EXT_LOTS_ETAPES.Manque, 
+          EXT_LOTS_ETAPES.RejetCasse, 
+          EXT_LOTS_ETAPES.RejetAspect, 
+          EXT_LOTS_ETAPES.RejetAutre, 
+          EXT_LOTS_ETAPES.RejetChar, 
+          EXT_LOTS_ETAPES.RejetStation1, 
+          EXT_LOTS_ETAPES.RejetStation2, 
+          EXT_LOTS_ETAPES.RejetStation3, 
+          EXT_LOTS_ETAPES.RejetStation4, 
+          EXT_LOTS_ETAPES.RejetDechar, 
+          EXT_LOTS_ETAPES.RejetOperateur, 
+			 EXT_LOTS_ETAPES.RejetMicroCrack,
+          EXT_LOTS_ETAPES.MepQteEntree FORMAT=12., 
+          EXT_LOTS_ETAPES.MepQteSortie FORMAT=12., 
+          EXT_LOTS_ETAPES.TextuQteEntree FORMAT=12., 
+          EXT_LOTS_ETAPES.TextuQteSortie FORMAT=12., 
+          EXT_LOTS_ETAPES.DiffQteEntree FORMAT=12., 
+          EXT_LOTS_ETAPES.DiffQteSortie FORMAT=12., 
+          EXT_LOTS_ETAPES.DesoxQteEntree FORMAT=12., 
+          EXT_LOTS_ETAPES.DesoxQteSortie FORMAT=12., 
+          EXT_LOTS_ETAPES.PecvdQteEntree FORMAT=12., 
+          EXT_LOTS_ETAPES.PecvdQteSortie FORMAT=12., 
+          EXT_LOTS_ETAPES.SeriQteEntree FORMAT=12., 
+          EXT_LOTS_ETAPES.SeriQteSortie FORMAT=12., 
+          EXT_LOTS_ETAPES.TriQteEntree FORMAT=12., 
+          EXT_LOTS_ETAPES.TriQteSortie FORMAT=12., 
+          /* DateHeureSAS */
+            (MIN(EXT_LOTS_ETAPES.DateHeureSAS)) FORMAT=DATETIME22.3 LABEL="Date Heure SAS" AS DateHeureSAS
+      FROM WORK.PLANNING_TYPE_SI PLANNING_TYPE_SI
+           LEFT JOIN WORK.EXT_LOTS_ETAPES EXT_LOTS_ETAPES ON (PLANNING_TYPE_SI.Poste = EXT_LOTS_ETAPES.Poste) 
+				AND  (PLANNING_TYPE_SI.Type_silicium = EXT_LOTS_ETAPES.Materiau) 
+            AND (PLANNING_TYPE_SI.Societe = EXT_LOTS_ETAPES.Societe) AND (PLANNING_TYPE_SI.Date_poste_000000 = EXT_LOTS_ETAPES.Date) AND 
+          (PLANNING_TYPE_SI.Etape = EXT_LOTS_ETAPES.Etape)
+      ORDER BY PLANNING_TYPE_SI.Date_poste_000000 DESC,
+               PLANNING_TYPE_SI.Poste_ordre_tri DESC,
+               PLANNING_TYPE_SI.Etape;
+QUIT;
+/* --- Fin du code de "Mise en forme". --- */
+
+

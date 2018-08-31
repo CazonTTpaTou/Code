@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="utf-8"?><!--SPG:
+
+Ce fichier HTML a été associé à une page maître SharePoint (fichier .master) portant le même nom. Tant que les fichiers restent associés, vous ne pouvez pas modifier le fichier .master et les opérations de changement de nom, de déplacement ou de suppression sont retournées.
+
+Pour créer la page maître directement à partir de ce fichier HTML, modifiez la page normalement.  Utilisez le générateur d'extraits de code à l'adresse http://intranet/_layouts/15/ComponentHome.aspx?Url=http%3A%2F%2Fintranet%2F%5Fcatalogs%2Fmasterpage%2FIntranet%5FMP%2Emaster pour créer et personnaliser les entités SharePoint utiles, puis copiez et collez-les en tant qu'extraits de code HTML dans votre code HTML. Toutes les mises à jour de ce fichier sont synchronisées automatiquement avec la page maître associée.
+
+-->
+<!DOCTYPE html[]>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=10" xmlns="" >
+        <!--CS: Début de l'extrait de code Contenu d'en-tête de page-->
+        <!--SPM:<%@Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"%>-->
+        <!--SPM:<%@Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"%>-->
+        <!--SID:00 -->
+        <meta name="GENERATOR" content="Microsoft SharePoint" xmlns="" >
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" xmlns="" >
+        <meta http-equiv="Expires" content="0" xmlns="" >
+        <!--MS:<SharePoint:RobotsMetaTag runat="server">-->
+        <!--ME:</SharePoint:RobotsMetaTag>-->
+        <!--MS:<SharePoint:PageTitle runat="server">-->
+            <!--MS:<asp:ContentPlaceHolder id="PlaceHolderPageTitle" runat="server">-->
+                <!--MS:<SharePoint:ProjectProperty Property="Title" runat="server">-->
+                <!--ME:</SharePoint:ProjectProperty>-->
+            <!--ME:</asp:ContentPlaceHolder>-->
+        <!--ME:</SharePoint:PageTitle>-->
+        <!--MS:<SharePoint:StartScript runat="server">-->
+        <!--ME:</SharePoint:StartScript>-->
+        <!--MS:<SharePoint:CssLink runat="server" Version="15">-->
+        <!--ME:</SharePoint:CssLink>-->
+        <!--MS:<SharePoint:CacheManifestLink runat="server">-->
+        <!--ME:</SharePoint:CacheManifestLink>-->
+        <!--MS:<SharePoint:PageRenderMode runat="server" RenderModeType="Standard">-->
+        <!--ME:</SharePoint:PageRenderMode>-->
+        <!--MS:<SharePoint:ScriptLink language="javascript" name="core.js" OnDemand="true" runat="server" Localizable="false">-->
+        <!--ME:</SharePoint:ScriptLink>-->
+        <!--MS:<SharePoint:ScriptLink language="javascript" name="menu.js" OnDemand="true" runat="server" Localizable="false">-->
+        <!--ME:</SharePoint:ScriptLink>-->
+        <!--MS:<SharePoint:ScriptLink language="javascript" name="callout.js" OnDemand="true" runat="server" Localizable="false">-->
+        <!--ME:</SharePoint:ScriptLink>-->
+        <!--MS:<SharePoint:ScriptLink language="javascript" name="sharing.js" OnDemand="true" runat="server" Localizable="false">-->
+        <!--ME:</SharePoint:ScriptLink>-->
+        <!--MS:<SharePoint:ScriptLink language="javascript" name="suitelinks.js" OnDemand="true" runat="server" Localizable="false">-->
+        <!--ME:</SharePoint:ScriptLink>-->
+        <!--MS:<SharePoint:CustomJSUrl runat="server">-->
+        <!--ME:</SharePoint:CustomJSUrl>-->
+        <!--MS:<SharePoint:SoapDiscoveryLink runat="server">-->
+        <!--ME:</SharePoint:SoapDiscoveryLink>-->
+        <!--MS:<SharePoint:AjaxDelta id="DeltaPlaceHolderAdditionalPageHead" Container="false" runat="server">-->
+            <!--MS:<asp:ContentPlaceHolder id="PlaceHolderAdditionalPageHead" runat="server">-->
+            <!--ME:</asp:ContentPlaceHolder>-->
+            <!--MS:<SharePoint:DelegateControl runat="server" ControlId="AdditionalPageHead" AllowMultipleControls="true">-->
+            <!--ME:</SharePoint:DelegateControl>-->
+            <!--MS:<asp:ContentPlaceHolder id="PlaceHolderBodyAreaClass" runat="server">-->
+            <!--ME:</asp:ContentPlaceHolder>-->
+        <!--ME:</SharePoint:AjaxDelta>-->
+        <!--MS:<SharePoint:CssRegistration Name="Themable/corev15.css" runat="server">-->
+        <!--ME:</SharePoint:CssRegistration>-->
+        <!--MS:<SharePoint:AjaxDelta id="DeltaSPWebPartManager" runat="server">-->
+            <!--MS:<WebPartPages:SPWebPartManager runat="server">-->
+            <!--ME:</WebPartPages:SPWebPartManager>-->
+        <!--ME:</SharePoint:AjaxDelta>-->
+        <!--CE: Fin de l'extrait de code Contenu d'en-tête de page-->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+        <script type="text/javascript" src="jquery-1.11.1.min.js">//<![CDATA[
+        //]]>
+        </script>
+        <link href="Intranet_MP.css" rel="stylesheet" >
+            
+        <script type="text/javascript">//<![CDATA[
+
+        $(document).ready(function () {
+
+            $("ul.subnav").parent().append("<span></span>"); //Only shows drop down trigger when js is enabled (Adds empty span tag after ul.subnav*)
+
+            $("ul.topnav li span").hover(function () { //When trigger is clicked...
+                $(this).parent().find("ul.subnav").slideDown('fast').show(); //Drop down the subnav on click
+
+                $(this).parent().hover(function () {
+                }, function () {
+                    $(this).parent().find("ul.subnav").slideUp('slow'); //When the mouse hovers out of the subnav, move it back up
+                });
+
+                //Following events are applied to the trigger (Hover events for the trigger)
+            }).hover(function () {
+                $(this).addClass("subhover"); //On hover over, add class "subhover"
+            }, function () {	
+                $(this).removeClass("subhover"); //On hover out, remove class "subhover"
+            });
+             $('#suiteBar').hide(); // Masque la barre de navigation du haut
+             $('#s4-ribbonrow').hide(); // Masque la seconde barre de navigation du haut 
+        });
+    
+        //]]>
+        </script>
+               <!--DC:-->
+        <!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:ContentTypeId msdt:dt="string">0x0101000F1C8B9E0EB4BE489F09807B2C53288F0054AD6EF48B9F7B45A142F8173F171BD10003D357F861E29844953D5CAA1D4D8A3A00ACD1BCB7205C9E479053AF629F82DC6D</mso:ContentTypeId>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+<mso:HtmlDesignFromMaster msdt:dt="string"></mso:HtmlDesignFromMaster>
+<mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+<mso:HtmlDesignStatusAndPreview msdt:dt="string">http://intranet/_catalogs/masterpage/Intranet_MP.html, La conversion a réussi.</mso:HtmlDesignStatusAndPreview>
+<mso:ContentType msdt:dt="string">Page maître HTML</mso:ContentType>
+<mso:_dlc_DocId msdt:dt="string">7TCD2NUWAV4P-1-312</mso:_dlc_DocId>
+<mso:_dlc_DocIdItemGuid msdt:dt="string">2437e722-a9d3-4dd2-b9e3-87902a9a8de9</mso:_dlc_DocIdItemGuid>
+<mso:_dlc_DocIdUrl msdt:dt="string">http://intranet/_layouts/15/DocIdRedir.aspx?ID=7TCD2NUWAV4P-1-312, 7TCD2NUWAV4P-1-312</mso:_dlc_DocIdUrl>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+    </head>
+    <body>
+        <!--CS: Début de l'extrait de code Ruban-->
+        <!--SPM:<%@Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"%>-->
+        <!--SPM:<%@Register Tagprefix="wssucw" TagName="Welcome" Src="~/_controltemplates/15/Welcome.ascx"%>-->
+        <!--MS:<SharePoint:SPSecurityTrimmedControl runat="server" HideFromSearchCrawler="true" EmitDiv="true">-->
+            <div id="TurnOnAccessibility" style="display:none" class="s4-notdlg noindex" xmlns="">
+                <a id="linkTurnOnAcc" href="#" class="ms-accessible ms-acc-button" onclick="SetIsAccessibilityFeatureEnabled(true);UpdateAccessibilityUI();document.getElementById('linkTurnOffAcc').focus();return false;">
+                    <!--MS:<SharePoint:EncodedLiteral runat="server" text="&#60;%$Resources:wss,master_turnonaccessibility%&#62;" EncodeMethod="HtmlEncode">-->
+                    <!--ME:</SharePoint:EncodedLiteral>-->
+                </a>
+            </div>
+            <div id="TurnOffAccessibility" style="display:none" class="s4-notdlg noindex" xmlns="">
+                <a id="linkTurnOffAcc" href="#" class="ms-accessible ms-acc-button" onclick="SetIsAccessibilityFeatureEnabled(false);UpdateAccessibilityUI();document.getElementById('linkTurnOnAcc').focus();return false;">
+                    <!--MS:<SharePoint:EncodedLiteral runat="server" text="&#60;%$Resources:wss,master_turnoffaccessibility%&#62;" EncodeMethod="HtmlEncode">-->
+                    <!--ME:</SharePoint:EncodedLiteral>-->
+                </a>
+            </div>
+        <!--ME:</SharePoint:SPSecurityTrimmedControl>-->
+        <div id="ms-designer-ribbon" xmlns="">
+            <!--SID:02 {Ruban}-->
+            <!--PS: Début de l'aperçu en mode lecture seule (ne pas modifier) --><div class="DefaultContentBlock" style="background:rgb(0, 114, 198); color:white; width:100%; padding:8px; height:64px; overflow:hidden;">Le ruban SharePoint sera placé ici si votre fichier est prévisualisé ou appliqué à votre site.</div><!--PE: Fin de l'aperçu en lecture seule -->
+        </div>
+        <!--MS:<SharePoint:SPSecurityTrimmedControl runat="server" AuthenticationRestrictions="AnonymousUsersOnly">-->
+            <!--MS:<wssucw:Welcome runat="server" EnableViewState="false">-->
+            <!--ME:</wssucw:Welcome>-->
+        <!--ME:</SharePoint:SPSecurityTrimmedControl>-->
+        <!--CE: Fin de l'extrait de code Ruban-->
+        <div id="s4-workspace" xmlns="">
+            <div id="s4-bodyContainer">
+                <!-- DEBUT HEADER -->
+                <div id="header" xmlns="http://www.w3.org/1999/xhtml">
+                    <p>
+                        <a href="/">
+                            <img class="logo" src="/SiteCollectionImages/LogoPWT.png" alt="logo" >
+                        </a>
+                    </p>
+                </div>
+                <!-- FIN HEADER -->
+                <!-- DEBUT MENU -->
+                <div class="Conteneur" xmlns="http://www.w3.org/1999/xhtml">
+                    
+                    <div class="Menu">
+                    
+                     <ul class="topnav">
+                            <li>
+                                <a href="/IG/SitePages/Accueil.aspx">Informations générales
+                                
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/IG/SitePages/Organigramme.aspx">1. Organigramme
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/IG/SitePages/Liste_Telephonique.aspx">2. Liste téléphonique
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/IG/Documents%20partages/Plan_EDF_ENR_PWT_FR.pdf">3. Plan d'accès
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/IG/SitePages/Autorisation_Prestataire.aspx">4. Autorisation prestataire
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/IG/SitePages/Calendrier_Astreintes.aspx">5. Calendrier astreintes
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/IG/SitePages/Secouristes.aspx">6. Liste des secouristes
+                                        
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                           <!-- <li>
+                                <a href="/Achats/SitePages/Accueil.aspx">Achats
+                                
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/Achats/SitePages/1_Creation_DA.aspx">1. Création DA
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Achats/SitePages/2_DA_En_Cours.aspx">2. DA en cours
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Achats/SitePages/3_DA_Cloturees.aspx">3. DA soldées
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Achats/SitePages/4_DA_Refusees.aspx">4. DA refusées
+                                        
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li> -->
+                            <li>
+                                <a href="/Communication/SitePages/Accueil.aspx">Communication
+                                
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/Communication/EDF/_layouts/15/start.aspx#/SitePages/Accueil.aspx">1. EDF communication
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Communication/SitePages/Notes_Service.aspx">2. Notes de service
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Communication/SitePages/Notes_Information.aspx">3. Notes d'information
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Communication/SitePages/CR_Production.aspx">4. CR Production
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Communication/SitePages/Presse.aspx">5. Presse
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Communication/SitePages/Espace_Managers.aspx">6. Espace Managers
+                                        
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                            <!-- <li>
+                                <a href="/HSE/SitePages/Accueil.aspx">HSE
+                                
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/HSE/SitePages/CHSCT.aspx">1. CHSCT
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/HSE/SitePages/Documents_Uniques.aspx">2. Documents uniques
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/HSE/SitePages/Formations_Habilitations.aspx">3. Formations et habilitations
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/HSE/SitePages/Informations_HSE.aspx">4. Informations HSE
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/HSE/SitePages/Produits_Chimiques.aspx">5. Produits chimiques
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/HSE/SitePages/QRQC_HSE.aspx">6. QRQC HSE
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/HSE/SitePages/Soins_AT.aspx">7. Soins et AT
+                                        
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li> 
+                            <li>
+                                <a href="/Informatique/SitePages/Accueil.aspx">Informatique
+                                
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/Informatique/SitePages/Demande_Acces.aspx">1. Demande accès
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Informatique/SitePages/Procedures.aspx">2. Procédures
+                                        
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/Qualite/SitePages/Accueil.aspx">Qualité
+                                
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/Qualite/SitePages/Liste_Procedures.aspx">1. Liste des procédures
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Qualite/SitePages/Modes_Operatoires.aspx">2. Modes opératoires
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Qualite/SitePages/Processus.aspx">3. Processus
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Qualite/SitePages/Securite.aspx">4. Sécurité
+                                        
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li> -->
+                            <li>
+                                <a href="/RH/SitePages/Accueil.aspx">Ressources Humaines
+                                
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/RH/SitePages/Formulaires_RH.aspx">1. Formulaires RH
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/RH/SitePages/Accords_collectifs.aspx">2. Accords collectifs et réglements
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/RH/SitePages/Espace_Mobilite.aspx">3. Espace mobilité
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/RH/SitePages/Delegue_Personnel.aspx">4. Délégués personnel
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/RH/SitePages/Formation.aspx">5. Formation
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/RH/SitePages/BDD_Eco_Sociale.aspx">6. BDD eco. sociale
+                                        
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a href="/Communication/SitePages/Notes_Service.aspx">7. Notes de service
+                                        
+                                        </a>
+                                    </li>
+									<li>
+                                        <a href="/Communication/SitePages/Notes_Information.aspx">8. Notes d'information
+                                        
+                                        </a>
+                                    </li>
+								</ul>
+                            </li>
+                            <!--<li>
+                                <a href="http://intranet/CE/SitePages/Accueil.aspx">Comité d'entreprise
+                                
+                                </a>
+                                <ul class="subnav">
+                                    <li>
+                                        <a href="/CE/SitePages/AS_PhotoWatt.aspx">1. AS PhotoWatt
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/Avis.aspx">2. Avis
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/Billeterie.aspx">3. Billeterie
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/Cheques_Vacances.aspx">4. Chèques vacances
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/Course_A_Pied.aspx">5. Course à pied
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/Flash_Info.aspx">6. Flash-Info
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/Prestations_CE.aspx">7. Prestations du CE
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/PV_CE.aspx">8. PV du CE
+                                        
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/CE/SitePages/Tombola_Noel.aspx">9. Tombola de Noël
+                                        
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>-->
+                        </ul>                        
+                    </div>
+                </div>
+                <!-- FIN MENU -->
+                <!-- Début des liens-->
+                <div id="Autres_Liens" xmlns="http://www.w3.org/1999/xhtml">
+                    <!--<h3 id="Titre_Lien">Autres liens
+                    
+                    </h3>-->
+                    <ul id="Liste_Liens">
+                        <li>
+                            <a href="https://mail.photowatt.com">
+                                <img src="/SiteCollectionImages/Messagerie.png" >
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://mail.photowatt.com">Messagerie
+                            
+                            </a>
+                        </li>                        
+                        <li>
+                            <a href="http://www.photowatt.com/">
+                                <img src="/SiteCollectionImages/Picto1.png" >
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.photowatt.com/">Site PWT
+                            
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.edf-energies-nouvelles.com/">
+                                <img src="/SiteCollectionImages/Picto2.png" >
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.edf-energies-nouvelles.com/">Site EDF EN
+                            
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://france.edf.com/france-45634.html">
+                                <img src="/SiteCollectionImages/Pictogramme.png" >
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://france.edf.com/france-45634.html">Site EDF SA
+                            
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://pulse.edf.com/fr">
+                                <img src="/SiteCollectionImages/picto2.png" >
+                            </a>
+                        </li>
+                       
+                        <li>
+                            <a href="http://pulse.edf.com/fr">EDF Pulse
+                            
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.cepw.meyclub.com/">
+                                <img src="/SiteCollectionImages/Pictogramme.png" >
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.cepw.meyclub.com/">Meyclub
+                            
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Fin des liens-->
+                <div style="position:absolute;top:25%;left:15%;z-index:0;" data-name="ContentPlaceHolderMain">
+                    <!--CS: Début de l'extrait de code PlaceHolderMain-->
+                    <!--SPM:<%@Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"%>-->
+                    <!--MS:<SharePoint:AjaxDelta ID="DeltaPlaceHolderMain" IsMainContent="true" runat="server">-->
+                        <!--MS:<asp:ContentPlaceHolder ID="PlaceHolderMain" runat="server">-->
+                        <!--ME:</asp:ContentPlaceHolder>-->
+                    <!--ME:</SharePoint:AjaxDelta>-->
+                    <!--CE: Fin de l'extrait de code PlaceHolderMain-->
+                </div>
+            </div>
+        </div>
+           </body>
+</html>

@@ -1,0 +1,144 @@
+data _NULL_;  
+		format date ddmmyy10.;
+		date=today();
+		annee=trim(year(date));
+		call symput("annee", annee); 
+	run;
+
+/*%let path=\\office\pvaproduction\Machines\Desox\psg_%trim(&annee);*/
+%let path=\\office\pvaproduction\Machines\Desox\psg_201;
+%let tri_chemin=%bquote(")&path.*.csv%bquote(");
+
+filename liste pipe "dir &tri_chemin /b /s";/* commande listant les fichiers du répertoire */
+
+
+data RE_PROC.LOGS_DESOX_PVA_2015;							/* création de la table */
+LENGTH
+        Data               8
+        Time             $ 11
+        Recipe             8
+        Size               8
+        'Carrier-ID'n      8
+        'Lot-Number'n    $ 9
+        'Run#'n            8
+        'BD80A_Etch-time'n   8
+        BD80A_Runs         8
+        BD80A_Conductivity   8
+        Rinser_BD65A_Time   8
+        Rinser_BD60C_Time   8
+        Rinse_BD60D_Time   8
+        Resistivity        8
+        HWD_Time           8
+        HWD_Temp           8
+        HAD_1_Time         8
+        HAD_1_Temp         8
+        HAD_2_Time         8
+        HAD_2_Temp         8 ;
+
+    FORMAT
+        Data             DDMMYY10.
+        Time             $CHAR11.
+        Recipe           BEST1.
+        Size             BEST1.
+        'Carrier-ID'n    BEST3.
+        'Lot-Number'n    $CHAR9.
+        'Run#'n          BEST4.
+        'BD80A_Etch-time'n TIME8.
+        BD80A_Runs       BEST2.
+        BD80A_Conductivity BEST12.
+        Rinser_BD65A_Time TIME8.
+        Rinser_BD60C_Time BEST1.
+        Rinse_BD60D_Time BEST1.
+        Resistivity      TIME8.
+        HWD_Time         TIME8.
+        HWD_Temp         TIME8.
+        HAD_1_Time       BEST9.
+        HAD_1_Temp       TIME8.
+        HAD_2_Time       BEST8.
+        HAD_2_Temp       TIME8.;
+    INFORMAT
+        Data             MMDDYY10.
+        Time             $CHAR11.
+        Recipe           BEST1.
+        Size             BEST1.
+        'Carrier-ID'n    BEST3.
+        'Lot-Number'n    $CHAR9.
+        'Run#'n          BEST4.
+        'BD80A_Etch-time'n TIME11.
+        BD80A_Runs       BEST2.
+        BD80A_Conductivity BEST12.
+        Rinser_BD65A_Time TIME11.
+        Rinser_BD60C_Time BEST1.
+        Rinse_BD60D_Time BEST1.
+        Resistivity      TIME11.
+        HWD_Time         TIME11.
+        HWD_Temp         TIME11.
+        HAD_1_Time       BEST9.
+        HAD_1_Temp       TIME11.
+        HAD_2_Time       BEST8.
+        HAD_2_Temp       TIME11.;
+        
+infile liste truncover;       /* lecture de la liste des fichiers trouvés */
+       input fichier $200.;/*Variable contenant chemin et nom des fichiers de la liste*/        
+       infile Parcourt                    
+       filevar=fichier   /* quel fichier est à lire */
+
+LRECL=181
+ENCODING="WLATIN1"
+TERMSTR=CRLF
+DSD
+
+truncover
+       end=termine       /* la variable ‘termine’ est créée lorsque toute la liste de fichier a été lue */
+       firstobs=2        /* lire à partir de la 33eme ligne */
+       DLM=';';         /* le séparateur de nos fichiers est une tab */  
+
+       do while(not termine); /* On boucle sur chaque ligne du fichier en cours */
+ 
+    INPUT
+        Data             : ?? MMDDYY9.
+        Time             : ?? $CHAR11.
+        Recipe           : ?? BEST1.
+        Size             : ?? BEST1.
+        'Carrier-ID'n    : ?? BEST3.
+        'Lot-Number'n    : $CHAR9.
+        'Run#'n          : ?? BEST4.
+        'BD80A_Etch-time'n : ?? TIME5.
+        BD80A_Runs       : ?? BEST2.
+        BD80A_Conductivity : ?? COMMA12.
+        Rinser_BD65A_Time : ?? TIME5.
+        Rinser_BD60C_Time : ?? BEST1.
+        Rinse_BD60D_Time : ?? BEST1.
+        Resistivity      : ?? TIME5.
+        HWD_Time         : ?? TIME5.
+        HWD_Temp         : ?? TIME5.
+        HAD_1_Time       : ?? COMMA9.
+        HAD_1_Temp       : ?? TIME5.
+        HAD_2_Time       : ?? COMMA8.
+        HAD_2_Temp       : ?? TIME5.;
+OUTPUT;
+END;
+ATTRIB
+        Data           LABEL="Data"
+        Time          LABEL="Time"
+        Recipe        LABEL="Recipe"
+        Size            LABEL="Size"
+        'Carrier-ID'n  LABEL="Carrier-ID"
+        'Lot-Number'n    LABEL="'Lot-Number"
+        'Run#'n        LABEL="Run#"
+        'BD80A_Etch-time'n LABEL="BD80A_Etch-time"
+        BD80A_Runs      LABEL="BD80A_Runs"
+        BD80A_Conductivity  LABEL="BD80A_Conductivity"
+        Rinser_BD65A_Time LABEL="Rinser_BD65A_Time"
+        Rinser_BD60C_Time LABEL="Rinser_BD60C_Time"
+        Rinse_BD60D_Time LABEL="Rinse_BD60D_Time"
+        Resistivity       LABEL="Resistivity"
+        HWD_Time     LABEL="HWD_Time"
+        HWD_Temp       LABEL="HWD_Temp"
+        HAD_1_Time      LABEL="HAD_1_Time"
+        HAD_1_Temp     LABEL="HAD_1_Temp"
+        HAD_2_Time     LABEL="HAD_2_Time"
+        HAD_2_Temp     LABEL="HAD_2_Temp";
+RUN;
+
+

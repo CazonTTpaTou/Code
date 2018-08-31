@@ -1,0 +1,39 @@
+# Initialise lagent source, le channel et le sink
+AgentTweet.sources = TwitterExampleDir
+AgentTweet.channels = memoryChannel
+AgentTweet.sinks = flumeHDFS
+
+#Definition de la source pour monitorer le repertoire de depose des fichiers
+AgentTweet.sources.TwitterExampleDir.type = spooldir
+AgentTweet.sources.TwitterExampleDir.spoolDir = /var/log/twitter/
+
+# Channel de type memory
+AgentTweet.channels.memoryChannel.type = memory
+
+# Définition de la capacité maximale du channel
+AgentTweet.channels.memoryChannel.capacity = 100000
+AgentTweet.channels.memoryChannel.transactioncapacity = 10000
+
+# definition du sink sur HDFS
+AgentTweet.sinks.flumeHDFS.type = hdfs
+AgentTweet.sinks.flumeHDFS.hdfs.path = hdfs://localhost/user/hive/warehouse/twitter/
+AgentTweet.sinks.flumeHDFS.hdfs.fileType = DataStream
+
+# format de stockage
+AgentTweet.sinks.flumeHDFS.hdfs.writeFormat = Text
+
+# Nombre de fichier ouverts en ecriture simultanement
+AgentTweet.sinks.flumeHDFS.hdfs.maxOpenFiles = 1
+
+# rollover de 10 MB (exprimé en octets
+AgentTweet.sinks.flumeHDFS.hdfs.rollSize = 10485760
+
+# Pas de rollover sur le nombre devenement sur le fichier
+AgentTweet.sinks.flumeHDFS.hdfs.rollCount = 0
+
+# rollover toutes les 1 mns meme si la capactité na pas été atteinte
+AgentTweet.sinks.flumeHDFS.hdfs.rollInterval = 60
+
+#Connexion du source et du channel
+AgentTweet.sources.TwitterExampleDir.channels = memoryChannel
+AgentTweet.sinks.flumeHDFS.channel = memoryChannel

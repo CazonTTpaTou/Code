@@ -1,0 +1,1 @@
+TreatAs(_Number_, DatePart(Mesure Date Heure)) >= ( TreatAs(_Number_, DatePart(Heure_Actualisation)) - 7 )

@@ -1,0 +1,97 @@
+h1 {font-size:5em;}
+
+.Grec {
+    list-style:lower-greek;
+}
+
+.Grec1 {
+    list-style:lower-greek;
+    list-style-position:inside;
+}
+
+.Grec2 {
+    list-style:upper-roman;
+    list-style-position:outside;
+    cursor:help;
+}
+
+.Tableau1 {
+    table-layout:auto;
+    width:70%;
+    margin:1% auto;
+    border-spacing:0.25em;
+    background-color:grey;
+    caption-side:bottom;
+}
+
+.Tableau1 td {
+    padding:0.1em;
+    font-style:italic;
+    background-color:white;
+    text-align:center;
+}
+
+.En_tete td {
+    font-style:normal;
+    font-weight:bold;
+    font-size:larger;
+    background-color:yellow;
+
+}
+
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="Scripts/jquery.js"></script>
+    <script src="Scripts/Custom/jquery-ui.js"></script>
+    <script src="Scripts/Custom/jquery-ui.min.js"></script>
+    <link href="Scripts/Custom/jquery-ui.css" rel="stylesheet" />
+    <link href="Scripts/Custom/jquery-ui.min.css" rel="stylesheet" />   
+    <link href="StyleSheet2.css" rel="stylesheet" />
+    <title></title>
+</head>
+<body>
+    <h1>Liste des animaux</h1>
+    <ul class="Grec">
+        <li>Alligator</li>
+        <li>Caïman</li>
+        <li>Crocodile</li>
+        <li>Gavial</li>
+    </ul>
+    <ul class="Grec1">
+        <li>A Coral Springs, en Floride, un couple a reçu la visite surprise d'un alligator devant leur porte. Le reptile s'était installé en pleine nuit et grattait  </li>
+        <li>Les dents de la baie. ALLIGATOR BAY : 1 000 animaux sur 10 000 m2 Plus d'une centaine d'espèces d'alligators et crocodiles, lézards, serpents et tortues ...</li>
+        <li>Les Alligators (Alligator) forment un genre de crocodiliens de la famille des Alligatoridés. Ce terme constitue à la fois un nom vernaculaire et un nom scientifique.</li>
+        <li>20 juin 2011 - Crocodiles et alligators sont deux familles de crocodiliens. Crocodile et alligator : les différences physiques Les crocodiles et alligators différent ...</li>
+    </ul>
+    <ul class="Grec2">
+        <li>A Coral Springs, en Floride, un couple a reçu la visite surprise d'un alligator devant leur porte. Le reptile s'était installé en pleine nuit et grattait  </li>
+        <li>Les dents de la baie. ALLIGATOR BAY : 1 000 animaux sur 10 000 m2 Plus d'une centaine d'espèces d'alligators et crocodiles, lézards, serpents et tortues ...</li>
+        <li>Les Alligators (Alligator) forment un genre de crocodiliens de la famille des Alligatoridés. Ce terme constitue à la fois un nom vernaculaire et un nom scientifique.</li>
+        <li>20 juin 2011 - Crocodiles et alligators sont deux familles de crocodiliens. Crocodile et alligator : les différences physiques Les crocodiles et alligators différent ...</li>
+    </ul>
+    <table class="Tableau1" title="Les sauriens">
+           <caption>Les sauriens</caption>
+        <thead class="En_tete">
+            <tr>
+                <td>Animal</td>
+                <td>Description</td>
+            </tr>
+        </thead>
+           <tr>
+               <td>Alligator</td>
+               <td>A Coral Springs, en Floride, un couple a reçu la visite surpris</td>                
+           </tr>
+            <tr>
+                <td>Crocodile</td>
+                <td>20 juin 2011 - Crocodiles et alligators sont deux familles de crocodiliens.</td>
+            </tr>
+    </table>
+</body>
+</html>

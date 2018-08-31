@@ -1,0 +1,110 @@
+<?php
+//$_SESSION['Operation']=0;
+$_SESSION['Message']='';
+if(($_SESSION['Operation']==6) || ($_GET['Operation']==6)) {$_SESSION['Lien']='Consulter';
+			                                    $_SESSION['Adresse']='Fact_Edition.php?Operation=6&id=';}
+if(($_SESSION['Operation']==7) || ($_GET['Operation']==7)) {$_SESSION['Lien']='Modifier';
+			                                    $_SESSION['Adresse']='Intro.php?Operation=1&Commande=';}
+if(($_SESSION['Operation']==10) || ($_GET['Operation']==10)) {$_SESSION['Lien']='Créer Avoir';
+			                                      $_SESSION['Adresse']='Intro.php?Operation=11&Commande=';}
+
+
+print '<div class="princ">';
+
+print'<span class="libelle">';
+print '<a href="Intro.php?Operation=0" >';
+print '<input type="button" value="Retour au menu" />';
+print '</a>';
+print'</span>';
+
+print'<span class="champs">';
+print'<input type="button" name="valid" value="Rechercher" onClick="expedition_r();" />';
+print'</span>';
+print '<br/>';
+print '<br/>';
+
+//print '<form onsubmit="return expedition_r(this);" method="POST">';
+
+print'<span class="libelle">';
+print '<label>Numéro du Client :</label>';
+print'</span>';
+print'<span class="champs">';
+print '<input type="text" name="N_Client" id="C_client" value="inconnu" onkeypress="return numbers(event);" onBlur="num_c();" onFocus="eff(this.id);" / >';
+print'</span>';
+print '<br/>';
+
+print'<span class="libelle">';
+print '<label>Nom du Client :</label>';
+print'</span>';
+print'<span class="champs">';
+print '<input type="text" name="Nom_Client" id="N_client" value="inconnu" onFocus="eff(this.id);" / >';
+print'</span>';
+print '<br/>';
+
+print'<span class="libelle">';
+print '<label>Code Postal du Client :</label>';
+print'</span>';
+print'<span class="champs">';
+print '<input type="text" name="P_Client" id="CP_client" value="inconnu" onkeypress="numbers(event);" onFocus="eff(this.id);" / >';
+print'</span>';
+print '<br/>';
+
+print'<span class="libelle">';
+print '<label>Numéro Commande :</label>';
+print'</span>';
+print'<span class="champs">';
+print '<input type="text" name="N_Client" id="C_commande" value="inconnu" onkeypress="return numbers(event);" onBlur="num_co();" onFocus="eff(this.id);" / >';
+print'</span>';
+print '<br/>';
+
+print'<span class="libelle">';
+print '<label>Montant Commande :</label>';
+print'</span>';
+print'<span class="champs">';
+
+print'<select name="Operateur" id="Operateur_id" size ="1">';
+	print'<option value="1" >=</option>';
+	print'<option value="2" >></option>';
+	print'<option value="3" ><</option>';
+	print'<option value="4" >>=</option>';
+	print'<option value="5" ><=</option>';
+	print'</select>';
+
+print '<input type="text" name="N_Com" id="champP" value="inconnu" onkeypress="return numbers(event);"  onFocus="eff(this.id);" / >';
+print'</span>';
+print '<br/>';
+
+print'</span>';
+print'<span class="libelle">';
+print '<label>Date de commande supérieure à :</label>';
+print'</span>';
+print'<span class="champs">';
+print '<input type="text" name="D_deb" id="champD" value="inconnu" onkeypress="return numbers_dat(event);" onBlur="Datim(this.id);" onFocus="eff(this.id);" / >';
+print '<label> - Format de date: aaaa-mm-jj</label>';
+print'</span>';
+print '<br/>';
+
+print '<span class="libelle">';
+print '<label>Date de commande inférieure à  :</label>';
+print '</span>';
+print '<span class="champs">';
+print '<input type="text" name="D_fin" id="champF" value="inconnu" onkeypress="return numbers_dat(event);" onBlur="Datim(this.id);" onFocus="eff(this.id);" / >';
+print '<label> - Format de date: aaaa-mm-jj</label>';
+print '</span>';
+print '<br/>';
+print '<br/>';
+
+print'<span class="libelle">';
+//print'<input type="button" name="valids" value="Rechercher" />';
+print'</span>';
+
+print '<br/>';
+print '<br/>';
+print '<br/>';
+print '</div>';
+
+
+print '<div id="Liste_C" class="ListeC" >';
+print'</div>';
+
+?>

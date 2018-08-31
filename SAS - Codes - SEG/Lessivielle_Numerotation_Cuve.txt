@@ -1,0 +1,33 @@
+/* Selection des premiers enregistrements par assemblage cuve pour la ligne 0B et la ligne 1B. */
+
+data work.TEMP1_L0B_DATA;
+
+	set RE_PROC.LESSIVIELLE_0B_DATA;
+	by Num_assemblage Nom_cuve;
+	retain Num_cuve;
+
+	if first.Num_assemblage then Num_cuve = 0;
+
+	if first.Nom_cuve then do;
+		Num_cuve = Num_cuve + 1;
+		output;
+	end;
+
+run;
+
+data work.TEMP1_L1B_DATA;
+
+	set RE_PROC.LESSIVIELLE_1B_DATA;
+	by Num_assemblage Nom_cuve;
+	retain Num_cuve;
+
+	if first.Num_assemblage then Num_cuve = 0;
+
+	if first.Nom_cuve then do;
+		Num_cuve = Num_cuve + 1;
+		output;
+	end;
+
+run;
+
+quit;

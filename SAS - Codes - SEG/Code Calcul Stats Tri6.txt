@@ -1,0 +1,121 @@
+DATA Work.Wafer_Wav (keep=LotID Stepname PFF IDK_6 IDK_10 ISC Grid_Front1 Grid_Front2 Grid_Front3) ;
+SET IN_LINE.WAFER_WAV;
+RUN;
+
+DATA Work.Result_Tri_SunsVOC (keep=LotID PFF);
+SET Work.Wafer_Wav;
+IF StepName = 'SunsVoc' THEN OUTPUT;
+IF StepName = 'SUNS-VOC' THEN OUTPUT;
+RUN;
+
+DATA Work.Result_Tri_Dark (keep=LotID IDK_6 IDK_10);
+SET Work.Wafer_Wav;
+IF StepName = 'DARK' THEN OUTPUT;
+RUN;
+
+DATA Work.Result_Tri_LED_IR (Keep=LotId ISC);
+SET Work.Wafer_Wav;
+IF StepName = 'LED-IR' THEN OUTPUT;
+RUN;
+
+DATA Work.Result_Tri_LED_UV (Keep=LotId ISC);
+SET Work.Wafer_Wav;
+IF StepName = 'LED-UV' THEN OUTPUT;
+RUN;
+
+DATA Work.Result_Tri_GRID (keep=LotId Grid_Front1 Grid_Front2 Grid_Front3);
+SET Work.Wafer_Wav;
+IF StepName = 'GRID' THEN OUTPUT;
+RUN;
+
+PROC MEANS DATA=Work.Result_Tri_SunsVOC MEAN MEDIAN; 
+	CLASS LotID;
+	VAR Pff;
+	ods exclude summary;
+	OUTPUT OUT=WORK.Results_Tri_PFF mean=PFF_Mean Median =PFF_Median;
+RUN;
+
+PROC MEANS DATA=Work.Result_Tri_Dark MEAN MEDIAN; 
+	CLASS LotID;
+	VAR IDK_6 IDK_10;
+	ods exclude summary;
+	OUTPUT OUT=WORK.Results_Tri_Dark mean=IDK_6_Mean IDK_10_Mean Median =IDK_6_Median IDK_10_Median;
+RUN;
+
+PROC MEANS DATA=Work.Result_Tri_LED_UV MEAN MEDIAN; 
+	CLASS LotID;
+	VAR ISC;
+	ods exclude summary;
+	OUTPUT OUT=WORK.Results_Tris_LED_UV mean=ISC_UV_Mean Median =ISC_UV_Median;
+RUN;
+
+PROC MEANS DATA=Work.Result_Tri_LED_IR MEAN MEDIAN; 
+	CLASS LotID;
+	VAR ISC;
+	ods exclude summary;
+	OUTPUT OUT=WORK.Results_Tris_LED_IR mean=ISC_IR_Mean Median =ISC_IR_Median;
+RUN;
+
+PROC MEANS DATA=Work.Result_Tri_GRID MEAN MEDIAN; 
+	CLASS LotID;
+	VAR Grid_Front1 Grid_Front2 Grid_Front3;
+	ods exclude summary;
+	OUTPUT OUT=WORK.Results_Tris_GRID mean=Grid_Front1_Mean Grid_Front2_Mean Grid_Front3_Mean Median =Grid_Front1_Median Grid_Front2_Median Grid_Front3_Median;
+RUN;
+
+PROC SORT Data=Work.WAFER_WAV OUT=WAFER_WAV_LOT;
+BY LotID;
+RUN;
+
+
+DATA Work.WAFER_WAV_LOTS (keep=LotID);
+SET Work.WAFER_WAV_LOT;
+BY LotID;
+IF first.LotID AND LENGTH(LotID)>4 THEN OUTPUT;
+RUN;
+
+PROC SQL;
+CREATE TABLE DTM_PRO.DTM_LOGS_TRI_6_STATS
+AS
+SELECT 
+
+	WAV.LotID,
+	PFF.PFF_Mean as Cel_Tri_PFF_Moy,
+	PFF.PFF_Median as Cel_Tri_PFF_Med,
+	DARK.IDK_6_Mean as Cel_Tri_IDK_6_Moy,
+	DARK.IDK_6_Median as Cel_Tri_IDK_6_Med,
+	DARK.IDK_10_Mean as Cel_Tri_IDK_10_Moy,
+	DARK.IDK_10_Median as Cel_Tri_IDK_10_Med,
+	LED_UV.ISC_UV_Mean as Cel_Tri_ISC_UV_Moy,
+	LED_UV.ISC_UV_Median as Cel_Tri_ISC_UV_Med,
+	LED_IR.ISC_IR_Mean as Cel_Tri_ISC_IR_Moy,
+	LED_IR.ISC_IR_Median as Cel_Tri_ISC_IR_Med,
+	GRID.Grid_Front1_Mean as Cel_Tri_Grid_Front_1_Moy,
+	GRID.Grid_Front1_Median as Cel_Tri_Grid_Front_1_Med,
+	GRID.Grid_Front2_Mean as Cel_Tri_Grid_Front_2_Moy,
+	GRID.Grid_Front2_Median as Cel_Tri_Grid_Front_2_Med,
+	GRID.Grid_Front3_Mean as Cel_Tri_Grid_Front_3_Moy,
+	GRID.Grid_Front3_Median as Cel_Tri_Grid_Front_3_Med
+
+		FROM Work.Wafer_Wav_Lots AS WAV
+
+        LEFT OUTER JOIN Results_Tri_PFF AS PFF
+		ON WAV.LotID = PFF.LotID
+     
+		LEFT OUTER JOIN Results_Tri_Dark AS DARK
+		ON PFF.LotID = DARK.LotID
+
+		LEFT OUTER JOIN Results_Tris_LED_UV AS LED_UV
+		ON PFF.LotID = LED_UV.LotID
+
+		LEFT OUTER JOIN Results_Tris_LED_IR AS LED_IR
+		ON PFF.LotID = LED_IR.LotID
+
+		LEFT OUTER JOIN Results_Tris_GRID AS GRID
+		ON PFF.LotID = GRID.LotID;
+RUN;
+
+
+
+
+

@@ -1,0 +1,222 @@
+LIBNAME STATS BASE "E:\Donnees_SAS_Utilisateur\Process";
+LIBNAME DS_SQC ODBC  DATASRC=SQC  SCHEMA=dbo  USER=sassql  PASSWORD="{SAS002}3625302A43996237206B48FF5188832F3A71A582" ;
+
+PROC SORT 
+	Data=STATS.TDB_V_LOTS_CLASSE_LIGNE (keep=Lot)
+	Out=Work.Liste_Lots_MAJ NODUPKEY; 
+	BY LOT;
+RUN;
+
+PROC SQL;
+CREATE TABLE WORK.V_LOTS_SYNTHESE1  AS
+SELECT    
+		  t1.Lot,
+	      t1.Fournisseur as Fournisseur,           
+          t1.Societe as Societe, 
+          t1.'Desox Equipement'n as Desox_Equipement, 
+          t1.Materiau as Materiau, 
+          t1.'Seri Equipement'n as Seri_Equipement, 
+          t1.'Tri Date Heure Sort'n as Tri_Date_Heure_Sort, 
+          t1.'Tri Date Poste'n as Tri_Date_Poste,
+		  t1.'Tri Poste'n as Tri_Poste,
+ 
+          t1.'Tri Qte Entr'n, 
+          t1.'Tri Qte Sort'n, 
+          t1.'Tri Rej Total'n, 
+          t1.'Tri Qte Ecart'n, 
+          t1.'Tri Qte M'n, 
+          t1.'Tri Qte Eme'n, 
+          t1.'Tri Qte Rsh'n, 
+          t1.'Tri Qte Idk'n, 
+          t1.'Tri Qte Div'n, 
+          t1.'Tri Qte L-16_4'n, 
+          t1.'Tri Qte L-16_6'n, 
+          t1.'Tri Qte L-16_8'n, 
+          t1.'Tri Qte L-17_2'n, 
+          t1.'Tri Qte L-17_4'n, 
+          t1.'Tri Qte L-17_6'n, 
+          t1.'Tri Qte L-17_8'n, 
+          t1.'Tri Qte L-18_2'n, 
+          t1.'Tri Qte L-18_4'n, 
+          t1.'Tri Qte L-18_6'n, 
+          t1.'Tri Qte L-18_8'n, 
+          t1.'Tri Qte L-16_0'n, 
+          t1.'Tri Qte 16_0'n, 
+          t1.'Tri Qte 16_2'n, 
+          t1.'Tri Qte 16_4'n, 
+          t1.'Tri Qte 16_6'n, 
+          t1.'Tri Qte 16_8'n, 
+          t1.'Tri Qte L-17_0'n, 
+          t1.'Tri Qte 17_0'n, 
+          t1.'Tri Qte 17_2'n, 
+          t1.'Tri Qte 17_4'n, 
+          t1.'Tri Qte 17_6'n, 
+          t1.'Tri Qte 17_8'n, 
+          t1.'Tri Qte L-18_0'n, 
+          t1.'Tri Qte 18_0'n, 
+          t1.'Tri Qte 18_2'n, 
+          t1.'Tri Qte 18_4'n, 
+          t1.'Tri Qte 18_6'n, 
+          t1.'Tri Qte 18_8'n, 
+          t1.'Tri Qte 19_0'n, 
+          t1.'Tri Qte 19_2'n, 
+          t1.'Tri Qte 19_4'n, 
+          t1.'Tri Qte 19_6'n, 
+          t1.'Tri Qte 19_8'n, 
+          t1.'Tri Qte 20_0'n, 
+          t1.'Tri Qte 20_2'n, 
+          t1.'Tri Qte 20_4'n, 
+          t1.'Tri Qte 20_6'n
+			FROM
+			DS_SQC.V_LOTS AS T1
+			Where (datepart(T1.'Tri Date Poste'n) >= INTNX('day',date(),-60) 
+			      AND (T1.'Tri Date Heure Sort'n Is Not Missing))
+			      AND T1.Lot Not IN (SELECT distinct Lot FROM Work.Liste_Lots_MAJ);     
+RUN;
+
+DATA WORK.Liste_Lot_Classe;
+Length
+	Lot	$50
+	Source  $14
+	Quantite1 8;
+Format
+	Lot	$50.
+	Source  $14.
+	Quantite1 11.;
+RUN;
+
+DATA _NULL_;
+SET WORK.V_LOTS_SYNTHESE1 END=EOF;
+Call symputx(cat('Num_Lot',_N_),Lot);
+IF EOF THEN Call Symput('Nbre_Lot',_N_);
+RUN;
+
+%Macro Transposition_Classe();
+%do i = 1 %to &Nbre_Lot;
+/*%let NumLot = %bquote(')&&Num_Lot&i%bquote(');*/
+%let NumLot = &&Num_Lot&i;
+
+PROC SQL;
+   CREATE TABLE WORK.QUERY_FOR_V_LOTS_SYNTHESE1 AS 
+   SELECT t1.Lot, 
+          t1.'Tri Qte Entr'n, 
+          t1.'Tri Qte Sort'n, 
+          t1.'Tri Rej Total'n, 
+          t1.'Tri Qte Ecart'n, 
+          t1.'Tri Qte M'n, 
+          t1.'Tri Qte Eme'n, 
+          t1.'Tri Qte Rsh'n, 
+          t1.'Tri Qte Idk'n, 
+          t1.'Tri Qte Div'n, 
+          t1.'Tri Qte L-16_4'n, 
+          t1.'Tri Qte L-16_6'n, 
+          t1.'Tri Qte L-16_8'n, 
+          t1.'Tri Qte L-17_2'n, 
+          t1.'Tri Qte L-17_4'n, 
+          t1.'Tri Qte L-17_6'n, 
+          t1.'Tri Qte L-17_8'n, 
+          t1.'Tri Qte L-18_2'n, 
+          t1.'Tri Qte L-18_4'n, 
+          t1.'Tri Qte L-18_6'n, 
+          t1.'Tri Qte L-18_8'n, 
+          t1.'Tri Qte L-16_0'n, 
+          t1.'Tri Qte 16_0'n, 
+          t1.'Tri Qte 16_2'n, 
+          t1.'Tri Qte 16_4'n, 
+          t1.'Tri Qte 16_6'n, 
+          t1.'Tri Qte 16_8'n, 
+          t1.'Tri Qte L-17_0'n, 
+          t1.'Tri Qte 17_0'n, 
+          t1.'Tri Qte 17_2'n, 
+          t1.'Tri Qte 17_4'n, 
+          t1.'Tri Qte 17_6'n, 
+          t1.'Tri Qte 17_8'n, 
+          t1.'Tri Qte L-18_0'n, 
+          t1.'Tri Qte 18_0'n, 
+          t1.'Tri Qte 18_2'n, 
+          t1.'Tri Qte 18_4'n, 
+          t1.'Tri Qte 18_6'n, 
+          t1.'Tri Qte 18_8'n, 
+          t1.'Tri Qte 19_0'n, 
+          t1.'Tri Qte 19_2'n, 
+          t1.'Tri Qte 19_4'n, 
+          t1.'Tri Qte 19_6'n, 
+          t1.'Tri Qte 19_8'n, 
+          t1.'Tri Qte 20_0'n, 
+          t1.'Tri Qte 20_2'n, 
+          t1.'Tri Qte 20_4'n, 
+          t1.'Tri Qte 20_6'n
+      FROM WORK.V_LOTS_SYNTHESE1 t1
+      WHERE t1.Lot="&NumLot";
+QUIT;
+
+PROC SORT
+	DATA=WORK.QUERY_FOR_V_LOTS_SYNTHESE1(KEEP="Tri Qte Entr"n "Tri Qte Sort"n "Tri Rej Total"n "Tri Qte Ecart"n "Tri Qte M"n "Tri Qte Eme"n "Tri Qte Rsh"n "Tri Qte Idk"n "Tri Qte Div"n "Tri Qte L-16_4"n "Tri Qte L-16_6"n
+	  "Tri Qte L-16_8"n "Tri Qte L-17_2"n "Tri Qte L-17_4"n "Tri Qte L-17_6"n "Tri Qte L-17_8"n "Tri Qte L-18_2"n "Tri Qte L-18_4"n "Tri Qte L-18_6"n "Tri Qte L-18_8"n "Tri Qte L-16_0"n "Tri Qte 16_0"n
+	  "Tri Qte 16_2"n "Tri Qte 16_4"n "Tri Qte 16_6"n "Tri Qte 16_8"n "Tri Qte L-17_0"n "Tri Qte 17_0"n "Tri Qte 17_2"n "Tri Qte 17_4"n "Tri Qte 17_6"n "Tri Qte 17_8"n "Tri Qte L-18_0"n "Tri Qte 18_0"n
+	  "Tri Qte 18_2"n "Tri Qte 18_4"n "Tri Qte 18_6"n "Tri Qte 18_8"n "Tri Qte 19_0"n "Tri Qte 19_2"n "Tri Qte 19_4"n "Tri Qte 19_6"n "Tri Qte 19_8"n "Tri Qte 20_0"n "Tri Qte 20_2"n
+	  "Tri Qte 20_4"n "Tri Qte 20_6"n Lot)
+	OUT=WORK.SORTTempTableSorted
+	;
+	BY Lot;
+RUN;
+
+PROC TRANSPOSE DATA=WORK.SORTTempTableSorted
+	/*OUT=WORK.&NumLot (LABEL="&NumLot")*/
+	OUT =  TRNSTransposedQUERY (LABEL= TRNSTransposedQUERY)
+	PREFIX='Quantite'n
+	NAME=Source
+	LABEL='Libellé'n
+;
+	BY Lot;
+	VAR "Tri Qte Entr"n "Tri Qte Sort"n "Tri Rej Total"n "Tri Qte Ecart"n "Tri Qte M"n "Tri Qte Eme"n "Tri Qte Rsh"n "Tri Qte Idk"n "Tri Qte Div"n "Tri Qte L-16_4"n "Tri Qte L-16_6"n "Tri Qte L-16_8"n "Tri Qte L-17_2"n "Tri Qte L-17_4"n "Tri Qte L-17_6"n
+	  "Tri Qte L-17_8"n "Tri Qte L-18_2"n "Tri Qte L-18_4"n "Tri Qte L-18_6"n "Tri Qte L-18_8"n "Tri Qte L-16_0"n "Tri Qte 16_0"n "Tri Qte 16_2"n "Tri Qte 16_4"n "Tri Qte 16_6"n "Tri Qte 16_8"n "Tri Qte L-17_0"n "Tri Qte 17_0"n "Tri Qte 17_2"n
+	  "Tri Qte 17_4"n "Tri Qte 17_6"n "Tri Qte 17_8"n "Tri Qte L-18_0"n "Tri Qte 18_0"n "Tri Qte 18_2"n "Tri Qte 18_4"n "Tri Qte 18_6"n "Tri Qte 18_8"n "Tri Qte 19_0"n "Tri Qte 19_2"n "Tri Qte 19_4"n "Tri Qte 19_6"n "Tri Qte 19_8"n "Tri Qte 20_0"n
+	  "Tri Qte 20_2"n "Tri Qte 20_4"n "Tri Qte 20_6"n;
+RUN; 
+QUIT;
+
+DATA Work.Tampon (keep=Lot Source Quantite1);
+	/*SET Work.&NumLot;*/
+	SET TRNSTransposedQUERY;
+	IF Quantite1 >0 Then Output;
+RUN;
+
+PROC APPEND BASE=WORK.LISTE_LOT_CLASSE FORCE
+			    DATA = Work.Tampon;
+RUN;
+
+%end;
+%mend;
+
+%Transposition_Classe();
+
+PROC SQL;
+CREATE TABLE WORK.TDB_V_LOTS_CLASSE_LIGNE
+AS 
+SELECT 
+	   Datetime() AS Date_Actualisation Format DateTime23.,
+       T.Lot as Lot,
+	   T.Source as Classe,
+	   T.Quantite1 as Quantite,
+	   
+	      t1.Fournisseur as Fournisseur,           
+          t1.Societe as Societe, 
+          t1.'Desox_Equipement'n as Desox_Equipement, 
+          t1.Materiau as Materiau, 
+          t1.'Seri_Equipement'n as Seri_Equipement, 
+          t1.'Tri_Date_Heure_Sort'n as Tri_Date_Heure_Sort, 
+          t1.'Tri_Date_Poste'n as Tri_Date_Poste,
+		  t1.'Tri_Poste'n as Tri_Poste
+
+		  FROM 
+		  		LISTE_LOT_CLASSE AS T
+					INNER JOIN
+				WORK.V_LOTS_SYNTHESE1 AS T1
+					ON T.Lot = T1.Lot;
+RUN;
+
+PROC APPEND BASE=STATS.TDB_V_LOTS_CLASSE_LIGNE FORCE
+			    DATA = Work.TDB_V_LOTS_CLASSE_LIGNE;
+RUN;
+

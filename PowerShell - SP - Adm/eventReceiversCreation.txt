@@ -1,0 +1,66 @@
+# D'après l'article de Brian Jackett
+# http://geekswithblogs.net/bjackett/archive/2013/08/26/powershell-script-to-workaround-no-data-in-sharepoint-2013-usage.aspx
+
+============================= Version anglaise =======================
+
+$aud = Get-SPUsageDefinition | where {$_.Name -like "Analytics*"} 
+$aud | fl 
+
+$prud = Get-SPUsageDefinition | where {$_.Name -like "Page Requests"}  
+$prud | fl 
+
+============================ Version française ======================
+
+$aud = Get-SPUsageDefinition | where {$_.Name -like "Statistiques*"} 
+$aud | fl 
+
+$prud = Get-SPUsageDefinition | where {$_.Name -like "Demandes de visite de pages"}  
+$prud | fl 
+
+======================================================================
+
+
+
+if((Get-PSSnapin -Name Microsoft.SharePoint.PowerShell) -eq $null) 
+{ 
+    Add-PSSnapin Microsoft.SharePoint.PowerShell 
+} 
+
+
+$aud = Get-SPUsageDefinition | where {$_.Name -like "Statistiques*"} 
+
+# if analytics usage definition receivers is empty then manually add back receiver 
+if($aud.Receivers.Count -eq 0) 
+{ 
+    $aud.Receivers.Add("Microsoft.Office.Server.Search.Applications, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c", "Microsoft.Office.Server.Search.Analytics.Internal.AnalyticsCustomRequestUsageReceiver") 
+} 
+
+# if analytics usage definition receiver is not enabled then enable it 
+if($aud.EnableReceivers -eq $false) 
+{ 
+    $aud.EnableReceivers = $true 
+    $aud.Update() 
+} 
+
+$aud | fl 
+
+
+$prud = Get-SPUsageDefinition | where {$_.Name -like "Demandes de visite de pages"}  
+
+# if page requests usage definition receivers is empty then manually add back receiver 
+if($prud.Receivers.Count -eq 0) 
+{ 
+    $prud.Receivers.Add("Microsoft.Office.Server.Search.Applications, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c", "Microsoft.Office.Server.Search.Analytics.Internal.ViewRequestUsageReceiver")  
+} 
+
+# if page requests usage definition receiver is not enabled then enable it 
+if($prud.EnableReceivers -eq $false) 
+{ 
+    $prud.EnableReceivers = $true 
+    $prud.Update() 
+} 
+
+$prud | fl 
+
+==============================================================================
+Ne pas oublier de recycler le SharePoint Timer Service sur chaque serveur

@@ -1,0 +1,4 @@
+Data _null_ ;
+X ‘robocopy \\srv-sas\Donnees_SAS\DTM_PRO D:\SAS\AUTOLOAD dtm_pro_trac_wafers.sas7bdat’;                                                                                        ;
+Run;
+

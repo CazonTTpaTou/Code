@@ -1,0 +1,64 @@
+/* -------------------------------------------------------------------
+   Code généré par une tâche SAS
+
+   Généré le : dimanche 21 janvier 2018 à 19:53:10
+   Par tâche : Normaliser les données
+
+   Données d'entrée : SASApp:WORK.FILTER_FOR_DATA_HENNECKE_2_MOIS
+   Serveur :  SASApp
+   ------------------------------------------------------------------- */
+
+%_eg_conditional_dropds(WORK.SORTTempTableSorted,
+		WORK.TMP0TempTableKeepOldVarNames,
+		WORK.STNDStandardizedFILTER_FOR_DATA_);
+/* -------------------------------------------------------------------
+   Trier la table SASApp:WORK.FILTER_FOR_DATA_HENNECKE_2_MOIS
+   ------------------------------------------------------------------- */
+
+PROC SQL;
+	CREATE VIEW WORK.SORTTempTableSorted AS
+		SELECT *
+	FROM STATS.DATA_HENNECKE_2_MOIS
+;
+QUIT;
+
+/* -------------------------------------------------------------------
+   Créer les nouvelles variables de sortie
+   ------------------------------------------------------------------- */
+DATA WORK.TMP0TempTableKeepOldVarNames;
+	SET WORK.SORTTempTableSorted;
+	stnd_BOW = BOW;
+	LABEL stnd_BOW="BOW normalisé : moyenne = 0 écart-type = 1";
+	stnd_SawEdge = SawEdge;
+	LABEL stnd_SawEdge="SawEdge normalisé : moyenne = 0 écart-type = 1";
+	stnd_SawGroove = SawGroove;
+	LABEL stnd_SawGroove="SawGroove normalisé : moyenne = 0 écart-type = 1";
+	stnd_SawStep = SawStep;
+	LABEL stnd_SawStep="SawStep normalisé : moyenne = 0 écart-type = 1";
+	stnd_TTV = TTV;
+	LABEL stnd_TTV="TTV normalisé : moyenne = 0 écart-type = 1";
+	stnd_Thickn = Thickn;
+	LABEL stnd_Thickn="Thickn normalisé : moyenne = 0 écart-type = 1";
+	stnd_ThPt = ThPt;
+	LABEL stnd_ThPt="ThPt normalisé : moyenne = 0 écart-type = 1";
+RUN;
+
+/* -------------------------------------------------------------------
+   Exécuter la procédure de normalisation
+   ------------------------------------------------------------------- */
+PROC STANDARD
+DATA=WORK.TMP0TempTableKeepOldVarNames
+OUT=WORK.STNDStandardizedFILTER_FOR_DATA_(LABEL="WORK.FILTER_FOR_DATA_HENNECKE_2_MOIS normalisé")
+	MEAN=0
+	STD=1
+	;
+	VAR stnd_BOW stnd_SawEdge stnd_SawGroove stnd_SawStep stnd_TTV stnd_Thickn stnd_ThPt;
+
+RUN;
+/* -------------------------------------------------------------------
+   Fin du code de la tâche.
+   ------------------------------------------------------------------- */
+RUN; QUIT;
+%_eg_conditional_dropds(WORK.SORTTempTableSorted,
+		WORK.TMP0TempTableKeepOldVarNames);
+TITLE; FOOTNOTE;

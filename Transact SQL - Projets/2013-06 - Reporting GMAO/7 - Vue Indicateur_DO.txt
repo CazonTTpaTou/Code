@@ -1,0 +1,96 @@
+/****** Object:  View [dbo].[Vue_Indicateur_DO_Equipement]    Script Date: 07/04/2013 14:25:09 ******/
+
+CREATE VIEW [dbo].[Vue_Indicateur_DO_Equipement]
+AS
+------------------------------------------------------------------------
+WITH T_INTERVAL_ITV AS
+(SELECT equ.Libelle as ITV_ITEM,Equ.idEquipement as ITV_ID,
+rea.DebutArret as ITV_DEBUT,rea.FinArret as ITV_FIN
+	FROM dbo.Realisation as rea
+	
+inner join dbo.Intervention as inter
+on rea.idIntervention = inter.idIntervention
+
+inner join Demande as dem
+on dem.idDemande = inter.idDemande
+
+inner join dbo.Equipement as Equ
+on dem.idEquipement = Equ.idEquipement
+
+where not(rea.DebutArret is null) and not (rea.FinArret is null) ),
+------------------------------------------------------------------------
+T_DEBUT AS 
+( 
+SELECT U.ITV_ID,U.ITV_ITEM, ST.ITV_DEBUT, 
+       ROW_NUMBER() OVER(PARTITION BY U.ITV_ITEM ORDER BY ST.ITV_DEBUT) AS row_num 
+FROM   (SELECT DISTINCT ITV_ID,ITV_ITEM 
+        FROM   T_INTERVAL_ITV) AS U 
+               CROSS APPLY (SELECT DISTINCT S1.ITV_DEBUT 
+                            FROM   (SELECT S.ITV_DEBUT, ROW_NUMBER() OVER(ORDER BY S.ITV_DEBUT) AS row_num 
+                                    FROM   T_INTERVAL_ITV AS S 
+                                    WHERE S.ITV_ITEM = U.ITV_ITEM) AS S1 
+                                   LEFT OUTER JOIN (SELECT S.ITV_FIN, ROW_NUMBER() OVER(ORDER BY S.ITV_DEBUT) AS row_num 
+                                                    FROM   T_INTERVAL_ITV AS S 
+                                                    WHERE  S.ITV_ITEM = U.ITV_ITEM) AS S2 
+                                        ON S2.row_num = S1.row_num - 1 
+                                           AND S2.ITV_FIN >= S1.ITV_DEBUT 
+                            WHERE S2.row_num IS NULL) AS ST), 
+------------------------------------------------------------------------                            
+T_FIN AS 
+(SELECT U.ITV_ITEM, ET.ITV_FIN, ROW_NUMBER() OVER(PARTITION BY U.ITV_ITEM ORDER BY ET.ITV_FIN) AS row_num 
+ FROM   (SELECT DISTINCT ITV_ITEM 
+         FROM   T_INTERVAL_ITV) AS U 
+                CROSS APPLY (SELECT DISTINCT S1.ITV_FIN 
+                             FROM   (SELECT S.ITV_FIN, ROW_NUMBER() OVER(ORDER BY S.ITV_FIN) AS row_num 
+                                     FROM T_INTERVAL_ITV AS S 
+                                     WHERE S.ITV_ITEM = U.ITV_ITEM) AS S1 
+                                    LEFT OUTER JOIN (SELECT S.ITV_DEBUT, ROW_NUMBER() OVER(ORDER BY S.ITV_FIN) AS row_num 
+                                                     FROM   T_INTERVAL_ITV AS S 
+                                                     WHERE S.ITV_ITEM = U.ITV_ITEM) AS S2 
+                                         ON S2.row_num = S1.row_num + 1 
+                                            AND S2.ITV_DEBUT <= S1.ITV_FIN 
+                             WHERE S2.row_num IS NULL) AS ET), 
+------------------------------------------------------------------------                             
+T_ArretBrut AS
+(select 
+		V.ITV_ID,J.DateJour,V.ITV_ITEM,
+		
+		Case When ITV_DEBUT>=DateJour 
+			Then ITV_Debut 
+			Else DateJour 
+			End as DateDebut,
+		
+		Case When ITV_FIN <= DateAdd(day,1,J.DateJour) 
+			Then ITV_FIN 
+			Else DateAdd(day,1,J.DateJour) 
+			End as DateFin		
+		
+		FROM Vue_Calendrier as J,
+		
+		(SELECT TD.ITV_ID,TD.ITV_ITEM, TD.ITV_DEBUT, TF.ITV_FIN 
+			FROM   T_DEBUT AS TD 
+				INNER JOIN T_FIN AS TF 
+				ON TF.ITV_ITEM = TD.ITV_ITEM 
+                AND TF.row_num = TD.row_num)  as V
+                
+         WHERE J.DateJour <= V.ITV_Fin 
+           and J.DateJour >= 
+			   CAST(FLOOR(CAST(V.ITV_Debut AS FLOAT)) AS DATETIME)),
+------------------------------------------------------------------------
+T_DureeArret AS (					   
+select ITV_ID,DateJour,ITV_ITEM,dateDebut,Datefin,
+	   DATEDIFF("N",DateDebut,DateFin) as duree
+ from T_ArretBrut)
+------------------------------------------------------------------------ 
+
+select ITV_ID as Numero,ITV_ITEM as Equipement,DateJour as Date_Jour,
+cast(sum(duree)/60.00 as decimal(18,2)) as Tps_Arret_h,
+COUNT(duree) as Nb_Arret,24 as Tps_Bon_Fonctionnement
+	from T_DureeArret
+		where duree > 0
+	group by ITV_ID,ITV_ITEM,DateJour
+	
+
+GO
+
+

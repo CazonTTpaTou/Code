@@ -1,0 +1,63 @@
+################################## Activite - Test Equiprobabilité des naissances en 2014 ##############################
+
+# On considère que l'hypothèse gaussienne est acceptable car :
+#              n x p0 x (1 - p0) = 195291,75 
+#                                > 5
+
+################################### Question 1 : Test d'équiprobabilité ################################### 
+
+# H0 : Le taux de naissance des femmes en 2014 est équi-probable avec celui des hommes
+# H1 : La taux de naissance des femmes en 2014 n'est pas équiprobable avec celui des hommes
+
+# H0 : p0 = 0.5
+# H0 : p0 <> 0.5
+
+La p-value a pour valeur : 0
+
+################################### Question 1 - Bis : Test d'équiprobabilité ################################### 
+
+# H0 : Le taux de naissance des hommes en 2014 est équi-probable avec celui des femmes
+# H1 : La taux de naissance des hommes en 2014 n'est pas équiprobable avec celui des femmes
+
+# H0 : p0 = 0.5
+# H0 : p0 <> 0.5
+
+La p-value a pour valeur :  0
+
+####### Question 2 ###########################################################
+
+Non, on accepte pas l'hypothèse Ho d'équiprobabilité au seuil de 5% 
+Car la p value est égale à 0 et donc inférieure à 0.05"
+
+On rejette donc l'hypothèse nulle d'équiprobabilité des naissances !!
+
+###### Question 3 #######################################################
+
+Taille Echantillon :  100
+
+Nombre de femmes : 49
+Nombre d'hommes : 51
+
+Taille Echantillon : 1000
+Nombre de femmes : 489
+Nombre d'hommes : 511
+
+Taille Echantillon : 10000
+
+Nombre de femmes : 4889
+Nombre d'hommes : 5111
+
+#### Question n° 4 #########################################################
+
+Taille échantillon = 100 - p-value = 0.9 - On accepte H0 l'hypothèse d'équiprobabilité des naissances !!
+------------------------------------------------------------
+Taille échantillon = 1000 - p-value = 0 - On rejette H0 l'hypothèse d'équiprobabilité des naissances !!
+------------------------------------------------------------
+Taille échantillon = 10000 - p-value = 0 - On rejette H0 l'hypothèse d'équiprobabilité des naissances !!
+------------------------------------------------------------
+
+#########################################################################################################   
+
+
+
+

@@ -1,0 +1,24 @@
+PROC SORT
+	DATA=WORK.QUERY_FOR_V_LOTS_SYNTHESE1(KEEP="Tri Qte Entr"n "Tri Qte Sort"n "Tri Rej Total"n "Tri Qte Ecart"n "Tri Qte M"n "Tri Qte Eme"n "Tri Qte Rsh"n "Tri Qte Idk"n "Tri Qte Div"n "Tri Qte L-16_4"n "Tri Qte L-16_6"n
+	  "Tri Qte L-16_8"n "Tri Qte L-17_2"n "Tri Qte L-17_4"n "Tri Qte L-17_6"n "Tri Qte L-17_8"n "Tri Qte L-18_2"n "Tri Qte L-18_4"n "Tri Qte L-18_6"n "Tri Qte L-18_8"n "Tri Qte L-16_0"n "Tri Qte 16_0"n
+	  "Tri Qte 16_2"n "Tri Qte 16_4"n "Tri Qte 16_6"n "Tri Qte 16_8"n "Tri Qte L-17_0"n "Tri Qte 17_0"n "Tri Qte 17_2"n "Tri Qte 17_4"n "Tri Qte 17_6"n "Tri Qte 17_8"n "Tri Qte L-18_0"n "Tri Qte 18_0"n
+	  "Tri Qte 18_2"n "Tri Qte 18_4"n "Tri Qte 18_6"n "Tri Qte 18_8"n "Tri Qte 19_0"n "Tri Qte 19_2"n "Tri Qte 19_4"n "Tri Qte 19_6"n "Tri Qte 19_8"n "Tri Qte 20_0"n "Tri Qte 20_2"n
+	  "Tri Qte 20_4"n "Tri Qte 20_6"n Lot)
+	OUT=WORK.SORTTempTableSorted
+	;
+	BY Lot;
+RUN;
+
+PROC TRANSPOSE DATA=WORK.SORTTempTableSorted
+	OUT=WORK.&NumLot (LABEL="&NumLot")
+	PREFIX='Quantité'n
+	NAME=Source
+	LABEL='Libellé'n
+;
+	BY Lot;
+	VAR "Tri Qte Entr"n "Tri Qte Sort"n "Tri Rej Total"n "Tri Qte Ecart"n "Tri Qte M"n "Tri Qte Eme"n "Tri Qte Rsh"n "Tri Qte Idk"n "Tri Qte Div"n "Tri Qte L-16_4"n "Tri Qte L-16_6"n "Tri Qte L-16_8"n "Tri Qte L-17_2"n "Tri Qte L-17_4"n "Tri Qte L-17_6"n
+	  "Tri Qte L-17_8"n "Tri Qte L-18_2"n "Tri Qte L-18_4"n "Tri Qte L-18_6"n "Tri Qte L-18_8"n "Tri Qte L-16_0"n "Tri Qte 16_0"n "Tri Qte 16_2"n "Tri Qte 16_4"n "Tri Qte 16_6"n "Tri Qte 16_8"n "Tri Qte L-17_0"n "Tri Qte 17_0"n "Tri Qte 17_2"n
+	  "Tri Qte 17_4"n "Tri Qte 17_6"n "Tri Qte 17_8"n "Tri Qte L-18_0"n "Tri Qte 18_0"n "Tri Qte 18_2"n "Tri Qte 18_4"n "Tri Qte 18_6"n "Tri Qte 18_8"n "Tri Qte 19_0"n "Tri Qte 19_2"n "Tri Qte 19_4"n "Tri Qte 19_6"n "Tri Qte 19_8"n "Tri Qte 20_0"n
+	  "Tri Qte 20_2"n "Tri Qte 20_4"n "Tri Qte 20_6"n;
+RUN; 
+QUIT;

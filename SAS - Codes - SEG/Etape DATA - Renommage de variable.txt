@@ -1,0 +1,29 @@
+DATA Work.ALPHA (keep= Horodatage Reflectivite Conductivite Concentration);
+length Horodatage       $18.
+       Reflectivite 3.
+       Conductivite 3.
+       Concentration 3.;
+/*input Horodatage     
+       Reflectivite 
+       Conductivite 
+       Concentration ;*/
+	   
+ /*FORMAT
+        Horodatage       DATETIME18.
+        Valeur_Reflectivite_1 BEST3.
+        Conductivite_HF_HCL BEST3.
+        Concentration_Effective_M02 BEST3. ;*/
+SET work.F_20161204000011_TEXTURISATION2;
+/*Horodatage=input('Texturisation Schmid'n,DATETIME18.);*/
+Horodatage='Texturisation Schmid'n;
+Reflectivite=F2;
+Conductivite=F3;
+Concentration=F4;
+/*format Horodatage       DATETIME18.;*/
+if _N_=1 then delete;
+if _N_=2 then delete;
+RUN;
+
+
+
+

@@ -1,0 +1,10 @@
+%let Cthick1=180;
+%let Cthick2=220;
+
+Data Work.Application_Stockee;
+Set Training.application_Stockee (obs=2000);
+where intck('week',datepart(Time),date()) <= 7;
+if (Thickn>=&Cthick1 and Thickn <=&Cthick2) Then Defaut_Thickness=0;
+else Defaut_Thickness=1;
+RUN;
+

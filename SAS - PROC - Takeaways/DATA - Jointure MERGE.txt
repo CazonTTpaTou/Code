@@ -1,0 +1,20 @@
+DATA Work.Emplacement;
+SET GMAO.SAS_Dimension_Emplacement_Tr;
+RUN;
+DATA Work.Suivi_DI;
+SET GMAO.SAS_Table_Faits_Suivi_DI;
+RUN;
+
+proc sort data=Work.Suivi_DI;
+    by Code_Emplacement;
+run;
+
+proc sort data=Work.Emplacement;
+    by Code_Emplacement;
+run;
+
+data final;
+    merge Work.Suivi_DI Work.Emplacement;
+    by Code_Emplacement;
+run;
+

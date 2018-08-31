@@ -1,0 +1,25 @@
+CREATE FUNCTION dbo.f_semaine (@D DATE)
+RETURNS @T TABLE(JOUR DATE,NOM_JOUR VARCHAR(8)) 
+AS 
+	BEGIN 
+	WHILE DATEPART(weekday,@D)<>1 
+		SET @D = DATEADD(day,-1,@D);
+	INSERT INTO @T SELECT @D,DATENAME(weekday,@D);
+	SET @D = DATEADD(day,1,@D);
+	INSERT INTO @T SELECT @D,DATENAME(weekday,@D);
+	SET @D = DATEADD(day,1,@D);
+		INSERT INTO @T SELECT @D,DATENAME(weekday,@D);
+	SET @D = DATEADD(day,1,@D);
+		INSERT INTO @T SELECT @D,DATENAME(weekday,@D);
+	SET @D = DATEADD(day,1,@D);
+		INSERT INTO @T SELECT @D,DATENAME(weekday,@D);
+	SET @D = DATEADD(day,1,@D);
+		INSERT INTO @T SELECT @D,DATENAME(weekday,@D);
+	SET @D = DATEADD(day,1,@D);
+		INSERT INTO @T SELECT @D,DATENAME(weekday,@D);
+	RETURN;
+END
+GO
+
+SELECT * FROM [dbo].[Intervention] --TABLESAMPLE(1 PERCENT)
+CROSS APPLY dbo.f_semaine(DateCreation);

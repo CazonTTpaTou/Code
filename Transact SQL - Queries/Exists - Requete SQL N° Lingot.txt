@@ -1,0 +1,12 @@
+SELECT T1.[Lingot1],T1.[Lingot2],T2.[DateDebPosteSortTri],T2.[Lot],
+case  T2.IdAtelierInitial When 1 Then 'PWT' Else 'PVA' END AS 'Atelier Initial',
+case  T2.IdAtelierFinal When 1 Then 'PWT' Else 'PVA' END AS 'Atelier Final'
+FROM [dbo].[TC_LOT_LINGOT] AS T1
+INNER JOIN [dbo].[T_LOT] AS T2
+ON T1.IdLot = T2.IdLot
+WHERE T1.[Lingot1] like '0' 
+--AND coalesce(T1.[Lingot2],'0') like '0'
+ORDER BY T2.[DateDebPosteSortTri] DESC;
+--ORDER BY T1.Lingot1 DESC;
+
+GO

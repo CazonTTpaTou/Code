@@ -1,0 +1,3 @@
+Concatenate(
+Concatenate('Semaine'n,' - '),
+Format('Jour'n[Raw], 'BEST12.'))

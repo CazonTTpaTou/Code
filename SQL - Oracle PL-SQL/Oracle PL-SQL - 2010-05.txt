@@ -1,0 +1,108 @@
+Exercice n°1.
+
+1) Expression des conditions des requêtes R1 et R2. 
+
+Soient R1 et R2 les deux requêtes les plus fréquentes:
+
+R1: SELECT ville,nbh FROM Localite WHERE pays LIKE '%u%' AND nbh >= 400 ;
+R2: SELECT ville FROM LOCALITE WHERE nbh < 400 ;
+
+Etape n° 1: Définition des variables.
+
+On pose A: pays LIKE '%u%'.
+On pose B: nbh >= 400.
+
+Etape n°2: Formalisation des clauses Where de R1 et R2:
+
+¦ C1 = A ? B
+¦ C2 = ¬ B
+
+2) Calcul des conjonctions de conditions.
+
+Etape n°3: Identification des fragments horizontaux potentiels:
+
+A partir des conditions Ci, on peut construire l'ensemble des conjonctions CCj de conditions :
+
+CC = { ? Ci* pour i = 1,n et Ci* = Ci ou  ¬Ci}
+
+On a donc  ¦ CC1 = C1 ? C2
+                  ¦ CC2 = C1 ? ¬C2
+	      ¦ CC3 = ¬C1 ? C2
+	      ¦ CC4 = ¬C1 ? ¬C2
+
+Etape n°4: Calcul des conjonctions de conditions:
+
+¦ CC1 = C1 ? C2
+¦ CC1 = A ? B ? ¬ B
+¦ CC1 = A ? Ø
+¦ CC1 = Ø
+
+¦ CC2 = C1 ? ¬C2
+¦ CC2 = A ? B ? B
+¦ CC2 = A ? B
+
+¦ CC3 = ¬C1 ? C2
+¦ CC3 = ¬ (A ? B) ? ¬ B
+¦ CC3 = ( ¬ A ?¬ B ) ? ¬ B
+¦ CC3 = (¬ A ? ¬ B ) ? (¬ B ? ¬ B )
+¦ CC3 = (¬ A ? ¬ B ) ? ¬ B
+¦ CC3 = ¬ B
+
+¦ CC4 = ¬C1 ? ¬C2
+¦ CC4 = ¬ (A ? B) ? ¬B
+¦ CC4 = ( ¬ A ?¬ B ) ? B
+¦ CC4 = (¬ A ?  B ) ? (¬ B ?  B )
+¦ CC4 = (¬ A ?  B ) ?Ø
+¦ CC4 = ¬ A ?  B 
+
+3) Fragmentation horizontale.
+
+Etape n°5: Simplification et identification des fragments utiles:
+
+?Fragment n°1: CC2 = A ? B
+Les pays ayant un u dans leur nom et ayant plus de 400 000 habitants.
+
+?Fragment n°2: CC3 = ¬ B
+Tous les pays de moins de 400 000 habitants.
+
+?Fragment n°3: CC4 = ¬ A ?  B 
+Les pays sans u dans leur nom et ayant plus de 400 000 habitants.
+
+Etape n°6: Détermination des fragments horizontaux:
+
+
+ 
+
+4) Fragmentation verticale.
+
+Etape n°1: Définition des variables:
+  P1 = (ville, nbh)
+~P1 = (ville,pays)
+
+  P2 = (ville)
+~P2 = (ville,nbh,pays)
+
+Etape n°2: Etude des fragments horizontaux:
+
+?Fragment n°1:
+F1 est pertinent pour R1.
+	Attributs utiles pour R1: P1 = (ville, nbh)
+	Attributs inutiles pour R1: ~P1 = (ville,pays)
+
+?Fragment n°2:
+F2 est pertinent pour R2.
+	Attributs utiles pour R2: P2 = (ville)
+	Attributs inutiles pour R2: ~P2 = (ville, nbh, pays)
+
+?Fragment n°3: Non considéré utile pour R1 et R2.
+
+Etape n°3: Définition des fragments verticaux:
+
+IP1 = { (ville, nbh) , (ville,pays) } ;
+IP2 = { (ville), (ville, nbh, pays) } ;
+IP3 = { (ville, nbh, pays) } ;
+
+Etape n°4: Détermination des fragments verticaux:
+
+ 
+

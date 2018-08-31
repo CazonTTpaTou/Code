@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="jquery-1.11.1.min.js"></script>
+    <link href="Intranet_MP.css" rel="stylesheet" />
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("ul.subnav").parent().append("<span></span>"); //Only shows drop down trigger when js is enabled (Adds empty span tag after ul.subnav*)
+
+            $("ul.topnav li span").hover(function () { //When trigger is clicked...
+                $(this).parent().find("ul.subnav").slideDown('fast').show(); //Drop down the subnav on click
+
+                $(this).parent().hover(function () {
+                }, function () {
+                    $(this).parent().find("ul.subnav").slideUp('slow'); //When the mouse hovers out of the subnav, move it back up
+                });
+
+                //Following events are applied to the trigger (Hover events for the trigger)
+            }).hover(function () {
+                $(this).addClass("subhover"); //On hover over, add class "subhover"
+            }, function () {	
+                $(this).removeClass("subhover"); //On hover out, remove class "subhover"
+            });
+		$('#suiteBar').hide();
+
+        });
+    </script>
+
+    <title></title>
+</head>
+<body>
+
+    <!-- DEBUT HEADER -->
+    <div id="header">
+        <p><a href="/"><img class="logo" src="/LogoPWT.png" alt="logo" /></a></p>
+    </div>
+    <!-- FIN HEADER -->
+    
+    <!-- DEBUT MENU -->
+    <div class="Conteneur" xmlns="http://www.w3.org/1999/xhtml">
+        <div class="Menu" id="Bord_Gauche"></div>        
+        <div class="Menu">
+            <div class="Menu" id="Triangle_Gauche"></div>
+            <ul class="topnav">
+                <li>
+                    <a href="#">Informations générales</a>
+                    <ul class="subnav">
+                        <li><a href="#">1. Organigramme</a></li>
+                        <li><a href="#">2. Liste téléphonique</a></li>
+                        <li><a href="#">3. Plan d'accès</a></li>
+                        <li><a href="#">4. Autorisation prestataire</a></li>
+                        <li><a href="#">5. Calendrier astreintes</a></li>
+                        <li><a href="#">6. Secouristes de garde</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Achats</a>
+                    <ul class="subnav">
+                        <li><a href="#">1. Création DA</a></li>
+                        <li><a href="#">2. DA en cours</a></li>
+                        <li><a href="#">3. DA soldées</a></li>
+                        <li><a href="#">4. DA refusées</a></li>
+                    </ul>
+                </li>                
+                <li>
+                    <a href="#">Communication</a>
+                    <ul class="subnav">
+                        <li><a href="#">1. EDF communication</a></li>
+                        <li><a href="#">2. Notes de service</a></li>
+                        <li><a href="#">3. CR Production</a></li>
+                        <li><a href="#">4. News PhotoWatt</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">HSE</a>
+                    <ul class="subnav">
+                        <li><a href="#">1. CHSCT</a></li>
+                        <li><a href="#">2. Documents uniques</a></li>
+                        <li><a href="#">3. Formations et habilitations</a></li>
+                        <li><a href="#">4. Informations HSE</a></li>
+                        <li><a href="#">5. Produits chimiques</a></li>
+                        <li><a href="#">6. QRQC HSE</a></li>
+                        <li><a href="#">7. Soins et AT</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Informatique</a>
+                    <ul class="subnav">
+                        <li><a href="#">1. Demande accès</a></li>
+                        <li><a href="#">2. Procédures</a></li>
+                    </ul>
+                </li>                
+                <li>
+                    <a href="#">Qualité</a>
+                    <ul class="subnav">
+                        <li><a href="#">1. Liste des procédures</a></li>
+                        <li><a href="#">2. Modes opératoires</a></li>
+                        <li><a href="#">3. Processus</a></li>
+                        <li><a href="#">4. Sécurité</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">RH</a>
+                    <ul class="subnav">
+                        <li><a href="#">1. Formulaires RH</a></li>
+                        <li><a href="#">2. Accords collectifs</a></li>
+                        <li><a href="#">3. Réglements</a></li>
+                        <li><a href="#">4. Espace mobilité</a></li>
+                        <li><a href="#">5. Délégués personnel</a></li>
+                        <li><a href="#">6. Formation</a></li>
+                        <li><a href="#">7. Demande de congés</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">CE</a>
+                    <ul class="subnav">
+                        <li><a href="#">1. Annonces</a></li>
+                        <li><a href="#">2. Documents</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="Menu" id="Triangle_Droit"></div>
+        </div>       
+    </div>
+    <!-- FIN MENU -->
+
+    <!-- Début des liens-->
+    <div id="Autres_Liens">
+        <h3 id="Titre_Lien">Autres liens</h3>
+        <ul id="Liste_Liens">
+            <li><a href="https://mail.photowatt.com/"><img src="/PublishingImages/Messagerie.png" /></a></li>
+            <li><a href="https://mail.photowatt.com/">Messagerie</a></li>
+            <li><a href="https://secure.photowatt.com/HomePage.do"><img src="/PublishingImages/Pictogramme.png" /></a></li>
+            <li><a href="https://secure.photowatt.com/HomePage.do">Hotline</a></li>
+            <li><a href="http://www.photowatt.com/"><img src="/PublishingImages/Picto1.png" /></a></li>
+            <li><a href="http://www.photowatt.com/">Site PWT</a></li>
+            <li><a href="http://www.edfenr.com/"><img src="/PublishingImages/Picto2.png" /></a></li>
+            <li><a href="http://www.edfenr.com/">Site EDF EN</a></li>
+            <li><a href="http://france.edf.com/france-45634.html"><img src="/PublishingImages/Pictogramme.png" /></a></li>
+            <li><a href="http://france.edf.com/france-45634.html">Site EDF SA</a></li>
+            <li><a href="http://energie.edf.com/energies-nouvelles/solaire-51214.html"><img src="/PublishingImages/picto1.png" /></a></li>
+            <li><a href="http://energie.edf.com/energies-nouvelles/solaire-51214.html">ENRS</a></li>
+        </ul>
+    </div>
+    <!-- Fin des liens-->
+</body>
+
+</html>
+
+

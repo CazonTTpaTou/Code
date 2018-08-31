@@ -1,0 +1,6 @@
+insert into ligne_commande (numero_com,numero_livre,quantite) VALUES (3035,21,-2);
+insert into commande (Numero_Client,date,port,catalogue,livraison) VALUES (1943,'2010-07-29',-30,1,1);
+select * from ligne_commande where numero_com=3009;
+insert into ligne_commande (numero_com,numero_livre,quantite) VALUES (3036,7,-12);
+insert into ligne_commande (numero_com,numero_livre,quantite) VALUES (3036,9,-1);
+insert into ligne_commande (numero_com,numero_livre,quantite) VALUES (3036,21,-2);insert into commande (Numero_Client,date,port,catalogue,livraison) VALUES (1943,'2010-08-7',-5,1,1);select * from ligne_commande where numero_com=3011;insert into ligne_commande (numero_com,numero_livre,quantite) VALUES (3041,5,-3);

@@ -1,0 +1,153 @@
+Public Const delai_base_COFRAC = 33
+Public Const delai_urgent_COFRAC = 39
+
+Sub insertDateCOFRAC(dateInser As Date)
+
+Dim annee(1 To 14) As Integer
+
+annee(1) = 2009
+annee(2) = 2010
+annee(3) = 2011
+annee(4) = 2012
+annee(5) = 2013
+annee(6) = 2014
+annee(7) = 2015
+annee(8) = 2016
+annee(9) = 2017
+annee(10) = 2018
+annee(11) = 2019
+annee(12) = 2020
+
+ligne = ActiveCell.Row
+Col = ActiveCell.Column
+
+DateInsert = Format(dateInser, "mmm")
+ActiveCell.value = DateInsert
+Cells(ActiveCell.Row, 25).value = DateAdd("m", delai_base_COFRAC, dateInser)
+Cells(ActiveCell.Row, 26).value = DateAdd("m", delai_urgent_COFRAC, dateInser)
+
+For i = 2 To 13
+    Cells(ligne, i).Select
+    Selection.ClearComments
+    If annee(i - 1) = Year(DateAdd("m", delai_base_COFRAC, dateInser)) Then
+        'MsgBox ("valeur de i " & i & "Année " & annee(i)) & " Year : " & Year(DateAdd("m", delai_base_COFRAC, dateInser))
+        Message = "Formation " & Cells(5, 25).value & Chr(10) & "Pour " & Cells(ligne, 1).value & Chr(10) & "Prévue entre : " & Chr(10)
+        Message = Message & "Le " & DateAdd("m", delai_base_COFRAC, dateInser) & Chr(10) & "Et le " & DateAdd("m", delai_urgent_COFRAC, dateInser)
+        Selection.AddComment
+        Selection.Comment.Visible = False
+        Selection.Comment.text text:=Message
+    End If
+Next i
+
+Cells(ligne, Col + 2).Select
+
+End Sub
+
+
+
+Sub Calendrier_COFRAC(ByVal Target As Range)
+
+Set ZoneD = Range("B6:M1000")
+
+' On détermine l'heure et la date courante
+annee = Target.Column - 2
+moisM = Month(Date) - 1
+jour = 0
+
+' Si la cellule cliquée appartient à la zone de date détectée alors on affiche le formulaire de date
+If Not ((Intersect(Target, ZoneD) Is Nothing)) Then
+
+    UserForm2.ComboBox1.ListIndex = moisM
+    UserForm2.ComboBox2.ListIndex = jour
+    UserForm2.ComboBox3.ListIndex = annee
+    UserForm2.ComboBox3.Enabled = False
+    UserForm2.ComboBox2.Enabled = False
+    UserForm2.Show
+   
+End If
+
+End Sub
+
+
+Sub DeterMois_COFRAC()
+
+ligne = 6
+tampon = 0
+
+'delai_base_COFRAC = 21
+'delai_urgent_COFRAC = 27
+
+mois(1) = "janvier"
+mois(2) = "février"
+mois(3) = "mars"
+mois(4) = "avril"
+mois(5) = "mai"
+mois(6) = "juin"
+mois(7) = "juillet"
+mois(8) = "aout"
+mois(9) = "septembre"
+mois(10) = "octobre"
+mois(11) = "novembre"
+mois(12) = "décembre"
+
+Do While (ligne < 140)
+
+For j = 1 To 4
+
+Cells(ligne, j + 1).Select
+
+If ActiveCell.value <> "" Then
+For i = 1 To 12
+    If Trim(LCase((ActiveCell.value))) = Trim(LCase(mois(i))) Then
+        tampon = i
+    End If
+Next i
+
+If tampon <> 0 Then
+    annee = ActiveCell.Column + 2007
+    jour = 1
+    dateInser = DateSerial(annee, tampon, jour)
+    'Cells(ActiveCell.Row, 25).Value = dateInser
+    'Cells(ActiveCell.Row, 25).Value = DateAdd("m", delai_base, dateInser)
+    'Cells(ActiveCell.Row, 25).Value = DateSerial(annee, tampon + delai_base, jour)
+    'Cells(ActiveCell.Row, 26).Value = DateSerial(annee, tampon + delai_urgent, jour)
+    Cells(ActiveCell.Row, 25).value = DateAdd("m", delai_base_COFRAC, dateInser)
+    Cells(ActiveCell.Row, 26).value = DateAdd("m", delai_urgent_COFRAC, dateInser)
+End If
+End If
+
+Next j
+
+ligne = ligne + 1
+Loop
+
+End Sub
+
+Sub Validation()
+
+Set Zone = Range("B6:M200")
+
+For Each cellule In Zone
+
+    cellule.Select
+
+    With Selection.Validation
+        .Delete
+        .Add Type:=xlValidateInputOnly, AlertStyle:=xlValidAlertStop, Operator _
+        :=xlBetween
+        .IgnoreBlank = True
+        .InCellDropdown = True
+        .InputTitle = ""
+        .ErrorTitle = ""
+        .InputMessage = _
+        "Double cliquez sur la cellule pour saisir une date de formation !!!"
+        .ErrorMessage = ""
+        .ShowInput = True
+        .ShowError = True
+    End With
+
+Next cellule
+
+End Sub
+
+

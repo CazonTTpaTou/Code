@@ -1,0 +1,2 @@
+﻿select "StepName" State,coalesce(AVG("Voc"),1000) Low,coalesce(AVG("Isc"),1400) Mid,coalesce(AVG("FF"),700) High,(coalesce(AVG("Voc"),1000)+coalesce(AVG("Isc"),-1400)+coalesce(AVG("FF"),1400)) Total from results Group By "StepName";
+

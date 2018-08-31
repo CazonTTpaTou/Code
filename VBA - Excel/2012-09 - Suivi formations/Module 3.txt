@@ -1,0 +1,504 @@
+Public Accueil_Masque As Boolean
+Public Titre, Valeur As String
+
+Public Nom_Selec As String
+Public Year_Selec As Integer
+Public Mois_Selec As Integer
+Public Num_Year_Selec As Integer
+Public Num_Salarie_Selec As Integer
+Public Salarie_Selec As String
+Public Salarie_Cree As String
+Public Aff_Reintegration As Boolean
+
+Public MonRuban As IRibbonUI
+Public Date_Detection As Date
+Public Aff_Anomalie As Boolean
+Public Aff_Nouv_Anomalie As Boolean
+Public Aff_Supprimer As Boolean
+Public Aff_Modifier As Boolean
+Public Aff_Cloturer As Boolean
+Public Aff_DeCloturer As Boolean
+Public Date_Jour As Date
+Public Zone(1 To 12) As String
+Public annees(1 To 12) As Integer
+Public N_Zone As Integer
+Public Zones As String
+Public Num_Etude As Variant
+Public Adresse_ID As String
+Public Num_Id As Variant
+
+
+Sub Sur_Chargement(ribbon As IRibbonUI)
+    Set MonRuban = ribbon
+        
+    Aff_Anomalie = True
+    Adresse_ID = "$Q$8"
+    Num_Id = Range(Adresse_ID).value
+    
+    Zone(1) = "Janvier"
+    Zone(2) = "Février"
+    Zone(3) = "Mars"
+    Zone(4) = "Avril"
+    Zone(5) = "Mai"
+    Zone(6) = "Juin"
+    Zone(7) = "Juillet"
+    Zone(8) = "Août"
+    Zone(9) = "Septembre"
+    Zone(10) = "Octobre"
+    Zone(11) = "Novembre"
+    Zone(12) = "Décembre"
+    
+    annees(1) = 2009
+    annees(2) = 2010
+    annees(3) = 2011
+    annees(4) = 2012
+    annees(5) = 2013
+    annees(6) = 2014
+    annees(7) = 2015
+    annees(8) = 2016
+    annees(9) = 2017
+    annees(10) = 2018
+    annees(11) = 2019
+    annees(12) = 2020
+    
+    N_Zone = 12
+    Zones = 0
+    
+    Intitule_fiche(1) = "Fiche d'autopsie"
+    Intitule_fiche(2) = "Fiche d'examen clinique"
+    Intitule_fiche(3) = "Fiche de traitement"
+    Intitule_fiche(4) = "Fiche de mesure sanitaire"
+    
+    Type_fiche = 1
+    Aff_Menu_Fiche = True
+    Aff_Menu_Tracking = True
+    
+    'Master_Users = Check_User(Application.UserName, "A1:A100", "Users")
+    
+End Sub
+
+
+'----------------------------- Onglet Anomalie -------------------------------
+
+'Callback for N01 onAction
+Sub Nouveau(control As IRibbonControl)
+    'Rendre le flag Aff_Nouveau à true
+    Aff_Nouv_Anomalie = True
+    Aff_Anomalie = False
+    Date_Detection = Date
+    Date_Jour = Date
+    Nom_Selec = Cells(ActiveCell.Row, 1).value
+    Year_Selec = CInt(Cells(5, ActiveCell.Column).value)
+    MonRuban.Invalidate
+End Sub
+
+'Callback for N1 getVisible
+Sub Aff_Nouveau(control As IRibbonControl, ByRef returnedVal)
+    ' Flag à true ou false
+    returnedVal = Aff_Nouv_Anomalie
+End Sub
+
+'Callback for N0 getVisible
+Sub N_Aff_Nouveau(control As IRibbonControl, ByRef returnedVal)
+    ' Flag à true ou false - inverse du groupe N1
+    returnedVal = Aff_Anomalie
+End Sub
+
+'Callback for N12 getText
+Sub Get_N12(control As IRibbonControl, ByRef returnedVal)
+    'Affiche la date du jour
+    returnedVal = Year_Selec
+End Sub
+
+'Callback for N13 onAction
+Sub Modif_N13(control As IRibbonControl)
+    ' Modifier la date
+    tampon = control.id
+    MsgBox ("Modifier la date : " & tampon)
+    
+End Sub
+
+'Callback for N41 onAction
+Sub Modif_N14(control As IRibbonControl)
+    ' Création de la nouvelle anomalie
+    
+    Dim annee(1 To 14) As Integer
+    
+    Call Deproteger
+    
+    date_J = DateSerial(Year_Selec, Mois_Selec + 1, 1)
+    dateInser = date_J
+    
+    Select Case ActiveSheet.index
+        Case 1: delai_b = delai_base_COFRAC
+                delai_u = delai_urgent_COFRAC
+                intitule_Formation = "COFRAC"
+        Case 2: delai_b = delai_base_BPL
+                delai_u = delai_urgent_BPL
+                intitule_Formation = "BPL"
+        Case 3: delai_b = delai_base_BPL
+                delai_u = delai_urgent_BPL
+                intitule_Formation = "BPF"
+    End Select
+        
+annee(1) = 2009
+annee(2) = 2010
+annee(3) = 2011
+annee(4) = 2012
+annee(5) = 2013
+annee(6) = 2014
+annee(7) = 2015
+annee(8) = 2016
+annee(9) = 2017
+annee(10) = 2018
+annee(11) = 2019
+annee(12) = 2020
+
+ligne = ActiveCell.Row
+Col = ActiveCell.Column
+
+If Cells(ligne, 16).value Then
+
+DateInsert = Format(date_J, "mmm")
+ActiveCell.value = DateInsert
+Cells(ActiveCell.Row, 25).value = DateAdd("m", delai_b, dateInser)
+Cells(ActiveCell.Row, 26).value = DateAdd("m", delai_u, dateInser)
+
+For i = 2 To 13
+    Cells(ligne, i).Select
+    Selection.ClearComments
+    If annee(i - 1) = Year(DateAdd("m", delai_b, dateInser)) Then
+        'MsgBox ("valeur de i " & i & "Année " & annee(i)) & " Year : " & Year(DateAdd("m", delai_base_BPL, dateInser))
+        Message = "Formation " & Cells(5, 25).value & Chr(10) & "Pour " & Cells(ligne, 1).value & Chr(10) & "Prévue entre : " & Chr(10)
+        Message = Message & "Le " & DateAdd("m", delai_b, dateInser) & Chr(10) & "Et le " & DateAdd("m", delai_u, dateInser)
+        Selection.AddComment
+        Selection.Comment.Visible = False
+        Selection.Comment.text text:=Message
+    End If
+Next i
+
+Cells(ligne, Col + 2).Select
+MsgBox ("La formation " & intitule_Formation & " pour " & Nom_Selec & " vient d'être enregistrée à la date du " & Format(date_J, "dd/mm/yyyy"))
+
+Else: MsgBox ("Vous ne pouvez pas enregistrer une formation pour un salarié n'étant plus dans l'effectif !!! ")
+End If
+        Aff_Nouv_Anomalie = False
+        Aff_Anomalie = True
+        Num_Etude = ""
+        Mois_Selec = 0
+        MonRuban.Invalidate
+        
+Call Proteger
+
+End Sub
+
+' Callback for N22 onGetItemLabel
+Sub GetI_N22(control As IRibbonControl, index As Integer, ByRef returnedVal)
+    returnedVal = Zone(index + 1)
+End Sub
+
+' Callback for N22 onGetItemCount
+Sub GetC_N22(control As IRibbonControl, ByRef returnedVal)
+    returnedVal = N_Zone
+End Sub
+
+' Callback for N22 onGetSelectedItemIndex
+Sub GetD_N22(control As IRibbonControl, ByRef returnedVal)
+    returnedVal = 0
+End Sub
+
+' Callback for N22 onAction
+Sub GetA_N22(control As IRibbonControl, id As String, index As Integer)
+    Mois_Selec = index
+End Sub
+
+'Callback for N32 onChange
+Sub Change_N32(control As IRibbonControl, text As String)
+    ' changement de valeur du numéro d'étude
+    Num_Etude = text
+End Sub
+
+'Callback for N12 onChange
+Sub Change_N12(control As IRibbonControl, text As String)
+    ' Changement de date de détection
+    If IsDate(text) Then
+        Date_Detection = text
+    End If
+End Sub
+
+' Callback for N32 on GetText
+Sub Get_N32(control As IRibbonControl, ByRef returnedVal)
+    'Initialisation du numéro d'étude
+    returnedVal = Nom_Selec
+End Sub
+
+' Callback for N5 on Action
+Sub Annule_N5(control As IRibbonControl)
+    Num_Etude = ""
+    Zones = 0
+    Aff_Anomalie = True
+    Aff_Nouv_Anomalie = False
+    Aff_Supprimer = False
+    Aff_Modifier = False
+    Aff_Cloturer = False
+    Aff_DeCloturer = False
+    MonRuban.Invalidate
+    Call Activer
+End Sub
+
+'Callback for N02 onAction
+Sub Supprimer(control As IRibbonControl)
+    'Après clic sur bouton supprimer
+    Aff_Anomalie = False
+    Aff_Supprimer = True
+    Num_Id = Range(Adresse_ID).value
+    MonRuban.Invalidate
+    Call Desactiver
+End Sub
+
+'Callback for N03 onAction
+Sub Modifier(control As IRibbonControl)
+    'Après clic sur bouton modifier
+    
+    If IsEmpty(ActiveCell) Then
+        MsgBox ("Vous devez sélectionner une date de formation pour pouvoir la modifier !!!")
+        Exit Sub
+    End If
+    
+    Aff_Anomalie = False
+    Aff_Modifier = True
+    Num_Id = Cells(ActiveCell.Row, 1).value
+    'Date_Detection = Cells(ActiveCell.Row, 3)
+    Num_Etude = Cells(ActiveCell.Row, 1).value
+    
+    MonRuban.Invalidate
+    Call Desactiver
+    
+End Sub
+
+'Callback for N04 onAction
+Sub Cloturer(control As IRibbonControl)
+    'Après clic sur bouton cloturer
+    Aff_Anomalie = False
+    Aff_Cloturer = True
+    Num_Id = Range(Adresse_ID).value
+    MonRuban.Invalidate
+    Call Desactiver
+End Sub
+
+'Callback for N05 onAction
+Sub Déverrouiller(control As IRibbonControl)
+    'Après clic sur bouton decloturer
+    Aff_Anomalie = False
+    Aff_DeCloturer = True
+    Num_Id = Range(Adresse_ID).value
+    MonRuban.Invalidate
+    Call Desactiver
+End Sub
+
+
+'Callback for N60 getLabel
+Sub N60_GetLabel(control As IRibbonControl, ByRef returnedVal)
+    ' Récupère le label du numéro d'anomalie à modifier
+    returnedVal = "Modification de la formation pour " & Num_Id
+End Sub
+
+Sub Modif1(control As IRibbonControl, ByRef returnedVal)
+    ' Récupère la date de détection à modifier
+    returnedVal = Date_Detection
+    
+End Sub
+
+Sub Modif2(control As IRibbonControl, ByRef returnedVal)
+    ' Récupère le numéro d'étude à modifier
+    returnedVal = Num_Etude
+    
+End Sub
+
+'Callback for N64 getSelectedItemIndex
+Sub GetD_N64(control As IRibbonControl, ByRef returnedVal)
+    ' Détermine l'index de la zone à modifier
+    Zones = Rang_Zone(Cells(ActiveCell.Row, 4).value) - 1
+    returnedVal = Zones
+End Sub
+
+'Callback for N67 onAction
+Sub Modif_N67(control As IRibbonControl)
+    ' Enregistre les modifications
+     Dim annee(1 To 14) As Integer
+    
+    Call Activer
+    Call Deproteger
+    
+    ActiveCell.ClearContents
+    Cells(ActiveCell.Row, Num_Year_Selec + 2).Select
+    
+    Year_Selec = annees(Num_Year_Selec + 1)
+    date_J = DateSerial(Year_Selec, Mois_Selec + 1, 1)
+    dateInser = date_J
+    'MsgBox ("Year_Select: " & Year_Selec & " - " & "Mois_Selec : " & Mois_Selec & "Date : " & date_J)
+    Nom_Selec = Num_Etude
+    
+    Select Case ActiveSheet.index
+        Case 1: delai_b = delai_base_COFRAC
+                delai_u = delai_urgent_COFRAC
+                intitule_Formation = "COFRAC"
+        Case 2: delai_b = delai_base_BPL
+                delai_u = delai_urgent_BPL
+                intitule_Formation = "BPL"
+        Case 3: delai_b = delai_base_BPL
+                delai_u = delai_urgent_BPL
+                intitule_Formation = "BPF"
+    End Select
+        
+annee(1) = 2009
+annee(2) = 2010
+annee(3) = 2011
+annee(4) = 2012
+annee(5) = 2013
+annee(6) = 2014
+annee(7) = 2015
+annee(8) = 2016
+annee(9) = 2017
+annee(10) = 2018
+annee(11) = 2019
+annee(12) = 2020
+
+ligne = ActiveCell.Row
+Col = ActiveCell.Column
+
+If Cells(ligne, 16).value Then
+
+DateInsert = Format(date_J, "mmm")
+ActiveCell.value = DateInsert
+Cells(ActiveCell.Row, 25).value = DateAdd("m", delai_b, dateInser)
+Cells(ActiveCell.Row, 26).value = DateAdd("m", delai_u, dateInser)
+
+For i = 2 To 13
+    Cells(ligne, i).Select
+    Selection.ClearComments
+    If annee(i - 1) = Year(DateAdd("m", delai_b, dateInser)) Then
+        'MsgBox ("valeur de i " & i & "Année " & annee(i)) & " Year : " & Year(DateAdd("m", delai_base_BPL, dateInser))
+        Message = "Formation " & Cells(5, 25).value & Chr(10) & "Pour " & Cells(ligne, 1).value & Chr(10) & "Prévue entre : " & Chr(10)
+        Message = Message & "Le " & DateAdd("m", delai_b, dateInser) & Chr(10) & "Et le " & DateAdd("m", delai_u, dateInser)
+        Selection.AddComment
+        Selection.Comment.Visible = False
+        Selection.Comment.text text:=Message
+    End If
+Next i
+
+Cells(ligne, Col + 2).Select
+MsgBox ("La formation " & intitule_Formation & " pour " & Nom_Selec & " vient d'être modifiée à la date du " & Format(date_J, "dd/mm/yyyy"))
+        
+Else: MsgBox ("Vous ne pouvez pas enregistrer une formation pour un salarié n'étant plus dans l'effectif !!! ")
+End If
+
+        Aff_Modifier = False
+        Aff_Anomalie = True
+        
+        Num_Etude = ""
+        Zones = 0
+        MonRuban.Invalidate
+        
+Call Proteger
+Call Activer
+    
+End Sub
+
+'Callback for N60 getVisible
+Sub Aff_Modif(control As IRibbonControl, ByRef returnedVal)
+    'Affiche le ruban Modification
+    returnedVal = Aff_Modifier
+End Sub
+
+'Callback for N70 getLabel
+Sub N70_GetLabel(control As IRibbonControl, ByRef returnedVal)
+    ' Récupère le n° de l'anomalie à supprimer pour l'intitulé du ruban
+    returnedVal = "Suppression de l'anomalie n° " & Num_Id
+End Sub
+
+'Callback for N70 getVisible
+Sub Aff_Suppr(control As IRibbonControl, ByRef returnedVal)
+    ' Affiche le ruban Suppression
+    returnedVal = Aff_Supprimer
+End Sub
+
+'Callback for N71 onAction
+Sub Suppr_N71(control As IRibbonControl)
+    ' supprime l'anomalie sélectionnée
+    If supprime() Then
+        Aff_Supprimer = False
+        Aff_Anomalie = True
+        MsgBox ("L'anomalie n°" & Num_Id & " vient d'être supprimée !!! ")
+        Num_Etude = ""
+        Zones = 0
+        MonRuban.Invalidate
+        Call Activer
+        
+    Else: MsgBox ("L'anomalie n'a pu être supprimée - Veuillez recommencer !!!")
+    End If
+    
+End Sub
+
+'Callback for N80 getLabel
+Sub N80_GetLabel(control As IRibbonControl, ByRef returnedVal)
+    ' Affiche le label du ruban Cloture avec le n° de l'anomalie à clôturer
+    returnedVal = "Clôture de l'anomalie n° " & Num_Id
+End Sub
+
+'Callback for N80 getVisible
+Sub Aff_Clotur(control As IRibbonControl, ByRef returnedVal)
+    ' Affiche ou non le ruban Clôture
+    returnedVal = Aff_Cloturer
+End Sub
+
+'Callback for N81 onAction
+Sub Clot_N81(control As IRibbonControl)
+    ' Clôture l'anomalie sélectionnée
+    If cloture() Then
+        Aff_Cloturer = False
+        Aff_Anomalie = True
+        MsgBox ("L'anomalie n°" & Num_Id & " vient d'être clôturée !!! ")
+        Num_Etude = ""
+        Zones = 0
+        MonRuban.Invalidate
+        Call Activer
+        
+    Else: MsgBox ("L'anomalie n'a pu être clôturée - Veuillez recommencer !!!")
+    End If
+    
+End Sub
+
+Sub N90_GetLabel(control As IRibbonControl, ByRef returnedVal)
+    ' Affiche le label du ruban avec le n° de l'anomalie à décloturer
+    returnedVal = "Annulation clôture de l'anomalie n° " & Num_Id
+End Sub
+
+'Callback for N90 getVisible
+Sub Aff_De_Clotur(control As IRibbonControl, ByRef returnedVal)
+    ' Affiche le menu du déverrouillage
+    returnedVal = Aff_DeCloturer
+End Sub
+
+'Callback for N91 onAction
+Sub Clot_N91(control As IRibbonControl)
+    If cloture() Then
+        Aff_DeCloturer = False
+        Aff_Anomalie = True
+        MsgBox ("L'anomalie n°" & Num_Id & " vient d'être déclôturée !!! ")
+        Num_Etude = ""
+        Zones = 0
+        MonRuban.Invalidate
+        Call Activer
+        
+    Else: MsgBox ("L'anomalie n'a pu être déclôturée - Veuillez recommencer !!!")
+    End If
+End Sub
+
+'Callback for N04 getEnabled
+Sub Aut_Verrou(control As IRibbonControl, ByRef returnedVal)
+    ' Détermine si l'utilisateur a le droit de clôturer et déclôturer les anomalies
+    returnedVal = True
+End Sub
+
+
