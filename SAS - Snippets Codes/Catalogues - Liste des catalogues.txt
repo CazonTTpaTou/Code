@@ -1,0 +1,15 @@
+%macro web_list_catalogs(library);
+	%let library=%upcase(&library);
+    proc sql ;
+        create table work.catalogs as select memname as Catalog, memtype as 
+            Type, engine as Engine from sashelp.vmember where 
+            libname="&library" and memtype="CATALOG";
+        run;
+        title "Catalogs in &library";
+
+    proc print data=work.catalogs;
+    run;
+%mend;
+
+%web_list_catalogs(SASHELP);
+

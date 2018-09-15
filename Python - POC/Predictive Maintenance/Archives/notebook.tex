@@ -1,0 +1,1271 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Project - Predictive Maintenance}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \section{A predictive maintenance project in the solar
+industry}\label{a-predictive-maintenance-project-in-the-solar-industry}
+
+    \begin{verbatim}
+<li>1 - Context of problematic</li>
+<li>2 - Presentation of data</li>
+<li>3 - Study of hypothesis</li>
+<li>4 - Modeling and learning</li>
+<li>5 - Results and operation</li>
+\end{verbatim}
+
+    
+
+    \subsection{1 - Context of problematic}\label{context-of-problematic}
+
+    \paragraph{In the solar industry to make a photovoltaic panel, one of
+the crucial steps is the cutting of silicon ingots into
+wafers.}\label{in-the-solar-industry-to-make-a-photovoltaic-panel-one-of-the-crucial-steps-is-the-cutting-of-silicon-ingots-into-wafers.}
+
+    
+
+    \paragraph{For this, diamond wire saws are used. These equipment are
+very efficient but also subject to drift manufacturing. Quality
+monitoring is therefore
+imperative.}\label{for-this-diamond-wire-saws-are-used.-these-equipment-are-very-efficient-but-also-subject-to-drift-manufacturing.-quality-monitoring-is-therefore-imperative.}
+
+ \#\#\#\# In our context, important and regular drifts were observed.
+This is why a predictive maintenance prediction project was set up to
+reduce the impact of these production anomalies.
+
+     \#\#\#\# The aim was to predict when a drift would occur in order to
+realize an action of maintenance to prevent the anomaly (for example
+change the wire of the saw or recalibrate settings...).
+
+    \subsection{2 - Presentation of data}\label{presentation-of-data}
+
+    \paragraph{For this project, we had a datadet with a dozen of variables.
+Each hour for each day (the factory was working on unceasing full time
+shift - 24 hours a day), when a cut is performed on a silicium ingot, a
+log file is produced with many useful
+informations.}\label{for-this-project-we-had-a-datadet-with-a-dozen-of-variables.-each-hour-for-each-day-the-factory-was-working-on-unceasing-full-time-shift---24-hours-a-day-when-a-cut-is-performed-on-a-silicium-ingot-a-log-file-is-produced-with-many-useful-informations.}
+
+\paragraph{Here are the most useful variables which be used for this
+project
+:}\label{here-are-the-most-useful-variables-which-be-used-for-this-project}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+         
+         \PY{n}{path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.//Data}\PY{l+s+s1}{\PYZsq{}}
+         \PY{n}{fileName} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Data\PYZus{}Maintenance.csv}\PY{l+s+s1}{\PYZsq{}}
+         
+         \PY{n}{filePath} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{//}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{p}{[}\PY{n}{path}\PY{p}{,}\PY{n}{fileName}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{data\PYZus{}maintenance} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{filePath}\PY{p}{,}\PY{n}{delimiter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{;}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}41}]:}          Date   Time          DateTime  TTV  Thickness  SawGroove  SawEdge  \textbackslash{}
+         0  01/01/2017  00:00  01/01/2017 00:00   30        250        120        1   
+         1  01/01/2017  01:00  01/01/2017 01:00   30        251        121        0   
+         2  01/01/2017  02:00  01/01/2017 02:00   30        251        120        0   
+         3  01/01/2017  03:00  01/01/2017 03:00   31        251        119        2   
+         4  01/01/2017  04:00  01/01/2017 04:00   32        251        124        1   
+         
+            SawStep LastEmptying  OutSixSigma  WafersProduction SiliciumType  
+         0        0   01/01/2017            0              1000         Mono  
+         1        0   01/01/2017            0              3000         Mono  
+         2        0   01/01/2017            0              5000         Mono  
+         3        0   01/01/2017            0              6000         Mono  
+         4        0   01/01/2017            0              7000         Mono  
+\end{Verbatim}
+            
+    \paragraph{Let's take a look at the data
+:}\label{lets-take-a-look-at-the-data}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+         \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
+         
+         \PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{TTV}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Distribution of wafers thickness}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{95}\PY{p}{,} \PY{l+m+mi}{95}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{3500}\PY{p}{]}\PY{p}{,}
+                  \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                  \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                  \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,}
+                  \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Out 6\PYZhy{}sigma limit}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{upper right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_13_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{As we can see, mostly 15\% of the production is out 6-sigma
+limit. It's a lot and it's a quite waste of ressources since the wafers
+which doesn't respond to quality criteria are thrown
+away.}\label{as-we-can-see-mostly-15-of-the-production-is-out-6-sigma-limit.-its-a-lot-and-its-a-quite-waste-of-ressources-since-the-wafers-which-doesnt-respond-to-quality-criteria-are-thrown-away.}
+
+\paragraph{That's why this project of predictive maintenance has for
+first goal to prevent this drift of non quality production, because the
+cost of these anomalies are pretty heavy for the
+firm.}\label{thats-why-this-project-of-predictive-maintenance-has-for-first-goal-to-prevent-this-drift-of-non-quality-production-because-the-cost-of-these-anomalies-are-pretty-heavy-for-the-firm.}
+
+    \subsection{3 - Study of hypothesis}\label{study-of-hypothesis}
+
+    \paragraph{At first, before beginning the step of modeling, we have to
+check the following hypothesis
+:}\label{at-first-before-beginning-the-step-of-modeling-we-have-to-check-the-following-hypothesis}
+
+\begin{verbatim}
+<li>A - Hypothesis of normality of data</li>
+<li>B - Hypothesis of stationnary time serie</li>
+<li>C - Hypothesis of event without memory (Markov process)</li>
+\end{verbatim}
+
+    \subsubsection{A - Hypothesis of normality of
+data}\label{a---hypothesis-of-normality-of-data}
+
+    \paragraph{The purpose of the verification of this hypothesis is to know
+if parametric methods can be used for our learning
+model.}\label{the-purpose-of-the-verification-of-this-hypothesis-is-to-know-if-parametric-methods-can-be-used-for-our-learning-model.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{FacetGrid}\PY{p}{(}\PY{n}{data\PYZus{}maintenance}\PY{p}{,} 
+                           \PY{n}{col}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SiliciumType}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+                           \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{6}\PY{p}{)}
+         
+         \PY{n}{g}\PY{o}{.}\PY{n}{map}\PY{p}{(}\PY{n}{sns}\PY{o}{.}\PY{n}{kdeplot}\PY{p}{,}
+               \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{TTV}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+               \PY{n}{shade}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TTV}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_19_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{A first visual look would suggest that the parameter observed
+doesn't follow a gaussian distribution (low Skewness and non symetric
+Kurtosis).}\label{a-first-visual-look-would-suggest-that-the-parameter-observed-doesnt-follow-a-gaussian-distribution-low-skewness-and-non-symetric-kurtosis.}
+
+\paragraph{We could check also with a QQ plot test (using percentile
+cumul)
+:}\label{we-could-check-also-with-a-qq-plot-test-using-percentile-cumul}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{k+kn}{import} \PY{n+nn}{scipy}
+         \PY{k+kn}{from} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{graphics}\PY{n+nn}{.}\PY{n+nn}{gofplots} \PY{k}{import} \PY{n}{qqplot}
+         \PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats} \PY{k}{import} \PY{n}{shapiro}
+         \PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats} \PY{k}{import} \PY{n}{anderson}
+         \PY{k+kn}{from} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{tsa}\PY{n+nn}{.}\PY{n+nn}{stattools} \PY{k}{import} \PY{n}{adfuller}
+         \PY{k+kn}{from} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{tsa}\PY{n+nn}{.}\PY{n+nn}{stattools} \PY{k}{import} \PY{n}{kpss}
+         
+         \PY{k+kn}{from} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{tsa}\PY{n+nn}{.}\PY{n+nn}{arima\PYZus{}model} \PY{k}{import} \PY{n}{ARIMA}
+         
+         \PY{n}{qqplot}\PY{p}{(}\PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{TTV}\PY{p}{,} \PY{n}{line}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}monne\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}statsmodels\textbackslash{}compat\textbackslash{}pandas.py:56: FutureWarning: The pandas.core.datetools module is deprecated and will be removed in a future version. Please use the pandas.tseries module instead.
+  from pandas.core import datetools
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_21_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{It seems that the distribution is not a gaussian
+one...}\label{it-seems-that-the-distribution-is-not-a-gaussian-one...}
+
+\paragraph{To be sure, we could compute a statiscal test and we will use
+the following ones
+:}\label{to-be-sure-we-could-compute-a-statiscal-test-and-we-will-use-the-following-ones}
+
+Shapiro Test
+
+D'Agostino Test
+
+Anderson Test
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{stats}\PY{p}{,}\PY{n}{p\PYZus{}value} \PY{o}{=} \PY{n}{shapiro}\PY{p}{(}\PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{TTV}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Stats = }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ \PYZhy{} p\PYZhy{}value = }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{stats}\PY{p}{,}\PY{n}{p\PYZus{}value}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Stats = 0.8932368159294128 - p-value = 0.0
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}monne\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}scipy\textbackslash{}stats\textbackslash{}morestats.py:1310: UserWarning: p-value may not be accurate for N > 5000.
+  warnings.warn("p-value may not be accurate for N > 5000.")
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{c+c1}{\PYZsh{} D\PYZsq{}Agostino and Pearson\PYZsq{}s Test}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{scipy}\PY{o}{.}\PY{n}{stats}\PY{o}{.}\PY{n}{normaltest}\PY{p}{(}\PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{TTV}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+NormaltestResult(statistic=1268.5132451261297, pvalue=3.514379931470798e-276)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{c+c1}{\PYZsh{} Anderson\PYZsq{}s Test}
+         \PY{n}{result} \PY{o}{=} \PY{n}{anderson}\PY{p}{(}\PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{TTV}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Statistic: }\PY{l+s+si}{\PYZpc{}.3f}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{result}\PY{o}{.}\PY{n}{statistic}\PY{p}{)}
+         \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{result}\PY{o}{.}\PY{n}{critical\PYZus{}values}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+             \PY{n}{sl}\PY{p}{,} \PY{n}{cv} \PY{o}{=} \PY{n}{result}\PY{o}{.}\PY{n}{significance\PYZus{}level}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{result}\PY{o}{.}\PY{n}{critical\PYZus{}values}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+         	
+             \PY{k}{if} \PY{n}{result}\PY{o}{.}\PY{n}{statistic} \PY{o}{\PYZlt{}} \PY{n}{result}\PY{o}{.}\PY{n}{critical\PYZus{}values}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}.3f}\PY{l+s+s1}{: }\PY{l+s+si}{\PYZpc{}.3f}\PY{l+s+s1}{, data looks normal (fail to reject H0)}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n}{sl}\PY{p}{,} \PY{n}{cv}\PY{p}{)}\PY{p}{)}
+             \PY{k}{else}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Critical value of }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{  : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ \PYZhy{}\PYZhy{}\PYZgt{} data doesn}\PY{l+s+se}{\PYZbs{}\PYZsq{}}\PY{l+s+s1}{t look normal (reject H0)}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{sl}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{,} \PY{n}{cv}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Statistic: 259.087
+Critical value of 15.0\%  : 0.576 --> data doesn't look normal (reject H0)
+Critical value of 10.0\%  : 0.656 --> data doesn't look normal (reject H0)
+Critical value of 5.0\%  : 0.787 --> data doesn't look normal (reject H0)
+Critical value of 2.0\%  : 0.918 --> data doesn't look normal (reject H0)
+Critical value of 1.0\%  : 1.092 --> data doesn't look normal (reject H0)
+
+    \end{Verbatim}
+
+    \subsection{B - Hypothesis of stationnary time
+serie}\label{b---hypothesis-of-stationnary-time-serie}
+
+    \paragraph{A first look on the distribution of one of the parameter (the
+BOW measure which is globally the same as the TTV criteria) would
+indicate that fluctuations are following a time serie, as we could read
+on the below picture
+:}\label{a-first-look-on-the-distribution-of-one-of-the-parameter-the-bow-measure-which-is-globally-the-same-as-the-ttv-criteria-would-indicate-that-fluctuations-are-following-a-time-serie-as-we-could-read-on-the-below-picture}
+
+\paragraph{Let's check this assumption
+:}\label{lets-check-this-assumption}
+
+\begin{verbatim}
+<li>Transform the data</li>
+<li>Test of Ad Fuller</li>
+<li>ARIMA performing</li>
+\end{verbatim}
+
+    \subsubsection{Transform the data :}\label{transform-the-data}
+
+    \paragraph{At first, we have to group the data on the variable Date in
+order to be able to compute the analysis on a daily
+basis.}\label{at-first-we-have-to-group-the-data-on-the-variable-date-in-order-to-be-able-to-compute-the-analysis-on-a-daily-basis.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{data\PYZus{}maintenance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{data\PYZus{}maintenance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{x}\PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{4}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+         \PY{n}{data\PYZus{}maintenance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{month}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{data\PYZus{}maintenance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{x}\PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{7}\PY{p}{:}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{)}
+         \PY{n}{data\PYZus{}maintenance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{day}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{data\PYZus{}maintenance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{x}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+              
+         \PY{n}{data\PYZus{}maintenance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date\PYZus{}py}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{data\PYZus{}maintenance}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{month}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{day}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{grouped} \PY{o}{=} \PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date\PYZus{}py}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{mean\PYZus{}TTV} \PY{o}{=} \PY{n}{grouped}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TTV}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{mean\PYZus{}TTV}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+date\_py
+2017-01-01    52.333333
+2017-01-02    56.291667
+2017-01-03    57.291667
+2017-01-04    57.333333
+2017-01-05    57.333333
+Name: TTV, dtype: float64
+
+    \end{Verbatim}
+
+    \paragraph{The dataset is now regrouped by the date of the day (we keep
+the mean of each
+variable)}\label{the-dataset-is-now-regrouped-by-the-date-of-the-day-we-keep-the-mean-of-each-variable}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{mean\PYZus{}TTV}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{The graphical visualisation could let think that we are
+facing a stationnary time series use
+case...}\label{the-graphical-visualisation-could-let-think-that-we-are-facing-a-stationnary-time-series-use-case...}
+
+\paragraph{Stationnary, because there is no trend, the variance doesn't
+grow with the date and there is not sign of covariance with the time
+axis...}\label{stationnary-because-there-is-no-trend-the-variance-doesnt-grow-with-the-date-and-there-is-not-sign-of-covariance-with-the-time-axis...}
+
+    \subsubsection{Augmented Dickey Fuller
+Test}\label{augmented-dickey-fuller-test}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{20}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Augmented Dickey Fuller Test}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{n}{results} \PY{o}{=} \PY{n}{adfuller}\PY{p}{(}\PY{n}{mean\PYZus{}TTV}\PY{p}{,}
+                            \PY{n}{autolag}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AIC}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{n}{test\PYZus{}statistics}\PY{p}{,}\PY{n}{p\PYZus{}value} \PY{o}{=} \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{results}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{valeur du test : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ \PYZhy{} Valeur de la p\PYZhy{}value : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{test\PYZus{}statistics}\PY{p}{,}
+                                                                   \PY{n}{p\PYZus{}value}\PY{p}{)}\PY{p}{)}
+         
+         \PY{k}{for} \PY{n}{key}\PY{p}{,}\PY{n}{value} \PY{o+ow}{in} \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Critical value à }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{ : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{key}\PY{p}{,}\PY{n}{value}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{20}\PY{p}{)}    
+         \PY{k}{if} \PY{n}{p\PYZus{}value} \PY{o}{\PYZlt{}} \PY{l+m+mf}{0.05}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Reject H0 : the serie of fluctuations of TTV is stationnary...}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+         \PY{k}{else}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fail to reject H0 : the serie of fluctuations of TTV is not stationnary...}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+             
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+----------------------------------------
+Augmented Dickey Fuller Test
+valeur du test : -18.501751389268442 - Valeur de la p-value : 2.1201245071674424e-30
+Critical value à 1\% \% : -3.4483935212959844
+Critical value à 5\% \% : -2.8694912343676497
+Critical value à 10\% \% : -2.571005879151811
+----------------------------------------
+Reject H0 : the serie of fluctuations of TTV is stationnary{\ldots}
+
+    \end{Verbatim}
+
+    \subsubsection{Kwiatkowski-Phillips-Schmidt-Shin
+Test}\label{kwiatkowski-phillips-schmidt-shin-test}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{20}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Kwiatkowski\PYZhy{}Phillips\PYZhy{}Schmidt\PYZhy{}Shin Test}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}    
+         
+         
+         \PY{n}{results} \PY{o}{=} \PY{n}{kpss}\PY{p}{(}\PY{n}{mean\PYZus{}TTV}\PY{p}{,}
+                            \PY{n}{regression}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{c}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{n}{test\PYZus{}statistics}\PY{p}{,}\PY{n}{p\PYZus{}value} \PY{o}{=} \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{results}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{valeur du test : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ \PYZhy{} Valeur de la p\PYZhy{}value : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{test\PYZus{}statistics}\PY{p}{,}
+                                                                   \PY{n}{p\PYZus{}value}\PY{p}{)}\PY{p}{)}
+         
+         \PY{k}{for} \PY{n}{key}\PY{p}{,}\PY{n}{value} \PY{o+ow}{in} \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Critical value à }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{ : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{key}\PY{p}{,}\PY{n}{value}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{20}\PY{p}{)}    
+         \PY{k}{if} \PY{n}{p\PYZus{}value} \PY{o}{\PYZgt{}} \PY{l+m+mf}{0.05}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fail to reject H0 : the serie of fluctuations of TTV is stationnary...}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+         \PY{k}{else}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Reject H0 : the serie of fluctuations of TTV is not stationnary...}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+----------------------------------------
+Kwiatkowski-Phillips-Schmidt-Shin Test
+valeur du test : 0.036624491810607694 - Valeur de la p-value : 0.1
+Critical value à 10\% \% : 0.347
+Critical value à 5\% \% : 0.463
+Critical value à 2.5\% \% : 0.574
+Critical value à 1\% \% : 0.739
+----------------------------------------
+Fail to reject H0 : the serie of fluctuations of TTV is stationnary{\ldots}
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}monne\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}statsmodels\textbackslash{}tsa\textbackslash{}stattools.py:1260: InterpolationWarning: p-value is greater than the indicated p-value
+  warn("p-value is greater than the indicated p-value", InterpolationWarning)
+
+    \end{Verbatim}
+
+    \subsubsection{ARIMA performing}\label{arima-performing}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{c+c1}{\PYZsh{} Forecast with ARIMA model       }
+         \PY{n}{model} \PY{o}{=} \PY{n}{ARIMA}\PY{p}{(}\PY{n}{mean\PYZus{}TTV}\PY{p}{,} \PY{n}{order}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)}  
+         \PY{n}{results\PYZus{}ARIMA} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{p}{)}  
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{mean\PYZus{}TTV}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{results\PYZus{}ARIMA}\PY{o}{.}\PY{n}{fittedvalues}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{RSS: }\PY{l+s+si}{\PYZpc{}.4f}\PY{l+s+s1}{\PYZsq{}}\PY{o}{\PYZpc{}} \PY{n+nb}{sum}\PY{p}{(}\PY{p}{(}\PY{n}{results\PYZus{}ARIMA}\PY{o}{.}\PY{n}{fittedvalues}\PY{o}{\PYZhy{}}\PY{n}{mean\PYZus{}TTV}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}35}]:} Text(0.5,1,'RSS: 53269.1851')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_39_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The ARIMA model seems specifically poor on this case.
+
+\begin{verbatim}
+<li> The predictions (in red) is not aligned on the time series.</li>
+<li> And the RSS score is pretty high... but why ???</li>
+\end{verbatim}
+
+\paragraph{After a lot of research and discussion with the process
+engineers, it seems that data are not correlated with date or time, but
+with the number of wafers
+produced.}\label{after-a-lot-of-research-and-discussion-with-the-process-engineers-it-seems-that-data-are-not-correlated-with-date-or-time-but-with-the-number-of-wafers-produced.}
+
+\paragraph{If nothing is produced while a month, all parameters will
+remain stable and no drift will be observed. So, our data are not a
+stationnary time serie use
+case...}\label{if-nothing-is-produced-while-a-month-all-parameters-will-remain-stable-and-no-drift-will-be-observed.-so-our-data-are-not-a-stationnary-time-serie-use-case...}
+
+\paragraph{It's a bit tricky since results of tests and visual graphics
+insinuate the opposite, but this is an effect of an hidden correlation
+between the date and the cumul of number of wafers produced during the
+interval...}\label{its-a-bit-tricky-since-results-of-tests-and-visual-graphics-insinuate-the-opposite-but-this-is-an-effect-of-an-hidden-correlation-between-the-date-and-the-cumul-of-number-of-wafers-produced-during-the-interval...}
+
+    \subsubsection{C - Hypothesis of event without memory (Markov
+process)}\label{c---hypothesis-of-event-without-memory-markov-process}
+
+    \paragraph{If events observed were without memory, no links would be
+notified with a past parameter. But on the below visualisation, we could
+see that fluctutations seem correlated with the past cumul of wafers
+:}\label{if-events-observed-were-without-memory-no-links-would-be-notified-with-a-past-parameter.-but-on-the-below-visualisation-we-could-see-that-fluctutations-seem-correlated-with-the-past-cumul-of-wafers}
+
+    \paragraph{Futhermore, we have observed that drifts are sometimes
+concomitant with operations of emptying on the saw equipment (oil
+lubricant). It seems that probability of drift occurence is proportional
+with the past delay of the last action of emptying performed on the saw
+equipment
+:}\label{futhermore-we-have-observed-that-drifts-are-sometimes-concomitant-with-operations-of-emptying-on-the-saw-equipment-oil-lubricant.-it-seems-that-probability-of-drift-occurence-is-proportional-with-the-past-delay-of-the-last-action-of-emptying-performed-on-the-saw-equipment}
+
+ \#\#\#\# So, we can deduct that we are not facing a Markov process use
+case...
+
+    \section{4 - Modeling and learning}\label{modeling-and-learning}
+
+\begin{verbatim}
+<li>A - Design the features</li>
+<li>B - Select the features</li>
+<li>C - Build the model</li>
+\end{verbatim}
+
+    \subsubsection{A - Design the features}\label{a---design-the-features}
+
+    \paragraph{in connection with the observations made previously, we will
+create 4 new features
+:}\label{in-connection-with-the-observations-made-previously-we-will-create-4-new-features}
+
+\begin{verbatim}
+<li>A feature to indicate if it is a day when an emptying action is performed</li>
+<li>A feature to calculate the number of wafers produced since the last day of emptying</li>
+<li>A feaure to count the number of days since the last action of emptying</li>
+<li>A dummy feature for coding the type of silicium material (has an impact on the saw wire attrition)</li>
+\end{verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{n}{is\PYZus{}emptying} \PY{o}{=}\PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+         \PY{n}{cumul\PYZus{}wafers} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+         \PY{n}{day\PYZus{}since\PYZus{}emptying} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+         \PY{n}{cumul\PYZus{}ant}\PY{o}{=}\PY{l+m+mi}{0}
+         
+         \PY{k}{for} \PY{n}{index}\PY{p}{,}\PY{n}{row} \PY{o+ow}{in} \PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{iterrows}\PY{p}{(}\PY{p}{)}\PY{p}{:}    
+             \PY{k}{if} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{01}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+                 \PY{n}{is\PYZus{}emptying}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+                 \PY{n}{cumul\PYZus{}wafers}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+                 \PY{n}{cumul\PYZus{}ant}\PY{o}{=}\PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{WafersProduction}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+                 \PY{n}{day}\PY{o}{=}\PY{n+nb}{int}\PY{p}{(}\PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{LastEmptying}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+                 \PY{n}{day\PYZus{}since\PYZus{}emptying}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+                 
+             \PY{k}{else}\PY{p}{:}
+                 \PY{n}{is\PYZus{}emptying}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+                 \PY{n}{cumul\PYZus{}wafers}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{WafersProduction}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{cumul\PYZus{}ant}\PY{p}{)}
+                 \PY{n}{day\PYZus{}since\PYZus{}emptying}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{day}\PY{p}{)}\PY{p}{)}
+                 
+         \PY{n}{data\PYZus{}maintenance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{day of emptying}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}  \PY{o}{=} \PY{n}{is\PYZus{}emptying}      
+         \PY{n}{data\PYZus{}maintenance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cumul of wafers}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}  \PY{o}{=} \PY{n}{cumul\PYZus{}wafers}  
+         \PY{n}{data\PYZus{}maintenance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{day since emptying}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}  \PY{o}{=} \PY{n}{day\PYZus{}since\PYZus{}emptying}  
+         \PY{n}{data\PYZus{}maintenance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Is Mono}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{data\PYZus{}maintenance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SiliciumType}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{l+m+mi}{1} \PY{k}{if} \PY{n}{x}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mono}\PY{l+s+s1}{\PYZsq{}} \PY{k}{else} \PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}47}]:} \PY{n}{data\PYZus{}maintenance}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{day of emptying}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cumul of wafers}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{LastEmptying}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{day since emptying}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Is Mono}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}47}]:}             Date  day of emptying  cumul of wafers LastEmptying  \textbackslash{}
+         8761  01/01/2018                1                0   01/01/2018   
+         8762  01/01/2018                1                0   01/01/2018   
+         8763  01/01/2018                1                0   01/01/2018   
+         
+               day since emptying  Is Mono  
+         8761                   0        0  
+         8762                   0        0  
+         8763                   0        0  
+\end{Verbatim}
+            
+    \subsubsection{B - Select the features}\label{b---select-the-features}
+
+    \paragraph{At first, we are checking the correlation between variables
+since models are sometimes sensitive to it
+:}\label{at-first-we-are-checking-the-correlation-between-variables-since-models-are-sometimes-sensitive-to-it}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}48}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{matshow}\PY{p}{(}\PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}48}]:} <matplotlib.image.AxesImage at 0x19eb99787b8>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_51_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}52}]:} \PY{k}{for} \PY{n}{col} \PY{o+ow}{in} \PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{columns}\PY{p}{:}
+             \PY{n}{conditions} \PY{o}{=} \PY{p}{(}\PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{col}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{l+m+mf}{0.6}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{col}\PY{p}{]}\PY{o}{\PYZlt{}}\PY{l+m+mi}{1}\PY{p}{)}
+             \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{conditions}\PY{p}{]}\PY{p}{[}\PY{n}{col}\PY{p}{]}\PY{p}{)}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{:}
+                 \PY{n}{columns\PYZus{}correlated} \PY{o}{=} \PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{conditions}\PY{p}{]}\PY{p}{[}\PY{n}{col}\PY{p}{]}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{20}\PY{p}{)}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{n}{col}\PY{p}{)}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{20}\PY{p}{)}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{n}{columns\PYZus{}correlated}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+----------------------------------------
+TTV
+----------------------------------------
+OutSixSigma    0.682667
+Name: TTV, dtype: float64
+----------------------------------------
+Thickness
+----------------------------------------
+SawStep    0.604948
+Name: Thickness, dtype: float64
+----------------------------------------
+SawStep
+----------------------------------------
+Thickness    0.604948
+Name: SawStep, dtype: float64
+----------------------------------------
+OutSixSigma
+----------------------------------------
+TTV    0.682667
+Name: OutSixSigma, dtype: float64
+----------------------------------------
+cumul of wafers
+----------------------------------------
+day since emptying    0.999174
+Name: cumul of wafers, dtype: float64
+----------------------------------------
+day since emptying
+----------------------------------------
+cumul of wafers    0.999174
+Name: day since emptying, dtype: float64
+
+    \end{Verbatim}
+
+    \paragraph{Then we are trying to detect the variables which explain the
+most of variability in the dataset with a PCA
+:}\label{then-we-are-trying-to-detect-the-variables-which-explain-the-most-of-variability-in-the-dataset-with-a-pca}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}53}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k}{import} \PY{n}{StandardScaler}
+         
+         \PY{n}{features} \PY{o}{=} \PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{columns}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+         \PY{n}{features}\PY{o}{.}\PY{n}{remove}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{OutSixSigma}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{target} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{OutSixSigma}\PY{l+s+s1}{\PYZsq{}}
+         
+         \PY{n}{X} \PY{o}{=} \PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{features}\PY{p}{]}
+         \PY{n}{y} \PY{o}{=} \PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{target}\PY{p}{]}
+         
+         \PY{n}{X} \PY{o}{=} \PY{n}{StandardScaler}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+         
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{decomposition} \PY{k}{import} \PY{n}{PCA}
+         
+         \PY{n}{pca} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{n\PYZus{}components}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{)}
+         \PY{n}{principal\PYZus{}components} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+         
+         \PY{n}{principalDf} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data} \PY{o}{=} \PY{n}{principal\PYZus{}components}\PY{p}{,}
+                                    \PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{PCI}\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{principalDf}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                     \PY{n}{principalDf}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}
+                     \PY{n}{c}\PY{o}{=}\PY{n}{y}\PY{p}{,}
+                     \PY{n}{label}\PY{o}{=}\PY{n}{y}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Variances explained by axes : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{pca}\PY{o}{.}\PY{n}{explained\PYZus{}variance\PYZus{}ratio\PYZus{}}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Variances explained by axes : [ 0.31732599  0.21365304  0.13912937  0.12088666]
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_54_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}54}]:} \PY{n}{sortedFeatures\PYZus{}axe1} \PY{o}{=} \PY{p}{[}\PY{n}{i}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{sorted}\PY{p}{(}\PY{n+nb}{zip}\PY{p}{(}\PY{n}{features}\PY{p}{,}\PY{n}{pca}\PY{o}{.}\PY{n}{components\PYZus{}}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+                                                     \PY{n}{key}\PY{o}{=}\PY{k}{lambda} \PY{n}{l}\PY{p}{:}\PY{n}{l}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{]}
+         
+         \PY{n}{sortedFeatures\PYZus{}axe2} \PY{o}{=} \PY{p}{[}\PY{n}{i}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{sorted}\PY{p}{(}\PY{n+nb}{zip}\PY{p}{(}\PY{n}{features}\PY{p}{,}\PY{n}{pca}\PY{o}{.}\PY{n}{components\PYZus{}}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+                                                     \PY{n}{key}\PY{o}{=}\PY{k}{lambda} \PY{n}{l}\PY{p}{:}\PY{n}{l}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{]}
+         
+         \PY{n}{sortedFeatures\PYZus{}axe3} \PY{o}{=} \PY{p}{[}\PY{n}{i}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{sorted}\PY{p}{(}\PY{n+nb}{zip}\PY{p}{(}\PY{n}{features}\PY{p}{,}\PY{n}{pca}\PY{o}{.}\PY{n}{components\PYZus{}}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+                                                     \PY{n}{key}\PY{o}{=}\PY{k}{lambda} \PY{n}{l}\PY{p}{:}\PY{n}{l}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{]}
+         
+         \PY{n}{sortedFeatures\PYZus{}axe4} \PY{o}{=} \PY{p}{[}\PY{n}{i}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{sorted}\PY{p}{(}\PY{n+nb}{zip}\PY{p}{(}\PY{n}{features}\PY{p}{,}\PY{n}{pca}\PY{o}{.}\PY{n}{components\PYZus{}}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+                                                     \PY{n}{key}\PY{o}{=}\PY{k}{lambda} \PY{n}{l}\PY{p}{:}\PY{n}{l}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{]}
+             
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{sortedFeatures\PYZus{}axe1}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}    
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{sortedFeatures\PYZus{}axe2}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}  
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{sortedFeatures\PYZus{}axe3}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}    
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{sortedFeatures\PYZus{}axe4}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}  
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['Is Mono']
+['day of emptying']
+['SawGroove']
+['TTV']
+
+    \end{Verbatim}
+
+    \paragraph{Then we have our features which will carry the most of
+variability for our future learning
+model.}\label{then-we-have-our-features-which-will-carry-the-most-of-variability-for-our-future-learning-model.}
+
+\paragraph{As we can see on the plan projection above, our data are
+segmented by the type of silicium and the proximity of the day of
+emptying.}\label{as-we-can-see-on-the-plan-projection-above-our-data-are-segmented-by-the-type-of-silicium-and-the-proximity-of-the-day-of-emptying.}
+
+\paragraph{It seems that the day of emptying has an impact on the target
+feature ("OutOf6Sigma") since points in yellow on the plan, are
+systemtically above the others (when the axis vertical is carried by the
+"day of emptying"
+feature).}\label{it-seems-that-the-day-of-emptying-has-an-impact-on-the-target-feature-outof6sigma-since-points-in-yellow-on-the-plan-are-systemtically-above-the-others-when-the-axis-vertical-is-carried-by-the-day-of-emptying-feature.}
+
+    \subsubsection{C - Build the model}\label{c---build-the-model}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}55}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+         
+         \PY{n}{train\PYZus{}features}\PY{p}{,} \PY{n}{test\PYZus{}features}\PY{p}{,} \PY{n}{train\PYZus{}target}\PY{p}{,} \PY{n}{test\PYZus{}target} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(}\PY{n}{X}\PY{p}{,}
+                                                                                     \PY{n}{y}\PY{p}{,}
+                                                                                     \PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.25}\PY{p}{,}
+                                                                                     \PY{n}{stratify}\PY{o}{=}\PY{n}{y}\PY{p}{)}
+         
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k}{import} \PY{n}{LogisticRegression}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k}{import} \PY{n}{auc}\PY{p}{,}\PY{n}{roc\PYZus{}curve}
+         
+         \PY{n}{model\PYZus{}regression} \PY{o}{=} \PY{n}{LogisticRegression}\PY{p}{(}\PY{p}{)}
+         \PY{n}{model\PYZus{}regression}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{train\PYZus{}features}\PY{p}{,}\PY{n}{train\PYZus{}target}\PY{p}{)}
+         \PY{n}{predictions} \PY{o}{=} \PY{n}{model\PYZus{}regression}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{test\PYZus{}features}\PY{p}{)}
+         \PY{n}{probalities} \PY{o}{=} \PY{n}{model\PYZus{}regression}\PY{o}{.}\PY{n}{predict\PYZus{}proba}\PY{p}{(}\PY{n}{test\PYZus{}features}\PY{p}{)}
+         
+         \PY{n}{accuracy} \PY{o}{=} \PY{n}{predictions} \PY{o}{==} \PY{n}{test\PYZus{}target}
+         
+         \PY{n}{true\PYZus{}positives} \PY{o}{=} \PY{p}{(}\PY{n}{predictions}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{test\PYZus{}target}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{false\PYZus{}positives} \PY{o}{=} \PY{p}{(}\PY{n}{predictions}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{test\PYZus{}target}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{true\PYZus{}negatives} \PY{o}{=} \PY{p}{(}\PY{n}{predictions}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{test\PYZus{}target}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{false\PYZus{}negatives} \PY{o}{=} \PY{p}{(}\PY{n}{predictions}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{test\PYZus{}target}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)}
+         
+         \PY{n}{sensitivity} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}positives}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}positives}\PY{p}{)}\PY{o}{+}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{false\PYZus{}negatives}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{specificity} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}negatives}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}negatives}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{false\PYZus{}positives}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Sensibility of predictions is about : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{sensitivity}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Specificity of predictions is about : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{specificity}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{fpr}\PY{p}{,} \PY{n}{tpr}\PY{p}{,} \PY{n}{thresholds} \PY{o}{=} \PY{n}{roc\PYZus{}curve}\PY{p}{(}\PY{n}{test\PYZus{}target}\PY{p}{,} \PY{n}{probalities}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{pos\PYZus{}label}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{auc} \PY{o}{=} \PY{n}{auc}\PY{p}{(}\PY{n}{fpr}\PY{p}{,}\PY{n}{tpr}\PY{p}{)}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Perimeter of AUC curb : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{auc}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{fpr}\PY{p}{,}\PY{n}{tpr}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AUC=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{auc}\PY{p}{)}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lower right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Sensibility of predictions is about : 1.0
+Specificity of predictions is about : 1.0
+Perimeter of AUC curb : 1.0
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_58_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{The score of accuracy seems perfect... too perfect. When
+performing this logistic regression, we made a rookie mistake. We keep
+features which contain information on the future... the measure of
+thickness or TTV are not known when the cut is peformed... these values
+are measured a fews hours later by a specific equipment. It a
+bias...}\label{the-score-of-accuracy-seems-perfect...-too-perfect.-when-performing-this-logistic-regression-we-made-a-rookie-mistake.-we-keep-features-which-contain-information-on-the-future...-the-measure-of-thickness-or-ttv-are-not-known-when-the-cut-is-peformed...-these-values-are-measured-a-fews-hours-later-by-a-specific-equipment.-it-a-bias...}
+
+\paragraph{When the predicition will be performed, no information about
+thickness of the wafer will be available.That's why we have toremove
+these features to build our model
+:}\label{when-the-predicition-will-be-performed-no-information-about-thickness-of-the-wafer-will-be-available.thats-why-we-have-toremove-these-features-to-build-our-model}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}59}]:} \PY{n}{X\PYZus{}reduced} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cumul of wafers}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                        \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{day since emptying}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                        \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Is Mono}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                        \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{day of emptying}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                        \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{WafersProduction}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         
+         \PY{n}{X} \PY{o}{=} \PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{X\PYZus{}reduced}\PY{p}{]}
+         \PY{n}{y} \PY{o}{=} \PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{target}\PY{p}{]}
+         
+         \PY{n}{X} \PY{o}{=} \PY{n}{StandardScaler}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+         
+         \PY{n}{train\PYZus{}features}\PY{p}{,} \PY{n}{test\PYZus{}features}\PY{p}{,} \PY{n}{train\PYZus{}target}\PY{p}{,} \PY{n}{test\PYZus{}target} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(}\PY{n}{X}\PY{p}{,}
+                                                                                     \PY{n}{y}\PY{p}{,}
+                                                                                     \PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.25}\PY{p}{,}
+                                                                                     \PY{n}{stratify}\PY{o}{=}\PY{n}{y}\PY{p}{)}
+         
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k}{import} \PY{n}{auc}\PY{p}{,}\PY{n}{roc\PYZus{}curve}
+         
+         \PY{n}{penalty} \PY{o}{=} \PY{p}{\PYZob{}}
+             \PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{10}\PY{p}{,}
+             \PY{l+m+mi}{1}\PY{p}{:}\PY{l+m+mi}{1}
+         \PY{p}{\PYZcb{}}
+         
+         \PY{n}{model\PYZus{}regression} \PY{o}{=} \PY{n}{LogisticRegression}\PY{p}{(}\PY{n}{class\PYZus{}weight}\PY{o}{=}\PY{n}{penalty}\PY{p}{)}
+         
+         \PY{n}{model\PYZus{}regression}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{train\PYZus{}features}\PY{p}{,}\PY{n}{train\PYZus{}target}\PY{p}{)}
+         \PY{n}{predictions} \PY{o}{=} \PY{n}{model\PYZus{}regression}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{test\PYZus{}features}\PY{p}{)}
+         \PY{n}{probalities} \PY{o}{=} \PY{n}{model\PYZus{}regression}\PY{o}{.}\PY{n}{predict\PYZus{}proba}\PY{p}{(}\PY{n}{test\PYZus{}features}\PY{p}{)}
+         
+         \PY{n}{accuracy} \PY{o}{=} \PY{n}{predictions} \PY{o}{==} \PY{n}{test\PYZus{}target}
+         
+         \PY{n}{true\PYZus{}positives} \PY{o}{=} \PY{p}{(}\PY{n}{predictions}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{test\PYZus{}target}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{false\PYZus{}positives} \PY{o}{=} \PY{p}{(}\PY{n}{predictions}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{test\PYZus{}target}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{true\PYZus{}negatives} \PY{o}{=} \PY{p}{(}\PY{n}{predictions}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{test\PYZus{}target}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{false\PYZus{}negatives} \PY{o}{=} \PY{p}{(}\PY{n}{predictions}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{test\PYZus{}target}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)}
+         
+         \PY{n}{sensitivity} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}positives}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}positives}\PY{p}{)}\PY{o}{+}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{false\PYZus{}negatives}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{specificity} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}negatives}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}negatives}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{false\PYZus{}positives}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Sensibility of predictions is about : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{sensitivity}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Specificity of predictions is about : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{specificity}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{fprs}\PY{p}{,} \PY{n}{tprs}\PY{p}{,} \PY{n}{thresholds} \PY{o}{=} \PY{n}{roc\PYZus{}curve}\PY{p}{(}\PY{n}{test\PYZus{}target}\PY{p}{,} \PY{n}{probalities}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{pos\PYZus{}label}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{aucs} \PY{o}{=} \PY{n}{auc}\PY{p}{(}\PY{n}{fprs}\PY{p}{,}\PY{n}{tprs}\PY{p}{)}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Perimeter of AUC curb : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{aucs}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{fprs}\PY{p}{,}\PY{n}{tprs}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AUC=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{aucs}\PY{p}{)}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lower right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Sensibility of predictions is about : 0.20491803278688525
+Specificity of predictions is about : 1.0
+Perimeter of AUC curb : 0.6286194818425994
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_60_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Right now, the accuracy of the model is less impressive. The
+cuts with drifts 'out of 6 sigma specifications' are very poorly
+predicted (about 20\%) The only good point is that the model never made
+a prediction of non drift which was false. But, this is not sufficient
+and we have to try better model than logistic
+regression...}\label{right-now-the-accuracy-of-the-model-is-less-impressive.-the-cuts-with-drifts-out-of-6-sigma-specifications-are-very-poorly-predicted-about-20-the-only-good-point-is-that-the-model-never-made-a-prediction-of-non-drift-which-was-false.-but-this-is-not-sufficient-and-we-have-to-try-better-model-than-logistic-regression...}
+
+    \paragraph{We will now perform an ensemblist model called "Random
+Forest". Ensemblist since many instances of decision trees are running
+to compute a accurate prediction on the binary
+target.}\label{we-will-now-perform-an-ensemblist-model-called-random-forest.-ensemblist-since-many-instances-of-decision-trees-are-running-to-compute-a-accurate-prediction-on-the-binary-target.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}64}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{ensemble} \PY{k}{import} \PY{n}{RandomForestClassifier}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k}{import} \PY{n}{auc}\PY{p}{,}\PY{n}{roc\PYZus{}curve}
+         
+         \PY{n}{rf} \PY{o}{=} \PY{n}{RandomForestClassifier}\PY{p}{(}\PY{n}{n\PYZus{}estimators}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,}
+                                     \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}
+                                     \PY{n}{class\PYZus{}weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{balanced}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{n}{rf}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{train\PYZus{}features}\PY{p}{,}\PY{n}{train\PYZus{}target}\PY{p}{)}
+         \PY{n}{predictions} \PY{o}{=} \PY{n}{rf}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{test\PYZus{}features}\PY{p}{)}
+         \PY{n}{probalities} \PY{o}{=} \PY{n}{rf}\PY{o}{.}\PY{n}{predict\PYZus{}proba}\PY{p}{(}\PY{n}{test\PYZus{}features}\PY{p}{)}
+         
+         \PY{n}{accuracy} \PY{o}{=} \PY{n}{predictions} \PY{o}{==} \PY{n}{test\PYZus{}target}
+         
+         \PY{n}{true\PYZus{}positives} \PY{o}{=} \PY{p}{(}\PY{n}{predictions}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{test\PYZus{}target}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{false\PYZus{}positives} \PY{o}{=} \PY{p}{(}\PY{n}{predictions}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{test\PYZus{}target}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{true\PYZus{}negatives} \PY{o}{=} \PY{p}{(}\PY{n}{predictions}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{test\PYZus{}target}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{false\PYZus{}negatives} \PY{o}{=} \PY{p}{(}\PY{n}{predictions}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{test\PYZus{}target}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{)}
+         
+         \PY{n}{sensitivity} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}positives}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}positives}\PY{p}{)}\PY{o}{+}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{false\PYZus{}negatives}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{specificity} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}negatives}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}negatives}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{false\PYZus{}positives}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Sensibility of predictions is about : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{sensitivity}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Specificity of predictions is about : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{specificity}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{fprs}\PY{p}{,} \PY{n}{tprs}\PY{p}{,} \PY{n}{thresholds} \PY{o}{=} \PY{n}{roc\PYZus{}curve}\PY{p}{(}\PY{n}{test\PYZus{}target}\PY{p}{,} \PY{n}{probalities}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{pos\PYZus{}label}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{aucs} \PY{o}{=} \PY{n}{auc}\PY{p}{(}\PY{n}{fprs}\PY{p}{,}\PY{n}{tprs}\PY{p}{)}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Perimeter of AUC curb : }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{aucs}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{fprs}\PY{p}{,}\PY{n}{tprs}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AUC=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{aucs}\PY{p}{)}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lower right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Sensibility of predictions is about : 0.27049180327868855
+Specificity of predictions is about : 0.9774011299435028
+Perimeter of AUC curb : 0.768103724098445
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_63_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{The reults are better so we can attempt a first move with
+this
+model...}\label{the-reults-are-better-so-we-can-attempt-a-first-move-with-this-model...}
+
+    \subsection{5 - Results and operation}\label{results-and-operation}
+
+    \paragraph{In production, an input of values of the features are sent to
+the model before the ingot been cut in the saw equipment. If the model
+predict a drift, an operation of preventive maintenance (change of
+diamant cutwire for example is then performed in order to prevent the
+drift or the anomaly. And the ingot is cut into
+wafers...}\label{in-production-an-input-of-values-of-the-features-are-sent-to-the-model-before-the-ingot-been-cut-in-the-saw-equipment.-if-the-model-predict-a-drift-an-operation-of-preventive-maintenance-change-of-diamant-cutwire-for-example-is-then-performed-in-order-to-prevent-the-drift-or-the-anomaly.-and-the-ingot-is-cut-into-wafers...}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}67}]:} \PY{k}{def} \PY{n+nf}{prediction\PYZus{}maintenance}\PY{p}{(}\PY{n}{cumul\PYZus{}wafers}\PY{p}{,}\PY{n}{days\PYZus{}since\PYZus{}emptying}\PY{p}{,}\PY{n}{is\PYZus{}mono}\PY{p}{,}\PY{n}{days\PYZus{}of\PYZus{}emptying}\PY{p}{,}\PY{n}{WaferProduction}\PY{p}{)}\PY{p}{:}
+         
+             \PY{n}{data} \PY{o}{=} \PY{p}{[}\PY{n}{cumul\PYZus{}wafers}\PY{p}{,}
+                     \PY{n}{days\PYZus{}since\PYZus{}emptying}\PY{p}{,}
+                     \PY{n}{is\PYZus{}mono}\PY{p}{,}
+                     \PY{n}{days\PYZus{}of\PYZus{}emptying}\PY{p}{,}
+                     \PY{n}{WaferProduction}\PY{p}{]}
+             
+             \PY{n}{data\PYZus{}res} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+             
+             \PY{c+c1}{\PYZsh{}data = StandardScaler().fit\PYZus{}transform(data\PYZus{}res)}
+             \PY{n}{data} \PY{o}{=} \PY{n}{data\PYZus{}res}
+             \PY{n}{prevision} \PY{o}{=} \PY{n}{rf}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+             \PY{n}{prevision\PYZus{}proba} \PY{o}{=} \PY{n}{rf}\PY{o}{.}\PY{n}{predict\PYZus{}proba}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+             
+             \PY{k}{if} \PY{n}{prevision}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{With the data given in input, we can predict that a maintenance action is necesary !!!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{k}{else} \PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{With the data given in input, no need at the moment for a maintenance action...}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Probalities of need of action maintenance }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{prevision\PYZus{}proba}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{*}\PY{l+m+mi}{100}\PY{p}{)}\PY{p}{)}
+             
+             \PY{k}{return} \PY{n}{prevision\PYZus{}proba}
+         
+         \PY{c+c1}{\PYZsh{}}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{20}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} day 1}
+         \PY{n}{cumul\PYZus{}wafers} \PY{o}{=} \PY{l+m+mi}{10}
+         \PY{n}{days\PYZus{}since\PYZus{}emptying} \PY{o}{=} \PY{l+m+mi}{1}
+         \PY{n}{is\PYZus{}mono} \PY{o}{=} \PY{l+m+mi}{0}
+         \PY{n}{days\PYZus{}of\PYZus{}emptying}\PY{o}{=} \PY{l+m+mi}{0}
+         \PY{n}{WaferProduction}\PY{o}{=} \PY{l+m+mi}{0}
+         
+         \PY{n}{prediction} \PY{o}{=} \PY{n}{prediction\PYZus{}maintenance}\PY{p}{(}\PY{n}{cumul\PYZus{}wafers}\PY{p}{,}\PY{n}{days\PYZus{}since\PYZus{}emptying}\PY{p}{,}\PY{n}{is\PYZus{}mono}\PY{p}{,}\PY{n}{days\PYZus{}of\PYZus{}emptying}\PY{p}{,}\PY{n}{WaferProduction}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{20}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} day 24}
+         \PY{n}{cumul\PYZus{}wafers} \PY{o}{=} \PY{l+m+mi}{879000}
+         \PY{n}{days\PYZus{}since\PYZus{}emptying} \PY{o}{=} \PY{l+m+mi}{24}
+         \PY{n}{is\PYZus{}mono} \PY{o}{=} \PY{l+m+mi}{1}
+         \PY{n}{days\PYZus{}of\PYZus{}emptying}\PY{o}{=} \PY{l+m+mi}{0}
+         \PY{n}{WaferProduction}\PY{o}{=} \PY{l+m+mi}{8790000}
+         
+         \PY{n}{prediction} \PY{o}{=} \PY{n}{prediction\PYZus{}maintenance}\PY{p}{(}\PY{n}{cumul\PYZus{}wafers}\PY{p}{,}\PY{n}{days\PYZus{}since\PYZus{}emptying}\PY{p}{,}\PY{n}{is\PYZus{}mono}\PY{p}{,}\PY{n}{days\PYZus{}of\PYZus{}emptying}\PY{p}{,}\PY{n}{WaferProduction}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{20}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+----------------------------------------
+With the data given in input, we can predict that a maintenance action is necesary !!!
+Probalities of need of action maintenance [ 70.]\%
+----------------------------------------
+With the data given in input, no need at the moment for a maintenance action{\ldots}
+Probalities of need of action maintenance [ 30.]\%
+----------------------------------------
+
+    \end{Verbatim}
+
+    \paragraph{The model is perfectibe but it gives some interesting
+results. For example, the ratio of non quality on wafers cut dropped at
+5\% when it culminates at 15\% before the predictive
+model.}\label{the-model-is-perfectibe-but-it-gives-some-interesting-results.-for-example-the-ratio-of-non-quality-on-wafers-cut-dropped-at-5-when-it-culminates-at-15-before-the-predictive-model.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}69}]:} \PY{n}{data\PYZus{}maintenance}\PY{o}{.}\PY{n}{TTV}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Distribution of wafers thickness}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{green}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{115}\PY{p}{,} \PY{l+m+mi}{115}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{3500}\PY{p}{]}\PY{p}{,}
+                  \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                  \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                  \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,}
+                  \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Out 6\PYZhy{}sigma limit}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{upper right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_69_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Then, this project was a good example of a smart use of data
+science for accurate prediction of action maintenance... A first step
+towards industry 4.0 for solar manufacturing
+!!!}\label{then-this-project-was-a-good-example-of-a-smart-use-of-data-science-for-accurate-prediction-of-action-maintenance...-a-first-step-towards-industry-4.0-for-solar-manufacturing}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

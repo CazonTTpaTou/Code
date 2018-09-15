@@ -1,0 +1,6 @@
+Data Work.My_Beautiful_fishes;
+SET SASHELP.fish;
+IF LAG(Weight) > Weight Then Checking = 'Bigger';
+ELSE Checking = 'Littler';
+IF Species = 'Perch' Then Output;
+RUN;

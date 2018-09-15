@@ -1,0 +1,21 @@
+
+%macro web_replay_grseg(catalog,entry);
+proc greplay nofs igout=&catalog;
+replay &entry;
+run;
+%mend;
+
+/** First create a GRSEG in WORK.GSEG           */
+/** GRSEG require that SAS/GRAPH be licensed.   */
+proc gchart data=sashelp.cars;
+   pie Make / name="MYCHART";
+      where MSRP <= 15000;
+   run;
+quit;
+
+/** Replay the GRSEG we just created.           */
+
+%web_replay_grseg(work.gseg,mychart);
+
+
+

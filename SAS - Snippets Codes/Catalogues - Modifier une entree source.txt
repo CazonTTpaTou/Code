@@ -1,0 +1,11 @@
+filename entry catalog "work.test.program.source";
+
+data _null_;
+file entry;
+put "proc print data=sashelp.class;";
+put "run;";
+run;
+
+/** Now navigate to File Shortcuts and you should be able edit 
+    the new source entry. */
+    

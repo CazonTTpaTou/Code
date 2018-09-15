@@ -1,0 +1,18 @@
+
+%macro web_list_entries(catalog,type);
+
+%let typearg=;
+%let type=%upcase(&type);
+%if &type^=_ALL_ and &type^=_all_ %then %let typearg= entrytype=&type;
+
+proc catalog catalog=&catalog &typearg;
+contents;
+title "Catalog Entries in &catalog";
+run;
+quit;
+
+%mend;
+
+%web_list_entries(SASHELP.FSP, _all_);
+%web_list_entries(SASHELP.FSP, class);
+

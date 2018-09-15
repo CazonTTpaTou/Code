@@ -1,0 +1,9 @@
+/* Stream a CSV representation of SASHELP.CARS directly to the user's browser. */
+
+proc export data=sashelp.cars
+            outfile=_dataout
+            dbms=csv replace;
+run;
+
+%let _DATAOUT_MIME_TYPE=text/csv;
+%let _DATAOUT_NAME=cars.csv;

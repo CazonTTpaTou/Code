@@ -1,0 +1,9 @@
+/*****************************************************************************/
+/*  Set the options necessary for creating a connection to a CAS server.     */
+/*  Once the options are set, the cas command connects the default session   */ 
+/*  to the specified CAS server and CAS port, for example the default value  */
+/*  is 5570.                                                                 */
+/*****************************************************************************/
+
+options cashost="<cas server name>" casport=<port number>;
+cas;

@@ -1,0 +1,9 @@
+/*****************************************************************************/
+/*  Create a CAS library (myCaslib) for the specified path ("/filePath/")    */ 
+/*  and session (mySession).  If "sessref=" is omitted, the caslib is        */ 
+/*  created and activated for the current session.  Setting subdirs extends  */
+/*  the scope of myCaslib to subdirectories of "/filePath".                  */
+/*****************************************************************************/
+
+caslib myCaslib datasource=(srctype="path") path="/filePath/" sessref=mySession subdirs;
+libname myCaslib cas;

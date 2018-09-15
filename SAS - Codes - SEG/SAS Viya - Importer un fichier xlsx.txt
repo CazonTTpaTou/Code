@@ -1,0 +1,11 @@
+/** Import an XLSX file.  **/
+
+PROC IMPORT DATAFILE="<Your XLSX File>"
+		    OUT=WORK.MYEXCEL
+		    DBMS=XLSX
+		    REPLACE;
+RUN;
+
+/** Print the results. **/
+
+PROC PRINT DATA=WORK.MYEXCEL; RUN;

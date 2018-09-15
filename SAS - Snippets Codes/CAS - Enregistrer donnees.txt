@@ -1,0 +1,13 @@
+
+/* Creates a permanent copy of an in-memory table ("sourceTableName") from "sourceCaslib". */
+/* The in-memory table is saved to the data source that is associated with the target      */
+/* caslib ("targetCaslib") using the specified name ("targetTableName").                   */
+/*                                                                                         */
+/* To find out the caslib associated with an CAS engine libref, right click on the libref  */
+/* from "Libraries" and select "Properties". Then look for the entry named "Server Session */
+/* CASLIB".                                                                                */
+proc casutil;
+    save casdata="sourceTableName" incaslib="sourceCaslib" outcaslib="targetCaslib"
+	     casout="targetTableName";
+run;
+

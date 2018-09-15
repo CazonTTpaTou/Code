@@ -1,0 +1,25 @@
+
+
+/** FOR CSV Files uploaded from Windows **/
+
+FILENAME CSV "<Your CSV File>" TERMSTR=CRLF;
+
+/** FOR CSV Files uploaded from Unix/MacOS **/
+
+FILENAME CSV "<Your CSV File>" TERMSTR=LF;
+
+/** Import the CSV file.  **/
+
+PROC IMPORT DATAFILE=CSV
+		    OUT=WORK.MYCSV
+		    DBMS=CSV
+		    REPLACE;
+RUN;
+
+/** Print the results. **/
+
+PROC PRINT DATA=WORK.MYCSV; RUN;
+
+/** Unassign the file reference.  **/
+
+FILENAME CSV;

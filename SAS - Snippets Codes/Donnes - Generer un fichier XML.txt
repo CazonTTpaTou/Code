@@ -1,0 +1,13 @@
+/* Stream an XML representation of SASHELP.CARS directly to the user's browser. */
+
+filename _dataout temp encoding="utf-8";
+libname _dataout xml;
+
+data _dataout.cars;
+set sashelp.cars;
+run;
+
+libname _dataout;
+
+%let _DATAOUT_MIME_TYPE=text/xml;
+%let _DATAOUT_NAME=cars.xml;

@@ -1,0 +1,9 @@
+/*****************************************************************************/
+/*  Disconnect from a session named mySession.  Before disconnecting, set an */ 
+/*  appropriate value for the timeout parameter.  You can reconnect to the   */
+/*  session before the timeout expires.  Otherwise the session is terminated */
+/*****************************************************************************/
+
+cas mySession sessopts=(timeout=1800);    /* 30 minute timeout */
+cas mySession disconnect;
+
