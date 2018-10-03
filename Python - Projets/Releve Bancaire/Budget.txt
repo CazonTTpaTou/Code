@@ -1,0 +1,18 @@
+----------------------------------------
+            Débit
+type             
+Charges    -68.04
+Courses    -33.33
+Impôts     -18.00
+Loyer     -323.16
+Transport  -13.40
+All       -455.93
+----------------------------------------
+            Débit
+type             
+Charges     14.92
+Courses      7.31
+Impôts       3.95
+Loyer       70.88
+Transport    2.94
+All        100.00
