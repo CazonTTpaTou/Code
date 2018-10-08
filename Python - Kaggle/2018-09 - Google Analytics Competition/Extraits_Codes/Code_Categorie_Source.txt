@@ -1,0 +1,28 @@
+ source_stats = df[['source','fullVisitorId']].groupby('source').count().reset_index()
+    source_sorted = source_stats.sort_values(by='fullVisitorId',ascending=False).iloc[:20,:]
+    
+    plt.figure(figsize=(14,10))
+    sns.barplot(x="fullVisitorId", y="source", data=source_sorted)
+    plt.title('Source distribution')
+    plt.tight_layout()
+    plt.show()
+    
+    source_sorted_top = source_sorted['source'].tolist()
+    
+    def categorie(value):
+        cat = 'Other'
+
+        for val in source_sorted_top:
+            if val.strip() == value.strip():
+                return val
+
+        return cat
+    
+    def is_google_source(value):
+        if value.lower().find('google') >= 0:
+            return True
+        else:
+            return False
+    
+    df['source_cat'] = df['source'].apply(categorie)
+    df['source_google'] = df['source'].apply(is_google_source)
