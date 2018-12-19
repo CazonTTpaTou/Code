@@ -1,0 +1,395 @@
+> log(5,base=10)
+[1] 0.69897
+> 10^0.69
+[1] 4.897788
+> a <- 'croco'
+> is.numeric(a)
+[1] FALSE
+> is.character(a)
+[1] TRUE
+> round(2.4)
+[1] 2
+> ceiling(2.4)
+[1] 3
+> floor(2.4)
+[1] 2
+> tan(90)
+[1] -1.9952
+> cos(90)
+[1] -0.4480736
+> sin(90)
+[1] 0.8939967
+> scan()
+1: 1
+2: 2
+3: 3
+4: 
+Read 3 items
+[1] 1 2 3
+> variabe <- scan(nmax=1)
+1: 45
+Read 1 item
+> variable
+Error: object 'variable' not found
+> variabe
+[1] 45
+> var1 <- 'croco'
+> var2 <- 'dile'
+> paste('Hello, my name is ',var1,var2)
+[1] "Hello, my name is  croco dile"
+> nchar('jgjg')
+[1] 4
+> substr('A croco which knows what it wants to eat !!',5,7)
+[1] "oco"
+> variable <- "bonjour"
+
+> paste(substr(toupper(variable),1,1),substr(variable,2,nchar(variable)),sep="")
+[1] "Bonjour"
+> ls()
+ [1] "a"                  "axis"               "axis2"              "bins"              
+ [5] "boxplot_day"        "boxplot_month"      "df_day"             "df_month"          
+ [9] "fire_file"          "fire_file_2"        "fire_file_filtered" "forest_fires"      
+[13] "forest_fires_day"   "measures"           "point_x"            "scatter_plot"      
+[17] "var1"               "var2"               "variabe"            "variable"          
+> getwd()
+[1] "C:/Users/monne/Documents"
+> sink("essai.txt")
+> vector("numeric",10)
+> seq(1,10,2)
+> poids <- c(1,25,65,89)
+> names(poids) <- ('croc','hippo','tigre','bear')
+Error: unexpected ',' in "names(poids) <- ('croc',"
+> names(poids) <- c('croc','hippo','tigre','bear')
+> poids
+
+ [1] 0 0 0 0 0 0 0 0 0 0
+[1] 1 3 5 7 9
+ croc hippo tigre  bear 
+    1    25    65    89 
+
+[Workspace loaded from ~/.RData]
+
+> log(5,base=10)
+[1] 0.69897
+> 10^0.69
+[1] 4.897788
+> a <- 'croco'
+> is.numeric(a)
+[1] FALSE
+> is.character(a)
+[1] TRUE
+> round(2.4)
+[1] 2
+> ceiling(2.4)
+[1] 3
+> floor(2.4)
+[1] 2
+> tan(90)
+[1] -1.9952
+> cos(90)
+[1] -0.4480736
+> sin(90)
+[1] 0.8939967
+> scan()
+1: 1
+2: 2
+3: 3
+4: 
+Read 3 items
+[1] 1 2 3
+> variabe <- scan(nmax=1)
+1: 45
+Read 1 item
+> variable
+Error: object 'variable' not found
+> variabe
+[1] 45
+> var1 <- 'croco'
+> var2 <- 'dile'
+> paste('Hello, my name is ',var1,var2)
+[1] "Hello, my name is  croco dile"
+> nchar('jgjg')
+[1] 4
+> substr('A croco which knows what it wants to eat !!',5,7)
+[1] "oco"
+> variable <- "bonjour"
+> scan(substr(toupper(variable),1,1),substr(variable,2,nchar(variable))
++ 
++ 
++ 
++ )
+Error in file(file, "r") : cannot open the connection
+In addition: Warning message:
+In file(file, "r") : cannot open file 'B': No such file or directory
+> scan(substr(toupper(variable),1,1),substr(variable,2,nchar(variable)))
+Error in file(file, "r") : cannot open the connection
+In addition: Warning message:
+In file(file, "r") : cannot open file 'B': No such file or directory
+> paste(substr(toupper(variable),1,1),substr(variable,2,nchar(variable)),sep="")
+[1] "Bonjour"
+> ls()
+ [1] "a"                  "axis"               "axis2"              "bins"              
+ [5] "boxplot_day"        "boxplot_month"      "df_day"             "df_month"          
+ [9] "fire_file"          "fire_file_2"        "fire_file_filtered" "forest_fires"      
+[13] "forest_fires_day"   "measures"           "point_x"            "scatter_plot"      
+[17] "var1"               "var2"               "variabe"            "variable"          
+> getwd()
+[1] "C:/Users/monne/Documents"
+> sink("essai.txt")
+> vector("numeric",10)
+> seq(1,10,2)
+> poids <- c(1,25,65,89)
+> names(poids) <- ('croc','hippo','tigre','bear')
+Error: unexpected ',' in "names(poids) <- ('croc',"
+> names(poids) <- c('croc','hippo','tigre','bear')
+> poids
+[2018-12-19 16:11:29] [error] handle_read_frame error: websocketpp.transport:7 (End of File)
+> sink()
+> poids <- c(85,78,54,98,66,78,77,62,89,92,76,77,55,68,71,72,99,102,54,66,98,75,82,83,75)
+> poids <- poids + 1
+> poids[poids%2==0] <- poids[poids%2==0] + 2
+Error in poids %2==0] <- poids[poids% 2 : 
+  could not find function "%2==0] <- poids[poids%"
+> poids[poids%2==0] <- poids[poids%2=0] + 2
+Error: unexpected '=' in "poids[poids%2==0] <- poids[poids%2="
+> poids[poids%2=0] <- poids[poids%2=0] + 2
+Error: unexpected '=' in "poids[poids%2=0] <- poids[poids%2="
+> poids[poids%2=0] <- poids + 2
+Error: unexpected input in "poids[poids%2=0] <- poids + 2"
+> poids[poids%2=0] 
+Error: unexpected input in "poids[poids%2=0] "
+> poids[poids%2==0] 
+Error: unexpected input in "poids[poids%2==0] "
+> poids[poids/2==0] 
+numeric(0)
+> 45%2 
+Error: unexpected input in "45%2 "
+> 45 % 2
+Error: unexpected input in "45 % 2"
+> 45 %% 2
+[1] 1
+> poids[poids%%2=0] <- poids + 2
+Error: unexpected '=' in "poids[poids%%2="
+> poids[poids%%2==0] <- poids + 2
+Warning message:
+In poids[poids%%2 == 0] <- poids + 2 :
+  number of items to replace is not a multiple of replacement length
+> poids[poids%%2==0] <- poids[poids%%2==0] + 2
+> poids
+ [1]  90  79  55  99  67  79  81  63  57  93  77 101  69  69  81  73  82 103  55  67  99  65  83
+[24]  94  95
+> poids[poids%%2==0] <- poids[poids%%2==0] + 2
+> poids
+ [1]  92  79  55  99  67  79  81  63  57  93  77 101  69  69  81  73  84 103  55  67  99  65  83
+[24]  96  95
+> sqrt(poids)
+ [1]  9.591663  8.888194  7.416198  9.949874  8.185353  8.888194  9.000000  7.937254  7.549834
+[10]  9.643651  8.774964 10.049876  8.306624  8.306624  9.000000  8.544004  9.165151 10.148892
+[19]  7.416198  8.185353  9.949874  8.062258  9.110434  9.797959  9.746794
+> length(poids)
+[1] 25
+> poids <- poids[2:length(poids)]
+> poids
+ [1]  79  55  99  67  79  81  63  57  93  77 101  69  69  81  73  84 103  55  67  99  65  83  96
+[24]  95
+> head(poids,3)
+[1] 79 55 99
+> tail(poids,5)
+[1] 99 65 83 96 95
+> sort(poids)
+ [1]  55  55  57  63  65  67  67  69  69  73  77  79  79  81  81  83  84  93  95  96  99  99 101
+[24] 103
+> order(poids)
+ [1]  2 18  8  7 21  4 19 12 13 15 10  1  5  6 14 22 16  9 24 23  3 20 11 17
+> rank(poids)
+ [1] 12.5  1.5 21.5  6.5 12.5 14.5  4.0  3.0 18.0 11.0 23.0  8.5  8.5 14.5 10.0 17.0 24.0  1.5
+[19]  6.5 21.5  5.0 16.0 20.0 19.0
+> mean(poids)
+[1] 78.75
+> sum(poids) / length(poids)
+[1] 78.75
+> median(poids)
+[1] 79
+> min(poids)
+[1] 55
+> max(poids)
+[1] 103
+> quantile(poids)
+   0%   25%   50%   75%  100% 
+ 55.0  67.0  79.0  93.5 103.0 
+> quantile(poids,probs=seq(0,1,0.1))
+   0%   10%   20%   30%   40%   50%   60%   70%   80%   90%  100% 
+ 55.0  58.8  66.2  68.8  73.8  79.0  81.0  84.9  95.4  99.0 103.0 
+> summary(poids)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  55.00   67.00   79.00   78.75   93.50  103.00 
+> var(poids)
+[1] 228.8913
+> sd(poids)
+[1] 15.12915
+> objets <- load("Chapitre7.RData")
+> union(names(tailleG),names(tailleF))
+ [1] "Vincent"     "Pierre"      "Karim"       "Michel"      "Eric"        "Kevin"      
+ [7] "Paul"        "Youssef"     "Alain"       "Ruy"         "Adrien"      "Bastien"    
+[13] "Jacques"     "Christian"   "Justin"      "Julien"      "Philippe"    "Benoit"     
+[19] "Thimothee"   "Francois"    "Diego"       "Jean"        "Fabien"      "Katia"      
+[25] "Mireille"    "Angelique"   "Emilie"      "Christine"   "Estelle"     "Jacqueline" 
+[31] "Magali"      "Ana"         "Cheryl"      "Lucie"       "Emmannuelle" "Marion"     
+[37] "Chloe"       "Zoe"         "Fatima"      "Irene"       "Aurelia"     "Karen"      
+[43] "Julie"       "Mathilde"    "Juliette"    "Chen"       
+> commun_G <- names(tailleG) %in names(performanceG)
+Error: unexpected input in "commun_G <- names(tailleG) %in names(performanceG)"
+> commun_G <- names(tailleG) %in% names(performanceG)
+> commun_G
+ [1]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
+[16]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+> tailleG[commun_G]
+  Vincent    Pierre     Karim    Michel      Eric      Paul   Youssef       Ruy    Adrien 
+      169       175       182       166       179       165       168       179       167 
+  Bastien   Jacques Christian    Julien  Philippe    Benoit Thimothee  Francois     Diego 
+      172       156       191       183       178       175       190       172       173 
+     Jean    Fabien 
+      185       171 
+> length(tailleG[commun_G])
+[1] 20
+> tailleG2 <- tailleG[commun_G]
+> performanceG2 <- performanceG[commun_G]
+> order(tailleG2)
+ [1] 11  6  4  9  7  1 20 10 17 18  2 15 14  5  8  3 13 19 16 12
+> tailleG2_Tri <- tailleG2[order(tailleG2)]
+> performanceG2_Tri <- performanceG2[order(tailleG2)]
+> corr(tailleG2_Tri,performanceG2_Tri)
+Error in corr(tailleG2_Tri, performanceG2_Tri) : 
+  could not find function "corr"
+> cor(tailleG2_Tri,performanceG2_Tri)
+[1] 0.1158566
+> lm(performanceG2_Tri~tailleG2_Tri)
+
+Call:
+lm(formula = performanceG2_Tri ~ tailleG2_Tri)
+
+Coefficients:
+ (Intercept)  tailleG2_Tri  
+    119.6847        0.1463  
+
+> lm(tailleG2_tri~performanceG2_Tri)
+Error in eval(predvars, data, env) : object 'tailleG2_tri' not found
+> lm(tailleG2_Tri~performanceG2_Tri)
+
+Call:
+lm(formula = tailleG2_Tri ~ performanceG2_Tri)
+
+Coefficients:
+      (Intercept)  performanceG2_Tri  
+        161.46945            0.09178  
+
+> cor.test(performanceG2_Tri,tailleG2_Tri)
+
+	Pearson's product-moment correlation
+
+data:  performanceG2_Tri and tailleG2_Tri
+t = 0.49487, df = 18, p-value = 0.6267
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.3443169  0.5311461
+sample estimates:
+      cor 
+0.1158566 
+
+> wilcox.test(median(performanceF),median(performanceG))
+
+	Wilcoxon rank sum test
+
+data:  median(performanceF) and median(performanceG)
+W = 0, p-value = 1
+alternative hypothesis: true location shift is not equal to 0
+
+> median(performanceF)
+[1] 110
+> median(performanceG)
+[1] 142
+> median(performanceF,performanceG)
+[1] 110
+Warning message:
+In if (na.rm) x <- x[!is.na(x)] else if (any(is.na(x))) return(x[FALSE][NA]) :
+  the condition has length > 1 and only the first element will be used
+> wilcox.test(performanceF,performanceG)
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  performanceF and performanceG
+W = 8, p-value = 3.695e-09
+alternative hypothesis: true location shift is not equal to 0
+
+Warning message:
+In wilcox.test.default(performanceF, performanceG) :
+  impossible de calculer la p-value exacte avec des ex-aequos
+> notes <- factor(c("A","B","A","B","C"))
+> notes
+[1] A B A B C
+Levels: A B C
+> mat <- matrix(data=1:6,nrow=2,ncol=3,byrow=T)
+> mat
+     [,1] [,2] [,3]
+[1,]    1    2    3
+[2,]    4    5    6
+> rownames(mat) <- c("croc","ali","gav")
+Error in dimnames(x) <- dn : 
+  length of 'dimnames' [1] not equal to array extent
+> colnames(mat) <- c("croc","ali","gav")
+> rownames(mat) <- c("length","weigth")
+> mat
+       croc ali gav
+length    1   2   3
+weigth    4   5   6
+> mean(mat)
+[1] 3.5
+> resultats <- dataframe(taill=c(1,5,8),poids=c(8,7,3))
+Error in dataframe(taill = c(1, 5, 8), poids = c(8, 7, 3)) : 
+  could not find function "dataframe"
+> resultats <- data.frame(taill=c(1,5,8),poids=c(8,7,3))
+> resultats
+  taill poids
+1     1     8
+2     5     7
+3     8     3
+> resultats$poids
+[1] 8 7 3
+> resultats$poidsmean(resultats$poids)
+Error: attempt to apply non-function
+> mean(resultats$poids)
+[1] 6
+> atthlete <- list(fisrt=c(1,2),second=c(8,9))
+> atthlete
+$fisrt
+[1] 1 2
+
+$second
+[1] 8 9
+
+> lappy(atthlete,min)
+Error in lappy(atthlete, min) : could not find function "lappy"
+> lapply(atthlete,min)
+$fisrt
+[1] 1
+
+$second
+[1] 8
+
+> sapply(atthlete,min)
+ fisrt second 
+     1      8 
+> sort(sapply(atthlete,min))
+ fisrt second 
+     1      8 
+> test <- cor.test(atthlete$first,atthlete$second)
+Error in cor.test.default(atthlete$first, atthlete$second) : 
+  'x' et 'y' doivent avoir la même longueur
+> atthlete$first
+NULL
+> test <- cor.test(atthlete$fisrt,atthlete$second)
+Error in cor.test.default(atthlete$fisrt, atthlete$second) : 
+  pas assez d'observations non indéfinies
+> is.list(test)
+Error: object 'test' not found
+
